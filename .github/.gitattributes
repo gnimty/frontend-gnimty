@@ -1,0 +1,11 @@
+*text=auto
+
+#
+# Exclude files from exporting
+#
+
+*.md            text diff=markdown
+
+.gitattributes export-ignore
+.gitignore     export-ignore
+.gitkeep       export-ignore
