@@ -34,6 +34,6 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.PEM }}
           script: |
-            cd /home/ubuntu/next.js/frontend
+            cd /home/ubuntu/next.js/frontend/.next
             npm install
             pm2 restart all
