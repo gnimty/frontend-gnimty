@@ -25,7 +25,7 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.PEM }}
           source: '.next/*'
-          target: '/home/ubuntu/next.js/project/on/ec2'
+          target: '/home/ubuntu/next.js/frontend'
 
       - name: Install dependencies & Start on EC2
         uses: appleboy/ssh-action@master
@@ -34,6 +34,6 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.PEM }}
           script: |
-            cd /home/ubuntu/next.js/project/on/ec2
+            cd /home/ubuntu/next.js/frontend
             npm install
             pm2 restart all
