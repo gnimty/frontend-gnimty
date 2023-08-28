@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 
 interface RatingBoxProps {
-  children: string | boolean;
+  children: string;
   background: string;
 }
 

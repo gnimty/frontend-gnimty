@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 
 interface ButtonProps {
-  children: string | boolean;
+  children: string;
   color: string;
   background: string;
   size: 'large' | 'medium';
