@@ -1,7 +1,7 @@
 import '@/styles/globals.css';
-import { ThemeProvider, ServerStyleSheet } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 
-import MainLayout from '@/components/Layout/MainLayout';
+import MainLayout from '@/components/layout/MainLayout';
 import theme from '@/styles/theme';
 
 import type { AppProps } from 'next/app';

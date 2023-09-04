@@ -22,19 +22,19 @@ const FooterWrapper = styled.div`
 const FooterItem = styled.a`
   text-decoration: none;
   font-family: Pretendard;
-  font-size: 14px;
-  line-height: 20px;
   color: ${(props) => props.theme.colors.gray700};
+  font-size: ${(props) => props.theme.fonts.t2.fontSize};
+  line-height: ${(props) => props.theme.fonts.t2.lineHeight};
 `;
 
-const Footer = () => {
-  const footerList = [
-    { id: 'faq', name: '공지사항', link: '/faq' },
-    { id: 'teamIntroduction', name: '팀 소개', link: '/teamIntroduction' },
-    { id: 'terms', name: '이용 약관', link: '/terms' },
-    { id: 'policy', name: '개인정보처리방침', link: '/policy' },
-  ];
+const footerList = [
+  { id: 'faq', name: '공지사항', link: '/faq' },
+  { id: 'teamIntroduction', name: '팀 소개', link: '/teamIntroduction' },
+  { id: 'terms', name: '이용 약관', link: '/terms' },
+  { id: 'policy', name: '개인정보처리방침', link: '/policy' },
+];
 
+const Footer = () => {
   return (
     <FooterContainer>
       <div>

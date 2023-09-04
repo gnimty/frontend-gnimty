@@ -13,9 +13,9 @@ const RatingBoxStyled = styled.button<RatingBoxProps>`
   padding: 2px;
   border-radius: 4px;
   font-family: Pretendard;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 16px;
+  font-size: ${(props) => props.theme.fonts.body.fontSize};
+  font-weight: ${(props) => props.theme.fonts.t2.fontWeight};
+  line-height: ${(props) => props.theme.fonts.body.lineHeight};
 `;
 
 export default function RatingBox({ children, ...props }: RatingBoxProps) {

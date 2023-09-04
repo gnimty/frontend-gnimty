@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -24,27 +25,27 @@ const MenuContainer = styled.div`
 const MenuItem = styled.a<MenuItemProps>`
   text-decoration: none;
   font-family: Pretendard;
-  font-size: 16px;
-  line-height: 22px;
   color: ${(props) => (props.isActive ? props.theme.colors.gray800 : props.theme.colors.gray600)};
+  font-size: ${(props) => props.theme.fonts.t1.fontSize};
+  font-weight: ${(props) => props.theme.fonts.t1.fontWeight};
 
   &:hover {
     text-decoration: underline;
   }
 `;
 
+const menuItemList = [
+  { id: 'home', name: '홈', link: '/' },
+  { id: 'duo', name: '듀오찾기', link: '/duo' },
+  { id: 'champion', name: '챔피언 분석', link: '/champion' },
+  { id: 'statistics', name: '통계', link: '/statistics' },
+  { id: 'ranking', name: '랭킹', link: '/ranking' },
+  { id: 'pick', name: 'Pick 추천', link: '/pick' },
+];
+
 const Header = () => {
   const isLoggedIn = false;
   const [activeMenu, setActiveMenu] = useState('홈');
-
-  const menuItemList = [
-    { id: 'home', name: '홈', link: '/' },
-    { id: 'duo', name: '듀오찾기', link: '/duo' },
-    { id: 'champion', name: '챔피언 분석', link: '/champion' },
-    { id: 'statistics', name: '통계', link: '/statistics' },
-    { id: 'ranking', name: '랭킹', link: '/ranking' },
-    { id: 'pick', name: 'Pick 추천', link: '/pick' },
-  ];
 
   const handleMenuClick = (menu: string) => {
     setActiveMenu(menu);
@@ -55,14 +56,11 @@ const Header = () => {
       <MenuContainer>
         {menuItemList.map((item) => {
           return (
-            <MenuItem
-              key={item.id}
-              href={item.link}
-              isActive={activeMenu === `${item.name}`}
-              onClick={() => handleMenuClick(`${item.name}`)}
-            >
-              {item.name}
-            </MenuItem>
+            <Link href={item.link} key={item.id}>
+              <MenuItem isActive={activeMenu === `${item.name}`} onClick={() => handleMenuClick(`${item.name}`)}>
+                {item.name}
+              </MenuItem>
+            </Link>
           );
         })}
       </MenuContainer>
