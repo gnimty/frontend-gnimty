@@ -15,9 +15,9 @@ const ButtonStyled = styled.button<ButtonProps>`
   color: ${(props) => props.color};
   border-radius: 4px;
   font-family: Pretendard;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 20px;
+  font-size: ${(props) => props.theme.fonts.t2.fontSize};
+  font-weight: ${(props) => props.theme.fonts.t2.fontWeight};
+  line-height: ${(props) => props.theme.fonts.t2.lineHeight};
 `;
 
 export default function Button({ children, ...props }: ButtonProps) {
