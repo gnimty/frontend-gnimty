@@ -4,6 +4,16 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ddragon.leagueoflegends.com',
+        port: '',
+        pathname: '/cdn/*/img/champion/*.png',
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;
