@@ -9,7 +9,6 @@ const CardWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   border-radius: 4px;
-  border: 1px solid tomato;
 `;
 
 interface CardColumnProps {
@@ -102,30 +101,32 @@ const OpenCloseButton = styled.button`
   height: 24px;
 `;
 
+const CHAMP_URL = 'https://ddragon.leagueoflegends.com/cdn/13.12.1/img/champion/Kaisa.png';
+
 export default function SummonerCard({ open, toggle }: { open: boolean; toggle: () => void }) {
   return (
     <CardWrapper>
       <CardHeader flexColumn align="flex-start">
         <CardColumn justify="space-between">
           <SummonerBasicInfo>
-            <IconImage src="/next.svg" width="40" height="40" radius="50" alt="icon" />
+            <IconImage src="/next.svg" width={40} height={40} alt="icon" />
             <SummonerId>
               T1 Gumayusi
-              <IconImage src="/next.svg" width="16" height="16" radius="50" alt="icon" />
+              <IconImage src="/next.svg" width={16} height={16} alt="icon" />
             </SummonerId>
-            <IconImage src="/next.svg" width="6" height="6" radius="50" alt="icon" />
+            <IconImage src="/next.svg" width={6} height={6} alt="icon" />
           </SummonerBasicInfo>
-          <IconImage src="/next.svg" width="40" height="40" radius="50" alt="icon" />
+          <IconImage src="/next.svg" width={40} height={40} alt="icon" />
         </CardColumn>
         <CardColumn width={120} gap={8}>
-          <IconImage src="/next.svg" width="24" height="24" alt="다이아티어" />
+          <IconImage src="/next.svg" width={24} height={24} alt="다이아티어" />
           <SummonerTier>CH</SummonerTier>
           <SummonerLP>1,123 LP</SummonerLP>
         </CardColumn>
         <CardColumn gap={8} justify="space-between">
           <CardColumn gap={8}>
-            <IconImage src="/next.svg" width="24" height="24" alt="icon" />
-            <IconImage src="/next.svg" width="24" height="24" alt="icon" />
+            <IconImage src="/next.svg" width={24} height={24} alt="icon" />
+            <IconImage src="/next.svg" width={24} height={24} alt="icon" />
           </CardColumn>
           {!open && (
             <OpenCloseButton type="button" onClick={() => toggle()}>
@@ -134,18 +135,18 @@ export default function SummonerCard({ open, toggle }: { open: boolean; toggle: 
           )}
         </CardColumn>
       </CardHeader>
-      <CardBody flexColumn open={open}>
+      <CardBody flexColumn open={open} gap={16}>
         <CardColumn gap={8}>
-          <IconImage src="/next.svg" width="32" height="32" radius="50" alt="icon" />
-          <IconImage src="/next.svg" width="32" height="32" radius="50" alt="icon" />
-          <IconImage src="/next.svg" width="32" height="32" radius="50" alt="icon" />
+          <IconImage src={CHAMP_URL} width={32} height={32} alt="icon" />
+          <IconImage src={CHAMP_URL} width={32} height={32} alt="icon" />
+          <IconImage src={CHAMP_URL} width={32} height={32} alt="icon" />
         </CardColumn>
         <CardColumn>
           <SummonerDetail>Lorem ipsum dolor sit amet consectetur adipisicing elit.</SummonerDetail>
         </CardColumn>
-        <CardColumn>
+        <CardColumn justify="space-between">
           <SummonerLiked>
-            <IconImage src="/next.svg" width="20" height="20" radius="50" alt="icon" />
+            <IconImage src="/next.svg" width={20} height={20} alt="icon" />
             <span>1234</span>
           </SummonerLiked>
           <OpenCloseButton type="button" onClick={() => toggle()}>
