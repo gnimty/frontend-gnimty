@@ -12,21 +12,21 @@ const CardWrapper = styled.div`
 `;
 
 interface CardColumnProps {
-  open?: boolean;
-  flexColumn?: boolean;
+  $open?: boolean;
+  $flexcolumn?: string;
   width?: number;
-  justify?: string;
-  align?: string;
-  gap?: number;
+  $justify?: string;
+  $align?: string;
+  $gap?: number;
 }
 
 const CardColumn = styled.div<CardColumnProps>`
   display: flex;
-  flex-direction: ${({ flexColumn }) => (flexColumn ? 'column' : 'row')};
-  justify-content: ${({ justify }) => justify || 'flex-start'};
-  align-items: ${({ align }) => align || 'center'};
+  flex-direction: ${({ $flexcolumn }) => ($flexcolumn ? 'column' : 'row')};
+  justify-content: ${({ $justify }) => $justify || 'flex-start'};
+  align-items: ${({ $align }) => $align || 'center'};
   width: ${({ width }) => (width ? `${width}px` : '100%')};
-  gap: ${({ gap }) => (gap ? `${gap}px` : '0')};
+  gap: ${({ $gap }) => ($gap ? `${$gap}px` : '0')};
 `;
 
 const CardHeader = styled(CardColumn)<CardColumnProps>`
@@ -37,8 +37,8 @@ const CardHeader = styled(CardColumn)<CardColumnProps>`
 const CardBody = styled(CardColumn)<CardColumnProps>`
   overflow: hidden;
   padding: 0 20px 16px 20px;
-  max-height: ${({ open }) => (open ? '500px' : '0')};
-  transform: scaleY(${({ open }) => (open ? '1' : '0')});
+  max-height: ${({ $open }) => ($open ? '500px' : '0')};
+  transform: scaleY(${({ $open }) => ($open ? '1' : '0')});
   transform-origin: top;
   transition:
     transform 0.3s ease-out,
@@ -106,8 +106,8 @@ const CHAMP_URL = 'https://ddragon.leagueoflegends.com/cdn/13.12.1/img/champion/
 export default function SummonerCard({ open, toggle }: { open: boolean; toggle: () => void }) {
   return (
     <CardWrapper>
-      <CardHeader flexColumn align="flex-start">
-        <CardColumn justify="space-between">
+      <CardHeader $flexcolumn="true" $align="flex-start">
+        <CardColumn $justify="space-between">
           <SummonerBasicInfo>
             <IconImage src="/next.svg" width={40} height={40} alt="icon" />
             <SummonerId>
@@ -118,13 +118,13 @@ export default function SummonerCard({ open, toggle }: { open: boolean; toggle: 
           </SummonerBasicInfo>
           <IconImage src="/next.svg" width={40} height={40} alt="icon" />
         </CardColumn>
-        <CardColumn width={120} gap={8}>
+        <CardColumn width={120} $gap={8}>
           <IconImage src="/next.svg" width={24} height={24} alt="다이아티어" />
           <SummonerTier>CH</SummonerTier>
           <SummonerLP>1,123 LP</SummonerLP>
         </CardColumn>
-        <CardColumn gap={8} justify="space-between">
-          <CardColumn gap={8}>
+        <CardColumn $gap={8} $justify="space-between">
+          <CardColumn $gap={8}>
             <IconImage src="/next.svg" width={24} height={24} alt="icon" />
             <IconImage src="/next.svg" width={24} height={24} alt="icon" />
           </CardColumn>
@@ -135,8 +135,8 @@ export default function SummonerCard({ open, toggle }: { open: boolean; toggle: 
           )}
         </CardColumn>
       </CardHeader>
-      <CardBody flexColumn open={open} gap={16}>
-        <CardColumn gap={8}>
+      <CardBody $flexcolumn="true" $open={open} $gap={16}>
+        <CardColumn $gap={8}>
           <IconImage src={CHAMP_URL} width={32} height={32} alt="icon" />
           <IconImage src={CHAMP_URL} width={32} height={32} alt="icon" />
           <IconImage src={CHAMP_URL} width={32} height={32} alt="icon" />
@@ -144,7 +144,7 @@ export default function SummonerCard({ open, toggle }: { open: boolean; toggle: 
         <CardColumn>
           <SummonerDetail>Lorem ipsum dolor sit amet consectetur adipisicing elit.</SummonerDetail>
         </CardColumn>
-        <CardColumn justify="space-between">
+        <CardColumn $justify="space-between">
           <SummonerLiked>
             <IconImage src="/next.svg" width={20} height={20} alt="icon" />
             <span>1234</span>
