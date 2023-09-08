@@ -14,17 +14,17 @@ const WholeWrapper = styled.div`
   gap: 8px;
 `;
 
-const Wrapper = styled.div<{ on: boolean; width: number }>`
+const Wrapper = styled.div<{ $on: boolean; width: number }>`
   width: ${({ width }) => `${width}px`};
   height: 18px;
   position: relative;
 
-  background-color: ${({ theme, on }) => (on ? theme.colors.red800 : theme.colors.gray300)};
+  background-color: ${({ theme, $on }) => ($on ? theme.colors.red800 : theme.colors.gray300)};
   border-radius: 20px;
   cursor: pointer;
 `;
 
-const Circle = styled.div<{ on: boolean; width: number }>`
+const Circle = styled.div<{ $on: boolean; width: number }>`
   width: 14px;
   aspect-ratio: 1;
   position: absolute;
@@ -34,8 +34,8 @@ const Circle = styled.div<{ on: boolean; width: number }>`
   border-radius: 50%;
   transition: all 0.3s ease-in-out;
 
-  ${({ on }) =>
-    on &&
+  ${({ $on }) =>
+    $on &&
     css`
       transform: translateX(calc(100% - 2px));
     `}
@@ -53,8 +53,8 @@ const Label = styled.span`
 function ToggleSwitch({ onOff, onClick, width = 32, label }: ToggleSwitchProps) {
   return (
     <WholeWrapper>
-      <Wrapper on={onOff} onClick={onClick} width={width}>
-        <Circle on={onOff} width={width} />
+      <Wrapper $on={onOff} onClick={onClick} width={width}>
+        <Circle $on={onOff} width={width} />
       </Wrapper>
       {label && <Label>{label}</Label>}
     </WholeWrapper>
