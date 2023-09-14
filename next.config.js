@@ -12,6 +12,13 @@ const nextConfig = {
         pathname: '/cdn/*/img/champion/*.png',
       },
     ],
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.svg$/,
+      issuer: /\.(js|ts)x?$/,
+      use: ['@svgr/webpack'],
+    });
+    return config;
   },
 };
 
