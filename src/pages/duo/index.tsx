@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { styled } from 'styled-components';
 
+import DetailFilter from '@/components/duo/DetailFilter';
 import Filter from '@/components/duo/Filter';
 import SummonerCard from '@/components/duo/SummonerCard';
 
@@ -15,28 +16,31 @@ const SummonerCardsContainer = styled.div`
   width: 67.5rem;
   margin: 0 auto;
   margin-top: 1rem;
-  /* display: grid;
+  display: grid;
   gap: 12px;
-  grid-template-columns: repeat(auto-fill, 350px); */
-  display: flex;
-  gap: 12px;
-  justify-content: space-between;
+  grid-template-columns: repeat(3, 350px);
 `;
 
-const SummonerCardsColumn = styled.div`
-  width: 352px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+const Dimmed = styled.div<{ $open: boolean }>`
+  display: ${({ $open }) => ($open ? 'block' : 'none')};
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: 100vw;
+  height: 100vh;
+  background-color: ${({ theme }) => theme.colors.dim60};
 `;
 
 export default function Duo() {
+  const [detailOpen, setDetailOpen] = useState(false);
   const [allOpen, setAllOpen] = useState(false);
   const [cardOpens, setCardOpen] = useState<boolean[]>(Array(18).fill(false));
   const openAll = () => {
     setCardOpen(Array(cardOpens.length).fill(!allOpen));
     setAllOpen((prev) => !prev);
   };
+  const toggleDetail = () => setDetailOpen((prev) => !prev);
   const toggleCard = (index: number) => {
     setCardOpen((prev) => {
       const next = [...prev];
@@ -45,25 +49,17 @@ export default function Duo() {
     });
   };
   return (
-    <Container>
-      <Filter allOpen={allOpen} toggleAll={openAll} />
-      <SummonerCardsContainer>
-        <SummonerCardsColumn>
-          {cardOpens.slice(0, 6).map((open, index) => (
+    <>
+      <Dimmed $open={detailOpen} onClick={toggleDetail} />
+      <DetailFilter detailOpen={detailOpen} toggleDetail={toggleDetail} />
+      <Container>
+        <Filter allOpen={allOpen} toggleAll={openAll} detailOpen={detailOpen} toggleDetail={toggleDetail} />
+        <SummonerCardsContainer>
+          {cardOpens.map((open, index) => (
             <SummonerCard key={index} open={open} toggle={() => toggleCard(index)} />
           ))}
-        </SummonerCardsColumn>
-        <SummonerCardsColumn>
-          {cardOpens.slice(6, 12).map((open, index) => (
-            <SummonerCard key={index} open={open} toggle={() => toggleCard(index + 6)} />
-          ))}
-        </SummonerCardsColumn>
-        <SummonerCardsColumn>
-          {cardOpens.slice(12, 18).map((open, index) => (
-            <SummonerCard key={index} open={open} toggle={() => toggleCard(index + 12)} />
-          ))}
-        </SummonerCardsColumn>
-      </SummonerCardsContainer>
-    </Container>
+        </SummonerCardsContainer>
+      </Container>
+    </>
   );
 }

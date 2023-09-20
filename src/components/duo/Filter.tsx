@@ -1,7 +1,16 @@
 import { useState, type MouseEvent } from 'react';
 import { styled } from 'styled-components';
 
+import Bot from '@/assets/icons/game/position/bot.svg';
+import Every from '@/assets/icons/game/position/every.svg';
+import Jug from '@/assets/icons/game/position/jug.svg';
+import Mid from '@/assets/icons/game/position/mid.svg';
+import Sup from '@/assets/icons/game/position/sup.svg';
+import Top from '@/assets/icons/game/position/top.svg';
+import FilterSet from '@/assets/icons/system/filter-set.svg';
+import FilterIcon from '@/assets/icons/system/filter.svg';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
+import theme from '@/styles/theme';
 
 const FilterWrapper = styled.div`
   width: 67.5rem;
@@ -51,11 +60,15 @@ const FilterIconItem = styled.li<{ selected?: boolean }>`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  border-right: 1px solid ${({ theme }) => theme.colors.gray200};
+  &:last-child {
+    border-right: none;
+  }
   color: ${({ theme, selected }) => (selected ? theme.colors.white : theme.colors.gray700)};
   background-color: ${({ theme, selected }) => (selected ? theme.colors.red800 : theme.colors.white)};
 `;
 
-const FilterDetailButton = styled.button`
+const FilterDetailButton = styled.button<{ $open: boolean }>`
   width: 40px;
   height: 100%;
   display: flex;
@@ -64,33 +77,19 @@ const FilterDetailButton = styled.button`
   cursor: pointer;
   border-radius: 4px;
   border: 1px solid ${({ theme }) => theme.colors.gray200};
-`;
-
-const ResetButton = styled.button`
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  &::before {
-    content: 'B';
-  }
+  background-color: ${({ theme, $open }) => ($open ? theme.colors.red800 : theme.colors.white)};
 `;
 
 interface FilterProps {
   allOpen: boolean;
   toggleAll: () => void;
+  detailOpen: boolean;
+  toggleDetail: () => void;
 }
 
-function Filter({ allOpen, toggleAll }: FilterProps) {
-  const filterItems = ['A', 'T', 'J', 'M', 'B', 'S'];
-  const [selected, setSelected] = useState('A');
-  const handlePositionSelect = (e: MouseEvent<HTMLUListElement>) => {
-    const { target } = e;
-    if (target instanceof HTMLLIElement) {
-      setSelected(target.innerText);
-    }
-  };
+function Filter({ allOpen, toggleAll, detailOpen, toggleDetail }: FilterProps) {
+  const [selected, setSelected] = useState<string[]>([]);
+  const handlePositionSelect = (e: MouseEvent<HTMLUListElement>) => {};
   return (
     <FilterWrapper>
       <FilterLeft>
@@ -104,23 +103,33 @@ function Filter({ allOpen, toggleAll }: FilterProps) {
           <option value="all">티어 전체</option>
         </Dropdown>
         <FilterIconBox onClick={handlePositionSelect}>
-          {filterItems.map((filterItem) => {
-            if (filterItem === selected) {
-              return (
-                <FilterIconItem key={filterItem} selected={true}>
-                  {filterItem}
-                </FilterIconItem>
-              );
-            }
-            return <FilterIconItem key={filterItem}>{filterItem}</FilterIconItem>;
-          })}
+          <FilterIconItem>
+            <Every />
+          </FilterIconItem>
+          <FilterIconItem>
+            <Top />
+          </FilterIconItem>
+          <FilterIconItem>
+            <Jug />
+          </FilterIconItem>
+          <FilterIconItem>
+            <Mid />
+          </FilterIconItem>
+          <FilterIconItem>
+            <Bot />
+          </FilterIconItem>
+          <FilterIconItem>
+            <Sup />
+          </FilterIconItem>
         </FilterIconBox>
 
-        <FilterDetailButton>O</FilterDetailButton>
+        <FilterDetailButton $open={detailOpen} onClick={toggleDetail}>
+          {detailOpen ? <FilterSet /> : <FilterIcon />}
+        </FilterDetailButton>
       </FilterLeft>
       <FilterRight>
         <ToggleSwitch onOff={allOpen} onClick={toggleAll} label="펼쳐보기" />
-        <ResetButton />
+        {/* Reset */}
       </FilterRight>
     </FilterWrapper>
   );

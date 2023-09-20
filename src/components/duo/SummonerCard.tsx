@@ -1,14 +1,22 @@
 import { styled } from 'styled-components';
 
+import Bot from '@/assets/icons/game/position/bot.svg';
+import Jug from '@/assets/icons/game/position/jug.svg';
+import Diamond from '@/assets/icons/game/tier/diamond.png';
+import Copy from '@/assets/icons/system/copy.svg';
+import Like from '@/assets/icons/system/like.svg';
+import Online from '@/assets/icons/system/online.svg';
+
 import IconImage from '../common/IconImage';
 
-const CardWrapper = styled.div`
+const CardWrapper = styled.div<{ open: boolean }>`
   width: 352px;
   min-height: 144px;
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 4px;
+  grid-row: ${({ open }) => (open ? 'span 2' : 'span 1')};
 `;
 
 interface CardColumnProps {
@@ -61,6 +69,10 @@ const SummonerId = styled.span`
   display: flex;
   align-items: center;
   gap: 4px;
+  svg {
+    font-size: 8px;
+    color: ${({ theme }) => theme.colors.gray500};
+  }
 `;
 
 const SummonerTier = styled.span`
@@ -102,31 +114,32 @@ const OpenCloseButton = styled.button`
 `;
 
 const CHAMP_URL = 'https://ddragon.leagueoflegends.com/cdn/13.12.1/img/champion/Kaisa.png';
+const PROFILE_URL = 'https://ddragon.leagueoflegends.com/cdn/13.12.1/img/profileicon/0.png';
 
 export default function SummonerCard({ open, toggle }: { open: boolean; toggle: () => void }) {
   return (
-    <CardWrapper>
+    <CardWrapper open={open}>
       <CardHeader $flexcolumn="true" $align="flex-start">
         <CardColumn $justify="space-between">
           <SummonerBasicInfo>
-            <IconImage src="/next.svg" width={40} height={40} alt="icon" />
+            <IconImage src={PROFILE_URL} width={40} height={40} alt="icon" />
             <SummonerId>
               T1 Gumayusi
-              <IconImage src="/next.svg" width={16} height={16} alt="icon" />
+              <Copy width="16px" height={16} />
             </SummonerId>
-            <IconImage src="/next.svg" width={6} height={6} alt="icon" />
+            <Online width={6} height={6} />
           </SummonerBasicInfo>
           <IconImage src="/next.svg" width={40} height={40} alt="icon" />
         </CardColumn>
         <CardColumn width={120} $gap={8}>
-          <IconImage src="/next.svg" width={24} height={24} alt="다이아티어" />
+          <IconImage src={Diamond} width={24} height={24} alt="다이아티어" />
           <SummonerTier>CH</SummonerTier>
           <SummonerLP>1,123 LP</SummonerLP>
         </CardColumn>
         <CardColumn $gap={8} $justify="space-between">
           <CardColumn $gap={8}>
-            <IconImage src="/next.svg" width={24} height={24} alt="icon" />
-            <IconImage src="/next.svg" width={24} height={24} alt="icon" />
+            <Bot width={24} height={24} />
+            <Jug width={24} height={24} />
           </CardColumn>
           {!open && (
             <OpenCloseButton type="button" onClick={() => toggle()}>
@@ -146,7 +159,7 @@ export default function SummonerCard({ open, toggle }: { open: boolean; toggle: 
         </CardColumn>
         <CardColumn $justify="space-between">
           <SummonerLiked>
-            <IconImage src="/next.svg" width={20} height={20} alt="icon" />
+            <Like width={20} height={20} vbox="0 0 20 20" />
             <span>1234</span>
           </SummonerLiked>
           <OpenCloseButton type="button" onClick={() => toggle()}>
