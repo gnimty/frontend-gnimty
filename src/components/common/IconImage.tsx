@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 import { styled } from 'styled-components';
 
 interface IconImageWrapperProps {
@@ -18,7 +18,7 @@ interface IconImageProps {
   width: number;
   height: number;
   radius?: number;
-  src: string;
+  src: StaticImageData | string;
   alt: string;
 }
 
