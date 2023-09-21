@@ -9,8 +9,9 @@ import Sup from '@/assets/icons/game/position/sup.svg';
 import Top from '@/assets/icons/game/position/top.svg';
 import FilterSet from '@/assets/icons/system/filter-set.svg';
 import FilterIcon from '@/assets/icons/system/filter.svg';
+import ResetIcon from '@/assets/icons/system/reset.svg';
+import SpeechBubble from '@/components/common/SpeechBubble';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
-import theme from '@/styles/theme';
 
 const FilterWrapper = styled.div`
   width: 67.5rem;
@@ -78,6 +79,26 @@ const FilterDetailButton = styled.button<{ $open: boolean }>`
   border-radius: 4px;
   border: 1px solid ${({ theme }) => theme.colors.gray200};
   background-color: ${({ theme, $open }) => ($open ? theme.colors.red800 : theme.colors.white)};
+  position: relative;
+  .speech-bubble {
+    position: absolute;
+    top: -50px;
+  }
+`;
+
+const SpeechBubbleContent = styled.div`
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: ${({ theme }) => theme.fonts.body.fontSize};
+  line-height: ${({ theme }) => theme.fonts.body.lineHeight};
+  font-weight: 400;
+  .bold {
+    font-weight: 700;
+  }
 `;
 
 interface FilterProps {
@@ -89,6 +110,7 @@ interface FilterProps {
 
 function Filter({ allOpen, toggleAll, detailOpen, toggleDetail }: FilterProps) {
   const [selected, setSelected] = useState<string[]>([]);
+  const [showSpeechBubble, setShowSpeechBubble] = useState(false);
   const handlePositionSelect = (e: MouseEvent<HTMLUListElement>) => {};
   return (
     <FilterWrapper>
@@ -123,13 +145,26 @@ function Filter({ allOpen, toggleAll, detailOpen, toggleDetail }: FilterProps) {
           </FilterIconItem>
         </FilterIconBox>
 
-        <FilterDetailButton $open={detailOpen} onClick={toggleDetail}>
+        <FilterDetailButton
+          $open={detailOpen}
+          onClick={toggleDetail}
+          onMouseEnter={() => setShowSpeechBubble(true)}
+          onMouseLeave={() => setShowSpeechBubble(false)}
+        >
+          <SpeechBubble width="150px" height="48px" show={showSpeechBubble}>
+            <SpeechBubbleContent>
+              <div>더욱 자세히 검색하고 싶다면</div>
+              <div>
+                <span className="bold">상세 필터</span>를 설정해 보세요.
+              </div>
+            </SpeechBubbleContent>
+          </SpeechBubble>
           {detailOpen ? <FilterSet /> : <FilterIcon />}
         </FilterDetailButton>
       </FilterLeft>
       <FilterRight>
         <ToggleSwitch onOff={allOpen} onClick={toggleAll} label="펼쳐보기" />
-        {/* Reset */}
+        <ResetIcon />
       </FilterRight>
     </FilterWrapper>
   );
