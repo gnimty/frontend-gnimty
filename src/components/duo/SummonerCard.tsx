@@ -3,11 +3,13 @@ import { styled } from 'styled-components';
 import Bot from '@/assets/icons/game/position/bot.svg';
 import Jug from '@/assets/icons/game/position/jug.svg';
 import Diamond from '@/assets/icons/game/tier/diamond.png';
+import Chat from '@/assets/icons/system/chat.svg';
 import Copy from '@/assets/icons/system/copy.svg';
+import ArrowDown from '@/assets/icons/system/down.svg';
 import Like from '@/assets/icons/system/like.svg';
 import Online from '@/assets/icons/system/online.svg';
-
-import IconImage from '../common/IconImage';
+import ArrowUp from '@/assets/icons/system/up.svg';
+import IconImage from '@/components/common/IconImage';
 
 const CardWrapper = styled.div<{ open: boolean }>`
   width: 352px;
@@ -21,20 +23,22 @@ const CardWrapper = styled.div<{ open: boolean }>`
 
 interface CardColumnProps {
   $open?: boolean;
-  $flexcolumn?: string;
+  $flexColumn?: string;
   width?: number;
   $justify?: string;
   $align?: string;
   $gap?: number;
+  $marginBottom?: string;
 }
 
 const CardColumn = styled.div<CardColumnProps>`
   display: flex;
-  flex-direction: ${({ $flexcolumn }) => ($flexcolumn ? 'column' : 'row')};
+  flex-direction: ${({ $flexColumn }) => ($flexColumn ? 'column' : 'row')};
   justify-content: ${({ $justify }) => $justify || 'flex-start'};
   align-items: ${({ $align }) => $align || 'center'};
   width: ${({ width }) => (width ? `${width}px` : '100%')};
   gap: ${({ $gap }) => ($gap ? `${$gap}px` : '0')};
+  margin-bottom: ${({ $marginBottom }) => $marginBottom || '0'};
 `;
 
 const CardHeader = styled(CardColumn)<CardColumnProps>`
@@ -75,20 +79,28 @@ const SummonerId = styled.span`
   }
 `;
 
+const ChatButton = styled.button`
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.colors.gray100};
+`;
+
 const SummonerTier = styled.span`
   font-size: ${({ theme }) => theme.fonts.t2.fontSize};
-  font-weight: ${({ theme }) => theme.fonts.t2.fontWeight};
   line-height: ${({ theme }) => theme.fonts.t2.lineHeight};
+  font-weight: 700;
   color: ${({ theme }) => theme.colors.gray800};
 `;
 
 const SummonerLP = styled(SummonerTier)`
   color: ${({ theme }) => theme.colors.gray500};
+  font-weight: 400;
 `;
 
 const SummonerDetail = styled.p`
   font-size: ${({ theme }) => theme.fonts.t2.fontSize};
-  font-weight: regular;
+  font-weight: 400;
   line-height: ${({ theme }) => theme.fonts.t2.lineHeight};
   color: ${({ theme }) => theme.colors.gray700};
 `;
@@ -103,7 +115,7 @@ const SummonerLiked = styled.div`
   background-color: ${({ theme }) => theme.colors.gray100};
   align-items: center;
   font-size: ${({ theme }) => theme.fonts.t2.fontSize};
-  font-weight: regular;
+  font-weight: 400;
   line-height: ${({ theme }) => theme.fonts.t2.lineHeight};
   color: ${({ theme }) => theme.colors.gray700};
 `;
@@ -111,16 +123,20 @@ const SummonerLiked = styled.div`
 const OpenCloseButton = styled.button`
   width: 40px;
   height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
+// Example
 const CHAMP_URL = 'https://ddragon.leagueoflegends.com/cdn/13.12.1/img/champion/Kaisa.png';
 const PROFILE_URL = 'https://ddragon.leagueoflegends.com/cdn/13.12.1/img/profileicon/0.png';
 
 export default function SummonerCard({ open, toggle }: { open: boolean; toggle: () => void }) {
   return (
     <CardWrapper open={open}>
-      <CardHeader $flexcolumn="true" $align="flex-start">
-        <CardColumn $justify="space-between">
+      <CardHeader $flexColumn="true" $align="flex-start">
+        <CardColumn $justify="space-between" $marginBottom="1rem">
           <SummonerBasicInfo>
             <IconImage src={PROFILE_URL} width={40} height={40} alt="icon" />
             <SummonerId>
@@ -129,9 +145,11 @@ export default function SummonerCard({ open, toggle }: { open: boolean; toggle: 
             </SummonerId>
             <Online width={6} height={6} />
           </SummonerBasicInfo>
-          <IconImage src="/next.svg" width={40} height={40} alt="icon" />
+          <ChatButton type="button">
+            <Chat width="24px" height="24px" />
+          </ChatButton>
         </CardColumn>
-        <CardColumn width={120} $gap={8}>
+        <CardColumn width={120} $gap={8} $marginBottom="0.5rem">
           <IconImage src={Diamond} width={24} height={24} alt="다이아티어" />
           <SummonerTier>CH</SummonerTier>
           <SummonerLP>1,123 LP</SummonerLP>
@@ -143,12 +161,12 @@ export default function SummonerCard({ open, toggle }: { open: boolean; toggle: 
           </CardColumn>
           {!open && (
             <OpenCloseButton type="button" onClick={() => toggle()}>
-              O
+              <ArrowDown width="40px" height="24px" />
             </OpenCloseButton>
           )}
         </CardColumn>
       </CardHeader>
-      <CardBody $flexcolumn="true" $open={open} $gap={16}>
+      <CardBody $flexColumn="true" $open={open} $gap={16}>
         <CardColumn $gap={8}>
           <IconImage src={CHAMP_URL} width={32} height={32} alt="icon" />
           <IconImage src={CHAMP_URL} width={32} height={32} alt="icon" />
@@ -159,11 +177,11 @@ export default function SummonerCard({ open, toggle }: { open: boolean; toggle: 
         </CardColumn>
         <CardColumn $justify="space-between">
           <SummonerLiked>
-            <Like width={20} height={20} vbox="0 0 20 20" />
+            <Like width="20px" height="20px" />
             <span>1234</span>
           </SummonerLiked>
           <OpenCloseButton type="button" onClick={() => toggle()}>
-            C
+            <ArrowUp width="40px" height="24px" />
           </OpenCloseButton>
         </CardColumn>
       </CardBody>
