@@ -1,5 +1,5 @@
-import { useState, type MouseEvent } from 'react';
-import { styled } from 'styled-components';
+import { useState, type MouseEvent, useRef, useEffect } from 'react';
+import { styled, useTheme } from 'styled-components';
 
 import Bot from '@/assets/icons/game/position/bot.svg';
 import Every from '@/assets/icons/game/position/every.svg';
@@ -33,6 +33,17 @@ const FilterLeft = styled(FilterBox)`
 
 const FilterRight = styled(FilterBox)`
   width: 141px;
+  svg {
+    cursor: pointer;
+  }
+`;
+
+const ResetWrapper = styled.div`
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 // TODO: Dropdown Component로 교체
@@ -62,11 +73,27 @@ const FilterIconItem = styled.li<{ selected?: boolean }>`
   align-items: center;
   cursor: pointer;
   border-right: 1px solid ${({ theme }) => theme.colors.gray200};
+  &:first-child {
+    border-left: none;
+    border-top-left-radius: inherit;
+    border-bottom-left-radius: inherit;
+  }
   &:last-child {
     border-right: none;
+    border-top-right-radius: inherit;
+    border-bottom-right-radius: inherit;
   }
-  color: ${({ theme, selected }) => (selected ? theme.colors.white : theme.colors.gray700)};
   background-color: ${({ theme, selected }) => (selected ? theme.colors.red800 : theme.colors.white)};
+  svg {
+    width: 20px;
+    height: 20px;
+    path[class$='color1'] {
+      fill: ${({ theme, selected }) => (selected ? theme.colors.white : theme.colors.gray500)};
+    }
+    path[class$='color2'] {
+      fill: ${({ theme, selected }) => (selected ? theme.colors.white : theme.colors.gray800)};
+    }
+  }
 `;
 
 const FilterDetailButton = styled.button<{ $open: boolean }>`
@@ -78,7 +105,7 @@ const FilterDetailButton = styled.button<{ $open: boolean }>`
   cursor: pointer;
   border-radius: 4px;
   border: 1px solid ${({ theme }) => theme.colors.gray200};
-  background-color: ${({ theme, $open }) => ($open ? theme.colors.red800 : theme.colors.white)};
+  background-color: ${({ theme }) => theme.colors.white};
   position: relative;
   .speech-bubble {
     position: absolute;
@@ -111,7 +138,27 @@ interface FilterProps {
 function Filter({ allOpen, toggleAll, detailOpen, toggleDetail }: FilterProps) {
   const [selected, setSelected] = useState<string[]>([]);
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
-  const handlePositionSelect = (e: MouseEvent<HTMLUListElement>) => {};
+  const ulRef = useRef<HTMLUListElement>(null);
+  const handlePositionSelect = (e: MouseEvent<HTMLUListElement>) => {
+    let target = e.target as HTMLElement;
+    while (target && !(target instanceof HTMLLIElement)) {
+      if (target.parentElement) {
+        target = target.parentElement;
+      }
+    }
+    if (target instanceof HTMLLIElement) {
+      const { position } = target.dataset;
+      if (position) {
+        setSelected((prev) => {
+          if (prev.includes(position)) {
+            return prev.filter((p) => p !== position);
+          }
+          return [...prev, position];
+        });
+      }
+    }
+  };
+
   return (
     <FilterWrapper>
       <FilterLeft>
@@ -124,23 +171,23 @@ function Filter({ allOpen, toggleAll, detailOpen, toggleDetail }: FilterProps) {
         <Dropdown>
           <option value="all">티어 전체</option>
         </Dropdown>
-        <FilterIconBox onClick={handlePositionSelect}>
-          <FilterIconItem>
+        <FilterIconBox onClick={handlePositionSelect} ref={ulRef}>
+          <FilterIconItem data-position="every" selected={selected.includes('every')}>
             <Every />
           </FilterIconItem>
-          <FilterIconItem>
+          <FilterIconItem data-position="top" selected={selected.includes('top')}>
             <Top />
           </FilterIconItem>
-          <FilterIconItem>
+          <FilterIconItem data-position="jug" selected={selected.includes('jug')}>
             <Jug />
           </FilterIconItem>
-          <FilterIconItem>
+          <FilterIconItem data-position="mid" selected={selected.includes('mid')}>
             <Mid />
           </FilterIconItem>
-          <FilterIconItem>
+          <FilterIconItem data-position="bot" selected={selected.includes('bot')}>
             <Bot />
           </FilterIconItem>
-          <FilterIconItem>
+          <FilterIconItem data-position="sup" selected={selected.includes('sup')}>
             <Sup />
           </FilterIconItem>
         </FilterIconBox>
@@ -159,12 +206,14 @@ function Filter({ allOpen, toggleAll, detailOpen, toggleDetail }: FilterProps) {
               </div>
             </SpeechBubbleContent>
           </SpeechBubble>
-          {detailOpen ? <FilterSet /> : <FilterIcon />}
+          {detailOpen ? <FilterSet width="24px" height="24px" /> : <FilterIcon width="24px" height="24px" />}
         </FilterDetailButton>
       </FilterLeft>
       <FilterRight>
         <ToggleSwitch onOff={allOpen} onClick={toggleAll} label="펼쳐보기" />
-        <ResetIcon />
+        <ResetWrapper>
+          <ResetIcon width="24px" height="24px" />
+        </ResetWrapper>
       </FilterRight>
     </FilterWrapper>
   );
