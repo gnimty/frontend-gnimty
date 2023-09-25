@@ -1,11 +1,13 @@
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import Exit from '@/assets/icons/system/exit.svg';
+import Button from '@/components/common/Button';
+import Radio from '@/components/common/Radio';
+import Search from '@/components/common/Search';
+import Champion from '@/components/duo/Champion';
+import { champions, championNames, type ChampionName } from '@/constants/champions';
 import theme from '@/styles/theme';
-
-import Button from '../common/Button';
-import Radio from '../common/Radio';
-import Search from '../common/Search';
 
 const Container = styled.div<{ $open: boolean }>`
   width: 26rem;
@@ -85,11 +87,23 @@ const DetailFilterRowAddition = styled.div`
   font-weight: 400;
 `;
 
-const DetailFilterRowContent = styled.div<{ $justify?: boolean }>`
+const DetailFilterRowContent = styled.div<{ $flexColumn?: boolean; $justify?: boolean }>`
   height: max-content;
   display: flex;
+  flex-direction: ${({ $flexColumn }) => ($flexColumn ? 'column' : 'row')};
   align-items: center;
   justify-content: ${({ $justify }) => ($justify ? 'space-between' : 'flex-start')};
+  gap: 0.75rem;
+`;
+
+const ChampionsWrapper = styled.div`
+  width: 100%;
+  min-height: 0;
+  max-height: 8.25rem;
+  overflow-y: scroll;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 `;
 
 const DetailCheckBoxWrapper = styled.div`
@@ -98,8 +112,9 @@ const DetailCheckBoxWrapper = styled.div`
   align-items: center;
   gap: 0.5rem;
   input[type='checkbox'] {
-    width: 1.25rem;
-    height: 1.25rem;
+    accent-color: ${({ theme }) => theme.colors.red800};
+    width: 15px;
+    height: 15px;
     border: 1px solid ${({ theme }) => theme.colors.gray400};
   }
   span {
@@ -115,7 +130,31 @@ interface DetailFilterProps {
   toggleDetail: () => void;
 }
 
+interface Champion {
+  championName: ChampionName;
+  selected: boolean;
+}
+
 function DetailFilter({ detailOpen, toggleDetail }: DetailFilterProps) {
+  const [filteredChampions, setFilteredChampions] = useState<Champion[]>([]);
+  const handleChampionSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    const searchedChampions = championNames.filter((championName) => championName.includes(value));
+    setFilteredChampions(searchedChampions.map((championName) => ({ championName, selected: false })));
+  };
+  const handleChampionClick = (championName: ChampionName) => {
+    setFilteredChampions((prev) => {
+      if (prev.filter(({ selected }) => selected).length >= 7) {
+        return prev;
+      }
+      return prev.map((champion) => {
+        if (champion.championName === championName) {
+          return { ...champion, selected: !champion.selected };
+        }
+        return champion;
+      });
+    });
+  };
   return (
     <Container $open={detailOpen}>
       <Header>
@@ -130,9 +169,35 @@ function DetailFilter({ detailOpen, toggleDetail }: DetailFilterProps) {
             <DetailFilterRowTitle>선호 챔피언</DetailFilterRowTitle>
             <DetailFilterRowAddition>최대 7개</DetailFilterRowAddition>
           </DetailFilterRowHeader>
-          <DetailFilterRowContent>
-            <Search width="100%" height="2.5rem" radius="2.5rem" placeholder="챔피언을 검색하세요." />
+          <DetailFilterRowContent $flexColumn>
+            <Search
+              width="100%"
+              height="2.5rem"
+              radius="2.5rem"
+              placeholder="챔피언을 검색하세요."
+              onChange={handleChampionSearch}
+            />
             {/* champions */}
+            <ChampionsWrapper>
+              {filteredChampions
+                .filter(({ selected }) => !selected)
+                .map(({ championName }) => (
+                  <Champion key={championName} championName={championName} onClick={handleChampionClick} />
+                ))}
+            </ChampionsWrapper>
+            {/* selected champions */}
+            <ChampionsWrapper>
+              {filteredChampions
+                .filter(({ selected }) => selected)
+                .map(({ championName, selected }) => (
+                  <Champion
+                    key={championName}
+                    championName={championName}
+                    onClick={handleChampionClick}
+                    selected={selected}
+                  />
+                ))}
+            </ChampionsWrapper>
           </DetailFilterRowContent>
         </DetailFilterRow>
         <DetailFilterRow>

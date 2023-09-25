@@ -10,12 +10,10 @@ const Container = styled.div<{ $width: string; $height: string; $radius: string 
   display: flex;
   justify-content: space-between;
   padding: 0.75rem 1.25rem;
-  svg {
-    cursor: pointer;
-  }
 `;
 
 const Input = styled.input`
+  flex: 1;
   display: flex;
   align-items: center;
   font-size: ${({ theme }) => theme.fonts.t2.fontSize};
@@ -26,18 +24,29 @@ const Input = styled.input`
   }
 `;
 
+const IconWrapper = styled.div`
+  width: 2.5rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 interface SearchProps {
   width: string;
   height: string;
   radius: string;
   placeholder?: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Search = ({ width = '23.5rem', height = '2.5rem', radius = '2.5rem', placeholder }: SearchProps) => {
+const Search = ({ width = '23.5rem', height = '2.5rem', radius = '2.5rem', placeholder, onChange }: SearchProps) => {
   return (
     <Container $width={width} $height={height} $radius={radius}>
-      <Input type="text" placeholder={placeholder} />
-      <SearchIcon />
+      <Input type="text" placeholder={placeholder} onChange={onChange} />
+      <IconWrapper>
+        <SearchIcon width={24} height={24} />
+      </IconWrapper>
     </Container>
   );
 };
