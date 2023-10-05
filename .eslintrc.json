@@ -10,12 +10,11 @@
     "plugin:import/typescript",
     "plugin:react/jsx-runtime",
     "plugin:@next/next/recommended",
-    "plugin:prettier/recommended"
+    "prettier"
   ],
   "plugins": [
     "@typescript-eslint",
-    "import",
-    "prettier"
+    "import"
   ],
   "parserOptions": {
     "project": [
