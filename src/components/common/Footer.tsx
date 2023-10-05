@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import Image from 'next/image';
 
 import Logo from '../../assets/svg/icon.svg';
 
@@ -37,9 +36,7 @@ const footerList = [
 const Footer = () => {
   return (
     <FooterContainer>
-      <div>
-        <Image src={Logo} alt="logo" />
-      </div>
+      <Logo />
       <FooterWrapper>
         {footerList.map((item) => {
           return (
