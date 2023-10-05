@@ -10,18 +10,11 @@
     "plugin:import/typescript",
     "plugin:react/jsx-runtime",
     "plugin:@next/next/recommended",
-    "plugin:prettier/recommended"
-  ],
-  "plugins": [
-    "@typescript-eslint",
-    "import",
     "prettier"
   ],
+  "plugins": ["@typescript-eslint", "import"],
   "parserOptions": {
-    "project": [
-      "./tsconfig.json",
-      "./tsconfig.node.json"
-    ]
+    "project": ["./tsconfig.json", "./tsconfig.node.json"]
   },
   "env": {
     "browser": true,
@@ -37,9 +30,7 @@
       "typescript": true,
       "node": true
     },
-    "import/external-module-folders": [
-      "node_modules"
-    ]
+    "import/external-module-folders": ["node_modules"]
   },
   "rules": {
     "@typescript-eslint/no-unused-vars": [
@@ -81,15 +72,7 @@
           "order": "asc",
           "caseInsensitive": true
         },
-        "groups": [
-          "builtin",
-          "external",
-          "internal",
-          "parent",
-          "sibling",
-          "index",
-          "type"
-        ],
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "type"],
         "pathGroups": [
           {
             "pattern": "@/**",
