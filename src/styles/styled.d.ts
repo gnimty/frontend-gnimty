@@ -1,5 +1,5 @@
-import { ColorsTypes } from './constants/colors';
-import { FontsTypes } from './constants/fonts';
+import type { ColorsTypes } from './constants/colors';
+import type { FontsTypes } from './constants/fonts';
 
 declare module '@emotion/react' {
   export interface Theme {
