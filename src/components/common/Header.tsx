@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import Button from './Button';
 
@@ -22,7 +22,7 @@ const MenuContainer = styled.div`
   gap: 40px;
 `;
 
-const MenuItem = styled.a<MenuItemProps>`
+const MenuItem = styled(Link)<MenuItemProps>`
   text-decoration: none;
   font-family: Pretendard;
   color: ${(props) => (props.isActive ? props.theme.colors.gray800 : props.theme.colors.gray600)};
@@ -56,11 +56,14 @@ const Header = () => {
       <MenuContainer>
         {menuItemList.map((item) => {
           return (
-            <Link href={item.link} key={item.id}>
-              <MenuItem isActive={activeMenu === `${item.name}`} onClick={() => handleMenuClick(`${item.name}`)}>
-                {item.name}
-              </MenuItem>
-            </Link>
+            <MenuItem
+              href={item.link}
+              key={item.id}
+              isActive={activeMenu === `${item.name}`}
+              onClick={() => handleMenuClick(`${item.name}`)}
+            >
+              {item.name}
+            </MenuItem>
           );
         })}
       </MenuContainer>
