@@ -1,9 +1,5 @@
-import type { ColorsTypes } from './constants/colors';
-import type { FontsTypes } from './constants/fonts';
+import type { Theme as CustomTheme } from './theme';
 
 declare module '@emotion/react' {
-  export interface Theme {
-    colors: ColorsTypes;
-    fonts: FontsTypes;
-  }
+  export interface Theme extends CustomTheme {}
 }
