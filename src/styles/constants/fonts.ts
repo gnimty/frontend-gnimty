@@ -1,5 +1,3 @@
-export type FontsTypes = typeof fonts;
-
 export const fonts = {
   h1: {
     fontSize: '40px',

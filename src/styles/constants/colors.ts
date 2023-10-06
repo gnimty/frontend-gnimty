@@ -1,5 +1,3 @@
-export type ColorsTypes = typeof colors;
-
 export const colors = {
   white: '#FFFFFF',
   dim60: '#11111199',
