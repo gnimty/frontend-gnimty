@@ -3,6 +3,10 @@ export const colors = {
   dim60: '#11111199',
   dim40: '#11111166',
   dim25: '#11111140',
+
+  main: '#DE2E39',
+  main100: '#FDF4F5',
+
   gray100: '#F8F8F8',
   gray200: '#F2F2F2',
   gray300: '#DDDDDD',
