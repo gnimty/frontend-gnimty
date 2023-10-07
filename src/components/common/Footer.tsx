@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
+import { css } from '@styled-system/css';
 
 import Logo from '../../assets/svg/icon.svg';
 
 const FooterContainer = styled.footer`
   display: flex;
-  padding: 40px 0px;
+  padding: 40px 0;
   justify-content: space-between;
   gap: 24px;
   max-width: 1080px;
@@ -18,13 +19,12 @@ const FooterWrapper = styled.div`
   gap: 48px;
 `;
 
-const FooterItem = styled.a`
-  text-decoration: none;
-  font-family: Pretendard;
-  color: ${(props) => props.theme.colors.gray700};
-  font-size: ${(props) => props.theme.fonts.t2.fontSize};
-  line-height: ${(props) => props.theme.fonts.t2.lineHeight};
-`;
+const FooterItem = styled('a')(
+  css({
+    textDecoration: 'none',
+    color: 'gray700',
+  }),
+);
 
 const footerList = [
   { id: 'faq', name: '공지사항', link: '/faq' },

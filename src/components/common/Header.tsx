@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
+import { css } from '@styled-system/css';
 import Link from 'next/link';
 import { useState } from 'react';
+import { variant } from 'styled-system';
 
-import Button from './Button';
+import { Button } from '@/components/common/Button';
 
 interface MenuItemProps {
   isActive: boolean;
@@ -11,7 +13,7 @@ interface MenuItemProps {
 const HeaderContainer = styled.header`
   display: flex;
   width: 1080px;
-  padding: 28px 0px;
+  padding: 28px 0;
   justify-content: space-between;
   align-items: center;
   margin: 0 auto;
@@ -22,17 +24,26 @@ const MenuContainer = styled.div`
   gap: 40px;
 `;
 
-const MenuItem = styled(Link)<MenuItemProps>`
-  text-decoration: none;
-  font-family: Pretendard;
-  color: ${(props) => (props.isActive ? props.theme.colors.gray800 : props.theme.colors.gray600)};
-  font-size: ${(props) => props.theme.fonts.t1.fontSize};
-  font-weight: ${(props) => props.theme.fonts.t1.fontWeight};
+const MenuItem = styled(Link)<MenuItemProps>(
+  css({
+    textDecoration: 'none',
 
-  &:hover {
-    text-decoration: underline;
-  }
-`;
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  }),
+  variant({
+    prop: 'isActive',
+    variants: {
+      true: {
+        color: 'gray800',
+      },
+      false: {
+        color: 'gray600',
+      },
+    },
+  }),
+);
 
 const menuItemList = [
   { id: 'home', name: '홈', link: '/' },
@@ -68,7 +79,7 @@ const Header = () => {
         })}
       </MenuContainer>
 
-      <Button size="medium" color="white" background="black">
+      <Button buttonSize="medium" color="white" backgroundColor="black">
         {isLoggedIn ? '로그아웃' : '로그인'}
       </Button>
     </HeaderContainer>
