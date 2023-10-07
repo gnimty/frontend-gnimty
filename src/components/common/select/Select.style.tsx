@@ -23,31 +23,31 @@ export const selectButton = (theme: Theme) =>
     border: `1px solid ${theme.colors.gray200}`,
   });
 
-export const selectButtonContent = css({
+export const selectButtonArrow = (theme: Theme) =>
+  css({
+    color: theme.colors.gray800,
+    display: 'block',
+    marginLeft: '12px',
+  });
+
+export const optionContent = css({
   display: 'flex',
   alignItems: 'center',
 });
 
-export const leftAsset = css({
+export const optionLeftAsset = css({
   position: 'relative',
   width: '20px',
   height: '20px',
   marginRight: '4px',
 });
 
-export const selectButtonText = (theme: Theme) =>
+export const optionText = (theme: Theme) =>
   css({
     ...theme.fonts.t2,
     fontWeight: '400',
     display: 'flex',
     alignItems: 'center',
-  });
-
-export const selectButtonArrow = (theme: Theme) =>
-  css({
-    color: theme.colors.gray800,
-    display: 'block',
-    marginLeft: '12px',
   });
 
 export const options = (options: { isOpened: boolean }) => (theme: Theme) =>
@@ -67,7 +67,7 @@ export const options = (options: { isOpened: boolean }) => (theme: Theme) =>
     },
   );
 
-export const option = (options: { isSelected: boolean }) => (theme: Theme) =>
+export const optionButton = (options: { isSelected: boolean }) => (theme: Theme) =>
   css(
     {
       color: options.isSelected ? theme.colors.gray800 : theme.colors.gray600,

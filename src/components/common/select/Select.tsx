@@ -13,6 +13,18 @@ interface SelectOption {
   leftAsset?: ReactNode;
 }
 
+interface OptionProps extends Pick<SelectOption, 'text' | 'leftAsset'>, ComponentPropsWithoutRef<'div'> {}
+
+function Option(props: OptionProps) {
+  const { text, leftAsset, ...restProps } = props;
+  return (
+    <div css={style.optionContent} {...restProps}>
+      {leftAsset !== undefined ? <div css={style.optionLeftAsset}>{leftAsset}</div> : null}
+      <div css={style.optionText}>{text}</div>
+    </div>
+  );
+}
+
 interface SelectProps extends ComponentPropsWithoutRef<'div'> {
   width: string;
   options: SelectOption[];
@@ -40,10 +52,7 @@ export default function Select(props: SelectProps) {
   return (
     <div css={style.selectWrapper({ width })} {...restProps}>
       <button type="button" onClick={handleButtonClick} css={style.selectButton}>
-        <div css={style.selectButtonContent}>
-          {selectedOption.leftAsset !== undefined ? <div css={style.leftAsset}>{selectedOption.leftAsset}</div> : null}
-          <div css={style.selectButtonText}>{selectedOption?.text}</div>
-        </div>
+        <Option text={selectedOption.text} leftAsset={selectedOption.leftAsset} />
         <Arrow width="16" height="16" aria-hidden css={style.selectButtonArrow} />
       </button>
 
@@ -55,10 +64,9 @@ export default function Select(props: SelectProps) {
             onClick={() => {
               handleOptionClick(option.value);
             }}
-            css={style.option({ isSelected: option.value === selectedValue })}
+            css={style.optionButton({ isSelected: option.value === selectedValue })}
           >
-            {option.leftAsset !== undefined ? <span css={style.leftAsset}>{option.leftAsset}</span> : null}
-            <span css={style.selectButtonText}>{option.text}</span>
+            <Option text={option.text} leftAsset={option.leftAsset} />
           </button>
         ))}
       </div>
