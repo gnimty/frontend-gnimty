@@ -1,25 +1,37 @@
 import styled from '@emotion/styled';
+import { css } from '@styled-system/css';
+import { variant } from 'styled-system';
 
-interface ButtonProps {
-  children: string;
-  color: string;
-  background: string;
-  size: 'large' | 'medium';
+import type { BoxProps } from '@/components/common/Box';
+import { Box } from '@/components/common/Box';
+
+import type { PropsWithChildren } from 'react';
+
+interface DefaultButtonProps extends BoxProps, PropsWithChildren {}
+
+interface ButtonProps extends DefaultButtonProps {
+  buttonSize?: 'large' | 'medium';
 }
 
-const ButtonStyled = styled.button<ButtonProps>`
-  width: ${(props) => (props.size === 'medium' ? '80px' : '160px')};
-  height: ${(props) => (props.size === 'medium' ? '40px' : '48px')};
-  padding: ${(props) => (props.size === 'medium' ? '10px 12px' : '14px 12px')};
-  background: ${(props) => props.background};
-  color: ${(props) => props.color};
-  border-radius: 4px;
-  font-family: Pretendard;
-  font-size: ${(props) => props.theme.fonts.t2.fontSize};
-  font-weight: ${(props) => props.theme.fonts.t2.fontWeight};
-  line-height: ${(props) => props.theme.fonts.t2.lineHeight};
-`;
+const buttonSizeVariants = {
+  large: {
+    width: '160px',
+    height: '48px',
+    padding: '14px 12px',
+  },
+  medium: {
+    width: '80px',
+    height: '40px',
+    padding: '10px 12px',
+  },
+};
 
-export default function Button({ children, ...props }: ButtonProps) {
-  return <ButtonStyled {...props}>{children}</ButtonStyled>;
-}
+export const Button = styled((props: DefaultButtonProps) => <Box as="button" {...props} />)<ButtonProps>(
+  css({
+    borderRadius: '4px',
+  }),
+  variant({
+    prop: 'buttonSize',
+    variants: buttonSizeVariants,
+  }),
+);
