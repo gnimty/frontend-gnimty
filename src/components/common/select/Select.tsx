@@ -40,8 +40,10 @@ export default function Select(props: SelectProps) {
   return (
     <div css={style.selectWrapper({ width })} {...restProps}>
       <button type="button" onClick={handleButtonClick} css={style.selectButton}>
-        {selectedOption.leftAsset !== undefined ? <span css={style.leftAsset}>{selectedOption.leftAsset}</span> : null}
-        <span css={style.selectButtonText}>{selectedOption?.text}</span>
+        <div css={style.selectButtonContent}>
+          {selectedOption.leftAsset !== undefined ? <div css={style.leftAsset}>{selectedOption.leftAsset}</div> : null}
+          <div css={style.selectButtonText}>{selectedOption?.text}</div>
+        </div>
         <Arrow width="16" height="16" aria-hidden css={style.selectButtonArrow} />
       </button>
 

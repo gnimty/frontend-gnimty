@@ -23,6 +23,11 @@ export const selectButton = (theme: Theme) =>
     border: `1px solid ${theme.colors.gray200}`,
   });
 
+export const selectButtonContent = css({
+  display: 'flex',
+  alignItems: 'center',
+});
+
 export const leftAsset = css({
   position: 'relative',
   width: '20px',
@@ -34,6 +39,8 @@ export const selectButtonText = (theme: Theme) =>
   css({
     ...theme.fonts.t2,
     fontWeight: '400',
+    display: 'flex',
+    alignItems: 'center',
   });
 
 export const selectButtonArrow = (theme: Theme) =>
