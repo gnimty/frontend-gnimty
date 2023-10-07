@@ -78,6 +78,7 @@ export const optionButton = (options: { isSelected: boolean }) => (theme: Theme)
       width: '100%',
       padding: '10px 12px',
       borderBottom: `1px solid ${theme.colors.gray100}`,
+      backgroundColor: theme.colors.white,
 
       '&:first-of-type': {
         borderTopLeftRadius: '4px',
