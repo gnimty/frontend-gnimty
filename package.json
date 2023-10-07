@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier \"**/*.{ts,tsx,js,css,json,md}\" --write"
+    "format": "prettier \"**/*.{ts,tsx,js,css,json,yml,md}\" --write",
+    "format:check": "prettier \"**/*.{ts,tsx,js,css,json,yml,md}\" --check",
+    "type:check": "tsc"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
