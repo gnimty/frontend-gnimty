@@ -2,7 +2,7 @@ import Down from '@/components/icons/Down';
 import Up from '@/components/icons/Up';
 
 import * as style from './Select.style';
-import useSelect, { SelectOption } from './use-select';
+import useSelect, { SelectOption } from './useSelect';
 
 import type { ComponentPropsWithoutRef } from 'react';
 
