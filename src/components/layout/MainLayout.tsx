@@ -1,8 +1,10 @@
 import Footer from '../common/Footer';
 import Header from '../common/Header';
 
+import type { ReactNode } from 'react';
+
 interface Props {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function MainLayout({ children }: Props) {
