@@ -70,11 +70,11 @@ export const option = (options: { isSelected: boolean }) => (theme: Theme) =>
       padding: '10px 12px',
       borderBottom: `1px solid ${theme.colors.gray100}`,
 
-      '&:first-child': {
+      '&:first-of-type': {
         borderTopLeftRadius: '4px',
         borderTopRightRadius: '4px',
       },
-      '&:last-child': {
+      '&:last-of-type': {
         borderBottom: 'none',
         borderBottomLeftRadius: '4px',
         borderBottomRightRadius: '4px',
