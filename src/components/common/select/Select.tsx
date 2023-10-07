@@ -14,11 +14,12 @@ interface SelectOption {
 }
 
 interface SelectProps extends ComponentPropsWithoutRef<'div'> {
+  width: string;
   options: SelectOption[];
 }
 
 export default function Select(props: SelectProps) {
-  const { options, ...restProps } = props;
+  const { options, width, ...restProps } = props;
 
   const [selectedValue, setSelectedValue] = useState(options[0].value);
   const selectedOption = options.find((option) => option.value === selectedValue) ?? options[0];
@@ -37,7 +38,7 @@ export default function Select(props: SelectProps) {
   const Arrow = isOpened ? Up : Down;
 
   return (
-    <div css={style.selectWrapper} {...restProps}>
+    <div css={style.selectWrapper({ width })} {...restProps}>
       <button type="button" onClick={handleButtonClick} css={style.selectButton}>
         {selectedOption.leftAsset !== undefined ? <span css={style.leftAsset}>{selectedOption.leftAsset}</span> : null}
         <span css={style.selectButtonText}>{selectedOption?.text}</span>
@@ -54,7 +55,7 @@ export default function Select(props: SelectProps) {
             }}
             css={style.option({ isSelected: option.value === selectedValue })}
           >
-            {option.leftAsset !== undefined ? <span css={style.leftAsset}>{selectedOption.leftAsset}</span> : null}
+            {option.leftAsset !== undefined ? <span css={style.leftAsset}>{option.leftAsset}</span> : null}
             <span css={style.selectButtonText}>{option.text}</span>
           </button>
         ))}
