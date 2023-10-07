@@ -12,16 +12,22 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@styled-system/css": "^5.1.5",
+    "@styled-system/should-forward-prop": "^5.1.5",
     "@tanstack/react-query": "^4.35.7",
     "next": "^13.5.4",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "styled-system": "^5.1.5"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
     "@types/node": "^20.8.2",
     "@types/react": "^18.2.25",
     "@types/react-dom": "^18.2.10",
+    "@types/styled-system": "^5.1.18",
+    "@types/styled-system__css": "^5.0.18",
+    "@types/styled-system__should-forward-prop": "^5.1.2",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
     "eslint": "^8.50.0",
