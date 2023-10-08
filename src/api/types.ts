@@ -1,3 +1,5 @@
+export type Status = 'ONLINE' | 'OFFLINE' | 'AWAY';
+
 export type Tier =
   | 'UNRANKED'
   | 'iron'
