@@ -2,12 +2,10 @@ import { css } from '@emotion/react';
 
 import type { Theme } from '@/styles/theme';
 
-export const selectWrapper = (options: { width: string }) =>
-  css({
-    position: 'relative',
-    display: 'inline-block',
-    width: options.width,
-  });
+export const selectWrapper = css({
+  position: 'relative',
+  display: 'inline-block',
+});
 
 export const selectButton = (theme: Theme) =>
   css({

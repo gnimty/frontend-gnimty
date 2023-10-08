@@ -20,13 +20,17 @@ function Option(props: OptionProps) {
 }
 
 interface SelectProps extends Omit<ComponentPropsWithoutRef<'div'>, 'onChange'> {
-  width: string;
   options: SelectOption[];
   onChange?: (value: string) => void;
 }
 
+/**
+ * 항상 CSS를 통해 width를 사용하는 게 좋습니다.
+ * 사용하지 않으면 선택된 옵션의 width에 따라 컴포넌트의 크기가 유동적으로 바뀌어
+ * 사용자에게 나쁜 경험을 줍니다.
+ */
 export default function Select(props: SelectProps) {
-  const { options, width, onChange, ...restProps } = props;
+  const { options, onChange, ...restProps } = props;
 
   const { isOpened, selectedValue, selectedOption, toggleDropdown, onOptionClick } = useSelect({
     options,
@@ -36,7 +40,7 @@ export default function Select(props: SelectProps) {
   const Arrow = isOpened ? Up : Down;
 
   return (
-    <div css={style.selectWrapper({ width })} {...restProps}>
+    <div css={style.selectWrapper} {...restProps}>
       <button type="button" onClick={toggleDropdown} css={style.selectButton}>
         <Option text={selectedOption.text} leftAsset={selectedOption.leftAsset} />
         <Arrow width="16" height="16" aria-hidden css={style.selectButtonArrow} />
