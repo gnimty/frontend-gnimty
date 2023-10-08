@@ -19,11 +19,11 @@ const alts: Record<Tier, string> = {
   challenger: '챌린저',
 };
 
-interface TierProps extends Omit<ImageProps, 'src' | 'alt'> {
+interface TierImageProps extends Omit<ImageProps, 'src' | 'alt'> {
   tier: Tier;
 }
 
-export default function Tier(props: TierProps) {
+export default function TierImage(props: TierImageProps) {
   const { tier, ...restProps } = props;
 
   return <Image src={tiers[tier]} alt={alts[tier]} {...restProps} />;
