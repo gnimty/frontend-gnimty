@@ -4,8 +4,8 @@ import Up from '@/components/icons/Up';
 import * as style from './Select.style';
 import useSelect from './useSelect';
 
-import type { SelectOption } from './useSelect';
 import type { ComponentPropsWithoutRef } from 'react';
+import type { SelectOption } from './useSelect';
 
 interface OptionProps extends Pick<SelectOption, 'text' | 'leftAsset'>, ComponentPropsWithoutRef<'div'> {}
 
@@ -19,15 +19,19 @@ function Option(props: OptionProps) {
   );
 }
 
-interface SelectProps extends ComponentPropsWithoutRef<'div'> {
+interface SelectProps extends Omit<ComponentPropsWithoutRef<'div'>, 'onChange'> {
   width: string;
   options: SelectOption[];
+  onChange?: (value: string) => void;
 }
 
 export default function Select(props: SelectProps) {
-  const { options, width, ...restProps } = props;
+  const { options, width, onChange, ...restProps } = props;
 
-  const { isOpened, selectedValue, selectedOption, toggleDropdown, onOptionClick } = useSelect(options);
+  const { isOpened, selectedValue, selectedOption, toggleDropdown, onOptionClick } = useSelect({
+    options,
+    onChange,
+  });
 
   const Arrow = isOpened ? Up : Down;
 

@@ -8,7 +8,14 @@ export interface SelectOption {
   leftAsset?: ReactNode;
 }
 
-export default function useSelect(options: SelectOption[]) {
+export interface UseSelectOptions {
+  options: SelectOption[];
+  onChange?: (value: string) => void;
+}
+
+export default function useSelect(hookOptions: UseSelectOptions) {
+  const { options, onChange } = hookOptions;
+
   const [selectedValue, setSelectedValue] = useState(options[0].value);
   const selectedOption = options.find((option) => option.value === selectedValue) ?? options[0];
 
@@ -20,6 +27,7 @@ export default function useSelect(options: SelectOption[]) {
 
   const onOptionClick = useCallback((value: string) => {
     setSelectedValue(value);
+    onChange?.(value);
     setIsOpened(false);
   }, []);
 
