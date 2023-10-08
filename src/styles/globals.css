@@ -19,4 +19,7 @@ html {
     'Segoe UI Emoji',
     'Segoe UI Symbol',
     sans-serif;
+
+  /* gray100 */
+  background-color: #f8f8f8;
 }
