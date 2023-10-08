@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint \"**/*.{ts,tsx}\"",
     "format": "prettier \"**/*.{ts,tsx,js,css,json,yml,md}\" --write",
     "format:check": "prettier \"**/*.{ts,tsx,js,css,json,yml,md}\" --check",
     "type:check": "tsc"
