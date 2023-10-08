@@ -4,8 +4,8 @@ import Up from '@/components/icons/Up';
 import * as style from './Select.style';
 import useSelect from './useSelect';
 
-import type { ComponentPropsWithoutRef } from 'react';
 import type { SelectOption } from './useSelect';
+import type { ComponentPropsWithoutRef } from 'react';
 
 interface OptionProps extends Pick<SelectOption, 'text' | 'leftAsset'>, ComponentPropsWithoutRef<'div'> {}
 

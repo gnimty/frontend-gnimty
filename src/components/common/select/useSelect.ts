@@ -25,11 +25,14 @@ export default function useSelect(hookOptions: UseSelectOptions) {
     setIsOpened((prev) => !prev);
   }, []);
 
-  const onOptionClick = useCallback((value: string) => {
-    setSelectedValue(value);
-    onChange?.(value);
-    setIsOpened(false);
-  }, []);
+  const onOptionClick = useCallback(
+    (value: string) => {
+      setSelectedValue(value);
+      onChange?.(value);
+      setIsOpened(false);
+    },
+    [onChange],
+  );
 
   return { isOpened, selectedValue, selectedOption, toggleDropdown, onOptionClick };
 }
