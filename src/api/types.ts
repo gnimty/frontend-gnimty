@@ -10,3 +10,5 @@ export type Tier =
   | 'master'
   | 'grandmaster'
   | 'challenger';
+
+export type Position = 'TOP' | 'JUNGLE' | 'MIDDLE' | 'BOTTOM' | 'UTILITY';
