@@ -14,3 +14,15 @@ export type Tier =
   | 'challenger';
 
 export type Position = 'TOP' | 'JUNGLE' | 'MIDDLE' | 'BOTTOM' | 'UTILITY';
+
+export interface SummonerEntry {
+  id: number;
+  profileImage?: string;
+  name: string;
+  status: Status;
+  tier: Tier;
+  leaguePoints: number;
+  positions: [Position] | [Position, Position];
+  champions: string[];
+  introduction: string;
+}
