@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import Image from 'next/image';
 
 import type { SummonerEntry } from '@/api/types';
