@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useState } from 'react';
 
-import Button from './Button';
+import Button from '../common/Button';
 
 interface MenuItemProps {
   isActive: boolean;
