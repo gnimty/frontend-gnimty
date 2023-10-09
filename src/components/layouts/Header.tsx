@@ -1,29 +1,9 @@
-import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useState } from 'react';
 
 import Button from '../common/Button';
 
-const HeaderContainer = styled.header({
-  display: 'flex',
-  width: '1080px',
-  padding: '28px 0',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  margin: '0 auto',
-});
-
-const MenuContainer = styled.div({
-  display: 'flex',
-  gap: '40px',
-});
-
-const MenuItem = styled(Link)<{ isActive: boolean }>((props) => ({
-  ...props.theme.fonts.t1,
-  fontWeight: props.isActive ? 700 : 400,
-  textDecoration: 'none',
-  color: props.isActive ? props.theme.colors.gray800 : props.theme.colors.gray600,
-}));
+import * as style from './Header.style';
 
 const menuItemList = [
   { id: 'home', name: '홈', link: '/' },
@@ -43,26 +23,24 @@ const Header = () => {
   };
 
   return (
-    <HeaderContainer>
-      <MenuContainer>
-        {menuItemList.map((item) => {
-          return (
-            <MenuItem
-              href={item.link}
-              key={item.id}
-              isActive={activeMenu === `${item.name}`}
-              onClick={() => handleMenuClick(`${item.name}`)}
-            >
-              {item.name}
-            </MenuItem>
-          );
-        })}
-      </MenuContainer>
+    <header css={style.headerRoot}>
+      <nav css={style.nav}>
+        {menuItemList.map((item) => (
+          <Link
+            key={item.id}
+            href={item.link}
+            onClick={() => handleMenuClick(item.name)}
+            css={style.link({ isActive: activeMenu === item.name })}
+          >
+            {item.name}
+          </Link>
+        ))}
+      </nav>
 
       <Button size="medium" color="white" background="black">
         {isLoggedIn ? '로그아웃' : '로그인'}
       </Button>
-    </HeaderContainer>
+    </header>
   );
 };
 
