@@ -4,35 +4,26 @@ import { useState } from 'react';
 
 import Button from '../common/Button';
 
-interface MenuItemProps {
-  isActive: boolean;
-}
+const HeaderContainer = styled.header({
+  display: 'flex',
+  width: '1080px',
+  padding: '28px 0',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  margin: '0 auto',
+});
 
-const HeaderContainer = styled.header`
-  display: flex;
-  width: 1080px;
-  padding: 28px 0px;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0 auto;
-`;
+const MenuContainer = styled.div({
+  display: 'flex',
+  gap: '40px',
+});
 
-const MenuContainer = styled.div`
-  display: flex;
-  gap: 40px;
-`;
-
-const MenuItem = styled(Link)<MenuItemProps>`
-  text-decoration: none;
-  font-family: Pretendard;
-  color: ${(props) => (props.isActive ? props.theme.colors.gray800 : props.theme.colors.gray600)};
-  font-size: ${(props) => props.theme.fonts.t1.fontSize};
-  font-weight: ${(props) => props.theme.fonts.t1.fontWeight};
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
+const MenuItem = styled(Link)<{ isActive: boolean }>((props) => ({
+  ...props.theme.fonts.t1,
+  fontWeight: props.isActive ? 700 : 400,
+  textDecoration: 'none',
+  color: props.isActive ? props.theme.colors.gray800 : props.theme.colors.gray600,
+}));
 
 const menuItemList = [
   { id: 'home', name: '홈', link: '/' },
