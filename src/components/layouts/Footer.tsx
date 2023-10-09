@@ -1,53 +1,53 @@
 import styled from '@emotion/styled';
 
-import Logo from '../../assets/svg/icon.svg';
+import Logo from '../common/Logo';
 
-const FooterContainer = styled.footer`
-  display: flex;
-  padding: 40px 0px;
-  justify-content: space-between;
-  gap: 24px;
-  max-width: 1080px;
-  height: 116px;
-  margin: 0 auto;
-  align-items: center;
-`;
+import * as style from './Footer.style';
 
-const FooterWrapper = styled.div`
-  display: flex;
-  gap: 48px;
-`;
+const LinkDivider = styled.div((props) => ({
+  width: '1px',
+  height: '16px',
+  background: props.theme.colors.gray300,
+}));
 
-const FooterItem = styled.a`
-  text-decoration: none;
-  font-family: Pretendard;
-  color: ${(props) => props.theme.colors.gray700};
-  font-size: ${(props) => props.theme.fonts.t2.fontSize};
-  line-height: ${(props) => props.theme.fonts.t2.lineHeight};
-`;
-
-const footerList = [
-  { id: 'faq', name: '공지사항', link: '/faq' },
-  { id: 'teamIntroduction', name: '팀 소개', link: '/teamIntroduction' },
-  { id: 'terms', name: '이용 약관', link: '/terms' },
-  { id: 'policy', name: '개인정보처리방침', link: '/policy' },
-];
-
-const Footer = () => {
-  return (
-    <FooterContainer>
-      <Logo />
-      <FooterWrapper>
-        {footerList.map((item) => {
-          return (
-            <FooterItem key={item.id} href={item.link}>
-              {item.name}
-            </FooterItem>
-          );
-        })}
-      </FooterWrapper>
-    </FooterContainer>
-  );
-};
+const Footer = () => (
+  <footer css={style.footerRoot}>
+    <div css={style.footerTop}>
+      <Logo width={77} height={36} css={style.logo} />
+      <nav css={style.nav}>
+        {/* TODO: 링크 추가하기 */}
+        <a href="" css={style.link}>
+          공지사항
+        </a>
+        <LinkDivider />
+        <a href="" css={style.link}>
+          팀 소개
+        </a>
+        <LinkDivider />
+        <a href="" css={style.link}>
+          이용약관
+        </a>
+        <LinkDivider />
+        <a href="" css={style.link}>
+          개인정보처리방침
+        </a>
+      </nav>
+    </div>
+    <p css={style.riotPolicies}>
+      {
+        '© 2023 logo. logo isn’t endorsed by Riot Games and doesn’t reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends.\nLeague of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.'
+      }
+    </p>
+    {/* <FooterWrapper>
+          {footerList.map((item) => {
+            return (
+              <FooterItem key={item.id} href={item.link}>
+                {item.name}
+              </FooterItem>
+            );
+          })}
+        </FooterWrapper> */}
+  </footer>
+);
 
 export default Footer;
