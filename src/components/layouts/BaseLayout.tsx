@@ -5,7 +5,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export default function MainLayout({ children }: Props) {
+export default function BaseLayout({ children }: Props) {
   return (
     <>
       <Header />
