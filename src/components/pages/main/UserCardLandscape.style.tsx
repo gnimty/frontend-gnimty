@@ -77,11 +77,19 @@ export const positionInfo = css({
   width: '56px',
 });
 
+export const positionItem = css({
+  display: 'flex',
+});
+
 export const champions = css({
   display: 'flex',
   alignItems: 'center',
   gap: '8px',
   width: '112px',
+});
+
+export const championItem = css({
+  display: 'flex',
 });
 
 export const championImage = css({

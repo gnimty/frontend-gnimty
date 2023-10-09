@@ -24,9 +24,9 @@ export default function UserCardLandscape(props: UserCardLandscapeProps) {
   function handleChatButtonClick() {}
 
   return (
-    <div css={style.userCardLandscape}>
+    <article css={style.userCardLandscape}>
       <div css={style.summonerInfo}>
-        <Image src={summoner.profileImage ?? summonerDefaultProfile} alt="" width={40} height={40} />
+        <Image src={summoner.profileImage ?? summonerDefaultProfile} width={40} height={40} alt="" />
         <div css={style.summonerNameWrapper}>
           <p css={style.summonerName}>{summoner.name}</p>
           <button type="button" css={style.copyNameButton} aria-label="닉네임 복사">
@@ -43,28 +43,31 @@ export default function UserCardLandscape(props: UserCardLandscapeProps) {
         <p css={style.tier}>G1</p>
         <p css={style.leaguePoints}>{Intl.NumberFormat().format(summoner.leaguePoints)}LP</p>
       </div>
-      <div css={style.positionInfo}>
+      <ol css={style.positionInfo}>
         {summoner.positions.map((position) => (
-          <PositionImage key={position} position={position} width={24} height={24} />
+          <li key={position} css={style.positionItem}>
+            <PositionImage position={position} width={24} height={24} />
+          </li>
         ))}
-      </div>
+      </ol>
       {/* TODO: 나중에 이미지 어떻게 받아올지 이런 거 다 협의해서 수정  */}
-      <div css={style.champions}>
+      <ol css={style.champions}>
         {summoner.champions.map((champion) => (
-          <Image
-            key={champion}
-            src={`https://ddragon.leagueoflegends.com/cdn/13.18.1/img/champion/${champion}.png`}
-            alt={champion}
-            width={32}
-            height={32}
-            css={style.championImage}
-          />
+          <li key={champion} css={style.championItem}>
+            <Image
+              src={`https://ddragon.leagueoflegends.com/cdn/13.18.1/img/champion/${champion}.png`}
+              alt={champion}
+              width={32}
+              height={32}
+              css={style.championImage}
+            />
+          </li>
         ))}
-      </div>
+      </ol>
       <p css={style.introduction}>{summoner.introduction}</p>
       <button type="button" aria-label="채팅하기" onClick={handleChatButtonClick} css={style.chatButton}>
         <Chat width={24} height={24} aria-hidden css={{ display: 'block', lineHeight: 0 }} />
       </button>
-    </div>
+    </article>
   );
 }
