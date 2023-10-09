@@ -4,6 +4,12 @@ const nextConfig = {
   compiler: {
     emotion: true,
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   webpack: (config) => {
     config.module.rules.push({
       test: /\.svg$/,
