@@ -23,3 +23,13 @@ export const link = (options: { isActive: boolean }) => (theme: Theme) =>
     textDecoration: 'none',
     color: options.isActive ? theme.colors.gray800 : theme.colors.gray600,
   });
+
+export const loginButton = (theme: Theme) =>
+  css({
+    ...theme.fonts.t2,
+    color: theme.colors.white,
+    minWidth: '80px',
+    backgroundColor: theme.colors.gray800,
+    padding: '10px 12px',
+    borderRadius: '4px',
+  });

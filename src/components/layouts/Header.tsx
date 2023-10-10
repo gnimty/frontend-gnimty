@@ -1,40 +1,36 @@
 import ActiveLink from '../common/ActiveLink';
-import Button from '../common/Button';
 
 import * as style from './Header.style';
 
-const menuItemList = [
-  { id: 'home', name: '홈', link: '/' },
-  { id: 'duo', name: '듀오찾기', link: '/duo' },
-  { id: 'champion', name: '챔피언 분석', link: '/champion' },
-  { id: 'statistics', name: '통계', link: '/statistics' },
-  { id: 'ranking', name: '랭킹', link: '/ranking' },
-  { id: 'pick', name: 'Pick 추천', link: '/pick' },
+// TODO: 링크 정해지면 추가하기
+const links = [
+  { name: '홈', link: '/' },
+  { name: '듀오 찾기', link: '' },
+  { name: '챔피언 분석', link: '' },
+  { name: '랭킹', link: '' },
+  { name: '할인/패치노트', link: '' },
 ];
 
-const Header = () => {
-  const isLoggedIn = false;
-
+export default function Header() {
   return (
     <header css={style.headerRoot}>
       <nav css={style.nav}>
-        {menuItemList.map((item) => (
+        {links.map((link) => (
           <ActiveLink
-            key={item.id}
-            href={item.link}
+            key={link.name}
+            href={link.link}
             inActiveCSS={style.link({ isActive: false })}
             activeCSS={style.link({ isActive: true })}
           >
-            {item.name}
+            {link.name}
           </ActiveLink>
         ))}
       </nav>
 
-      <Button size="medium" color="white" background="black">
-        {isLoggedIn ? '로그아웃' : '로그인'}
-      </Button>
+      {/* TODO: 디자인 시스템 버튼을 제대로 구현하면 그 때 컴포넌트 교체 */}
+      <button type="button" css={style.loginButton}>
+        로그인
+      </button>
     </header>
   );
-};
-
-export default Header;
+}
