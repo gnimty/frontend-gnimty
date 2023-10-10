@@ -1,5 +1,5 @@
 import '@/styles/globals.css';
-import { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from '@emotion/react';
 
 import MainLayout from '@/components/layout/MainLayout';
 import theme from '@/styles/theme';

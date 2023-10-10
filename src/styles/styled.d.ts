@@ -1,9 +1,5 @@
-import { ColorsTypes } from './constants/colors';
-import { FontsTypes } from './constants/fonts';
+import type { Theme as CustomTheme } from './theme';
 
-declare module 'styled-components' {
-  export interface DefaultTheme {
-    colors: ColorsTypes;
-    fonts: FontsTypes;
-  }
+declare module '@emotion/react' {
+  export interface Theme extends CustomTheme {}
 }

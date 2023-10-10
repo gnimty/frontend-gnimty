@@ -2,16 +2,22 @@
 const nextConfig = {
   reactStrictMode: true,
   compiler: {
-    styledComponents: true,
-  },
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'ddragon.leagueoflegends.com',
-        pathname: '**/*.png',
-      },
-    ],
+    emotion: true,
+    images: {
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'ddragon.leagueoflegends.com',
+          pathname: '**/*.png',
+        },
+      ],
+    },
+    eslint: {
+      ignoreDuringBuilds: true,
+    },
+    typescript: {
+      ignoreBuildErrors: true,
+    },
   },
   webpack: (config) => {
     config.module.rules.push({

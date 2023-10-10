@@ -1,36 +1,36 @@
 {
-  "name": "frontend_onlysolorank",
+  "name": "frontend-gnimty",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint \"**/*.{ts,tsx}\"",
+    "format": "prettier \"**/*.{ts,tsx,js,css,json,yml,md}\" --write",
+    "format:check": "prettier \"**/*.{ts,tsx,js,css,json,yml,md}\" --check",
+    "type:check": "tsc"
   },
   "dependencies": {
-    "@tanstack/react-query": "^4.32.6",
-    "next": "^12.3.4",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@tanstack/react-query": "^4.35.7",
+    "next": "^13.5.4",
     "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "styled-components": "^6.0.7"
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^13.4.16",
     "@svgr/webpack": "^8.1.0",
-    "@types/node": "^20.5.0",
-    "@types/react": "^18.2.20",
-    "@types/react-dom": "^18.2.7",
-    "@types/styled-components": "^5.1.26",
-    "@typescript-eslint/eslint-plugin": "^6.4.0",
-    "@typescript-eslint/parser": "^6.4.0",
-    "eslint": "^8.47.0",
-    "eslint-config-next": "^13.4.16",
+    "@types/node": "^20.8.2",
+    "@types/react": "^18.2.25",
+    "@types/react-dom": "^18.2.10",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
+    "eslint": "^8.50.0",
+    "eslint-config-next": "^13.5.4",
     "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-typescript": "^0.14.0",
-    "prettier": "^3.0.2",
-    "typescript": "^5.1.6"
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
   }
 }

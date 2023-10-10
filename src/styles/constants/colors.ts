@@ -1,10 +1,12 @@
-export type ColorsTypes = typeof colors;
-
 export const colors = {
   white: '#FFFFFF',
   dim60: '#11111199',
   dim40: '#11111166',
   dim25: '#11111140',
+
+  main: '#DE2E39',
+  main100: '#FDF4F5',
+
   gray100: '#F8F8F8',
   gray200: '#F2F2F2',
   gray300: '#DDDDDD',
@@ -60,7 +62,7 @@ export const colors = {
   green800: '#02BC77',
 
   blue100: '#F5F9FE',
-  blue200: '#EBF3F',
+  blue200: '#EBF3FE',
   blue300: '#CEE1FD',
   blue400: '#B1D0FD',
   blue500: '#9DC4FC',
@@ -70,7 +72,7 @@ export const colors = {
 
   purple100: '#F6F3FD',
   purple200: '#EEE6FC',
-  purple300: '#D5C2F',
+  purple300: '#D5C2F8',
   purple400: '#BC9EF3',
   purple500: '#AB86F0',
   purple600: '#9566EC',
@@ -79,7 +81,7 @@ export const colors = {
 
   magenta100: '#FEF3FA',
   magenta200: '#FDE8F5',
-  magenta300: '#FBC5E8 ',
+  magenta300: '#FBC5E8',
   magenta400: '#F8A3DB',
   magenta500: '#F68CD1',
   magenta600: '#F46EC5',
