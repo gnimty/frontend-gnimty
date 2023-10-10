@@ -1,6 +1,4 @@
-import Link from 'next/link';
-import { useState } from 'react';
-
+import ActiveLink from '../common/ActiveLink';
 import Button from '../common/Button';
 
 import * as style from './Header.style';
@@ -16,24 +14,19 @@ const menuItemList = [
 
 const Header = () => {
   const isLoggedIn = false;
-  const [activeMenu, setActiveMenu] = useState('홈');
-
-  const handleMenuClick = (menu: string) => {
-    setActiveMenu(menu);
-  };
 
   return (
     <header css={style.headerRoot}>
       <nav css={style.nav}>
         {menuItemList.map((item) => (
-          <Link
+          <ActiveLink
             key={item.id}
             href={item.link}
-            onClick={() => handleMenuClick(item.name)}
-            css={style.link({ isActive: activeMenu === item.name })}
+            inActiveCSS={style.link({ isActive: false })}
+            activeCSS={style.link({ isActive: true })}
           >
             {item.name}
-          </Link>
+          </ActiveLink>
         ))}
       </nav>
 
