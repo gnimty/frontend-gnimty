@@ -1,8 +1,10 @@
+import { useDisclosure } from '@chakra-ui/hooks';
+import { Button, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useState } from 'react';
 
-import Button from './Button';
+import LoginModal from '@/components/pages/account/LoginModal';
 
 interface MenuItemProps {
   isActive: boolean;
@@ -47,6 +49,11 @@ const Header = () => {
   const isLoggedIn = false;
   const [activeMenu, setActiveMenu] = useState('홈');
 
+  const { isOpen: isOpenLoginModal, onOpen: onOpenLoginModal, onClose: onCloseLoginModal } = useDisclosure();
+  const onClickLoginButton = () => {
+    !isOpenLoginModal && onOpenLoginModal();
+  };
+
   const handleMenuClick = (menu: string) => {
     setActiveMenu(menu);
   };
@@ -68,9 +75,12 @@ const Header = () => {
         })}
       </MenuContainer>
 
-      <Button size="medium" color="white" background="black">
-        {isLoggedIn ? '로그아웃' : '로그인'}
+      <Button width="80px" height="40px" bg="gray800" onClick={isLoggedIn ? undefined : onClickLoginButton}>
+        <Text textStyle="t2" fontWeight="bold" color="white">
+          {isLoggedIn ? '로그아웃' : '로그인'}
+        </Text>
       </Button>
+      <LoginModal isOpen={isOpenLoginModal} onClose={onCloseLoginModal} />
     </HeaderContainer>
   );
 };
