@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "gen:theme-typings": "chakra-cli tokens ./src/styles/chakra/chakraTheme.ts",
     "postinstall": "npm run gen:theme-typings",
     "dev": "next dev",
     "build": "next build",
@@ -11,7 +10,8 @@
     "lint": "eslint \"**/*.{ts,tsx}\"",
     "format": "prettier \"**/*.{ts,tsx,js,css,json,yml,md}\" --write",
     "format:check": "prettier \"**/*.{ts,tsx,js,css,json,yml,md}\" --check",
-    "type:check": "tsc"
+    "type:check": "tsc",
+    "gen:theme-typings": "chakra-cli tokens ./src/styles/theme/chakraTheme.ts"
   },
   "dependencies": {
     "@chakra-ui/next-js": "^2.1.5",
