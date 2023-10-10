@@ -1,9 +1,9 @@
-import { extendTheme } from '@chakra-ui/react';
+import { extendBaseTheme } from '@chakra-ui/react';
 
 import { colors } from '@/styles/constants/colors';
 import { fonts } from '@/styles/constants/fonts';
 
-const chakraTheme = extendTheme({
+const chakraTheme = extendBaseTheme({
   colors,
   fontWeights: {
     regular: 400,

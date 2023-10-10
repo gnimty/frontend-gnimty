@@ -1,5 +1,5 @@
 import '@/styles/globals.css';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraBaseProvider } from '@chakra-ui/react';
 import { ThemeProvider } from '@emotion/react';
 
 import MainLayout from '@/components/layout/MainLayout';
@@ -10,12 +10,12 @@ import type { AppProps } from 'next/app';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ChakraProvider theme={chakraTheme}>
+    <ChakraBaseProvider theme={chakraTheme}>
       <ThemeProvider theme={theme}>
         <MainLayout>
           <Component {...pageProps} />
         </MainLayout>
       </ThemeProvider>
-    </ChakraProvider>
+    </ChakraBaseProvider>
   );
 }
