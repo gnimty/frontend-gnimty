@@ -1,36 +1,27 @@
-import styled from '@emotion/styled';
-
 import Logo from '../common/Logo';
 
 import * as style from './Footer.style';
 
-const LinkDivider = styled.div((props) => ({
-  width: '1px',
-  height: '16px',
-  background: props.theme.colors.gray300,
-}));
+// TODO: 링크 정해지면 추가하기
+const links = [
+  { name: '공지사항', link: '' },
+  { name: '팀 소개', link: '' },
+  { name: '이용 약관', link: '' },
+  { name: '개인정보처리방침', link: '' },
+];
 
 const Footer = () => (
   <footer css={style.footerRoot}>
     <div css={style.footerTop}>
       <Logo width={77} height={36} css={style.logo} />
       <nav css={style.nav}>
-        {/* TODO: 링크 추가하기 */}
-        <a href="" css={style.link}>
-          공지사항
-        </a>
-        <LinkDivider />
-        <a href="" css={style.link}>
-          팀 소개
-        </a>
-        <LinkDivider />
-        <a href="" css={style.link}>
-          이용약관
-        </a>
-        <LinkDivider />
-        <a href="" css={style.link}>
-          개인정보처리방침
-        </a>
+        {links.map((link) => (
+          <div key={link.name} css={style.linkWrapper}>
+            <a href={link.link} css={style.link}>
+              {link.name}
+            </a>
+          </div>
+        ))}
       </nav>
     </div>
     <p css={style.riotPolicies}>

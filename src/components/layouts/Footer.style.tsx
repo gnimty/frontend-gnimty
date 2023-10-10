@@ -29,8 +29,22 @@ export const logo = (theme: Theme) =>
 
 export const nav = css({
   display: 'flex',
-  gap: '24px',
 });
+
+export const linkWrapper = (theme: Theme) =>
+  css({
+    display: 'flex',
+    alignItems: 'center',
+
+    '&:not(:last-of-type)::after': {
+      content: '""',
+      display: 'block',
+      width: '1px',
+      height: '16px',
+      background: theme.colors.gray300,
+      margin: '0 24px',
+    },
+  });
 
 export const link = (theme: Theme) =>
   css({
@@ -38,7 +52,6 @@ export const link = (theme: Theme) =>
     fontWeight: 400,
     textDecoration: 'none',
     color: theme.colors.gray700,
-    display: 'flex',
   });
 
 export const riotPolicies = (theme: Theme) =>
