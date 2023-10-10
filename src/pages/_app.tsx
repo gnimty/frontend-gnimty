@@ -3,15 +3,15 @@ import { ChakraBaseProvider } from '@chakra-ui/react';
 import { ThemeProvider } from '@emotion/react';
 
 import MainLayout from '@/components/layout/MainLayout';
-import chakraTheme from '@/styles/chakra/chakraTheme';
-import theme from '@/styles/theme';
+import chakraTheme from '@/styles/theme/chakraTheme';
+import emotionTheme from '@/styles/theme/emotionTheme';
 
 import type { AppProps } from 'next/app';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ChakraBaseProvider theme={chakraTheme}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={emotionTheme}>
         <MainLayout>
           <Component {...pageProps} />
         </MainLayout>
