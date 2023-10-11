@@ -3,24 +3,30 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "postinstall": "npm run gen:theme-typings",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint \"**/*.{ts,tsx}\"",
     "format": "prettier \"**/*.{ts,tsx,js,css,json,yml,md}\" --write",
     "format:check": "prettier \"**/*.{ts,tsx,js,css,json,yml,md}\" --check",
-    "type:check": "tsc"
+    "type:check": "tsc",
+    "gen:theme-typings": "chakra-cli tokens ./src/styles/theme/chakraTheme.ts"
   },
   "dependencies": {
+    "@chakra-ui/next-js": "^2.1.5",
+    "@chakra-ui/react": "^2.8.1",
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@tanstack/react-query": "^4.35.7",
+    "framer-motion": "^10.16.4",
     "next": "^13.5.4",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@chakra-ui/cli": "^2.4.1",
     "@svgr/webpack": "^8.1.0",
     "@types/node": "^20.8.2",
     "@types/react": "^18.2.25",
