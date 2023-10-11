@@ -1,6 +1,6 @@
-import type { IconProps } from '@/components/icons/types';
+import type { PositionIconProps } from './types';
 
-export default function Unselected(props: IconProps) {
+export default function Unselected(props: PositionIconProps) {
   return (
     <svg viewBox="0 0 24 24" {...props}>
       <path
