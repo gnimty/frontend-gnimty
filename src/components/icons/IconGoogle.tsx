@@ -1,6 +1,8 @@
 import { Icon } from '@chakra-ui/react';
 
-export default function IconGoogle(props: any) {
+import type { IconProps } from '@chakra-ui/react';
+
+export default function IconGoogle(props: IconProps) {
   return (
     <Icon viewBox="0 0 48 48" {...props}>
       <path

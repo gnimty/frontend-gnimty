@@ -1,6 +1,8 @@
 import { Icon } from '@chakra-ui/react';
 
-export default function IconKakao(props: any) {
+import type { IconProps } from '@chakra-ui/react';
+
+export default function IconKakao(props: IconProps) {
   return (
     <Icon viewBox="0 0 28 27" {...props}>
       <path
