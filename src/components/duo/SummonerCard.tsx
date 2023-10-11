@@ -1,4 +1,4 @@
-import { styled } from 'styled-components';
+import styled from '@emotion/styled';
 
 import Bot from '@/assets/icons/game/position/bot.svg';
 import Jug from '@/assets/icons/game/position/jug.svg';
@@ -34,11 +34,11 @@ interface CardColumnProps {
 const CardColumn = styled.div<CardColumnProps>`
   display: flex;
   flex-direction: ${({ $flexColumn }) => ($flexColumn ? 'column' : 'row')};
-  justify-content: ${({ $justify }) => $justify || 'flex-start'};
-  align-items: ${({ $align }) => $align || 'center'};
+  justify-content: ${({ $justify }) => $justify ?? 'flex-start'};
+  align-items: ${({ $align }) => $align ?? 'center'};
   width: ${({ width }) => (width ? `${width}px` : '100%')};
   gap: ${({ $gap }) => ($gap ? `${$gap}px` : '0')};
-  margin-bottom: ${({ $marginBottom }) => $marginBottom || '0'};
+  margin-bottom: ${({ $marginBottom }) => $marginBottom ?? '0'};
 `;
 
 const CardHeader = styled(CardColumn)<CardColumnProps>`

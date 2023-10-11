@@ -1,5 +1,5 @@
+import styled from '@emotion/styled';
 import { useState } from 'react';
-import { styled } from 'styled-components';
 
 import DetailFilter from '@/components/duo/DetailFilter';
 import Filter from '@/components/duo/Filter';
@@ -21,16 +21,18 @@ const SummonerCardsContainer = styled.div`
   grid-template-columns: repeat(3, 350px);
 `;
 
-const Dimmed = styled.div<{ $open: boolean }>`
-  display: ${({ $open }) => ($open ? 'block' : 'none')};
+const Dimmed = styled.div<{ $open: boolean }>(
+  ({ $open, theme }) => `
+  display: ${$open ? 'block' : 'none'};
   position: fixed;
   top: 0;
   left: 0;
   z-index: 50;
   width: 100vw;
   height: 100vh;
-  background-color: ${({ theme }) => theme.colors.dim60};
-`;
+  background-color: ${theme.colors.dim60};
+`,
+);
 
 export default function Duo() {
   const [detailOpen, setDetailOpen] = useState(false);

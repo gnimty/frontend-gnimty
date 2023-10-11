@@ -1,12 +1,12 @@
+import styled from '@emotion/styled';
 import React, { useState } from 'react';
-import styled from 'styled-components';
 
 import Exit from '@/assets/icons/system/exit.svg';
 import Button from '@/components/common/Button';
 import Radio from '@/components/common/Radio';
 import Search from '@/components/common/Search';
 import Champion from '@/components/duo/Champion';
-import { champions, championNames, type ChampionName } from '@/constants/champions';
+import { championNames, type ChampionName } from '@/constants/champions';
 import theme from '@/styles/theme';
 
 const Container = styled.div<{ $open: boolean }>`

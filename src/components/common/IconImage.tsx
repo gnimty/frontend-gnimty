@@ -1,5 +1,5 @@
+import styled from '@emotion/styled';
 import Image, { type StaticImageData } from 'next/image';
-import { styled } from 'styled-components';
 
 interface IconImageWrapperProps {
   width: number;

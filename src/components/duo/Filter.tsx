@@ -1,5 +1,5 @@
-import { useState, type MouseEvent, useRef, useEffect } from 'react';
-import { styled, useTheme } from 'styled-components';
+import styled from '@emotion/styled';
+import { useState, type MouseEvent, useRef } from 'react';
 
 import Bot from '@/assets/icons/game/position/bot.svg';
 import Every from '@/assets/icons/game/position/every.svg';

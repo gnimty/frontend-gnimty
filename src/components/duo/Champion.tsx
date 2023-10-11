@@ -1,5 +1,5 @@
+import styled from '@emotion/styled';
 import Image from 'next/image';
-import styled from 'styled-components';
 
 import CheckIcon from '@/assets/icons/system/check.svg';
 import { type ChampionName } from '@/constants/champions';

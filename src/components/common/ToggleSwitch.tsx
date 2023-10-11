@@ -1,4 +1,5 @@
-import { styled, css } from 'styled-components';
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 
 interface ToggleSwitchProps {
   onOff: boolean;
@@ -18,7 +19,6 @@ const Wrapper = styled.div<{ $on: boolean; width: number }>`
   width: ${({ width }) => `${width}px`};
   height: 18px;
   position: relative;
-
   background-color: ${({ theme, $on }) => ($on ? theme.colors.red800 : theme.colors.gray300)};
   border-radius: 20px;
   cursor: pointer;

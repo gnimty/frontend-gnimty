@@ -1,5 +1,5 @@
+import styled from '@emotion/styled';
 import { type ReactNode } from 'react';
-import styled from 'styled-components';
 
 const SpeechBubbleContainer = styled.div<{ $width: string; $height: string; $show: boolean }>`
   display: ${({ $show }) => ($show ? 'block' : 'none')};
