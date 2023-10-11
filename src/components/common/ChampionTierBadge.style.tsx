@@ -1,7 +1,8 @@
 import { css } from '@emotion/react';
 
 import type { ChampionTier } from '@/api/types';
-import type { Theme } from '@/styles/theme/emotionTheme';
+
+import type { Theme } from '@emotion/react';
 
 const tierBackground = (theme: Theme): Record<ChampionTier, string> => ({
   '1': theme.colors.red800,
