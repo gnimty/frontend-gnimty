@@ -3,7 +3,7 @@ import { extendBaseTheme } from '@chakra-ui/react';
 import { colors } from './constants/colors';
 import { fonts } from './constants/fonts';
 
-const chakraTheme = extendBaseTheme({
+const baseTheme = extendBaseTheme({
   colors,
   fontWeights: {
     regular: 400,
@@ -11,5 +11,7 @@ const chakraTheme = extendBaseTheme({
   },
   textStyles: fonts,
 });
+
+const chakraTheme = { ...baseTheme, styles: {} };
 
 export default chakraTheme;
