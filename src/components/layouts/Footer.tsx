@@ -1,4 +1,4 @@
-import Logo from '../common/Logo';
+import Logo from '@/assets/images/logo.svg';
 
 import * as style from './Footer.style';
 
