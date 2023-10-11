@@ -1,12 +1,12 @@
 import Image from 'next/image';
 
 import type { SummonerEntry } from '@/api/types';
+import Chat from '@/assets/icons/system/chat.svg';
+import Copy from '@/assets/icons/system/copy.svg';
 import summonerDefaultProfile from '@/assets/images/summoner-default-profile.png';
 import PositionImage from '@/components/common/position-image/PositionImage';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
-import Chat from '@/components/icons/Chat';
-import Copy from '@/components/icons/Copy';
 
 import * as style from './UserCardLandscape.style';
 

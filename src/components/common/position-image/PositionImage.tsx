@@ -1,5 +1,4 @@
 import type { Position } from '@/api/types';
-import type { IconProps } from '@/components/icons/types';
 
 import Bottom from './Bottom';
 import Jungle from './Jungle';
@@ -7,9 +6,10 @@ import Middle from './Middle';
 import Top from './Top';
 import Utility from './Utility';
 
+import type { PositionIconProps } from './types';
 import type { FC } from 'react';
 
-const positionImages: Record<Position, FC<IconProps>> = {
+const positionImages: Record<Position, FC<PositionIconProps>> = {
   TOP: Top,
   JUNGLE: Jungle,
   MIDDLE: Middle,
@@ -25,7 +25,7 @@ const positionLabels: Record<Position, string> = {
   UTILITY: '서포터',
 };
 
-interface PositionImageProps extends IconProps {
+interface PositionImageProps extends PositionIconProps {
   position: Position;
 }
 
