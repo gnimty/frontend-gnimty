@@ -15,7 +15,17 @@ const nextConfig = {
     config.module.rules.push({
       test: /\.svg$/,
       issuer: /\.[jt]sx?$/,
-      use: ['@svgr/webpack'],
+      use: [
+        {
+          loader: '@svgr/webpack',
+          /** @type {import('@svgr/core').Config} */
+          options: {
+            svgoConfig: {
+              plugins: ['removeXMLNS'],
+            },
+          },
+        },
+      ],
     });
     // Modify the file loader rule to ignore *.svg, since we have it handled now.
     fileLoaderRule.exclude = /\.svg$/i;
