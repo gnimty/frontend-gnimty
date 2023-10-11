@@ -1,21 +1,29 @@
 import '@/styles/globals.css';
-import { ChakraProvider } from '@chakra-ui/react';
-import { ThemeProvider } from '@emotion/react';
+import { ChakraBaseProvider } from '@chakra-ui/react';
+import createCache from '@emotion/cache';
+import { CacheProvider, ThemeProvider } from '@emotion/react';
 
 import MainLayout from '@/components/layout/MainLayout';
-import chakraTheme from '@/styles/chakra/chakraTheme';
-import theme from '@/styles/theme';
+import chakraTheme from '@/styles/theme/chakraTheme';
+import emotionTheme from '@/styles/theme/emotionTheme';
 
 import type { AppProps } from 'next/app';
 
+const emotionCache = createCache({
+  key: 'css',
+  stylisPlugins: [],
+});
+
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ChakraProvider theme={chakraTheme}>
-      <ThemeProvider theme={theme}>
-        <MainLayout>
-          <Component {...pageProps} />
-        </MainLayout>
-      </ThemeProvider>
-    </ChakraProvider>
+    <CacheProvider value={emotionCache}>
+      <ChakraBaseProvider theme={chakraTheme}>
+        <ThemeProvider theme={emotionTheme}>
+          <MainLayout>
+            <Component {...pageProps} />
+          </MainLayout>
+        </ThemeProvider>
+      </ChakraBaseProvider>
+    </CacheProvider>
   );
 }
