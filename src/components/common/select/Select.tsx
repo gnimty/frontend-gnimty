@@ -1,5 +1,5 @@
-import Down from '@/components/icons/Down';
-import Up from '@/components/icons/Up';
+import Down from '@/assets/icons/system/down.svg';
+import Up from '@/assets/icons/system/up.svg';
 
 import * as style from './Select.style';
 import useSelect from './useSelect';
