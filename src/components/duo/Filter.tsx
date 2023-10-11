@@ -73,12 +73,12 @@ const FilterIconItem = styled.li<{ selected?: boolean }>`
   align-items: center;
   cursor: pointer;
   border-right: 1px solid ${({ theme }) => theme.colors.gray200};
-  &:first-child {
+  &:first-of-type {
     border-left: none;
     border-top-left-radius: inherit;
     border-bottom-left-radius: inherit;
   }
-  &:last-child {
+  &:last-of-type {
     border-right: none;
     border-top-right-radius: inherit;
     border-bottom-right-radius: inherit;
