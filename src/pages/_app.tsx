@@ -2,6 +2,7 @@ import '@/styles/reset.css';
 import { ChakraBaseProvider } from '@chakra-ui/react';
 import createCache from '@emotion/cache';
 import { CacheProvider, Global, ThemeProvider } from '@emotion/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import BaseLayout from '@/components/layouts/BaseLayout';
 import chakraTheme from '@/styles/theme/chakraTheme';
@@ -22,15 +23,30 @@ const Fonts = () => (
   />
 );
 
+const client = new QueryClient({
+  defaultOptions: {
+    queries: {
+      suspense: true,
+      // 아래는 쿼리마다 개별적으로 설정
+      staleTime: Infinity,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <CacheProvider value={emotionCache}>
       <ChakraBaseProvider theme={chakraTheme} resetCSS={false}>
         <Fonts />
         <ThemeProvider theme={emotionTheme}>
-          <BaseLayout>
-            <Component {...pageProps} />
-          </BaseLayout>
+          <QueryClientProvider client={client}>
+            <BaseLayout>
+              <Component {...pageProps} />
+            </BaseLayout>
+          </QueryClientProvider>
         </ThemeProvider>
       </ChakraBaseProvider>
     </CacheProvider>
