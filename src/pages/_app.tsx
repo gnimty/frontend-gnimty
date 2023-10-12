@@ -25,7 +25,7 @@ const Fonts = () => (
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <CacheProvider value={emotionCache}>
-      <ChakraBaseProvider theme={chakraTheme} resetCSS={true}>
+      <ChakraBaseProvider theme={chakraTheme} resetCSS={false}>
         <Fonts />
         <ThemeProvider theme={emotionTheme}>
           <MainLayout>
