@@ -17,7 +17,7 @@ const emotionCache = createCache({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <CacheProvider value={emotionCache}>
-      <ChakraBaseProvider theme={chakraTheme}>
+      <ChakraBaseProvider theme={chakraTheme} resetCSS={false} disableGlobalStyle>
         <ThemeProvider theme={emotionTheme}>
           <MainLayout>
             <Component {...pageProps} />
