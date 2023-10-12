@@ -6,13 +6,9 @@ function CheckboxIcon(props: { isChecked?: boolean }) {
   const { isChecked } = props;
   return (
     <>
-      {isChecked ? (
-        <Box position="relative" w="full" h="full">
-          <AbsoluteCenter>
-            <Check />
-          </AbsoluteCenter>
-        </Box>
-      ) : null}
+      <Box position="relative" w="full" h="full">
+        <AbsoluteCenter>{isChecked ? <Check /> : <></>}</AbsoluteCenter>
+      </Box>
     </>
   );
 }

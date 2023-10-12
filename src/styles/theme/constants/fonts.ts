@@ -34,4 +34,4 @@ export const fonts = {
     lineHeight: '14px',
     fontWeight: 'regular',
   },
-};
+} as const;

@@ -38,15 +38,10 @@ interface LoginModalProps {
 const LoginInput = (props: InputProps) => {
   return (
     <Input
-      px="12px"
-      py="14px"
-      textStyle="t2"
-      fontSize="14px"
       color="gray800"
       fontWeight="regular"
       borderWidth="1px"
       borderColor="gray300"
-      borderRadius="4px"
       _placeholder={{
         textStyle: 't2',
         fontWeight: 'regular',
@@ -66,10 +61,9 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     <>
       <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent px="40px" py="60px" maxW="480px" backgroundColor="white">
-          <ModalHeader px={0} py={0} />
-          <ModalCloseButton size="lg" top="24px" right="24px" />
-          <ModalBody px={0} py={0}>
+        <ModalContent maxW="480px" pt="60px" pb="84px" backgroundColor="white">
+          <ModalCloseButton top="24px" right="24px" />
+          <ModalBody>
             <VStack w="full" spacing="40px">
               <VStack spacing="12px">
                 <Text textStyle="h2">로그인</Text>
@@ -77,7 +71,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                   <Text textStyle="t2" fontWeight="regular">
                     그님티가 처음이신가요?
                   </Text>
-                  <Text as="button" textStyle="t2" color="main">
+                  <Text as="button" textStyle="t2" fontWeight="bold" color="main">
                     회원가입 바로가기
                   </Text>
                 </HStack>
@@ -106,7 +100,13 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                   </InputGroup>
                 </VStack>
                 <HStack w="full" justifyContent="space-between">
-                  <Checkbox icon={<CheckboxIcon />} colorScheme="main" textStyle="t1" fontWeight="bold" color="gray600">
+                  <Checkbox
+                    icon={<CheckboxIcon />}
+                    colorScheme="main"
+                    textStyle="body"
+                    fontWeight="bold"
+                    color="gray600"
+                  >
                     로그인 상태 기억하기
                   </Checkbox>
                   <Text as="button" textStyle="body" fontWeight="bold" color="gray800">
@@ -130,12 +130,10 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
               <VStack w="full" spacing="12px">
                 <KakaoLoginButton w="full" h="48px" />
-                <GoogleLoginButton />
+                <GoogleLoginButton w="full" h="48px" />
               </VStack>
             </VStack>
           </ModalBody>
-
-          <ModalFooter />
         </ModalContent>
       </Modal>
     </>
