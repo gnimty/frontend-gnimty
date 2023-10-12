@@ -36,7 +36,6 @@ const baseStyleDialog = defineStyle((props) => {
     mx: isCentered ? 'auto' : undefined,
     zIndex: 'modal',
     maxH: scrollBehavior === 'inside' ? 'calc(100% - 7.5rem)' : undefined,
-    _dark: {},
     bg: $bg.reference,
     boxShadow: $shadow.reference,
   };
