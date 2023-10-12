@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import type { Theme } from '@/styles/theme';
+import type { Theme } from '@emotion/react';
 
 export const userCardLandscape = (theme: Theme) =>
   css({

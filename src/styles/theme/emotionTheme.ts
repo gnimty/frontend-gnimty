@@ -1,7 +1,7 @@
 import { colors } from './constants/colors';
 import { fonts } from './constants/fonts';
 
-const theme = {
+const emotionTheme = {
   colors,
   fonts,
   zIndices: {
@@ -9,6 +9,6 @@ const theme = {
   },
 };
 
-export default theme;
+export default emotionTheme;
 
-export type Theme = typeof theme;
+export type Theme = typeof emotionTheme;

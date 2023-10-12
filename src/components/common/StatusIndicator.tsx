@@ -1,5 +1,5 @@
 import type { Status } from '@/api/types';
-import theme from '@/styles/theme';
+import theme from '@/styles/theme/emotionTheme';
 
 import type { ComponentPropsWithoutRef } from 'react';
 

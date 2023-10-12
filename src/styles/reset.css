@@ -1,7 +1,7 @@
 *,
 *::before,
 *::after {
-  font-family: inherit;
+  font: inherit;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -17,6 +17,7 @@ ul {
 }
 
 button {
+  background: inherit;
   cursor: pointer;
 }
 
@@ -27,4 +28,21 @@ input {
 button,
 input {
   border: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
+  content: none;
+}
+
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
 }
