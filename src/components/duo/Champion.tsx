@@ -80,7 +80,7 @@ const Champion = ({ championName, selected = false, onClick }: ChampionProps) =>
             <CheckIcon fill="#fff" width="70%" />
           </SelectedChecker>
         )}
-        <Image src={sprite} alt={championName} width="2.5rem" height="2.5rem" layout="responsive" />
+        <Image src={sprite} alt={championName} width={40} height={40} layout="responsive" />
       </ChampionImageWrapper>
       <ChampionName>{championName}</ChampionName>
     </Container>
