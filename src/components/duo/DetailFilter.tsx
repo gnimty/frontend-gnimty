@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
 
@@ -7,7 +8,6 @@ import Radio from '@/components/common/Radio';
 import Search from '@/components/common/Search';
 import Champion from '@/components/duo/Champion';
 import { championNames, type ChampionName } from '@/constants/champions';
-import theme from '@/styles/theme';
 
 const Container = styled.div<{ $open: boolean }>`
   width: 26rem;
@@ -136,6 +136,7 @@ interface Champion {
 }
 
 function DetailFilter({ detailOpen, toggleDetail }: DetailFilterProps) {
+  const theme = useTheme();
   const [filteredChampions, setFilteredChampions] = useState<Champion[]>([]);
   const handleChampionSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
