@@ -19,7 +19,7 @@ export default function KakaoLoginButton(props: ButtonProps) {
       }}
       {...props}
     >
-      <Text textStyle="t2" color="#000000d9">
+      <Text textStyle="t2" color="gray800">
         카카오 로그인
       </Text>
     </Button>
