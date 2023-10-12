@@ -14,6 +14,7 @@
     "gen:theme-typings": "chakra-cli tokens ./src/styles/theme/chakraTheme.ts"
   },
   "dependencies": {
+    "@chakra-ui/anatomy": "^2.2.1",
     "@chakra-ui/next-js": "^2.1.5",
     "@chakra-ui/react": "^2.8.1",
     "@emotion/cache": "^11.11.0",

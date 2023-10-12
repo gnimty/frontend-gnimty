@@ -3,7 +3,7 @@ import { ChakraBaseProvider } from '@chakra-ui/react';
 import createCache from '@emotion/cache';
 import { CacheProvider, Global, ThemeProvider } from '@emotion/react';
 
-import MainLayout from '@/components/layout/MainLayout';
+import BaseLayout from '@/components/layouts/BaseLayout';
 import chakraTheme from '@/styles/theme/chakraTheme';
 import emotionTheme from '@/styles/theme/emotionTheme';
 
@@ -25,12 +25,12 @@ const Fonts = () => (
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <CacheProvider value={emotionCache}>
-      <ChakraBaseProvider theme={chakraTheme} resetCSS={true}>
+      <ChakraBaseProvider theme={chakraTheme} resetCSS={false}>
         <Fonts />
         <ThemeProvider theme={emotionTheme}>
-          <MainLayout>
+          <BaseLayout>
             <Component {...pageProps} />
-          </MainLayout>
+          </BaseLayout>
         </ThemeProvider>
       </ChakraBaseProvider>
     </CacheProvider>
