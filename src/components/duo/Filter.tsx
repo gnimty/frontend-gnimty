@@ -13,6 +13,8 @@ import ResetIcon from '@/assets/icons/system/reset.svg';
 import SpeechBubble from '@/components/common/SpeechBubble';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
 
+import Unselected from '../common/position-image/Unselected';
+
 const FilterWrapper = styled.div`
   width: 67.5rem;
   margin: 0 auto;
@@ -206,7 +208,23 @@ function Filter({ allOpen, toggleAll, detailOpen, toggleDetail }: FilterProps) {
               </div>
             </SpeechBubbleContent>
           </SpeechBubble>
-          {detailOpen ? <FilterSet width="24px" height="24px" /> : <FilterIcon width="24px" height="24px" />}
+          {detailOpen ? (
+            <FilterSet
+              width="24px"
+              height="24px"
+              css={{
+                color: '#DE2E39',
+              }}
+            />
+          ) : (
+            <FilterIcon
+              width="24px"
+              height="24px"
+              css={{
+                color: '#111111',
+              }}
+            />
+          )}
         </FilterDetailButton>
       </FilterLeft>
       <FilterRight>
