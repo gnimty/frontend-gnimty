@@ -1,5 +1,6 @@
 import { extendBaseTheme } from '@chakra-ui/react';
 
+import tabsTheme from './components/tabs';
 import { colors } from './constants/colors';
 import { fonts } from './constants/fonts';
 
@@ -10,6 +11,9 @@ const baseTheme = extendBaseTheme({
     bold: 700,
   },
   textStyles: fonts,
+  components: {
+    Tabs: tabsTheme,
+  },
 });
 
 const chakraTheme = {
