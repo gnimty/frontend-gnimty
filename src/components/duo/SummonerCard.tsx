@@ -1,24 +1,26 @@
 import styled from '@emotion/styled';
 
-import Bot from '@/assets/icons/game/position/bot.svg';
-import Jug from '@/assets/icons/game/position/jug.svg';
-import Diamond from '@/assets/icons/game/tier/diamond.png';
 import Chat from '@/assets/icons/system/chat.svg';
 import Copy from '@/assets/icons/system/copy.svg';
 import ArrowDown from '@/assets/icons/system/down.svg';
 import Like from '@/assets/icons/system/like.svg';
-import Online from '@/assets/icons/system/online.svg';
 import ArrowUp from '@/assets/icons/system/up.svg';
 import IconImage from '@/components/common/IconImage';
+import PositionImage from '@/components/common/position-image/PositionImage';
+import StatusIndicator from '@/components/common/StatusIndicator';
+import TierImage from '@/components/common/TierImage';
 
-const CardWrapper = styled.div<{ open: boolean }>`
+const CardWrapper = styled.div<{ $open: boolean }>`
   width: 352px;
   min-height: 144px;
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 4px;
-  grid-row: ${({ open }) => (open ? 'span 2' : 'span 1')};
+  background-color: ${({ theme }) => theme.colors.white};
+  grid-row: ${({ $open }) => ($open ? 'span 2' : 'span 1')};
+  gap: ${({ $open }) => $open && '12px'};
+  padding: 16px 20px;
 `;
 
 interface CardColumnProps {
@@ -43,13 +45,11 @@ const CardColumn = styled.div<CardColumnProps>`
 
 const CardHeader = styled(CardColumn)<CardColumnProps>`
   width: 100%;
-  padding: 16px 20px;
 `;
 
 const CardBody = styled(CardColumn)<CardColumnProps>`
   overflow: hidden;
-  padding: 0 20px 16px 20px;
-  max-height: ${({ $open }) => ($open ? '500px' : '0')};
+  max-height: ${({ $open }) => ($open ? 'max-content' : '0')};
   transform: scaleY(${({ $open }) => ($open ? '1' : '0')});
   transform-origin: top;
   transition:
@@ -134,7 +134,7 @@ const PROFILE_URL = 'https://ddragon.leagueoflegends.com/cdn/13.12.1/img/profile
 
 export default function SummonerCard({ open, toggle }: { open: boolean; toggle: () => void }) {
   return (
-    <CardWrapper open={open}>
+    <CardWrapper $open={open}>
       <CardHeader $flexColumn="true" $align="flex-start">
         <CardColumn $justify="space-between" $marginBottom="1rem">
           <SummonerBasicInfo>
@@ -143,21 +143,21 @@ export default function SummonerCard({ open, toggle }: { open: boolean; toggle: 
               T1 Gumayusi
               <Copy width="16px" height={16} />
             </SummonerId>
-            <Online width={6} height={6} />
+            <StatusIndicator status="ONLINE" />
           </SummonerBasicInfo>
           <ChatButton type="button">
             <Chat width="24px" height="24px" />
           </ChatButton>
         </CardColumn>
         <CardColumn width={120} $gap={8} $marginBottom="0.5rem">
-          <IconImage src={Diamond} width={24} height={24} alt="다이아티어" />
+          <TierImage tier="diamond" width={24} />
           <SummonerTier>CH</SummonerTier>
           <SummonerLP>1,123 LP</SummonerLP>
         </CardColumn>
         <CardColumn $gap={8} $justify="space-between">
           <CardColumn $gap={8}>
-            <Bot width={24} height={24} />
-            <Jug width={24} height={24} />
+            <PositionImage position="TOP" width={24} />
+            <PositionImage position="JUNGLE" width={24} />
           </CardColumn>
           {!open && (
             <OpenCloseButton type="button" onClick={() => toggle()}>
