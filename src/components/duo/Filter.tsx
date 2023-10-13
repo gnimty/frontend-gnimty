@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useState, type MouseEvent, useRef } from 'react';
 
@@ -10,10 +11,12 @@ import Top from '@/assets/icons/game/position/top.svg';
 import FilterSet from '@/assets/icons/system/filter-set.svg';
 import FilterIcon from '@/assets/icons/system/filter.svg';
 import ResetIcon from '@/assets/icons/system/reset.svg';
+import Unselected from '@/components/common/position-image/Unselected';
+import Select from '@/components/common/select/Select';
 import SpeechBubble from '@/components/common/SpeechBubble';
+import StatusIndicator from '@/components/common/StatusIndicator';
+import TierImage from '@/components/common/TierImage';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
-
-import Unselected from '../common/position-image/Unselected';
 
 const FilterWrapper = styled.div`
   width: 67.5rem;
@@ -30,7 +33,7 @@ const FilterBox = styled.div`
 `;
 
 const FilterLeft = styled(FilterBox)`
-  width: 701px;
+  width: max-content;
 `;
 
 const FilterRight = styled(FilterBox)`
@@ -46,16 +49,6 @@ const ResetWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-// TODO: Dropdown Component로 교체
-const Dropdown = styled.select`
-  min-width: max-content;
-  width: 7.2rem;
-  min-height: 2.5rem;
-  padding: 10px 10px 10px 12px;
-  border-radius: 4px;
-  border: 1px solid ${({ theme }) => theme.colors.gray200};
 `;
 
 const FilterIconBox = styled.ul`
@@ -164,15 +157,55 @@ function Filter({ allOpen, toggleAll, detailOpen, toggleDetail }: FilterProps) {
   return (
     <FilterWrapper>
       <FilterLeft>
-        <Dropdown>
-          <option value="aram">칼바람 나락</option>
-        </Dropdown>
-        <Dropdown>
-          <option value="online">온라인</option>
-        </Dropdown>
-        <Dropdown>
-          <option value="all">티어 전체</option>
-        </Dropdown>
+        <Select
+          options={[
+            { text: '솔로 랭크', value: 'soloRank' },
+            { text: '자유 랭크', value: 'freeRank' },
+            { text: '칼바람 나락', value: 'bridge' },
+            { text: '아레나', value: 'arena' },
+          ]}
+          css={{ width: '124px' }}
+        />
+        <Select
+          options={[
+            { text: '온라인', value: 'online', leftAsset: <StatusIndicator status="ONLINE" /> },
+            { text: '오프라인', value: 'offline', leftAsset: <StatusIndicator status="OFFLINE" /> },
+            { text: '자리비움', value: 'away', leftAsset: <StatusIndicator status="AWAY" /> },
+          ]}
+          css={{ width: '124px' }}
+        />
+        <Select
+          options={[
+            { text: '언랭크 이상', value: 'unranked', leftAsset: <TierImage tier="UNRANKED" width={20} height={20} /> },
+            { text: '아이언 이상', value: 'iron', leftAsset: <TierImage tier="iron" width={20} height={20} /> },
+            { text: '브론즈 이상', value: 'bronze', leftAsset: <TierImage tier="bronze" width={20} height={20} /> },
+            { text: '실버 이상', value: 'silver', leftAsset: <TierImage tier="silver" width={20} height={20} /> },
+            { text: '골드 이상', value: 'gold', leftAsset: <TierImage tier="gold" width={20} height={20} /> },
+            {
+              text: '플래티넘 이상',
+              value: 'platinum',
+              leftAsset: <TierImage tier="platinum" width={20} height={20} />,
+            },
+            { text: '에메랄드 이상', value: 'emerald', leftAsset: <TierImage tier="emerald" width={20} height={20} /> },
+            {
+              text: '다이아 이상',
+              value: 'diamond',
+              leftAsset: <TierImage tier="diamond" width={20} height={20} />,
+            },
+            { text: '마스터 이상', value: 'master', leftAsset: <TierImage tier="master" width={20} height={20} /> },
+            {
+              text: '그마 이상',
+              value: 'grandmaster',
+              leftAsset: <TierImage tier="grandmaster" width={20} height={20} />,
+            },
+            {
+              text: '챌린저 이상',
+              value: 'challenger',
+              leftAsset: <TierImage tier="challenger" width={20} height={20} />,
+            },
+          ]}
+          css={{ width: '148px' }}
+        />
         <FilterIconBox onClick={handlePositionSelect} ref={ulRef}>
           <FilterIconItem data-position="every" selected={selected.includes('every')}>
             <Every />
