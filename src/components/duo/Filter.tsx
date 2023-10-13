@@ -176,32 +176,32 @@ function Filter({ allOpen, toggleAll, detailOpen, toggleDetail }: FilterProps) {
         />
         <Select
           options={[
-            { text: '언랭크 이상', value: 'unranked', leftAsset: <TierImage tier="UNRANKED" width={20} height={20} /> },
-            { text: '아이언 이상', value: 'iron', leftAsset: <TierImage tier="iron" width={20} height={20} /> },
-            { text: '브론즈 이상', value: 'bronze', leftAsset: <TierImage tier="bronze" width={20} height={20} /> },
-            { text: '실버 이상', value: 'silver', leftAsset: <TierImage tier="silver" width={20} height={20} /> },
-            { text: '골드 이상', value: 'gold', leftAsset: <TierImage tier="gold" width={20} height={20} /> },
+            { text: '언랭크 이상', value: 'unranked', leftAsset: <TierImage tier="UNRANKED" fill /> },
+            { text: '아이언 이상', value: 'iron', leftAsset: <TierImage tier="iron" fill /> },
+            { text: '브론즈 이상', value: 'bronze', leftAsset: <TierImage tier="bronze" fill /> },
+            { text: '실버 이상', value: 'silver', leftAsset: <TierImage tier="silver" fill /> },
+            { text: '골드 이상', value: 'gold', leftAsset: <TierImage tier="gold" fill /> },
             {
               text: '플래티넘 이상',
               value: 'platinum',
-              leftAsset: <TierImage tier="platinum" width={20} height={20} />,
+              leftAsset: <TierImage tier="platinum" fill />,
             },
-            { text: '에메랄드 이상', value: 'emerald', leftAsset: <TierImage tier="emerald" width={20} height={20} /> },
+            { text: '에메랄드 이상', value: 'emerald', leftAsset: <TierImage tier="emerald" fill /> },
             {
               text: '다이아 이상',
               value: 'diamond',
-              leftAsset: <TierImage tier="diamond" width={20} height={20} />,
+              leftAsset: <TierImage tier="diamond" fill />,
             },
-            { text: '마스터 이상', value: 'master', leftAsset: <TierImage tier="master" width={20} height={20} /> },
+            { text: '마스터 이상', value: 'master', leftAsset: <TierImage tier="master" fill /> },
             {
               text: '그마 이상',
               value: 'grandmaster',
-              leftAsset: <TierImage tier="grandmaster" width={20} height={20} />,
+              leftAsset: <TierImage tier="grandmaster" fill />,
             },
             {
               text: '챌린저 이상',
               value: 'challenger',
-              leftAsset: <TierImage tier="challenger" width={20} height={20} />,
+              leftAsset: <TierImage tier="challenger" fill />,
             },
           ]}
           css={{ width: '148px' }}
