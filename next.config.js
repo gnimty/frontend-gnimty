@@ -4,6 +4,7 @@ const nextConfig = {
   compiler: {
     emotion: true,
   },
+  output: 'standalone',
   eslint: {
     ignoreDuringBuilds: true,
   },
