@@ -2,9 +2,9 @@ import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay } from '
 import {
   Box,
   Button,
-  Center,
   Checkbox,
   HStack,
+  IconButton,
   Input,
   InputGroup,
   InputRightElement,
@@ -85,9 +85,14 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                       onChange={(e) => setPassword(e.target.value)}
                     />
                     <InputRightElement>
-                      <Center as="button" w="20px" h="20px" onClick={setShowPassword.toggle}>
-                        {showPassword ? <Hide /> : <View />}
-                      </Center>
+                      <IconButton
+                        w="20px"
+                        h="20px"
+                        onClick={setShowPassword.toggle}
+                        aria-label="hide"
+                        color="gray600"
+                        icon={showPassword ? <Hide /> : <View />}
+                      />
                     </InputRightElement>
                   </InputGroup>
                 </VStack>
