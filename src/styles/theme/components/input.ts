@@ -23,10 +23,6 @@ const baseStyle = helpers.definePartsStyle({
     appearance: 'none',
     transitionProperty: 'common',
     transitionDuration: 'normal',
-    _disabled: {
-      opacity: 0.4,
-      cursor: 'not-allowed',
-    },
   },
   group: {
     ':focus-visible': {
