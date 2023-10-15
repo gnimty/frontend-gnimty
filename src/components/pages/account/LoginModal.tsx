@@ -14,11 +14,11 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
+import Check from '@/assets/icons/system/check.svg';
 import Hide from '@/assets/icons/system/hide.svg';
 import View from '@/assets/icons/system/view.svg';
 import GoogleLoginButton from '@/components/common/buttons/GoogleLoginButton';
 import KakaoLoginButton from '@/components/common/buttons/KakaoLoginButton';
-import CheckboxIcon from '@/components/common/CheckboxIcon';
 
 import type { InputProps } from '@chakra-ui/react';
 
@@ -92,13 +92,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                   </InputGroup>
                 </VStack>
                 <HStack w="full" justifyContent="space-between">
-                  <Checkbox
-                    icon={<CheckboxIcon />}
-                    colorScheme="main"
-                    textStyle="body"
-                    fontWeight="bold"
-                    color="gray600"
-                  >
+                  <Checkbox icon={<Check />} colorScheme="main" textStyle="body" fontWeight="bold" color="gray600">
                     로그인 상태 기억하기
                   </Checkbox>
                   <Text as="button" textStyle="body" fontWeight="bold" color="gray800">
