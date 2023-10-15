@@ -30,6 +30,7 @@ interface LoginModalProps {
 const LoginInput = (props: InputProps) => {
   return (
     <Input
+      variant="outline"
       color="gray800"
       fontWeight="regular"
       borderWidth="1px"
@@ -77,7 +78,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
-                  <InputGroup>
+                  <InputGroup variant="outline">
                     <LoginInput
                       type={showPassword ? 'text' : 'password'}
                       placeholder="비밀번호를 입력해 주세요."

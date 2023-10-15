@@ -1,8 +1,6 @@
 import { inputAnatomy as parts } from '@chakra-ui/anatomy';
-import { createMultiStyleConfigHelpers, cssVar, defineStyle } from '@chakra-ui/styled-system';
-import { getColorVar, mode } from '@chakra-ui/theme-tools';
-
-import { fonts } from '@/styles/theme/constants/fonts';
+import { createMultiStyleConfigHelpers, cssVar } from '@chakra-ui/styled-system';
+import { getColorVar } from '@chakra-ui/theme-tools';
 
 const helpers = createMultiStyleConfigHelpers(parts.keys);
 
@@ -83,8 +81,22 @@ const variantOutline = helpers.definePartsStyle((props) => {
   };
 });
 
+const variantUnstyled = helpers.definePartsStyle({
+  field: {
+    bg: 'transparent',
+    px: '0',
+    height: 'auto',
+  },
+  addon: {
+    bg: 'transparent',
+    px: '0',
+    height: 'auto',
+  },
+});
+
 const variants = {
   outline: variantOutline,
+  unstyled: variantUnstyled,
 };
 
 const inputTheme = helpers.defineMultiStyleConfig({
@@ -93,7 +105,7 @@ const inputTheme = helpers.defineMultiStyleConfig({
   variants,
   defaultProps: {
     size: 'lg',
-    variant: 'outline',
+    variant: 'unstyled',
   },
 });
 
