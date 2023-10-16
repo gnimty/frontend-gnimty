@@ -4,16 +4,9 @@ const baseStyle = defineStyle({
   borderRadius: '4px',
   bg: 'main',
   _disabled: {
-    cursor: 'not-allowed',
     boxShadow: 'none',
     bg: 'gray200',
     color: 'gray500',
-  },
-  _hover: {
-    bg: 'gray800',
-    _disabled: {
-      bg: 'initial',
-    },
   },
 });
 
