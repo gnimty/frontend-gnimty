@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import type { SummonerEntry } from '@/api/types';
+import type { SummonerEntry } from '@/apis/types';
 import Chat from '@/assets/icons/system/chat.svg';
 import Copy from '@/assets/icons/system/copy.svg';
 import summonerDefaultProfile from '@/assets/images/summoner-default-profile.png';

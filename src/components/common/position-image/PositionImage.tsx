@@ -1,4 +1,4 @@
-import type { Position } from '@/api/types';
+import type { Position } from '@/apis/types';
 
 import Bottom from './Bottom';
 import Jungle from './Jungle';
