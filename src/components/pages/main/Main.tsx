@@ -1,4 +1,4 @@
-import { Flex, HStack, VStack, Link } from '@chakra-ui/react';
+import { Flex, HStack, VStack, Link, Box } from '@chakra-ui/react';
 
 import summoners from '@/api/mocks/summoners';
 import Logo from '@/assets/images/logo.svg';
@@ -28,8 +28,10 @@ const queueSelectOptions: SelectOption[] = [
 export default function Main() {
   return (
     <Flex m="102px auto 60px" w="1080px" flexDir="column">
-      <VStack gap="40px" mb="60px" color="main">
-        <Logo width={170} height={80} aria-label="그님티" />
+      <VStack gap="40px" mb="60px">
+        <Box color="main">
+          <Logo width={170} height={80} aria-label="그님티" />
+        </Box>
         <Search />
       </VStack>
       <HStack mb="16px" justifyContent="space-between" gap={0}>
