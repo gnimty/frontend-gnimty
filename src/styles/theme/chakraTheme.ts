@@ -1,8 +1,11 @@
 import { extendBaseTheme } from '@chakra-ui/react';
 
-import tabsTheme from './components/tabs';
-import { colors } from './constants/colors';
-import { fonts } from './constants/fonts';
+import checkboxTheme from '@/styles/theme/components/checkbox';
+import inputTheme from '@/styles/theme/components/input';
+import modalTheme from '@/styles/theme/components/modal';
+import tabsTheme from '@/styles/theme/components/tabs';
+import { colors } from '@/styles/theme/constants/colors';
+import { fonts } from '@/styles/theme/constants/fonts';
 
 const baseTheme = extendBaseTheme({
   colors,
@@ -12,7 +15,10 @@ const baseTheme = extendBaseTheme({
   },
   textStyles: fonts,
   components: {
+    Checkbox: checkboxTheme,
+    Modal: modalTheme,
     Tabs: tabsTheme,
+    Input: inputTheme,
   },
 });
 

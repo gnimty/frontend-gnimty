@@ -87,4 +87,6 @@ export const colors = {
   magenta600: '#F46EC5',
   magenta700: '#F147B6',
   magenta800: '#EE19A4',
+
+  kakao: '#FEE500',
 };
