@@ -14,10 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       docker_image: ${{ steps.write-vars.outputs.docker_image }}
+      container_name: ${{ steps.write-vars.outputs.container_name }}
     steps:
       - id: write-vars
         run: |
           echo "docker_image=${{ vars.DOCKER_IMAGE_NAME }}:dev" >> "$GITHUB_OUTPUT"
+          echo "container_name=${{ vars.DOCKER_IMAGE_NAME }}-dev" >> "$GITHUB_OUTPUT"
 
   deploy:
     needs: deploy-setup
@@ -46,5 +48,5 @@ jobs:
           script: |
             cd ${{ vars.DEPLOY_PATH }}
             docker build . -t ${{ needs.deploy-setup.outputs.docker_image }}
-            docker stop $(docker ps -q --filter ancestor=${{ needs.deploy-setup.outputs.docker_image }})
-            docker run -p 3000:3000 -d ${{ needs.deploy-setup.outputs.docker_image }}
+            docker stop ${{ needs.deploy-setup.outputs.container_name }}
+            docker run -p 3000:3000 -d --name=${{ needs.deploy-setup.outputs.container_name }} ${{ needs.deploy-setup.outputs.docker_image }}
