@@ -29,9 +29,9 @@ export default function Main() {
   return (
     <Flex m="102px auto 60px" w="1080px" flexDir="column">
       <VStack gap="40px" mb="60px">
-        <Box color="main">
+        <Flex color="main">
           <Logo width={170} height={80} aria-label="그님티" />
-        </Box>
+        </Flex>
         <Search />
       </VStack>
       <HStack mb="16px" justifyContent="space-between" gap={0}>
