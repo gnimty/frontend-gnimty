@@ -48,14 +48,12 @@ const variants = {
 const sizes = {
   lg: defineStyle({
     h: '48px',
-    minW: '160px',
     textStyle: 't2',
     fontWeight: '700',
     py: '14px',
   }),
   md: defineStyle({
     h: '40px',
-    minW: '80px',
     textStyle: 't2',
     fontWeight: '400',
     py: '10px',
