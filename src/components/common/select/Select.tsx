@@ -19,7 +19,7 @@ function Option(props: OptionProps) {
   );
 }
 
-interface SelectProps extends Omit<ComponentPropsWithoutRef<'div'>, 'onChange'> {
+export interface SelectProps extends Omit<ComponentPropsWithoutRef<'div'>, 'onChange'> {
   options: SelectOption[];
   onChange?: (value: string) => void;
 }

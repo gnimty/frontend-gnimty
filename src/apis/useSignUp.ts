@@ -1,11 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
 
+import type { BaseMutationProps } from '@/apis/httpRequest';
 import httpRequest from '@/apis/httpRequest';
 
-interface UseSignUpMutationProps<TData> {
-  onSuccess?: (data: TData) => void;
-  onError?: (error: unknown) => void;
-}
+interface UseSignUpMutationProps<TData> extends BaseMutationProps<TData> {}
 
 interface SignUpRequestBody {
   email: string;

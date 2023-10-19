@@ -2,8 +2,10 @@ import { extendBaseTheme } from '@chakra-ui/react';
 
 import buttonTheme from '@/styles/theme/components/button';
 import checkboxTheme from '@/styles/theme/components/checkbox';
+import drawerTheme from '@/styles/theme/components/drawer';
 import inputTheme from '@/styles/theme/components/input';
 import modalTheme from '@/styles/theme/components/modal';
+import radioTheme from '@/styles/theme/components/radio';
 import tabsTheme from '@/styles/theme/components/tabs';
 import { colors } from '@/styles/theme/constants/colors';
 import { fonts } from '@/styles/theme/constants/fonts';
@@ -21,6 +23,8 @@ const baseTheme = extendBaseTheme({
     Tabs: tabsTheme,
     Input: inputTheme,
     Button: buttonTheme,
+    Radio: radioTheme,
+    Drawer: drawerTheme,
   },
 });
 

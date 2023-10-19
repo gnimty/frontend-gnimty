@@ -10,6 +10,7 @@ const baseStyleControl = defineStyle({
   borderRadius: '2px',
   borderColor: 'gray500',
   bg: 'transparent',
+  margin: '3px',
 
   _checked: {
     bg: 'main',
@@ -21,13 +22,11 @@ const baseStyleControl = defineStyle({
   },
 });
 
-const baseStyleContainer = defineStyle({
-  _disabled: { cursor: 'not-allowed' },
-});
+const baseStyleContainer = defineStyle({});
 
 const baseStyleLabel = defineStyle({
+  marginLeft: '4px',
   userSelect: 'none',
-  _disabled: { opacity: 0.4 },
 });
 
 const baseStyleIcon = defineStyle({
@@ -46,10 +45,6 @@ const sizes = {
   default: helpers.definePartsStyle({
     control: defineStyle({
       boxSize: '18px',
-      margin: '3px',
-    }),
-    label: defineStyle({
-      marginLeft: '4px',
     }),
   }),
 };

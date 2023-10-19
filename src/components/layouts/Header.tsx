@@ -1,6 +1,7 @@
 import { useDisclosure } from '@chakra-ui/hooks';
+import { Button } from '@chakra-ui/react';
 
-import LoginModal from '@/components/pages/account/LoginModal';
+import AccountModal from '@/components/pages/account/AccountModal';
 
 import ActiveLink from '../common/ActiveLink';
 
@@ -34,12 +35,11 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* TODO: 디자인 시스템 버튼을 제대로 구현하면 그 때 컴포넌트 교체 */}
-        <button type="button" css={style.loginButton} onClick={onOpenLoginModal}>
+        <Button variant="default" size="md" width="80px" onClick={onOpenLoginModal}>
           로그인
-        </button>
+        </Button>
       </header>
-      <LoginModal isOpen={isOpenLoginModal} onClose={onCloseLoginModal} />
+      <AccountModal isOpen={isOpenLoginModal} onClose={onCloseLoginModal} />
     </>
   );
 }
