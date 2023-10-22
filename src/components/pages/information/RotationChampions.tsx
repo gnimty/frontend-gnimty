@@ -54,7 +54,15 @@ export default function RotationChampions() {
         {champions.map((champ) => (
           <VStack key={champ.name} as="li" gap="4px">
             <Image src={champ.image} alt="" width={80} height={80} css={{ borderRadius: '9999px' }} />
-            <Box w="80px" textStyle="t2" fontWeight="normal" textAlign="center">
+            <Box
+              w="80px"
+              textStyle="t2"
+              fontWeight="normal"
+              textAlign="center"
+              textOverflow="ellipsis"
+              overflow="hidden"
+              whiteSpace="nowrap"
+            >
               {champ.name}
             </Box>
           </VStack>
