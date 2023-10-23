@@ -15,7 +15,7 @@ jobs:
     outputs:
       docker_image: ${{ steps.write-vars.outputs.docker_image }}
       container_name: ${{ steps.write-vars.outputs.container_name }}
-      
+
     steps:
       - id: write-vars
         run: |
