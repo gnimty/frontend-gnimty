@@ -211,22 +211,22 @@ function Filter({ allOpen, toggleAll, detailOpen, toggleDetail }: FilterProps) {
         />
         <FilterIconBox onClick={handlePositionSelect} ref={ulRef}>
           <FilterIconItem data-position="every" selected={selected.includes('every')}>
-            <Unselected fill={selected.includes('every') ? '#fff' : ''} />
+            <Unselected fill={selected.includes('every') ? '#fff' : undefined} />
           </FilterIconItem>
           <FilterIconItem data-position="top" selected={selected.includes('top')}>
-            <PositionImage position="TOP" fill={selected.includes('top') ? '#fff' : ''} />
+            <PositionImage position="TOP" fill={selected.includes('top') ? '#fff' : undefined} />
           </FilterIconItem>
           <FilterIconItem data-position="jug" selected={selected.includes('jug')}>
-            <Jug />
+            <PositionImage position="JUNGLE" fill={selected.includes('jug') ? '#fff' : undefined} />
           </FilterIconItem>
           <FilterIconItem data-position="mid" selected={selected.includes('mid')}>
-            <Mid />
+            <PositionImage position="MIDDLE" fill={selected.includes('mid') ? '#fff' : undefined} />
           </FilterIconItem>
           <FilterIconItem data-position="bot" selected={selected.includes('bot')}>
-            <Bot />
+            <PositionImage position="BOTTOM" fill={selected.includes('bot') ? '#fff' : undefined} />
           </FilterIconItem>
           <FilterIconItem data-position="sup" selected={selected.includes('sup')}>
-            <Sup />
+            <PositionImage position="UTILITY" fill={selected.includes('sup') ? '#fff' : undefined} />
           </FilterIconItem>
         </FilterIconBox>
 
