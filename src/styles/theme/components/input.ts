@@ -70,8 +70,7 @@ const variantOutline = helpers.definePartsStyle((props) => {
         userSelect: 'all',
       },
       _invalid: {
-        borderColor: getColorVar(theme, ec, 'red800') as string,
-        boxShadow: `0 0 0 1px ${getColorVar(theme, ec)}`,
+        borderColor: getColorVar(theme, ec, '') as string,
       },
       _focusVisible: {
         zIndex: 1,

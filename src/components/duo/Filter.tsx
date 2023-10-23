@@ -11,12 +11,14 @@ import Top from '@/assets/icons/game/position/top.svg';
 import FilterSet from '@/assets/icons/system/filter-set.svg';
 import FilterIcon from '@/assets/icons/system/filter.svg';
 import ResetIcon from '@/assets/icons/system/reset.svg';
-import Unselected from '@/components/common/position-image/Unselected';
 import Select from '@/components/common/select/Select';
 import SpeechBubble from '@/components/common/SpeechBubble';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
+import PositionImage from '@/components/common/position-image/PositionImage';
+import Unselected from '@/components/common/position-image/Unselected';
+import { useTheme } from '@chakra-ui/react';
 
 const FilterWrapper = styled.div`
   width: 67.5rem;
@@ -131,6 +133,7 @@ interface FilterProps {
 }
 
 function Filter({ allOpen, toggleAll, detailOpen, toggleDetail }: FilterProps) {
+  const theme = useTheme();
   const [selected, setSelected] = useState<string[]>([]);
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
   const ulRef = useRef<HTMLUListElement>(null);
@@ -176,54 +179,54 @@ function Filter({ allOpen, toggleAll, detailOpen, toggleDetail }: FilterProps) {
         />
         <Select
           options={[
-            { text: '언랭크 이상', value: 'unranked', leftAsset: <TierImage tier="UNRANKED" fill /> },
-            { text: '아이언 이상', value: 'iron', leftAsset: <TierImage tier="iron" fill /> },
-            { text: '브론즈 이상', value: 'bronze', leftAsset: <TierImage tier="bronze" fill /> },
-            { text: '실버 이상', value: 'silver', leftAsset: <TierImage tier="silver" fill /> },
-            { text: '골드 이상', value: 'gold', leftAsset: <TierImage tier="gold" fill /> },
+            { text: '언랭크 이상', value: 'unranked', leftAsset: <TierImage tier="UNRANKED" fill sizes="20px" /> },
+            { text: '아이언 이상', value: 'iron', leftAsset: <TierImage tier="iron" fill sizes="20px" /> },
+            { text: '브론즈 이상', value: 'bronze', leftAsset: <TierImage tier="bronze" fill sizes="20px" /> },
+            { text: '실버 이상', value: 'silver', leftAsset: <TierImage tier="silver" fill sizes="20px" /> },
+            { text: '골드 이상', value: 'gold', leftAsset: <TierImage tier="gold" fill sizes="20px" /> },
             {
               text: '플래티넘 이상',
               value: 'platinum',
-              leftAsset: <TierImage tier="platinum" fill />,
+              leftAsset: <TierImage tier="platinum" fill sizes="20px" />,
             },
-            { text: '에메랄드 이상', value: 'emerald', leftAsset: <TierImage tier="emerald" fill /> },
+            { text: '에메랄드 이상', value: 'emerald', leftAsset: <TierImage tier="emerald" fill sizes="20px" /> },
             {
               text: '다이아 이상',
               value: 'diamond',
-              leftAsset: <TierImage tier="diamond" fill />,
+              leftAsset: <TierImage tier="diamond" fill sizes="20px" />,
             },
-            { text: '마스터 이상', value: 'master', leftAsset: <TierImage tier="master" fill /> },
+            { text: '마스터 이상', value: 'master', leftAsset: <TierImage tier="master" fill sizes="20px" /> },
             {
               text: '그마 이상',
               value: 'grandmaster',
-              leftAsset: <TierImage tier="grandmaster" fill />,
+              leftAsset: <TierImage tier="grandmaster" fill sizes="20px" />,
             },
             {
               text: '챌린저 이상',
               value: 'challenger',
-              leftAsset: <TierImage tier="challenger" fill />,
+              leftAsset: <TierImage tier="challenger" fill sizes="20px" />,
             },
           ]}
           css={{ width: '148px' }}
         />
         <FilterIconBox onClick={handlePositionSelect} ref={ulRef}>
           <FilterIconItem data-position="every" selected={selected.includes('every')}>
-            <Every />
+            <Unselected fill={selected.includes('every') ? '#fff' : undefined} />
           </FilterIconItem>
           <FilterIconItem data-position="top" selected={selected.includes('top')}>
-            <Top />
+            <PositionImage position="TOP" fill={selected.includes('top') ? '#fff' : undefined} />
           </FilterIconItem>
           <FilterIconItem data-position="jug" selected={selected.includes('jug')}>
-            <Jug />
+            <PositionImage position="JUNGLE" fill={selected.includes('jug') ? '#fff' : undefined} />
           </FilterIconItem>
           <FilterIconItem data-position="mid" selected={selected.includes('mid')}>
-            <Mid />
+            <PositionImage position="MIDDLE" fill={selected.includes('mid') ? '#fff' : undefined} />
           </FilterIconItem>
           <FilterIconItem data-position="bot" selected={selected.includes('bot')}>
-            <Bot />
+            <PositionImage position="BOTTOM" fill={selected.includes('bot') ? '#fff' : undefined} />
           </FilterIconItem>
           <FilterIconItem data-position="sup" selected={selected.includes('sup')}>
-            <Sup />
+            <PositionImage position="UTILITY" fill={selected.includes('sup') ? '#fff' : undefined} />
           </FilterIconItem>
         </FilterIconBox>
 

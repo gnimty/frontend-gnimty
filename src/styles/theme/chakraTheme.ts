@@ -1,5 +1,6 @@
 import { extendBaseTheme } from '@chakra-ui/react';
 
+import buttonTheme from '@/styles/theme/components/button';
 import checkboxTheme from '@/styles/theme/components/checkbox';
 import inputTheme from '@/styles/theme/components/input';
 import modalTheme from '@/styles/theme/components/modal';
@@ -19,6 +20,7 @@ const baseTheme = extendBaseTheme({
     Modal: modalTheme,
     Tabs: tabsTheme,
     Input: inputTheme,
+    Button: buttonTheme,
   },
 });
 
