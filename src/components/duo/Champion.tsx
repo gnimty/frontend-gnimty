@@ -25,7 +25,7 @@ const ChampionImageWrapper = styled.div<{ selected: boolean }>`
     z-index: 1;
     border-radius: 50%;
   }
-  span::after {
+  &::after {
     content: '';
     width: 100%;
     height: 100%;
@@ -39,13 +39,15 @@ const ChampionImageWrapper = styled.div<{ selected: boolean }>`
 `;
 
 const ChampionName = styled.span`
-  width: 2.5rem;
-  height: 1rem;
+  width: 40px;
+  height: 16px;
   font-size: ${({ theme }) => theme.fonts.body.fontSize};
   line-height: ${({ theme }) => theme.fonts.body.lineHeight};
   font-weight: 400;
   color: ${({ theme }) => theme.colors.gray700};
   text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 `;
 
@@ -80,7 +82,7 @@ const Champion = ({ championName, selected = false, onClick }: ChampionProps) =>
             <CheckIcon fill="#fff" width="70%" />
           </SelectedChecker>
         )}
-        <Image src={sprite} alt={championName} width={40} height={40} layout="responsive" />
+        <Image src={sprite} alt={championName} width={40} height={40} />
       </ChampionImageWrapper>
       <ChampionName>{championName}</ChampionName>
     </Container>

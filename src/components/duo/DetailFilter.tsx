@@ -48,11 +48,12 @@ const Content = styled.div`
 const ButtonWrapper = styled.div`
   position: fixed;
   bottom: 1.25rem;
-  width: 23.5rem;
+  width: inherit;
   margin: 0 auto;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 0.75rem;
+  padding: 0 1.25rem;
 `;
 
 const DetailFilterRow = styled.div`
@@ -98,9 +99,8 @@ const DetailFilterRowContent = styled.div<{ $flexColumn?: boolean; $justify?: bo
 
 const ChampionsWrapper = styled.div`
   width: 100%;
-  min-height: 0;
+  min-height: 60px;
   max-height: 8.25rem;
-  overflow-y: scroll;
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
@@ -140,6 +140,9 @@ function DetailFilter({ detailOpen, toggleDetail }: DetailFilterProps) {
   const [filteredChampions, setFilteredChampions] = useState<Champion[]>([]);
   const handleChampionSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
+    if (!value) {
+      return setFilteredChampions([]);
+    }
     const searchedChampions = championNames.filter((championName) => championName.includes(value));
     setFilteredChampions(searchedChampions.map((championName) => ({ championName, selected: false })));
   };
@@ -238,10 +241,26 @@ function DetailFilter({ detailOpen, toggleDetail }: DetailFilterProps) {
         </DetailFilterRow>
       </Content>
       <ButtonWrapper>
-        <Button size="medium" color={theme.colors.gray500} background={theme.colors.white}>
+        <Button
+          size="medium"
+          color={theme.colors.gray500}
+          background={theme.colors.white}
+          css={{
+            border: `1px solid ${theme.colors.gray200}`,
+            height: '48px',
+          }}
+        >
           초기화
         </Button>
-        <Button size="large" color={theme.colors.red800} background={theme.colors.white}>
+        <Button
+          size="large"
+          color={theme.colors.white}
+          background={theme.colors.red800}
+          css={{
+            height: '48px',
+            flex: '1',
+          }}
+        >
           저장
         </Button>
       </ButtonWrapper>

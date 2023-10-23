@@ -11,12 +11,14 @@ import Top from '@/assets/icons/game/position/top.svg';
 import FilterSet from '@/assets/icons/system/filter-set.svg';
 import FilterIcon from '@/assets/icons/system/filter.svg';
 import ResetIcon from '@/assets/icons/system/reset.svg';
-import Unselected from '@/components/common/position-image/Unselected';
 import Select from '@/components/common/select/Select';
 import SpeechBubble from '@/components/common/SpeechBubble';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
+import PositionImage from '@/components/common/position-image/PositionImage';
+import Unselected from '@/components/common/position-image/Unselected';
+import { useTheme } from '@chakra-ui/react';
 
 const FilterWrapper = styled.div`
   width: 67.5rem;
@@ -131,6 +133,7 @@ interface FilterProps {
 }
 
 function Filter({ allOpen, toggleAll, detailOpen, toggleDetail }: FilterProps) {
+  const theme = useTheme();
   const [selected, setSelected] = useState<string[]>([]);
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
   const ulRef = useRef<HTMLUListElement>(null);
@@ -208,10 +211,10 @@ function Filter({ allOpen, toggleAll, detailOpen, toggleDetail }: FilterProps) {
         />
         <FilterIconBox onClick={handlePositionSelect} ref={ulRef}>
           <FilterIconItem data-position="every" selected={selected.includes('every')}>
-            <Every />
+            <Unselected fill={selected.includes('every') ? '#fff' : ''} />
           </FilterIconItem>
           <FilterIconItem data-position="top" selected={selected.includes('top')}>
-            <Top />
+            <PositionImage position="TOP" fill={selected.includes('top') ? '#fff' : ''} />
           </FilterIconItem>
           <FilterIconItem data-position="jug" selected={selected.includes('jug')}>
             <Jug />
