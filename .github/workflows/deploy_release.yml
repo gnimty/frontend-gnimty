@@ -1,8 +1,8 @@
-name: Deploy Gnimty(dev)
+name: Deploy Gnimty(release)
 
 on:
   push:
-    branches: ['dev']
+    branches: ['release']
 
 jobs:
   ci:
