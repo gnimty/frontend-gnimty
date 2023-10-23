@@ -4,7 +4,6 @@ import Image from 'next/image';
 import type { SkinSaleRes } from '@/api/types';
 import Rp from '@/assets/images/rp.svg';
 
-
 export default function OnSaleSkins() {
   const onSaleSkins: SkinSaleRes[] = [
     {
