@@ -1,7 +1,14 @@
-import styled from 'styled-components';
+import Head from 'next/head';
 
-const MainWrapper = styled.div``;
+import Main from '@/components/pages/main/Main';
 
-export default function Home() {
-  return <MainWrapper>메인페이지</MainWrapper>;
+export default function MainRoute() {
+  return (
+    <>
+      <Head>
+        <title>그님티</title>
+      </Head>
+      <Main />
+    </>
+  );
 }

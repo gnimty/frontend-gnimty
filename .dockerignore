@@ -1,0 +1,14 @@
+.dockerignore
+.eslintrc.json
+.git/
+.github/
+.gitignore
+.next/
+.node-version
+.prettierrc.json
+.vscode/
+Dockerfile
+next-env.d.ts
+node_modules/
+README.md
+*.tsbuildinfo
