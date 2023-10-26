@@ -13,6 +13,11 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.contentstack.io',
+        pathname: '/v3/assets/**',
+      },
       // TODO: 챔피언 이미지 등의 리소스들을 어떻게 처리할지 결정나면 변경 혹은 삭제
       {
         protocol: 'https',

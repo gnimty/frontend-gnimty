@@ -42,3 +42,9 @@ export interface SkinSaleRes {
   skinImgUrl: string;
   discountedRate: number;
 }
+
+export interface PatchVersion {
+  version: string;
+  releaseNoteUrl: string;
+  releaseNoteImgUrl: string;
+}
