@@ -1,6 +1,7 @@
 import { Box, Center, Flex, HStack, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 
+import Ip from '@/assets/images/ip.svg';
 import Rp from '@/assets/images/rp.svg';
 
 import type { StackProps } from '@chakra-ui/react';
@@ -11,10 +12,11 @@ interface OnSaleCardProps extends StackProps {
   originRp: number;
   discountedRp: number;
   discountedRate: number;
+  originIp?: number;
 }
 
 export default function OnSaleCard(props: OnSaleCardProps) {
-  const { name, imgUrl, originRp, discountedRp, discountedRate, ...restProps } = props;
+  const { name, imgUrl, originRp, discountedRp, discountedRate, originIp, ...restProps } = props;
 
   return (
     <VStack gap="12px" {...restProps}>
@@ -53,6 +55,16 @@ export default function OnSaleCard(props: OnSaleCardProps) {
               {discountedRp}
             </Box>
           </HStack>
+          {originIp !== undefined ? (
+            <HStack gap="4px">
+              <Flex color="ip">
+                <Ip width={22} height={22} />
+              </Flex>
+              <Box textStyle="t1" fontWeight="bold" color="gray800">
+                {originIp}
+              </Box>
+            </HStack>
+          ) : null}
         </HStack>
       </HStack>
     </VStack>
