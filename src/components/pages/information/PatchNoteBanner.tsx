@@ -5,7 +5,7 @@ import patchVersion from '@/api/mocks/patchVersion';
 export default function PatchNoteBanner() {
   const data = patchVersion;
 
-  const majorMinorVersion = data.version.split('.', 2).join('.');
+  const majorMinorVersion = data.version.replace(/\.\d+$/, '');
 
   return (
     <Link
