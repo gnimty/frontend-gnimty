@@ -34,3 +34,11 @@ export interface ChampionDto {
   krName: string;
   enName: string;
 }
+
+export interface SkinSaleRes {
+  skinName: string;
+  originRp: number;
+  discountedRp: number;
+  skinImgUrl: string;
+  discountedRate: number;
+}

@@ -16,6 +16,12 @@ const nextConfig = {
       // TODO: 챔피언 이미지 등의 리소스들을 어떻게 처리할지 결정나면 변경 혹은 삭제
       {
         protocol: 'https',
+        hostname: 'cdn-store.leagueoflegends.co.kr',
+        pathname: '/images/v2/champion-splashes/*.jpg',
+      },
+      // TODO: 챔피언 이미지 등의 리소스들을 어떻게 처리할지 결정나면 변경 혹은 삭제
+      {
+        protocol: 'https',
         hostname: 'ddragon.leagueoflegends.com',
         pathname: '/cdn/**',
       },
