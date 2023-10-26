@@ -10,6 +10,8 @@ export default function PatchNoteBanner() {
   return (
     <Link
       href={data.releaseNoteUrl}
+      target="_blank"
+      rel="noreferrer noopener"
       display="block"
       w="1080px"
       h="320px"
