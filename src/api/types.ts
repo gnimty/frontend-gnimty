@@ -48,3 +48,13 @@ export interface PatchVersion {
   releaseNoteUrl: string;
   releaseNoteImgUrl: string;
 }
+
+export interface ChampionSaleRes {
+  championId: number;
+  enName: string;
+  krName: string;
+  originRp: number;
+  discountedRp: number;
+  discountedRate: number;
+  originIp: number;
+}
