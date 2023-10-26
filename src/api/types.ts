@@ -28,3 +28,9 @@ export interface SummonerEntry {
 }
 
 export type ChampionTier = 'OP' | '1' | '2' | '3' | '4' | '5' | 'RIP';
+
+export interface ChampionDto {
+  championId: number;
+  krName: string;
+  enName: string;
+}
