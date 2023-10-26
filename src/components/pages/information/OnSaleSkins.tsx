@@ -1,4 +1,4 @@
-import { Box, Center, Grid, HStack, VStack } from '@chakra-ui/react';
+import { Box, Center, Flex, Grid, HStack, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 
 import type { SkinSaleRes } from '@/api/types';
@@ -103,7 +103,9 @@ export default function OnSaleSkins() {
                 {skin.originRp}
               </Box>
               <HStack gap="4px">
-                <Rp width={22} height={22} color="#c79a3b" />
+                <Flex color="rp">
+                  <Rp width={22} height={22} />
+                </Flex>
                 <Box textStyle="t1" fontWeight="bold" color="gray800">
                   {skin.discountedRp}
                 </Box>
