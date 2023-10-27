@@ -1,4 +1,5 @@
 import '@/styles/reset.css';
+import '@/styles/scrollbar.css';
 import { ChakraBaseProvider } from '@chakra-ui/react';
 import createCache from '@emotion/cache';
 import { CacheProvider, Global, ThemeProvider } from '@emotion/react';
