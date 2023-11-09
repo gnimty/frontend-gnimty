@@ -28,3 +28,33 @@ export interface SummonerEntry {
 }
 
 export type ChampionTier = 'OP' | '1' | '2' | '3' | '4' | '5' | 'RIP';
+
+export interface ChampionDto {
+  championId: number;
+  krName: string;
+  enName: string;
+}
+
+export interface SkinSaleRes {
+  skinName: string;
+  originRp: number;
+  discountedRp: number;
+  skinImgUrl: string;
+  discountedRate: number;
+}
+
+export interface PatchVersion {
+  version: string;
+  releaseNoteUrl: string;
+  releaseNoteImgUrl: string;
+}
+
+export interface ChampionSaleRes {
+  championId: number;
+  enName: string;
+  krName: string;
+  originRp: number;
+  discountedRp: number;
+  discountedRate: number;
+  originIp: number;
+}

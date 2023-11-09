@@ -12,7 +12,7 @@ const links = [
   { name: '듀오 찾기', link: '' },
   { name: '챔피언 분석', link: '' },
   { name: '랭킹', link: '' },
-  { name: '할인/패치노트', link: '' },
+  { name: '할인/패치노트', link: '/information' },
 ];
 
 export default function Header() {
