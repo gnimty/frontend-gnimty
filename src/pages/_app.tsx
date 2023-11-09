@@ -2,6 +2,8 @@ import '@/styles/reset.css';
 import { ChakraBaseProvider } from '@chakra-ui/react';
 import createCache from '@emotion/cache';
 import { CacheProvider, Global, ThemeProvider } from '@emotion/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useState } from 'react';
 
 import BaseLayout from '@/components/layouts/BaseLayout';
 import chakraTheme from '@/styles/theme/chakraTheme';
@@ -23,16 +25,33 @@ const Fonts = () => (
 );
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            // 쿼리마다 개별적으로 설정
+            staleTime: Infinity,
+            refetchOnMount: false,
+            refetchOnWindowFocus: false,
+            refetchOnReconnect: false,
+          },
+        },
+      }),
+  );
+
   return (
-    <CacheProvider value={emotionCache}>
-      <ChakraBaseProvider theme={chakraTheme} resetCSS={false}>
-        <Fonts />
-        <ThemeProvider theme={emotionTheme}>
-          <BaseLayout>
-            <Component {...pageProps} />
-          </BaseLayout>
-        </ThemeProvider>
-      </ChakraBaseProvider>
-    </CacheProvider>
+    <QueryClientProvider client={queryClient}>
+      <CacheProvider value={emotionCache}>
+        <ChakraBaseProvider theme={chakraTheme} resetCSS={false}>
+          <Fonts />
+          <ThemeProvider theme={emotionTheme}>
+            <BaseLayout>
+              <Component {...pageProps} />
+            </BaseLayout>
+          </ThemeProvider>
+        </ChakraBaseProvider>
+      </CacheProvider>
+    </QueryClientProvider>
   );
 }
