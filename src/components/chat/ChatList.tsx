@@ -75,11 +75,10 @@ function Chat(props: ChatProps) {
 
 function ChatList() {
   return (
-    <VStack w="260px" h="100%" divider={<StackDivider color="gray100" />} spacing="1px">
-      <Chat {...CHATS[0]} />
-      {/* {CHATS.map((info) => (
+    <VStack w="260px" h="100%" divider={<StackDivider borderColor="gray100" />} spacing="1px">
+      {CHATS.map((info) => (
         <Chat key={info.username} {...info} />
-      ))} */}
+      ))}
     </VStack>
   );
 }

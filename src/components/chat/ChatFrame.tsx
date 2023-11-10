@@ -12,7 +12,7 @@ function ChatFrame(props: ChatFrameProps) {
       w="660px"
       h="520px"
       borderRadius="8px"
-      divider={<StackDivider color="gray100" />}
+      divider={<StackDivider borderColor="gray100" />}
       spacing="1px"
       bgColor="white"
     >
