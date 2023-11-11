@@ -1,20 +1,22 @@
 import { Grid } from '@chakra-ui/react';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
-import championSales from '@/apis/mocks/championSales';
+import onSaleChampionsQuery from '@/apis/queries/onSaleChampionsQuery';
+import championSplashUrl from '@/apis/utils/championSplashUrl';
 
 import OnSaleCard from './OnSaleCard';
 
 export default function OnSaleChampions() {
-  const onSaleChampions = championSales;
+  const { data } = useSuspenseQuery(onSaleChampionsQuery());
 
   return (
     <Grid as="ul" gap="12px" templateColumns="repeat(3, 352px)">
-      {onSaleChampions.map((champ) => (
+      {data.data.championSales.map((champ) => (
         <OnSaleCard
           key={champ.championId}
           as="li"
           name={champ.krName}
-          imgUrl={`https://cdn-store.leagueoflegends.co.kr/images/v2/champion-splashes/${champ.championId}000.jpg`}
+          imgUrl={championSplashUrl(champ.championId)}
           originRp={champ.originRp}
           discountedRp={champ.discountedRp}
           discountedRate={champ.discountedRate}

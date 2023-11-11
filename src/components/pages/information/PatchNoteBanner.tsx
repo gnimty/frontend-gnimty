@@ -1,15 +1,16 @@
 import { Box, Heading, Link, VStack } from '@chakra-ui/react';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
-import patchVersion from '@/apis/mocks/patchVersion';
+import releaseInformationQuery from '@/apis/queries/releaseInformationQuery';
 
 export default function PatchNoteBanner() {
-  const data = patchVersion;
+  const { data } = useSuspenseQuery(releaseInformationQuery());
 
-  const majorMinorVersion = data.version.replace(/\.\d+$/, '');
+  const majorMinorVersion = data.data.version.replace(/\.\d+$/, '');
 
   return (
     <Link
-      href={data.releaseNoteUrl}
+      href={data.data.releaseNoteUrl}
       target="_blank"
       rel="noreferrer noopener"
       display="block"
@@ -17,7 +18,7 @@ export default function PatchNoteBanner() {
       h="320px"
       pos="relative"
       borderRadius="8px"
-      background={`linear-gradient(0deg, rgb(0 0 0 / .4) 0%, rgb(0 0 0 / .4) 100%), url('${data.releaseNoteImgUrl}') no-repeat center/cover, lightgray`}
+      background={`linear-gradient(0deg, rgb(0 0 0 / .4) 0%, rgb(0 0 0 / .4) 100%), url('${data.data.releaseNoteImgUrl}') no-repeat center/cover, lightgray`}
       textDecor="none"
     >
       <VStack w="full" h="full" gap="12px" justifyContent="center">
