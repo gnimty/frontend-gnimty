@@ -1,5 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  rewrites:
+    process.env.NODE_ENV === 'development'
+      ? async () => [
+          {
+            source: '/api/:path*',
+            destination: 'https://gnimty.kro.kr/:path*',
+          },
+        ]
+      : undefined,
   reactStrictMode: true,
   compiler: {
     emotion: true,

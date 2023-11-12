@@ -15,6 +15,12 @@ export type Tier =
 
 export type Position = 'TOP' | 'JUNGLE' | 'MIDDLE' | 'BOTTOM' | 'UTILITY';
 
+export interface SoloTierDto {
+  tier: Tier;
+  division: number;
+  lp: number;
+}
+
 export interface SummonerEntry {
   id: number;
   profileImage?: string;
@@ -25,6 +31,29 @@ export interface SummonerEntry {
   positions: [Position] | [Position, Position];
   champions: string[];
   introduction: string;
+}
+
+export interface SummonerDto {
+  summonerName: string;
+  internalName: string;
+  summonerId: string;
+  puuid: string;
+  profileIconId: number;
+  summonerLevel: number;
+  soloTierInfo: SoloTierDto;
+  totalWin: number;
+  totalDefeat: number;
+  totalPlays: number;
+}
+
+export interface SummonerRankDto {
+  summoner: SummonerDto;
+  mostPlayedChampionIds: number[];
+  mostLanes: Position[];
+  winRate: number;
+  totalWin: number;
+  totalDefeat: number;
+  rank: number;
 }
 
 export type ChampionTier = 'OP' | '1' | '2' | '3' | '4' | '5' | 'RIP';
