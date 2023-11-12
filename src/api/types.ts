@@ -15,6 +15,8 @@ export type Tier =
 
 export type Position = 'TOP' | 'JUNGLE' | 'MIDDLE' | 'BOTTOM' | 'UTILITY';
 
+export type GameMode = 'RANK_SOLO' | 'RANK_FLEX' | 'BLIND';
+
 export interface SoloTierDto {
   tier: Tier;
   division: number;
