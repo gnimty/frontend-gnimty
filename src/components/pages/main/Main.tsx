@@ -1,4 +1,4 @@
-import { Flex, HStack, VStack, Link, Box } from '@chakra-ui/react';
+import { Flex, HStack, VStack, Link } from '@chakra-ui/react';
 
 import summoners from '@/api/mocks/summoners';
 import Logo from '@/assets/images/logo.svg';
