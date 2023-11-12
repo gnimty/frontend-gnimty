@@ -1,6 +1,7 @@
 import { Flex, HStack, VStack, Link } from '@chakra-ui/react';
 
 import summoners from '@/api/mocks/summoners';
+import type { GameMode } from '@/api/types';
 import Logo from '@/assets/images/logo.svg';
 import Select from '@/components/common/select/Select';
 import type { SelectOption } from '@/components/common/select/useSelect';
@@ -10,7 +11,7 @@ import RecentMatches from './RecentMatches';
 import Search from './Search';
 import UserCardLandscape from './UserCardLandscape';
 
-const queueSelectOptions: SelectOption[] = [
+const queueSelectOptions: SelectOption<GameMode>[] = [
   {
     text: '솔로 랭크',
     value: 'RANK_SOLO',
