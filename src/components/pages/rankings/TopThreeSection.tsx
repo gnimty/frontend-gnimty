@@ -1,7 +1,7 @@
 import { HStack } from '@chakra-ui/react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-import rankTiersQuery from '@/api/queries/rankTiersQuery';
+import rankTiersQuery from '@/apis/queries/rankTiersQuery';
 
 import TopThreeCard from './TopThreeCard';
 

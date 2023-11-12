@@ -1,7 +1,7 @@
 import { Flex, HStack, VStack, Link } from '@chakra-ui/react';
 
-import summoners from '@/api/mocks/summoners';
-import type { GameMode } from '@/api/types';
+import summoners from '@/apis/mocks/summoners';
+import type { GameMode } from '@/apis/types';
 import Logo from '@/assets/images/logo.svg';
 import Select from '@/components/common/select/Select';
 import type { SelectOption } from '@/components/common/select/useSelect';

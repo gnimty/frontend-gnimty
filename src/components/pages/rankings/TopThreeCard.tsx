@@ -1,12 +1,12 @@
 import { Box, Flex, HStack, Text } from '@chakra-ui/react';
 import Image from 'next/image';
 
-import championIdNameMap from '@/api/constants/championIdNameMap';
-import type { SummonerRankDto } from '@/api/types';
-import championIconUrl from '@/api/utils/championIconUrl';
-import championSplashUrl from '@/api/utils/championSplashUrl';
-import profileIconUrl from '@/api/utils/profileIconUrl';
-import shortTierName from '@/api/utils/shortTierName';
+import championIdNameMap from '@/apis/constants/championIdNameMap';
+import type { SummonerRankDto } from '@/apis/types';
+import championIconUrl from '@/apis/utils/championIconUrl';
+import championSplashUrl from '@/apis/utils/championSplashUrl';
+import profileIconUrl from '@/apis/utils/profileIconUrl';
+import shortTierName from '@/apis/utils/shortTierName';
 import firstPlaceFrame from '@/assets/images/first-place-frame.png';
 import secondPlaceFrame from '@/assets/images/second-place-frame.png';
 import thirdPlaceFrame from '@/assets/images/third-place-frame.png';
