@@ -1,12 +1,16 @@
 import { Grid } from '@chakra-ui/react';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import onSaleSkinsQuery from '@/apis/queries/onSaleSkinsQuery';
 
 import OnSaleCard from './OnSaleCard';
 
 export default function OnSaleSkins() {
-  const { data } = useSuspenseQuery(onSaleSkinsQuery());
+  const { data, status } = useQuery(onSaleSkinsQuery());
+
+  if (status !== 'success') {
+    return;
+  }
 
   return (
     <Grid as="ul" gap="12px" templateColumns="repeat(3, 352px)">

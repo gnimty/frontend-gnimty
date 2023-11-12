@@ -1,12 +1,16 @@
 import { Box, HStack, Heading, VStack } from '@chakra-ui/react';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 
 import rotationChampionsQuery from '@/apis/queries/rotationChampionsQuery';
 import championIconUrl from '@/apis/utils/championIconUrl';
 
 export default function RotationChampions() {
-  const { data } = useSuspenseQuery(rotationChampionsQuery());
+  const { data, status } = useQuery(rotationChampionsQuery());
+
+  if (status !== 'success') {
+    return;
+  }
 
   return (
     <VStack as="article" gap="24px">

@@ -1,10 +1,14 @@
 import { Box, Heading, Link, VStack } from '@chakra-ui/react';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import releaseInformationQuery from '@/apis/queries/releaseInformationQuery';
 
 export default function PatchNoteBanner() {
-  const { data } = useSuspenseQuery(releaseInformationQuery());
+  const { data, status } = useQuery(releaseInformationQuery());
+
+  if (status !== 'success') {
+    return;
+  }
 
   const majorMinorVersion = data.data.version.replace(/\.\d+$/, '');
 

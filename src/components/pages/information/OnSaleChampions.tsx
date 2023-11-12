@@ -1,5 +1,5 @@
 import { Grid } from '@chakra-ui/react';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import onSaleChampionsQuery from '@/apis/queries/onSaleChampionsQuery';
 import championSplashUrl from '@/apis/utils/championSplashUrl';
@@ -7,7 +7,11 @@ import championSplashUrl from '@/apis/utils/championSplashUrl';
 import OnSaleCard from './OnSaleCard';
 
 export default function OnSaleChampions() {
-  const { data } = useSuspenseQuery(onSaleChampionsQuery());
+  const { data, status } = useQuery(onSaleChampionsQuery());
+
+  if (status !== 'success') {
+    return;
+  }
 
   return (
     <Grid as="ul" gap="12px" templateColumns="repeat(3, 352px)">
