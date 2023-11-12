@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import type { ChampionTier } from '@/api/types';
+import type { ChampionTier } from '@/apis/types';
 
 import type { Theme } from '@emotion/react';
 

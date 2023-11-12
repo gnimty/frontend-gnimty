@@ -1,7 +1,7 @@
 import { Box, HStack, Heading, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 
-import champions from '@/api/mocks/champions';
+import champions from '@/apis/mocks/champions';
 
 export default function RotationChampions() {
   const rotationChamps = champions.slice(0, 10);

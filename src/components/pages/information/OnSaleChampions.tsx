@@ -1,6 +1,6 @@
 import { Grid } from '@chakra-ui/react';
 
-import championSales from '@/api/mocks/championSales';
+import championSales from '@/apis/mocks/championSales';
 
 import OnSaleCard from './OnSaleCard';
 

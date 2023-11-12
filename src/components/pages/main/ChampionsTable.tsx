@@ -1,8 +1,8 @@
 import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import Image from 'next/image';
 
-import championsPerPosition from '@/api/mocks/championsPerPosition';
-import type { Position } from '@/api/types';
+import championsPerPosition from '@/apis/mocks/championsPerPosition';
+import type { Position } from '@/apis/types';
 import ChampionTierBadge from '@/components/common/ChampionTierBadge';
 
 import * as style from './ChampionsTable.style';

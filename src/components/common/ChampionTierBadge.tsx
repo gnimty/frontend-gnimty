@@ -1,4 +1,4 @@
-import type { ChampionTier } from '@/api/types';
+import type { ChampionTier } from '@/apis/types';
 
 import * as style from './ChampionTierBadge.style';
 

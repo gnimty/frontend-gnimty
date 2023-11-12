@@ -1,6 +1,6 @@
 import { Box, Heading, Link, VStack } from '@chakra-ui/react';
 
-import patchVersion from '@/api/mocks/patchVersion';
+import patchVersion from '@/apis/mocks/patchVersion';
 
 export default function PatchNoteBanner() {
   const data = patchVersion;

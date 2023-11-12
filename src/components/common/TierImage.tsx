@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import type { Tier } from '@/api/types';
+import type { Tier } from '@/apis/types';
 import tiers from '@/assets/images/tiers/index';
 
 import type { ImageProps } from 'next/image';
