@@ -15,6 +15,8 @@ export type Tier =
 
 export type Position = 'TOP' | 'JUNGLE' | 'MIDDLE' | 'BOTTOM' | 'UTILITY';
 
+export type PositionFilter = Position | 'ALL';
+
 export type GameMode = 'RANK_SOLO' | 'RANK_FLEX' | 'BLIND';
 
 export interface SoloTierDto {
@@ -72,6 +74,15 @@ export interface ChampionDto {
   championId: number;
   krName: string;
   enName: string;
+}
+
+export interface ChampionTierDto {
+  championId: number;
+  winRate: number;
+  pickRate: number;
+  banRate: number;
+  plays: number;
+  tier: ChampionTier;
 }
 
 export interface SkinSaleRes {
