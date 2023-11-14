@@ -1,7 +1,7 @@
 import { Box, Flex, HStack, Text } from '@chakra-ui/react';
 import Image from 'next/image';
 
-import championIdNameMap from '@/apis/constants/championIdNameMap';
+import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import type { SummonerRankDto } from '@/apis/types';
 import championIconUrl from '@/apis/utils/championIconUrl';
 import championSplashUrl from '@/apis/utils/championSplashUrl';
@@ -110,7 +110,7 @@ export default function TopThreeCard(props: TopThreeCardProps) {
             {summonerRank.mostPlayedChampionIds.map((championId) => (
               <Image
                 key={championId}
-                src={championIconUrl(championIdNameMap[championId])}
+                src={championIconUrl(championIdEnNameMap[championId])}
                 alt=""
                 width={32}
                 height={32}

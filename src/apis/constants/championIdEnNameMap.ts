@@ -1,4 +1,4 @@
-const championIdNameMap: Record<number, string> = {
+const championIdEnNameMap: Record<number, string> = {
   1: 'Annie',
   2: 'Olaf',
   3: 'Galio',
@@ -166,4 +166,4 @@ const championIdNameMap: Record<number, string> = {
   950: 'Naafiri',
 };
 
-export default championIdNameMap;
+export default championIdEnNameMap;
