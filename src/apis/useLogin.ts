@@ -30,9 +30,13 @@ const useLogin = ({ onSuccess, onError }: UseLoginMutationProps) => {
     mutationFn: login,
     onSuccess: (response) => {
       onSuccess?.(response);
-      setStorageItem<AuthToken>(StorageAuthKey, {
-        accessToken: response.data.accessToken.slice(7),
-        refreshToken: response.data.refreshToken.slice(7),
+      setStorageItem<AuthToken>({
+        key: StorageAuthKey,
+        item: {
+          accessToken: response.data.accessToken.slice(7),
+          refreshToken: response.data.refreshToken.slice(7),
+        },
+        storage: localStorage,
       });
       setIsAuthenticated(true);
     },
