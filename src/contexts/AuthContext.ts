@@ -18,7 +18,7 @@ export const [AuthContextProvider, useAuthContext] = constate(() => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const token = getStorageItem<AuthToken>(StorageAuthKey);
+    const token = getStorageItem<AuthToken>({ key: StorageAuthKey, storage: localStorage });
     setIsAuthenticated(!!token);
 
     const responseInterceptor = httpRequest.interceptors.response.use(
@@ -37,12 +37,12 @@ export const [AuthContextProvider, useAuthContext] = constate(() => {
                   },
                 },
               );
-              setStorageItem<AuthToken>(StorageAuthKey, data);
+              setStorageItem<AuthToken>({ key: StorageAuthKey, item: data, storage: localStorage });
               originReq.headers.Authorization = `Bearer ${data.accessToken}`;
               return await httpRequest.request(originReq);
             }
           } catch (error) {
-            removeStorageItem(StorageAuthKey);
+            removeStorageItem({ key: StorageAuthKey, storage: localStorage });
             setIsAuthenticated(false);
             queryClient.clear();
           }
@@ -55,7 +55,7 @@ export const [AuthContextProvider, useAuthContext] = constate(() => {
     return () => {
       httpRequest.interceptors.response.eject(responseInterceptor);
     };
-  });
+  }, [queryClient]);
 
   return { isAuthenticated, setIsAuthenticated };
 });
