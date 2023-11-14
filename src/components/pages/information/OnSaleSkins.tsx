@@ -1,15 +1,20 @@
 import { Grid } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 
-import skinSales from '@/apis/mocks/skinSales';
+import onSaleSkinsQuery from '@/apis/queries/onSaleSkinsQuery';
 
 import OnSaleCard from './OnSaleCard';
 
 export default function OnSaleSkins() {
-  const onSaleSkins = skinSales;
+  const { data, status } = useQuery(onSaleSkinsQuery());
+
+  if (status !== 'success') {
+    return;
+  }
 
   return (
     <Grid as="ul" gap="12px" templateColumns="repeat(3, 352px)">
-      {onSaleSkins.map((skin) => (
+      {data.data.skinSales.map((skin) => (
         <OnSaleCard
           key={skin.skinName}
           as="li"
