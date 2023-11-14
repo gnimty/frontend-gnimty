@@ -1,7 +1,7 @@
 import { useDisclosure } from '@chakra-ui/hooks';
 import { Button } from '@chakra-ui/react';
 
-import LoginModal from '@/components/pages/account/LoginModal';
+import AccountModal from '@/components/pages/account/AccountModal';
 import { useAuthContext } from '@/contexts/AuthContext';
 
 import ActiveLink from '../common/ActiveLink';
@@ -43,7 +43,7 @@ export default function Header() {
           </Button>
         )}
       </header>
-      <LoginModal isOpen={isOpenLoginModal} onClose={onCloseLoginModal} />
+      <AccountModal isOpen={isOpenLoginModal} onClose={onCloseLoginModal} />
     </>
   );
 }
