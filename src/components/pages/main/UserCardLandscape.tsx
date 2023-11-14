@@ -30,7 +30,15 @@ export default function UserCardLandscape(props: UserCardLandscapeProps) {
   return (
     <article css={style.userCardLandscape}>
       <div css={style.summonerInfo}>
-        <Image src={profileIconUrl(summoner.iconId)} width={40} height={40} alt="" />
+        <Image
+          src={profileIconUrl(summoner.iconId)}
+          width={40}
+          height={40}
+          alt=""
+          css={{
+            borderRadius: '999px',
+          }}
+        />
         <div css={style.summonerNameWrapper}>
           <p css={style.summonerName}>{summoner.summonerName}</p>
           <button type="button" css={style.copyNameButton} aria-label="닉네임 복사">
