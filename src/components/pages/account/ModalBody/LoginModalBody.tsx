@@ -27,7 +27,7 @@ export default function LoginModalBody() {
   const [showPassword, setShowPassword] = useBoolean(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isFailed, setIsFailed] = useBoolean(false);
+  const [isFailed, setIsFailed] = useState(false);
 
   const { setCurrentPage, onClose } = useAccountModalPageContext();
 
@@ -36,7 +36,7 @@ export default function LoginModalBody() {
       onClose();
     },
     onError: (error) => {
-      setIsFailed.on();
+      setIsFailed(true);
     },
   });
 
