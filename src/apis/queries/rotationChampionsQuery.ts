@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query';
 
-import request from '../request';
+import httpRequest from '@/apis/httpRequest';
 
 import type { ChampionDto } from '../types';
 
@@ -14,7 +14,7 @@ const rotationChampionsQuery = () =>
   queryOptions({
     queryKey: ['rotationChampions'],
     async queryFn() {
-      const res = await request.get<RotationChampionsResponse>('/asset/rotation');
+      const res = await httpRequest.get<RotationChampionsResponse>('/asset/rotation');
       return res.data;
     },
   });
