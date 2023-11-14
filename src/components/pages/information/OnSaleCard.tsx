@@ -36,7 +36,7 @@ export default function OnSaleCard(props: OnSaleCardProps) {
           fontWeight="bold"
           color="white"
         >
-          -{discountedRate}%
+          -{Math.floor(discountedRate * 100)}%
         </Center>
       </Box>
       <HStack w="352px" px="12px" justifyContent="space-between" gap="12px">
