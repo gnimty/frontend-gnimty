@@ -4,6 +4,7 @@ const baseStyle = defineStyle({
   borderRadius: '4px',
   bg: 'main',
   _disabled: {
+    cursor: 'default',
     boxShadow: 'none',
     bg: 'gray200',
     color: 'gray500',
