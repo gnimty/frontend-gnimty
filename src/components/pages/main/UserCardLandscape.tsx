@@ -55,41 +55,26 @@ export default function UserCardLandscape(props: UserCardLandscapeProps) {
         <p css={style.leaguePoints}>{Intl.NumberFormat().format(summoner.lp)}LP</p>
       </div>
       <ol css={style.positionInfo}>
-        <li css={style.positionItem}>
-          <PositionImage position={summoner.frequentLane1} width={24} height={24} />
-        </li>
-        <li css={style.positionItem}>
-          <PositionImage position={summoner.frequentLane2} width={24} height={24} />
-        </li>
+        {[summoner.frequentLane1, summoner.frequentLane2].map((position) => (
+          <li key={position} css={style.positionItem}>
+            <PositionImage position={position} width={24} height={24} />
+          </li>
+        ))}
       </ol>
       <ol css={style.champions}>
-        <li css={style.championItem}>
-          <Image
-            src={championIconUrl(championIdEnNameMap[summoner.frequentChampionId1])}
-            alt={championIdKrNameMap[summoner.frequentChampionId1]}
-            width={32}
-            height={32}
-            css={style.championImage}
-          />
-        </li>
-        <li css={style.championItem}>
-          <Image
-            src={championIconUrl(championIdEnNameMap[summoner.frequentChampionId2])}
-            alt={championIdKrNameMap[summoner.frequentChampionId2]}
-            width={32}
-            height={32}
-            css={style.championImage}
-          />
-        </li>
-        <li css={style.championItem}>
-          <Image
-            src={championIconUrl(championIdEnNameMap[summoner.frequentChampionId3])}
-            alt={championIdKrNameMap[summoner.frequentChampionId3]}
-            width={32}
-            height={32}
-            css={style.championImage}
-          />
-        </li>
+        {[summoner.frequentChampionId1, summoner.frequentChampionId2, summoner.frequentChampionId3].map(
+          (championId) => (
+            <li key={championId} css={style.championItem}>
+              <Image
+                src={championIconUrl(championIdEnNameMap[championId])}
+                alt={championIdKrNameMap[championId]}
+                width={32}
+                height={32}
+                css={style.championImage}
+              />
+            </li>
+          ),
+        )}
       </ol>
       <p css={style.introduction}>{summoner.introduction}</p>
       <button type="button" aria-label="채팅하기" onClick={handleChatButtonClick} css={style.chatButton}>
