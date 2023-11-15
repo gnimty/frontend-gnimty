@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query';
 
-import request from '../request';
+import httpRequest from '@/apis/httpRequest';
 
 import type { SkinSaleRes } from '../types';
 
@@ -14,7 +14,7 @@ const onSaleSkinsQuery = () =>
   queryOptions({
     queryKey: ['onSaleSkins'],
     async queryFn() {
-      const res = await request.get<OnSaleSkinsResponse>('/asset/sale/skin');
+      const res = await httpRequest.get<OnSaleSkinsResponse>('/asset/sale/skin');
       return res.data;
     },
   });
