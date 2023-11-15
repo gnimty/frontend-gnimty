@@ -1,6 +1,6 @@
 import type { SoloTierDto } from '../types';
 
-export default function shortTierName(soloTier: SoloTierDto) {
+export default function shortTierName(soloTier: Omit<SoloTierDto, 'lp'>) {
   const { tier, division } = soloTier;
 
   switch (tier) {

@@ -1,8 +1,12 @@
 import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 
-import championsPerPosition from '@/apis/mocks/championsPerPosition';
+import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
+import championIdKrNameMap from '@/apis/constants/championIdKrNameMap';
+import championsTierQuery from '@/apis/queries/championsTierQuery';
 import type { Position } from '@/apis/types';
+import championIconUrl from '@/apis/utils/championIconUrl';
 import ChampionTierBadge from '@/components/common/ChampionTierBadge';
 
 import * as style from './ChampionsTable.style';
@@ -18,8 +22,11 @@ interface ChampionTabPanelProps {
 
 function ChampionTabPanel(props: ChampionTabPanelProps) {
   const { position } = props;
+  const { data, status } = useQuery(championsTierQuery({ position, brief: true }));
 
-  const champions = championsPerPosition[position];
+  if (status !== 'success') {
+    return;
+  }
 
   return (
     <TabPanel>
@@ -34,18 +41,24 @@ function ChampionTabPanel(props: ChampionTabPanelProps) {
           </tr>
         </thead>
         <tbody css={style.tableHeadBody}>
-          {champions.map((champion, i) => (
-            <tr key={champion.name} css={style.tableRow}>
+          {data.data.champions.map((champion, i) => (
+            <tr key={champion.championId} css={style.tableRow}>
               <td css={style.championRanking}>{i + 1}</td>
               <td css={style.championNameAndImage}>
-                <Image src={champion.image} alt="" width={32} height={32} css={style.championImage} />
-                <span css={style.championName}>{champion.name}</span>
+                <Image
+                  src={championIconUrl(championIdEnNameMap[champion.championId])}
+                  alt=""
+                  width={32}
+                  height={32}
+                  css={style.championImage}
+                />
+                <span css={style.championName}>{championIdKrNameMap[champion.championId]}</span>
               </td>
               <td css={style.championTier}>
                 <ChampionTierBadge tier={champion.tier} />
               </td>
-              <td css={style.percent}>{champion.winPercent}%</td>
-              <td css={style.percent}>{champion.pickRate}%</td>
+              <td css={style.percent}>{(champion.winRate * 100).toFixed(2)}%</td>
+              <td css={style.percent}>{(champion.pickRate * 100).toFixed(2)}%</td>
             </tr>
           ))}
         </tbody>

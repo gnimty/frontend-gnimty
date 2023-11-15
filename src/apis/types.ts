@@ -15,6 +15,8 @@ export type Tier =
 
 export type Position = 'TOP' | 'JUNGLE' | 'MIDDLE' | 'BOTTOM' | 'UTILITY';
 
+export type PositionFilter = Position | 'ALL';
+
 export type GameMode = 'RANK_SOLO' | 'RANK_FLEX' | 'BLIND';
 
 export interface SoloTierDto {
@@ -23,16 +25,24 @@ export interface SoloTierDto {
   lp: number;
 }
 
-export interface SummonerEntry {
+export interface RecommendedSummonersEntry {
   id: number;
-  profileImage?: string;
-  name: string;
+  summonerName: string;
   status: Status;
-  tier: Tier;
-  leaguePoints: number;
-  positions: [Position] | [Position, Position];
-  champions: string[];
+  isMain: boolean;
+  puuid: string;
+  queue: Tier;
+  lp: number;
+  division: number;
+  mmr: number;
+  frequentLane1: Position;
+  frequentLane2: Position;
+  frequentChampionId1: number;
+  frequentChampionId2: number;
+  frequentChampionId3: number;
   introduction: string;
+  upCount: number;
+  iconId: number;
 }
 
 export interface SummonerDto {
@@ -64,6 +74,15 @@ export interface ChampionDto {
   championId: number;
   krName: string;
   enName: string;
+}
+
+export interface ChampionTierDto {
+  championId: number;
+  winRate: number;
+  pickRate: number;
+  banRate: number;
+  plays: number;
+  tier: ChampionTier;
 }
 
 export interface SkinSaleRes {
