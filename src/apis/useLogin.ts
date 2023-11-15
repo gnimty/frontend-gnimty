@@ -6,7 +6,7 @@ import type { AuthToken } from '@/contexts/AuthContext';
 import { StorageAuthKey, useAuthContext } from '@/contexts/AuthContext';
 import { setStorageItem } from '@/utils/storage';
 
-interface UseLoginMutationProps extends BaseMutationProps<LoginResponse> {}
+interface UseLoginMutationProps extends BaseMutationProps<LoginResponse, Error, LoginRequest> {}
 
 interface LoginRequestBody {
   email: string;
@@ -28,8 +28,8 @@ const useLogin = ({ onSuccess, onError }: UseLoginMutationProps) => {
   const { setIsAuthenticated } = useAuthContext();
   const mutation = useMutation({
     mutationFn: login,
-    onSuccess: (response) => {
-      onSuccess?.(response);
+    onSuccess: (response, variables, context) => {
+      onSuccess?.(response, variables, context);
       setStorageItem<AuthToken>({
         key: StorageAuthKey,
         item: {
@@ -40,8 +40,8 @@ const useLogin = ({ onSuccess, onError }: UseLoginMutationProps) => {
       });
       setIsAuthenticated(true);
     },
-    onError: (error) => {
-      onError?.(error);
+    onError: (error, variables, context) => {
+      onError?.(error, variables, context);
       setIsAuthenticated(false);
     },
   });
