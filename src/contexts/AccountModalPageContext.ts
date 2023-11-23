@@ -8,7 +8,7 @@ export type TermsType = {
   contents: string;
 };
 
-type AccountPage = 'LOGIN' | 'SIGNUP' | 'FIND_PW' | 'POLICY' | 'SUCCESS' | 'SET_PW';
+type AccountPage = 'LOGIN' | 'SIGNUP' | 'FIND_PW' | 'TERMS' | 'SUCCESS' | 'SET_PW';
 
 export type AuthStateType =
   | 'PREPARE' // 이메일 입력 전
@@ -17,22 +17,34 @@ export type AuthStateType =
   | 'AUTH_FAIL' // 인증번호 불일치
   | 'SUCCESS'; // 인증 완료
 
-export interface SignupFormData {
+export interface AuthEmailFormData {
   email: string;
   authCode: string;
   authState: AuthStateType;
+}
+
+export interface SignupFormData {
+  authEmailFormData: AuthEmailFormData;
   password: string;
   checkedItems: boolean[];
 }
 
 type CurrentPageType = {
   page: AccountPage;
-  signupFormData?: SignupFormData;
-  termsData?: TermsType;
 };
 
 export const [AccountModalPageProvider, useAccountModalPageContext] = constate((props: { onClose: () => void }) => {
   const [currentPage, setCurrentPage] = useState<CurrentPageType>({ page: 'LOGIN' });
+  const [signupFormData, setSignupFormData] = useState<SignupFormData>();
+  const [termsData, setTermsData] = useState<TermsType>();
 
-  return { currentPage, setCurrentPage, onClose: props.onClose };
+  return {
+    onClose: props.onClose,
+    currentPage,
+    setCurrentPage,
+    signupFormData,
+    setSignupFormData,
+    termsData,
+    setTermsData,
+  };
 });

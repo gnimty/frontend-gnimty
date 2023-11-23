@@ -35,7 +35,7 @@ export default function LoginModalBody() {
     onSuccess: () => {
       onClose();
     },
-    onError: (error) => {
+    onError: () => {
       setIsFailed(true);
     },
   });
