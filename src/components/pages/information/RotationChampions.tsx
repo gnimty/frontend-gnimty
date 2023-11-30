@@ -17,7 +17,7 @@ export default function RotationChampions() {
       <Heading as="h2" textStyle="t2" fontWeight="bold">
         이번주 로테이션 챔피언
       </Heading>
-      <HStack as="ul" gap="16px">
+      <HStack as="ul" gap="16px" w="1040px" flexWrap="wrap" justifyContent="center">
         {data.data.champions.map((champ) => (
           <VStack key={champ.championId} as="li" gap="4px">
             <Image src={championIconUrl(champ.enName)} alt="" width={80} height={80} css={{ borderRadius: '9999px' }} />
