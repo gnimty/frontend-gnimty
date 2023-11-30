@@ -10,7 +10,7 @@ const tierBackground = (theme: Theme): Record<ChampionTier, string> => ({
   '3': theme.colors.yellow800,
   '4': theme.colors.green800,
   '5': theme.colors.blue800,
-  OP: '',
+  OP: theme.colors.purple800,
   RIP: '',
 });
 
