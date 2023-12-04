@@ -7,13 +7,14 @@ const baseStyle = helpers.definePartsStyle({
   tab: {
     textStyle: 't2',
     fontWeight: 'regular',
+    color: 'gray700',
     py: '16px',
     textAlign: 'center',
     borderWidth: 0,
     _selected: {
       fontWeight: 'bold',
-      borderBottom: '1px solid',
-      borderBottomColor: 'gray800',
+      color: 'gray800',
+      boxShadow: 'inset 0 -1px 0 0',
     },
   },
 });

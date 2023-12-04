@@ -11,10 +11,11 @@ interface ActiveLinkProps extends LinkProps, Omit<ComponentPropsWithoutRef<'a'>,
 }
 
 export default function ActiveLink(props: ActiveLinkProps) {
-  const { inActiveCSS, activeCSS, ...restProps } = props;
-
+  const { inActiveCSS, activeCSS, href, ...restProps } = props;
   const router = useRouter();
-  const isActive = router.asPath === props.href;
+  const hrefPathname = typeof href === 'string' ? href.split('?')[0] : href.pathname;
 
-  return <Link css={isActive ? activeCSS : inActiveCSS} {...restProps} />;
+  const isActive = router.pathname === hrefPathname;
+
+  return <Link css={isActive ? activeCSS : inActiveCSS} href={href} {...restProps} />;
 }

@@ -1,5 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  rewrites:
+    process.env.NODE_ENV === 'development'
+      ? async () => [
+          {
+            source: '/api/:path*',
+            destination: 'https://gnimty.kro.kr/:path*',
+          },
+        ]
+      : undefined,
   reactStrictMode: true,
   compiler: {
     emotion: true,
@@ -13,6 +22,17 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.contentstack.io',
+        pathname: '/v3/assets/**',
+      },
+      // TODO: 챔피언 이미지 등의 리소스들을 어떻게 처리할지 결정나면 변경 혹은 삭제
+      {
+        protocol: 'https',
+        hostname: 'cdn-store.leagueoflegends.co.kr',
+        pathname: '/images/v2/champion-splashes/*.jpg',
+      },
       // TODO: 챔피언 이미지 등의 리소스들을 어떻게 처리할지 결정나면 변경 혹은 삭제
       {
         protocol: 'https',

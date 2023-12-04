@@ -7,9 +7,9 @@ import useSelect from './useSelect';
 import type { SelectOption } from './useSelect';
 import type { ComponentPropsWithoutRef } from 'react';
 
-interface OptionProps extends Pick<SelectOption, 'text' | 'leftAsset'>, ComponentPropsWithoutRef<'div'> {}
+interface OptionProps<T> extends Pick<SelectOption<T>, 'text' | 'leftAsset'>, ComponentPropsWithoutRef<'div'> {}
 
-function Option(props: OptionProps) {
+function Option<T>(props: OptionProps<T>) {
   const { text, leftAsset, ...restProps } = props;
   return (
     <div css={style.optionContent} {...restProps}>
@@ -19,9 +19,9 @@ function Option(props: OptionProps) {
   );
 }
 
-interface SelectProps extends Omit<ComponentPropsWithoutRef<'div'>, 'onChange'> {
-  options: SelectOption[];
-  onChange?: (value: string) => void;
+interface SelectProps<T> extends Omit<ComponentPropsWithoutRef<'div'>, 'onChange'> {
+  options: SelectOption<T>[];
+  onChange?: (value: T) => void;
 }
 
 /**
@@ -29,10 +29,10 @@ interface SelectProps extends Omit<ComponentPropsWithoutRef<'div'>, 'onChange'> 
  * 사용하지 않으면 선택된 옵션의 width에 따라 컴포넌트의 크기가 유동적으로 바뀌어
  * 사용자에게 나쁜 경험을 줍니다.
  */
-export default function Select(props: SelectProps) {
+export default function Select<T extends string>(props: SelectProps<T>) {
   const { options, onChange, ...restProps } = props;
 
-  const { isOpened, selectedValue, selectedOption, toggleDropdown, onOptionClick } = useSelect({
+  const { isOpened, selectedValue, selectedOption, toggleDropdown, onOptionClick } = useSelect<T>({
     options,
     onChange,
   });

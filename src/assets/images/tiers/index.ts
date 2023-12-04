@@ -1,4 +1,4 @@
-import type { Tier } from '@/api/types';
+import type { Tier } from '@/apis/types';
 
 import bronze from './bronze.png';
 import challenger from './challenger.png';
