@@ -1,6 +1,6 @@
 import { Box, HStack, Image, StackDivider, VStack } from '@chakra-ui/react';
+
 import StatusIndicator from '@/components/common/StatusIndicator';
-import { useEffect, useState } from 'react';
 
 const CHATS: {
   profileImg: string;
@@ -33,29 +33,21 @@ interface ChatProps {
   selected: boolean;
 }
 
-function Chat(props: ChatProps) {
-  const { profileImg, username, status, topMsg, selected } = props;
-  const [isOnHover, setIsOnHover] = useState(false);
-  const [bgColor, setBgColor] = useState('white');
-
-  useEffect(() => {
-    if (selected) {
-      setBgColor('main');
-    }
-    if (isOnHover) {
-      setBgColor('gray100');
-    }
-  }, [isOnHover, selected]);
+function Chat({ profileImg, username, status, topMsg }: ChatProps) {
   return (
     <HStack
       w="260px"
       h="64px"
-      bgColor={bgColor}
+      bgColor="white"
       p="12px 20px"
       flex="row"
       gap="12px"
-      onMouseEnter={() => setIsOnHover(true)}
-      onMouseLeave={() => setIsOnHover(false)}
+      _hover={{
+        bg: 'gray100',
+      }}
+      _selected={{
+        bg: 'main',
+      }}
     >
       <Image src={profileImg} alt={username} w="40px" h="40px" borderRadius="50%" />
       <VStack h="40px" gap="4px">

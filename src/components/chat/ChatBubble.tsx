@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 
 import ChatIcon from '@/assets/icons/system/chat.svg';
+
 import ChatFrame from './ChatFrame';
 
 const ChatBubbleContainer = styled.div<{ $open: boolean }>`

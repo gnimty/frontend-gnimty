@@ -1,4 +1,5 @@
 import { HStack, StackDivider } from '@chakra-ui/react';
+
 import ChatList from './ChatList';
 import CurrentChat from './CurrentChat';
 

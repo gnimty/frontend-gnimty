@@ -1,6 +1,7 @@
 import { StackDivider, VStack } from '@chakra-ui/react';
-import Header from './Header';
+
 import Body from './Body';
+import Header from './Header';
 
 interface ChatFrameProps {
   closeChat: () => void;

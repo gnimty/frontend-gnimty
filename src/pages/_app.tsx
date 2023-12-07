@@ -6,13 +6,13 @@ import { CacheProvider, Global, ThemeProvider } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import ChatBubble from '@/components/chat/ChatBubble';
 import BaseLayout from '@/components/layouts/BaseLayout';
 import { AuthContextProvider } from '@/contexts/AuthContext';
 import chakraTheme from '@/styles/theme/chakraTheme';
 import emotionTheme from '@/styles/theme/emotionTheme';
 
 import type { AppProps } from 'next/app';
-import ChatBubble from '@/components/chat/ChatBubble';
 
 const emotionCache = createCache({
   key: 'css',

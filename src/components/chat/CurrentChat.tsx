@@ -1,4 +1,5 @@
 import { VStack } from '@chakra-ui/react';
+
 import ChatInput from './ChatInput';
 
 function CurrentChat() {
