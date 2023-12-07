@@ -6,8 +6,8 @@ import * as style from './Footer.style';
 const links = [
   { name: '공지사항', link: '' },
   { name: '팀 소개', link: '' },
-  { name: '이용 약관', link: '' },
-  { name: '개인정보처리방침', link: '' },
+  { name: '이용 약관', link: '/terms-of-service' },
+  { name: '개인정보처리방침', link: '/privacy-policy' },
 ];
 
 const Footer = () => (

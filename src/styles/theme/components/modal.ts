@@ -61,7 +61,6 @@ const baseStyleCloseButton = defineStyle({
 const baseStyleBody = defineStyle((props) => {
   const { scrollBehavior } = props;
   return {
-    px: '40px',
     flex: '1',
     overflow: scrollBehavior === 'inside' ? 'auto' : undefined,
   };
