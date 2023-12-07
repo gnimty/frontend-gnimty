@@ -1,6 +1,7 @@
-/**
- * 최신 버전은 다음 링크에서 확인 가능: {@link https://ddragon.leagueoflegends.com/api/versions.json}
- */
-const dataDragonVersion = '13.23.1';
+import { getReleaseInformation } from '../queries/releaseInformationQuery';
+
+const releaseInformation = await getReleaseInformation();
+
+const dataDragonVersion = releaseInformation.data.version;
 
 export default dataDragonVersion;
