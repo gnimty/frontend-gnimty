@@ -15,6 +15,9 @@ function ChatFrame(props: ChatFrameProps) {
       divider={<StackDivider borderColor="gray100" />}
       spacing="1px"
       bgColor="white"
+      position="absolute"
+      right="10%"
+      bottom="calc(10% + 52px)"
     >
       <Header closeChat={props.closeChat} />
       <Body />
