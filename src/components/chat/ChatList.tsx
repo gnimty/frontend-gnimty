@@ -33,14 +33,14 @@ interface ChatProps {
   selected: boolean;
 }
 
-function Chat({ profileImg, username, status, topMsg }: ChatProps) {
+function Chat({ profileImg, username, status, topMsg, selected }: ChatProps) {
   return (
     <HStack
+      aria-selected={selected}
       w="260px"
       h="64px"
       bgColor="white"
       p="12px 20px"
-      flex="row"
       gap="12px"
       _hover={{
         bg: 'gray100',
