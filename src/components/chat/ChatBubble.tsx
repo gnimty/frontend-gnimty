@@ -3,6 +3,8 @@ import { useState } from 'react';
 
 import ChatIcon from '@/assets/icons/system/chat.svg';
 
+import ChatFrame from './ChatFrame';
+
 const ChatBubbleContainer = styled.div<{ $open: boolean }>`
   position: fixed;
   right: 10%;
@@ -19,9 +21,11 @@ const ChatBubbleContainer = styled.div<{ $open: boolean }>`
 
 function ChatBubble() {
   const [chatOpen, setChatOpen] = useState(false);
+  const closeChat = () => setChatOpen(false);
   return (
     <ChatBubbleContainer $open={chatOpen} onClick={() => setChatOpen((prev) => !prev)}>
       <ChatIcon color="#fff" width="36px" height="36px" />
+      {chatOpen && <ChatFrame closeChat={closeChat} />}
     </ChatBubbleContainer>
   );
 }

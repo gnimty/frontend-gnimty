@@ -1,10 +1,12 @@
 import '@/styles/reset.css';
+import '@/styles/scrollbar.css';
 import { ChakraBaseProvider } from '@chakra-ui/react';
 import createCache from '@emotion/cache';
 import { CacheProvider, Global, ThemeProvider } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import ChatBubble from '@/components/chat/ChatBubble';
 import BaseLayout from '@/components/layouts/BaseLayout';
 import { AuthContextProvider } from '@/contexts/AuthContext';
 import chakraTheme from '@/styles/theme/chakraTheme';
@@ -51,6 +53,7 @@ export default function App({ Component, pageProps }: AppProps) {
               <BaseLayout>
                 <Component {...pageProps} />
               </BaseLayout>
+              <ChatBubble />
             </AuthContextProvider>
           </ThemeProvider>
         </ChakraBaseProvider>
