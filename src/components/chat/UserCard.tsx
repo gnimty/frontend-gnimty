@@ -1,9 +1,10 @@
 import { Avatar, Box, HStack, VStack, useDisclosure } from '@chakra-ui/react';
-import { Position, Tier } from '@/apis/types';
 
+import type { Position, Tier } from '@/apis/types';
 import CopyIcon from '@/assets/icons/system/copy.svg';
-import TierImage from '../common/TierImage';
+
 import PositionImage from '../common/position-image/PositionImage';
+import TierImage from '../common/TierImage';
 
 interface RankInfo {
   tier: Tier;
@@ -60,7 +61,7 @@ function UserCard({ username, hashtag, avatarUrl, soloRankInfo, flexRankInfo }: 
 }
 
 function RankInfo({ type, rankInfo }: { type: 'solo' | 'flex'; rankInfo: RankInfo }) {
-  const { tier, division, lp, mainPosition, subPosition } = rankInfo;
+  const { tier, lp, mainPosition, subPosition } = rankInfo;
   return (
     <VStack spacing="8px" align="start">
       <Box textStyle="body" color="gray500">

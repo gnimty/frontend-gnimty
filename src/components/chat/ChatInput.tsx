@@ -1,4 +1,4 @@
-import { Box, HStack, Input, StackDivider, VStack, useDisclosure } from '@chakra-ui/react';
+import { Box, HStack, Input, VStack, useDisclosure } from '@chakra-ui/react';
 
 import EditVerticalIcon from '@/assets/icons/system/edit-vertical.svg';
 

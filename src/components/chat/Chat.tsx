@@ -1,9 +1,11 @@
 import { Box, HStack } from '@chakra-ui/react';
+
 import ChatLeft from '@/assets/icons/system/chatLeft.svg';
 import ChatRight from '@/assets/icons/system/chatRight.svg';
-import { ChatInfo } from './CurrentChat';
 
-function Chat({ type, message, date }: ChatInfo) {
+import { type ChatInfo } from './CurrentChat';
+
+function Chat({ type, message }: ChatInfo) {
   return (
     <HStack
       p="10px 16px"

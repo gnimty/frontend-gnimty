@@ -1,9 +1,9 @@
+import { useDisclosure } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 import ChatIcon from '@/assets/icons/system/chat.svg';
 
 import ChatFrame from './ChatFrame';
-import { useDisclosure } from '@chakra-ui/react';
 
 const ChatBubbleContainer = styled.div<{ $open: boolean }>`
   position: fixed;
@@ -20,7 +20,7 @@ const ChatBubbleContainer = styled.div<{ $open: boolean }>`
 `;
 
 function ChatBubble() {
-  const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
+  const { isOpen, onClose, onToggle } = useDisclosure();
   return (
     <ChatBubbleContainer $open={isOpen}>
       <ChatIcon color="#fff" width="36px" height="36px" onClick={onToggle} />

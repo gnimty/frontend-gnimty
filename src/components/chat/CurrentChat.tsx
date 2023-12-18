@@ -1,8 +1,8 @@
 import { Box, VStack } from '@chakra-ui/react';
 
+import Chat from './Chat';
 import ChatInput from './ChatInput';
 import UserCard from './UserCard';
-import Chat from './Chat';
 
 export interface ChatInfo {
   type: 'incoming' | 'outgoing';
