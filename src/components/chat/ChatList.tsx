@@ -36,6 +36,7 @@ interface ChatProps {
 function Chat({ profileImg, username, status, topMsg, selected }: ChatProps) {
   return (
     <HStack
+      role="option"
       aria-selected={selected}
       w="260px"
       h="64px"
@@ -67,7 +68,7 @@ function Chat({ profileImg, username, status, topMsg, selected }: ChatProps) {
 
 function ChatList() {
   return (
-    <VStack w="260px" h="100%" divider={<StackDivider borderColor="gray100" />} spacing="1px">
+    <VStack role="listbox" w="260px" h="100%" divider={<StackDivider borderColor="gray100" />} spacing="1px">
       {CHATS.map((info) => (
         <Chat key={info.username} {...info} />
       ))}
