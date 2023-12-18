@@ -24,7 +24,7 @@ interface UserCardProps {
 function UserCard({ username, hashtag, avatarUrl, soloRankInfo, flexRankInfo }: UserCardProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <VStack w="full" bgColor="gray200" p="12px 16px" spacing="12px" position="absolute" top="0">
+    <VStack w="full" bgColor="gray200" p="12px 16px" spacing="12px">
       {/* 유저 기본정보 */}
       <HStack w="full" h="full" justifyContent="space-between">
         <HStack w="max-content" align="center" spacing="8px">
