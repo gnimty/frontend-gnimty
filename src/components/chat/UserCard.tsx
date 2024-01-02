@@ -1,4 +1,4 @@
-import { Avatar, Box, HStack, VStack, useDisclosure } from '@chakra-ui/react';
+import { Avatar, Box, HStack, VStack, useDisclosure, useTheme } from '@chakra-ui/react';
 
 import type { Position, Tier } from '@/apis/types';
 import CopyIcon from '@/assets/icons/system/copy.svg';
@@ -24,8 +24,16 @@ interface UserCardProps {
 
 function UserCard({ username, hashtag, avatarUrl, soloRankInfo, flexRankInfo }: UserCardProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const theme = useTheme();
   return (
-    <VStack w="full" bgColor="gray200" p="12px 16px" spacing="12px">
+    <VStack
+      w="full"
+      bgColor="gray200"
+      p="12px 16px"
+      spacing="12px"
+      borderTop={`1px solid ${theme.colors.gray200}`}
+      borderBottom={`1px solid ${theme.colors.gray200}`}
+    >
       {/* 유저 기본정보 */}
       <HStack w="full" h="full" justifyContent="space-between">
         <HStack w="max-content" align="center" spacing="8px">

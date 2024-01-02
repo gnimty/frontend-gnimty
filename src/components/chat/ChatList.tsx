@@ -1,6 +1,8 @@
-import { Box, HStack, Image, StackDivider, VStack } from '@chakra-ui/react';
+import { Box, HStack, Image, Stack, StackDivider, VStack, useTheme } from '@chakra-ui/react';
 
+import ExitIcon from '@/assets/icons/system/exit.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
+import { useState } from 'react';
 
 const CHATS: {
   profileImg: string;
@@ -38,6 +40,8 @@ interface ChatProps {
 }
 
 function Chat({ profileImg, username, hashtag, status, topMsg, selected }: ChatProps) {
+  const [isOnHover, setIsOnHover] = useState(false);
+  const theme = useTheme();
   return (
     <HStack
       role="option"
@@ -53,6 +57,9 @@ function Chat({ profileImg, username, hashtag, status, topMsg, selected }: ChatP
       _selected={{
         bg: 'main',
       }}
+      onMouseEnter={() => setIsOnHover(true)}
+      onMouseLeave={() => setIsOnHover(false)}
+      borderBottom={`1px solid ${theme.colors.gray100}`}
     >
       <Image src={profileImg} alt={username} w="40px" h="40px" borderRadius="50%" />
       <VStack h="40px" gap="4px">
@@ -71,17 +78,21 @@ function Chat({ profileImg, username, hashtag, status, topMsg, selected }: ChatP
           </Box>
         </VStack>
       </VStack>
+      {isOnHover && <ExitIcon width="16px" height="16px" color={theme.colors.gray500} />}
     </HStack>
   );
 }
 
 function ChatList() {
+  const theme = useTheme();
   return (
-    <VStack role="listbox" w="260px" h="100%" divider={<StackDivider borderColor="gray100" />} spacing="1px">
-      {CHATS.map((info) => (
-        <Chat key={info.username} {...info} />
-      ))}
-    </VStack>
+    <Box w="26px" h="100%" borderRight={`1px solid ${theme.colors.gray100}`}>
+      <VStack role="listbox" w="100%" h="max-content" overflowY="auto" spacing="1px">
+        {CHATS.map((info) => (
+          <Chat key={info.username} {...info} />
+        ))}
+      </VStack>
+    </Box>
   );
 }
 
