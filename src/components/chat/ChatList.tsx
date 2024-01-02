@@ -5,6 +5,7 @@ import StatusIndicator from '@/components/common/StatusIndicator';
 const CHATS: {
   profileImg: string;
   username: string;
+  hashtag: string;
   status: 'ONLINE' | 'AWAY' | 'OFFLINE';
   topMsg: string;
   selected: boolean;
@@ -12,6 +13,7 @@ const CHATS: {
   {
     profileImg: 'https://ddragon.leagueoflegends.com/cdn/13.12.1/img/profileicon/0.png',
     username: 'hide on bush',
+    hashtag: '#KR1',
     status: 'ONLINE',
     topMsg: '자리있나요?',
     selected: true,
@@ -19,6 +21,7 @@ const CHATS: {
   {
     profileImg: 'https://ddragon.leagueoflegends.com/cdn/13.12.1/img/profileicon/0.png',
     username: 'hide on bush',
+    hashtag: '#KR1',
     status: 'OFFLINE',
     topMsg: '자리있나요?',
     selected: false,
@@ -28,12 +31,13 @@ const CHATS: {
 interface ChatProps {
   profileImg: string;
   username: string;
+  hashtag: string;
   status: 'ONLINE' | 'AWAY' | 'OFFLINE';
   topMsg: string;
   selected: boolean;
 }
 
-function Chat({ profileImg, username, status, topMsg, selected }: ChatProps) {
+function Chat({ profileImg, username, hashtag, status, topMsg, selected }: ChatProps) {
   return (
     <HStack
       role="option"
@@ -53,11 +57,16 @@ function Chat({ profileImg, username, status, topMsg, selected }: ChatProps) {
       <Image src={profileImg} alt={username} w="40px" h="40px" borderRadius="50%" />
       <VStack h="40px" gap="4px">
         <HStack h="20px" justify="space-between">
-          <Box textStyle="t2">{username}</Box>
+          <Box textStyle="t2" color={selected ? 'white' : 'gray800'}>
+            {username}
+          </Box>
+          <Box textStyle="t2" fontWeight="400" color={selected ? 'gray400' : 'gray600'}>
+            {hashtag}
+          </Box>
           <StatusIndicator status={status} />
         </HStack>
         <VStack h="20px" w="100%">
-          <Box textStyle="body" textAlign="left" w="100%">
+          <Box textStyle="body" textAlign="left" w="100%" color={selected ? 'white' : 'gray800'}>
             {topMsg}
           </Box>
         </VStack>
