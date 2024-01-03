@@ -86,8 +86,8 @@ function Chat({ profileImg, username, hashtag, status, topMsg, selected }: ChatP
 function ChatList() {
   const theme = useTheme();
   return (
-    <Box w="26px" h="100%" borderRight={`1px solid ${theme.colors.gray100}`}>
-      <VStack role="listbox" w="100%" h="max-content" overflowY="auto" spacing="1px">
+    <Box w="261px" h="100%" borderRight={`1px solid ${theme.colors.gray100}`}>
+      <VStack role="listbox" w="full" h="max-content" overflowY="auto" spacing="1px">
         {CHATS.map((info) => (
           <Chat key={info.username} {...info} />
         ))}
