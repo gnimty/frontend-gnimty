@@ -1,4 +1,5 @@
-import { Avatar, Box, HStack, VStack, useDisclosure, useTheme } from '@chakra-ui/react';
+import { Avatar, Box, HStack, VStack, useDisclosure } from '@chakra-ui/react';
+import { useTheme } from '@emotion/react';
 
 import type { Position, Tier } from '@/apis/types';
 import CopyIcon from '@/assets/icons/system/copy.svg';

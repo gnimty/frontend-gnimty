@@ -1,8 +1,9 @@
-import { Box, HStack, Image, Stack, StackDivider, VStack, useTheme } from '@chakra-ui/react';
+import { Box, HStack, Image, VStack } from '@chakra-ui/react';
+import { useTheme } from '@emotion/react';
+import { useState } from 'react';
 
 import ExitIcon from '@/assets/icons/system/exit.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
-import { useState } from 'react';
 
 const CHATS: {
   profileImg: string;
