@@ -51,7 +51,7 @@ export default function UserCardLandscape(props: UserCardLandscapeProps) {
       </div>
       <div css={style.tierInfo}>
         <TierImage tier={summoner.queue} width={24} height={24} />
-        <p css={style.tier}>{shortTierName({ division: summoner.division, tier: summoner.queue })}</p>
+        <p css={style.tier}>{shortTierName(summoner.queue, summoner.division)}</p>
         <p css={style.leaguePoints}>{Intl.NumberFormat().format(summoner.lp)}LP</p>
       </div>
       <ol css={style.positionInfo}>
