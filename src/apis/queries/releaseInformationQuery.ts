@@ -8,13 +8,15 @@ interface ReleaseInformationResponse {
   data: PatchVersion;
 }
 
+export async function getReleaseInformation() {
+  const res = await httpRequest.get<ReleaseInformationResponse>('/asset/version');
+  return res.data;
+}
+
 const releaseInformationQuery = () =>
   queryOptions({
     queryKey: ['releaseInformation'],
-    async queryFn() {
-      const res = await httpRequest.get<ReleaseInformationResponse>('/asset/version');
-      return res.data;
-    },
+    queryFn: getReleaseInformation,
   });
 
 export default releaseInformationQuery;

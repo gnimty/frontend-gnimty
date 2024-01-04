@@ -100,8 +100,8 @@ export default function AuthEmailForm({ formData, setFormData }: AuthEmailFormPr
             {formData.authState === 'PREPARE' || formData.authState === 'READY'
               ? '인증하기'
               : formData.authState === 'WAITING' || formData.authState === 'AUTH_FAIL'
-              ? secondsFormatter(seconds)
-              : '인증완료'}
+                ? secondsFormatter(seconds)
+                : '인증완료'}
           </Text>
         </Button>
       </HStack>

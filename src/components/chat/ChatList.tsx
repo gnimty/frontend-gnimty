@@ -1,10 +1,14 @@
-import { Box, HStack, Image, StackDivider, VStack } from '@chakra-ui/react';
+import { Box, HStack, Image, VStack } from '@chakra-ui/react';
+import { useTheme } from '@emotion/react';
+import { useState } from 'react';
 
+import ExitIcon from '@/assets/icons/system/exit.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
 
 const CHATS: {
   profileImg: string;
   username: string;
+  hashtag: string;
   status: 'ONLINE' | 'AWAY' | 'OFFLINE';
   topMsg: string;
   selected: boolean;
@@ -12,6 +16,7 @@ const CHATS: {
   {
     profileImg: 'https://ddragon.leagueoflegends.com/cdn/13.12.1/img/profileicon/0.png',
     username: 'hide on bush',
+    hashtag: '#KR1',
     status: 'ONLINE',
     topMsg: '자리있나요?',
     selected: true,
@@ -19,6 +24,7 @@ const CHATS: {
   {
     profileImg: 'https://ddragon.leagueoflegends.com/cdn/13.12.1/img/profileicon/0.png',
     username: 'hide on bush',
+    hashtag: '#KR1',
     status: 'OFFLINE',
     topMsg: '자리있나요?',
     selected: false,
@@ -28,14 +34,18 @@ const CHATS: {
 interface ChatProps {
   profileImg: string;
   username: string;
+  hashtag: string;
   status: 'ONLINE' | 'AWAY' | 'OFFLINE';
   topMsg: string;
   selected: boolean;
 }
 
-function Chat({ profileImg, username, status, topMsg, selected }: ChatProps) {
+function Chat({ profileImg, username, hashtag, status, topMsg, selected }: ChatProps) {
+  const [isOnHover, setIsOnHover] = useState(false);
+  const theme = useTheme();
   return (
     <HStack
+      role="option"
       aria-selected={selected}
       w="260px"
       h="64px"
@@ -48,30 +58,42 @@ function Chat({ profileImg, username, status, topMsg, selected }: ChatProps) {
       _selected={{
         bg: 'main',
       }}
+      onMouseEnter={() => setIsOnHover(true)}
+      onMouseLeave={() => setIsOnHover(false)}
+      borderBottom={`1px solid ${theme.colors.gray100}`}
     >
       <Image src={profileImg} alt={username} w="40px" h="40px" borderRadius="50%" />
       <VStack h="40px" gap="4px">
         <HStack h="20px" justify="space-between">
-          <Box textStyle="t2">{username}</Box>
+          <Box textStyle="t2" color={selected ? 'white' : 'gray800'}>
+            {username}
+          </Box>
+          <Box textStyle="t2" fontWeight="400" color={selected ? 'gray400' : 'gray600'}>
+            {hashtag}
+          </Box>
           <StatusIndicator status={status} />
         </HStack>
         <VStack h="20px" w="100%">
-          <Box textStyle="body" textAlign="left" w="100%">
+          <Box textStyle="body" textAlign="left" w="100%" color={selected ? 'white' : 'gray800'}>
             {topMsg}
           </Box>
         </VStack>
       </VStack>
+      {isOnHover && <ExitIcon width="16px" height="16px" color={theme.colors.gray500} />}
     </HStack>
   );
 }
 
 function ChatList() {
+  const theme = useTheme();
   return (
-    <VStack w="260px" h="100%" divider={<StackDivider borderColor="gray100" />} spacing="1px">
-      {CHATS.map((info) => (
-        <Chat key={info.username} {...info} />
-      ))}
-    </VStack>
+    <Box w="261px" h="100%" borderRight={`1px solid ${theme.colors.gray100}`}>
+      <VStack role="listbox" w="full" h="max-content" overflowY="auto" spacing="1px">
+        {CHATS.map((info) => (
+          <Chat key={info.username} {...info} />
+        ))}
+      </VStack>
+    </Box>
   );
 }
 

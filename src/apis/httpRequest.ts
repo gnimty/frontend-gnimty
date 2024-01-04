@@ -11,6 +11,10 @@ const httpRequest = axios.create({
 });
 
 httpRequest.interceptors.request.use(function (config) {
+  if (typeof window === 'undefined') {
+    return config;
+  }
+
   const token = getStorageItem<AuthToken>({ key: StorageAuthKey, storage: localStorage });
   if (token) {
     config.headers.Authorization = `Bearer ${token.accessToken}`;

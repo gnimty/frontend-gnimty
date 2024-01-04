@@ -19,6 +19,7 @@ function ChatFrame(props: ChatFrameProps) {
       position="absolute"
       right="10%"
       bottom="calc(10% + 52px)"
+      boxShadow="0px 4px 8px 0px rgba(17, 17, 17, 0.10)"
     >
       <Header closeChat={props.closeChat} />
       <Body />
