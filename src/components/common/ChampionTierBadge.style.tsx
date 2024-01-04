@@ -11,7 +11,6 @@ const tierBackground = (theme: Theme): Record<ChampionTier, string> => ({
   '4': theme.colors.green800,
   '5': theme.colors.blue800,
   OP: theme.colors.purple800,
-  RIP: '',
 });
 
 export const badgeRoot = (options: { tier: ChampionTier }) => (theme: Theme) => {
