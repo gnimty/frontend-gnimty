@@ -37,7 +37,7 @@ export default function TimeTableDrawer({ currentTimeData, isOpen, onClose }: Ti
     setStartAxis([weekIndex, timeIndex]);
   };
 
-  const onMouseUp = (weekIndex: number, timeIndex: number) => {
+  const onMouseUp = () => {
     setStartAxis(undefined);
     setInitialButtonState(buttonState);
   };
@@ -111,6 +111,7 @@ export default function TimeTableDrawer({ currentTimeData, isOpen, onClose }: Ti
               gridTemplateColumns="repeat(7, minmax(44px, auto))"
               gridTemplateRows="repeat(24, 20px)"
               gridGap="4px"
+              onMouseUp={onMouseUp}
             >
               {[...Array(24).keys()].map((timeIndex) => {
                 return [...Array(7).keys()].map((weekIndex) => {
@@ -119,7 +120,6 @@ export default function TimeTableDrawer({ currentTimeData, isOpen, onClose }: Ti
                       as={Button}
                       key={timeIndex * 24 + weekIndex}
                       onMouseDown={() => onMouseDown(weekIndex, timeIndex)}
-                      onMouseUp={() => onMouseUp(weekIndex, timeIndex)}
                       onMouseOver={() => onMouseOver(weekIndex, timeIndex)}
                       bg={buttonState[weekIndex] & (1 << timeIndex) ? 'red800' : 'gray200'}
                     />
