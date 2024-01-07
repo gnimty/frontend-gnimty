@@ -22,7 +22,7 @@ export default function UserCardLandscape(props: UserCardLandscapeProps) {
   const { summoner } = props;
 
   async function handleNameCopyButtonClick() {
-    await navigator.clipboard.writeText(summoner.summonerName);
+    await navigator.clipboard.writeText(summoner.name);
   }
 
   function handleChatButtonClick() {}
@@ -40,7 +40,7 @@ export default function UserCardLandscape(props: UserCardLandscapeProps) {
           }}
         />
         <div css={style.summonerNameWrapper}>
-          <p css={style.summonerName}>{summoner.summonerName}</p>
+          <p css={style.summonerName}>{summoner.name}</p>
           <button type="button" css={style.copyNameButton} aria-label="닉네임 복사">
             <Copy width={16} height={16} aria-hidden onClick={handleNameCopyButtonClick} />
           </button>
