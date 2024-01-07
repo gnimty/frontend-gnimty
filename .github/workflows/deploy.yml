@@ -47,7 +47,7 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
             cd ${{ vars.DEPLOY_PATH }}
-            docker build . -t ${{ needs.deploy-setup.outputs.docker_image }}
+            docker build --build-arg API_BASE_URL=${{ vars.DEV_API_BASE_URL }} . -t ${{ needs.deploy-setup.outputs.docker_image }}
             docker stop ${{ needs.deploy-setup.outputs.container_name }}
             docker rm ${{ needs.deploy-setup.outputs.container_name }}
-            docker run -e NEXT_PUBLIC_API_BASE_URL=${{ vars.DEV_API_BASE_URL }} -p 3000:3000 -d --name=${{ needs.deploy-setup.outputs.container_name }} ${{ needs.deploy-setup.outputs.docker_image }}
+            docker run -p 3000:3000 -d --name=${{ needs.deploy-setup.outputs.container_name }} ${{ needs.deploy-setup.outputs.docker_image }}
