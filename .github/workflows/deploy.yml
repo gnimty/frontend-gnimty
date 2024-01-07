@@ -3,6 +3,7 @@ name: Deploy Gnimty(dev)
 on:
   push:
     branches: ['dev']
+  workflow_dispatch:
 
 jobs:
   ci:
