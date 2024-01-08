@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react';
 import { useDisclosure } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { Client } from '@stomp/stompjs';
+import { useEffect } from 'react';
 
 import ChatIcon from '@/assets/icons/system/chat.svg';
+import type { AuthToken } from '@/contexts/AuthContext';
+import { useAuthContext } from '@/contexts/AuthContext';
+import { getStorageItem } from '@/utils/storage';
 
 import ChatFrame from './ChatFrame';
-import { AuthToken, useAuthContext } from '@/contexts/AuthContext';
-import { getStorageItem } from '@/utils/storage';
-import { Client } from '@stomp/stompjs';
 
 const ChatBubbleContainer = styled.div<{ $open: boolean }>`
   position: fixed;
