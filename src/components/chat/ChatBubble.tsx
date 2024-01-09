@@ -1,7 +1,12 @@
 import { useDisclosure } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { Client } from '@stomp/stompjs';
+import { useEffect } from 'react';
 
 import ChatIcon from '@/assets/icons/system/chat.svg';
+import type { AuthToken } from '@/contexts/AuthContext';
+import { useAuthContext } from '@/contexts/AuthContext';
+import { getStorageItem } from '@/utils/storage';
 
 import ChatFrame from './ChatFrame';
 
@@ -20,7 +25,28 @@ const ChatBubbleContainer = styled.div<{ $open: boolean }>`
 `;
 
 function ChatBubble() {
+  const { isAuthenticated } = useAuthContext();
   const { isOpen, onClose, onToggle } = useDisclosure();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const token = getStorageItem<AuthToken>({ key: 'auth', storage: localStorage });
+      if (token) {
+        const chatClient = new Client({
+          brokerURL: 'wss://gnimty.kro.kr/community/chat',
+          connectHeaders: {
+            'accept-version': '1.0,1.1,1.2',
+            Authorization: `Bearer ${token.accessToken}`,
+          },
+          onConnect: () => {
+            console.log('Client Connected!');
+          },
+        });
+        chatClient.activate();
+      }
+    }
+  }, [isAuthenticated]);
+
   return (
     <ChatBubbleContainer $open={isOpen}>
       <ChatIcon color="#fff" width="36px" height="36px" onClick={onToggle} />
