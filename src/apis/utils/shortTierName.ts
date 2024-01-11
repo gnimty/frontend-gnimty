@@ -1,8 +1,6 @@
-import type { SoloTierDto } from '../types';
+import type { Tier } from '@/apis/types';
 
-export default function shortTierName(soloTier: Omit<SoloTierDto, 'lp'>) {
-  const { tier, division } = soloTier;
-
+export default function shortTierName(tier: Tier, division?: number) {
   switch (tier) {
     case 'challenger':
       return 'CH';

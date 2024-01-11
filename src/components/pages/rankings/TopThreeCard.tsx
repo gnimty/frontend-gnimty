@@ -96,7 +96,7 @@ export default function TopThreeCard(props: TopThreeCardProps) {
             <HStack gap="4px">
               <TierImage tier={summonerRank.tierInfo.tier} width={24} height={24} />
               <Box w="36px" textStyle="t2" fontWeight="bold" textAlign="center" color="gray800">
-                {shortTierName(summonerRank.tierInfo)}
+                {shortTierName(summonerRank.summoner.soloTierInfo.tier, summonerRank.summoner.soloTierInfo.division)}
               </Box>
               <Box textStyle="t2" fontWeight="normal" color="gray500">
                 {Intl.NumberFormat().format(summonerRank.tierInfo.lp)}LP
