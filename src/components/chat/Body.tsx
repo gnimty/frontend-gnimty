@@ -5,7 +5,7 @@ import CurrentChat from './CurrentChat';
 
 function Body() {
   return (
-    <HStack w="full" h="100%" justify="space-between" spacing="0">
+    <HStack w="full" h="464px" justify="space-between" spacing="0">
       <ChatList />
       <CurrentChat />
     </HStack>
