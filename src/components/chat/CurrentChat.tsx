@@ -1,110 +1,20 @@
-import { useEffect, useRef } from 'react';
-import { Box, VStack } from '@chakra-ui/react';
+import { useContext, useEffect, useRef } from 'react';
+import { Box, HStack, VStack } from '@chakra-ui/react';
 
 import Chat from './Chat';
 import ChatInput from './ChatInput';
 import UserCard from './UserCard';
 
-export interface ChatInfo {
-  type: 'incoming' | 'outgoing';
-  message: string;
-  date: string;
-}
+import { ChatContext } from './ChatBubble';
 
 function CurrentChat() {
+  const { chatRooms, selectedChatRoomNo } = useContext(ChatContext);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const chats: ChatInfo[] = [
-    {
-      type: 'incoming',
-      message: '하이하이',
-      date: '2021-10-01',
-    },
-    {
-      type: 'outgoing',
-      message: 'ㅎㅇㅎㅇ!',
-      date: '2023-12-18',
-    },
-    {
-      type: 'incoming',
-      message: '하이하이',
-      date: '2021-10-01',
-    },
-    {
-      type: 'outgoing',
-      message: 'ㅎㅇㅎㅇ!',
-      date: '2023-12-18',
-    },
-    {
-      type: 'incoming',
-      message: '하이하이',
-      date: '2021-10-01',
-    },
-    {
-      type: 'outgoing',
-      message: 'ㅎㅇㅎㅇ!',
-      date: '2023-12-18',
-    },
-    {
-      type: 'incoming',
-      message: '하이하이',
-      date: '2021-10-01',
-    },
-    {
-      type: 'outgoing',
-      message: 'ㅎㅇㅎㅇ!',
-      date: '2023-12-18',
-    },
-    {
-      type: 'incoming',
-      message: '하이하이',
-      date: '2021-10-01',
-    },
-    {
-      type: 'outgoing',
-      message: 'ㅎㅇㅎㅇ!',
-      date: '2023-12-18',
-    },
-    {
-      type: 'incoming',
-      message: '하이하이',
-      date: '2021-10-01',
-    },
-    {
-      type: 'outgoing',
-      message: 'ㅎㅇㅎㅇ!',
-      date: '2023-12-18',
-    },
-    {
-      type: 'incoming',
-      message: '하이하이',
-      date: '2021-10-01',
-    },
-    {
-      type: 'outgoing',
-      message: 'ㅎㅇㅎㅇ!',
-      date: '2023-12-18',
-    },
-    {
-      type: 'incoming',
-      message: '하이하이',
-      date: '2021-10-01',
-    },
-    {
-      type: 'outgoing',
-      message: 'ㅎㅇㅎㅇ!',
-      date: '2023-12-18',
-    },
-    {
-      type: 'incoming',
-      message: '하이하이',
-      date: '2021-10-01',
-    },
-    {
-      type: 'outgoing',
-      message: 'ㅎㅇㅎㅇ!',
-      date: '2023-12-18',
-    },
-  ];
+  const chats = chatRooms.find((chatRoom) => chatRoom.chatRoomNo === selectedChatRoomNo)?.chats || [];
+  const otherUserId = chatRooms.find((chatRoom) => chatRoom.chatRoomNo === selectedChatRoomNo)?.otherUser.userId;
+  const today = new Date();
+  const chatsBeforeToday = chats.filter((chat) => new Date(chat.sendDate).getDate() < today.getDate());
+  const chatsToday = chats.filter((chat) => new Date(chat.sendDate).getDate() === today.getDate());
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -112,7 +22,7 @@ function CurrentChat() {
     }
   }, []);
   return (
-    <VStack w="100%" h="100%" position="relative" justify="flex-start">
+    <VStack w="400px" h="100%" position="relative" justify="flex-start">
       {/* if user exists */}
       <UserCard
         username="TestUserName"
@@ -134,12 +44,24 @@ function CurrentChat() {
         }}
       />
       {/* if chat exists */}
-      {/* TODO: 날짜별 혹은 '오늘'의 경우 divider 추가 */}
       <Box overflowY="scroll" w="full" flex="1" mb="70px" ref={scrollRef}>
-        {chats.length > 0 && (
+        {chats.length > 0 && otherUserId && (
           <VStack w="full" spacing="8px" p="0 20px">
-            {chats.map((chatInfo) => (
-              <Chat key={chatInfo.date} {...chatInfo} />
+            {chatsBeforeToday &&
+              chatsBeforeToday.map((chatInfo) => (
+                <Chat key={chatInfo.sendDate} otherUserId={otherUserId} {...chatInfo} />
+              ))}
+            {chatsBeforeToday.length > 0 && chatsToday.length > 0 && (
+              <HStack w="360px" m="0 auto" justify="space-between" alignItems="center">
+                <Box w="full" h="1px" border="0.5px solid gray300" />
+                <Box w="52px" textStyle="body" color="gray300" textAlign="center">
+                  오늘
+                </Box>
+                <Box w="full" h="1px" border="0.5px solid gray300" />
+              </HStack>
+            )}
+            {chatsToday.map((chatInfo) => (
+              <Chat key={chatInfo.sendDate} otherUserId={otherUserId} {...chatInfo} />
             ))}
           </VStack>
         )}

@@ -3,18 +3,18 @@ import { Box, HStack } from '@chakra-ui/react';
 import ChatLeft from '@/assets/icons/system/chatLeft.svg';
 import ChatRight from '@/assets/icons/system/chatRight.svg';
 
-import { type ChatInfo } from './CurrentChat';
+import type { Chat as ChatInfo } from './types';
 
-function Chat({ type, message }: ChatInfo) {
+function Chat({ senderId, message, otherUserId }: ChatInfo & { otherUserId: string }) {
   return (
     <HStack
       p="10px 16px"
-      bgColor={type === 'incoming' ? 'gray100' : '#FDF4F5'}
+      bgColor={senderId === otherUserId ? 'gray100' : '#FDF4F5'}
       borderRadius="8px"
       position="relative"
-      alignSelf={type === 'incoming' ? 'start' : 'end'}
+      alignSelf={senderId === otherUserId ? 'start' : 'end'}
     >
-      {type === 'incoming' && (
+      {senderId === otherUserId && (
         <Box position="absolute" top="20%" left="-8px">
           <ChatLeft width="8px" height="11px" />
         </Box>
@@ -22,7 +22,7 @@ function Chat({ type, message }: ChatInfo) {
       <Box textStyle="t2" color="gray800" fontWeight="400">
         {message}
       </Box>
-      {type === 'outgoing' && (
+      {senderId !== otherUserId && (
         <Box position="absolute" top="20%" right="-8px">
           <ChatRight width="8px" height="11px" />
         </Box>

@@ -1,9 +1,53 @@
+import React, { useContext, useEffect, useRef } from 'react';
 import { Box, HStack, Input, VStack, useDisclosure } from '@chakra-ui/react';
 
 import EditVerticalIcon from '@/assets/icons/system/edit-vertical.svg';
+import { ChatContext } from './ChatBubble';
 
 function ChatInput() {
+  const { currentUserId, chatClient, selectedChatRoomNo } = useContext(ChatContext);
+  const chatRef = useRef<HTMLInputElement>(null);
   const { isOpen, onToggle } = useDisclosure();
+  const handleEnterKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      const chat = chatRef.current?.value;
+      if (chat) {
+        chatClient?.publish({
+          destination: `/pub/chatRoom/${selectedChatRoomNo}`,
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            type: 'CHAT',
+            data: chat,
+          }),
+        });
+      }
+    }
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const chat = chatRef.current?.value;
+    if (chat) {
+      chatClient?.publish({
+        destination: `/pub/chatRoom/${selectedChatRoomNo}`,
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'CHAT',
+          data: chat,
+        }),
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (chatClient) {
+    }
+  }, [chatClient, currentUserId, selectedChatRoomNo]);
+
   return (
     <HStack w="400px" h="40px" p="16px" position="absolute" bottom="5%">
       <HStack
@@ -25,8 +69,19 @@ function ChatInput() {
             fontWeight: '400',
           }}
           placeholder="텍스트를 입력하세요."
+          ref={chatRef}
+          onKeyDown={handleEnterKeydown}
         />
-        <Box w="25px" h="20px" textStyle="t2" fontWeight="700" color="gray500" as="button" cursor="pointer">
+        <Box
+          w="25px"
+          h="20px"
+          textStyle="t2"
+          fontWeight="700"
+          color="gray500"
+          as="button"
+          cursor="pointer"
+          onClick={handleClick}
+        >
           전송
         </Box>
       </HStack>
@@ -39,6 +94,18 @@ function ChatInput() {
 }
 
 function ToggleMenu() {
+  const { selectedChatRoomNo, chatClient } = useContext(ChatContext);
+  const exitChat = () => {
+    chatClient?.publish({
+      destination: `/pub/chatRoom/${selectedChatRoomNo}`,
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        type: 'EXIT',
+      }),
+    });
+  };
   return (
     <VStack
       w="124px"
@@ -74,6 +141,7 @@ function ToggleMenu() {
           color: 'gray800',
         }}
         p="10px 12px"
+        onClick={exitChat}
       >
         채팅방 나가기
       </Box>
