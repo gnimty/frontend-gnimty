@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useRef } from 'react';
 import { Box, HStack, Input, VStack, useDisclosure } from '@chakra-ui/react';
+import React, { useContext, useEffect, useRef } from 'react';
 
 import EditVerticalIcon from '@/assets/icons/system/edit-vertical.svg';
+
 import { ChatContext } from './ChatBubble';
 
 function ChatInput() {
@@ -42,11 +43,6 @@ function ChatInput() {
       });
     }
   };
-
-  useEffect(() => {
-    if (chatClient) {
-    }
-  }, [chatClient, currentUserId, selectedChatRoomNo]);
 
   return (
     <HStack w="400px" h="40px" p="16px" position="absolute" bottom="5%">

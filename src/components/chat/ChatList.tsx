@@ -2,12 +2,13 @@ import { Box, HStack, Image, VStack } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { useContext, useEffect, useState } from 'react';
 
+import profileIconUrl from '@/apis/utils/profileIconUrl';
 import ExitIcon from '@/assets/icons/system/exit.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
 
 import { ChatContext } from './ChatBubble';
+
 import type { ChatRoom } from './types';
-import profileIconUrl from '@/apis/utils/profileIconUrl';
 
 interface ChatProps extends ChatRoom {
   selected?: boolean;
@@ -47,7 +48,7 @@ function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps
         }),
       });
     }
-  }, [chatContext.chatClient, selected]);
+  }, [chatContext, selected, chatRoomNo]);
 
   return (
     <HStack

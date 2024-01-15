@@ -39,5 +39,5 @@ export interface Chat {
 
 // /sub/init_chat - 채팅방 목록 가져오기
 export interface InitChatBody {
-  chatRoomList: Array<ChatRoom>;
+  chatRoomList: ChatRoom[];
 }
