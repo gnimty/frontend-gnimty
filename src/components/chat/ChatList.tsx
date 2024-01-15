@@ -7,6 +7,7 @@ import StatusIndicator from '@/components/common/StatusIndicator';
 
 import { ChatContext } from './ChatBubble';
 import type { ChatRoom } from './types';
+import profileIconUrl from '@/apis/utils/profileIconUrl';
 
 interface ChatProps extends ChatRoom {
   selected?: boolean;
@@ -68,13 +69,7 @@ function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps
       onMouseLeave={() => setIsOnHover(false)}
       borderBottom={`1px solid ${theme.colors.gray100}`}
     >
-      <Image
-        src={`https://ddragon.leagueoflegends.com/cdn/13.12.1/img/profileicon/${iconId}.png`}
-        alt={summonerName}
-        w="40px"
-        h="40px"
-        borderRadius="50%"
-      />
+      <Image src={profileIconUrl(Number(iconId))} alt={summonerName} w="40px" h="40px" borderRadius="50%" />
       <VStack h="40px" gap="4px">
         <HStack h="20px" justify="space-between">
           <Box textStyle="t2" color={selected ? 'white' : 'gray800'}>
