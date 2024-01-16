@@ -13,6 +13,7 @@ import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
 
 import * as style from './UserCardLandscape.style';
+import { useChatContext } from '@/contexts/ChatContext';
 
 interface UserCardLandscapeProps {
   summoner: RecommendedSummonersEntry;
@@ -20,12 +21,21 @@ interface UserCardLandscapeProps {
 
 export default function UserCardLandscape(props: UserCardLandscapeProps) {
   const { summoner } = props;
+  const { chatClient, disclosure } = useChatContext();
 
   async function handleNameCopyButtonClick() {
     await navigator.clipboard.writeText(summoner.name);
   }
 
-  function handleChatButtonClick() {}
+  function handleChatButtonClick() {
+    const { id } = summoner;
+    if (chatClient && id) {
+      chatClient.publish({
+        destination: `/pub/user/${id}`,
+      });
+    }
+    disclosure.onOpen();
+  }
 
   return (
     <article css={style.userCardLandscape}>

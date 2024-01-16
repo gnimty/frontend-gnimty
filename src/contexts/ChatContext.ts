@@ -13,9 +13,11 @@ import type {
   User,
   UserConnStatus,
 } from '@/components/chat/types';
+import { useDisclosure } from '@chakra-ui/react';
 
 export const [ChatContextProvider, useChatContext] = constate(() => {
   const { isAuthenticated } = useAuthContext();
+  const disclosure = useDisclosure();
   const [chatClient, setChatClient] = useState<Client | null>(null);
   const [chatRooms, setChatRooms] = useState<ChatRooms>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
@@ -122,5 +124,14 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
     }
   }, [isAuthenticated]);
 
-  return { chatClient, chatRooms, currentUserId, selectedChatRoomNo, selectChatRoom, exitChatRoom, handleUpdate };
+  return {
+    disclosure,
+    chatClient,
+    chatRooms,
+    currentUserId,
+    selectedChatRoomNo,
+    selectChatRoom,
+    exitChatRoom,
+    handleUpdate,
+  };
 });
