@@ -9,11 +9,11 @@ import { useChatContext } from '@/contexts/ChatContext';
 function CurrentChat() {
   const { chatRooms, selectedChatRoomNo } = useChatContext();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const chats = chatRooms.find((chatRoom) => chatRoom.chatRoomNo === selectedChatRoomNo)?.chats ?? [];
-  const otherUserId = chatRooms.find((chatRoom) => chatRoom.chatRoomNo === selectedChatRoomNo)?.otherUser.userId;
+  const chats = chatRooms?.find((chatRoom) => chatRoom.chatRoomNo === selectedChatRoomNo)?.chats ?? [];
+  const otherUserId = chatRooms?.find((chatRoom) => chatRoom.chatRoomNo === selectedChatRoomNo)?.otherUser.userId;
   const today = new Date();
-  const chatsBeforeToday = chats.filter((chat) => new Date(chat.sendDate).getDate() < today.getDate());
-  const chatsToday = chats.filter((chat) => new Date(chat.sendDate).getDate() === today.getDate());
+  const chatsBeforeToday = chats?.filter((chat) => new Date(chat.sendDate).getDate() < today.getDate());
+  const chatsToday = chats?.filter((chat) => new Date(chat.sendDate).getDate() === today.getDate());
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -45,7 +45,7 @@ function CurrentChat() {
       />
       {/* if chat exists */}
       <Box overflowY="scroll" w="full" flex="1" mb="70px" ref={scrollRef}>
-        {chats.length > 0 && otherUserId && (
+        {chats && chats.length > 0 && otherUserId && (
           <VStack w="full" spacing="8px" p="0 20px">
             {chatsBeforeToday &&
               chatsBeforeToday.map((chatInfo) => (

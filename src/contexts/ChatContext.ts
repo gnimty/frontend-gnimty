@@ -21,13 +21,33 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
   const [chatClient, setChatClient] = useState<Client | null>(null);
   const [chatRooms, setChatRooms] = useState<ChatRooms>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [activateChatUserIds, setActivateChatUserIds] = useState<string[]>([]);
   const [selectedChatRoomNo, setSelectedChatRoomNo] = useState<number | null>(null);
 
   const selectChatRoom = (chatRoomNo: number) => {
     setSelectedChatRoomNo(chatRoomNo);
   };
 
+  const updateActivateChatUserIds = (userId: string, type: 'ADD' | 'REMOVE') => {
+    switch (type) {
+      case 'ADD':
+        setActivateChatUserIds((prev) => [...prev, userId]);
+        chatClient?.subscribe(`/sub/user/${userId}`, (message) => {
+          const body = JSON.parse(message.body);
+          handleUpdate(body.type, body.data);
+        });
+        break;
+      case 'REMOVE':
+        setActivateChatUserIds((prev) => prev.filter((id) => id !== userId));
+        break;
+      default:
+        break;
+    }
+  };
+
   const handleUpdate = (type: MessageUserResponseType | MessageChatRoomResponseType, data: unknown) => {
+    console.log('Type', type);
+    console.log('DATA', data);
     switch (type) {
       case 'READ_CHATS':
         const userId = data as string;
@@ -101,20 +121,21 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
         const client = new Client({
           brokerURL: 'wss://gnimty.kro.kr/community/chat',
           connectHeaders: {
-            'accept-version': '1.0,1.1,1.2',
+            'accept-version': '1.2',
             Authorization: `Bearer ${token.accessToken}`,
+          },
+          onStompError: (frame) => {
+            console.log('ON ERROR', frame);
           },
           onConnect: () => {
             const { id } = JSON.parse(atob(token.accessToken.split('.')[1]));
             setCurrentUserId(id);
-            console.log('Chat client connected');
-            client.subscribe(`/sub/user/${id}`, () => {
-              console.log('Connected');
-              client.subscribe('/sub/init_chat', (message) => {
-                console.log('Init Chat', message.body);
-                const { chatRoomList } = JSON.parse(message.body) as InitChatBody;
-                setChatRooms(chatRoomList);
-              });
+            console.log('Chat client connected, Current user Id is', id);
+            client.subscribe(`/sub/user/${id}`, () => {});
+            client.subscribe('/sub/init_chat', async (message) => {
+              const chatRoomList = (await JSON.parse(message.body)) as ChatRooms;
+              console.log('Init ChatROOMS', chatRoomList);
+              setChatRooms(chatRoomList ?? []);
             });
           },
         });
@@ -122,7 +143,7 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
         setChatClient(client);
       }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, activateChatUserIds]);
 
   return {
     disclosure,
@@ -133,5 +154,6 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
     selectChatRoom,
     exitChatRoom,
     handleUpdate,
+    updateActivateChatUserIds,
   };
 });

@@ -21,7 +21,7 @@ function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps
   const { summonerName, iconId, status } = otherUser;
 
   useEffect(() => {
-    if (selected && chatClient) {
+    if (selected && chatClient && chatClient.connected) {
       chatClient.subscribe(`/sub/chatRoom/${chatRoomNo}`, (message) => {
         const body = JSON.parse(message.body);
         handleUpdate(body.type, body.data);
@@ -58,7 +58,7 @@ function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps
       onMouseLeave={() => setIsOnHover(false)}
       borderBottom={`1px solid ${theme.colors.gray100}`}
     >
-      <Image src={profileIconUrl(Number(iconId))} alt={summonerName} w="40px" h="40px" borderRadius="50%" />
+      <Image src={profileIconUrl(Number(iconId ?? '10'))} alt={summonerName} w="40px" h="40px" borderRadius="50%" />
       <VStack h="40px" gap="4px">
         <HStack h="20px" justify="space-between">
           <Box textStyle="t2" color={selected ? 'white' : 'gray800'}>
@@ -70,7 +70,7 @@ function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps
           <StatusIndicator status={status} />
         </HStack>
         <VStack h="20px" w="100%">
-          {chats.length > 0 && (
+          {chats && chats.length > 0 && (
             <Box textStyle="body" textAlign="left" w="100%" color={selected ? 'white' : 'gray800'}>
               {chats[chats.length - 1].message}
             </Box>
@@ -78,7 +78,13 @@ function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps
         </VStack>
       </VStack>
       {isOnHover && (
-        <ExitIcon width="16px" height="16px" color={theme.colors.gray500} onClick={() => exitChatRoom(chatRoomNo)} />
+        <ExitIcon
+          width="16px"
+          height="16px"
+          color={theme.colors.gray500}
+          onClick={() => exitChatRoom(chatRoomNo)}
+          cursor="pointer"
+        />
       )}
     </HStack>
   );
@@ -91,7 +97,7 @@ function ChatList() {
     selectChatRoom(chatRoomNo);
   };
   return (
-    <Box w="260px" h="100%" borderRight={`1px solid ${theme.colors.gray100}`}>
+    <Box w="261px" h="100%" borderRight={`1px solid ${theme.colors.gray100}`}>
       <VStack role="listbox" w="full" h="max-content" overflowY="auto" spacing="1px">
         {chatRooms.map((chatRoom) => (
           <Chat

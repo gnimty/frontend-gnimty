@@ -21,7 +21,7 @@ interface UserCardLandscapeProps {
 
 export default function UserCardLandscape(props: UserCardLandscapeProps) {
   const { summoner } = props;
-  const { currentUserId, chatClient, disclosure } = useChatContext();
+  const { currentUserId, chatClient, disclosure, updateActivateChatUserIds } = useChatContext();
 
   async function handleNameCopyButtonClick() {
     await navigator.clipboard.writeText(summoner.name);
@@ -34,8 +34,11 @@ export default function UserCardLandscape(props: UserCardLandscapeProps) {
       chatClient.publish({
         destination: `/pub/user/${id}`,
       });
+      updateActivateChatUserIds(String(id), 'ADD');
     }
-    disclosure.onOpen();
+    if (disclosure.isOpen !== true) {
+      disclosure.onOpen();
+    }
   }
 
   return (
