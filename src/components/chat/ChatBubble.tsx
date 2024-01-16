@@ -16,7 +16,6 @@ const ChatBubbleContainer = styled.div<{ $open: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
 `;
 
 function ChatBubble() {
@@ -24,7 +23,7 @@ function ChatBubble() {
   const { isOpen, onClose, onToggle } = disclosure;
   return (
     <ChatBubbleContainer $open={isOpen}>
-      <ChatIcon color="#fff" width="36px" height="36px" onClick={onToggle} />
+      <ChatIcon color="#fff" width="36px" height="36px" onClick={onToggle} cursor="pointer" />
       {isOpen && <ChatFrame closeChat={onClose} />}
     </ChatBubbleContainer>
   );
