@@ -5,6 +5,20 @@ export type MessageUserResponseType = 'READ_CHATS' | 'CHATROOM_INFO';
 
 export type MessageChatRoomResponseType = 'USER_INFO' | 'CONNECT_STATUS' | 'CHAT_MESSAGE';
 
+export type UpdateActions = MessageUserResponseType | MessageChatRoomResponseType;
+
+export type DataType<T> = T extends 'USER_INFO'
+  ? User
+  : T extends 'CONNECT_STATUS'
+    ? UserConnStatus
+    : T extends 'CHAT_MESSAGE'
+      ? Chat
+      : T extends 'CHATROOM_INFO'
+        ? ChatRoom
+        : T extends 'READ_CHATS'
+          ? string
+          : never;
+
 export type MessageRequestType = 'CHAT' | 'EXIT' | 'READ';
 
 export type ChatRooms = ChatRoom[];

@@ -1,19 +1,12 @@
-import { useEffect, useState } from 'react';
-import constate from 'constate';
-import { Client } from '@stomp/stompjs';
-import { type AuthToken, StorageAuthKey, useAuthContext } from './AuthContext';
-import { getStorageItem } from '@/utils/storage';
-import type {
-  Chat,
-  ChatRoom,
-  ChatRooms,
-  InitChatBody,
-  MessageChatRoomResponseType,
-  MessageUserResponseType,
-  User,
-  UserConnStatus,
-} from '@/components/chat/types';
 import { useDisclosure } from '@chakra-ui/react';
+import { Client } from '@stomp/stompjs';
+import constate from 'constate';
+import { useEffect, useState } from 'react';
+
+import type { Chat, ChatRoom, ChatRooms, DataType, UpdateActions, User, UserConnStatus } from '@/components/chat/types';
+import { getStorageItem } from '@/utils/storage';
+
+import { type AuthToken, StorageAuthKey, useAuthContext } from './AuthContext';
 
 export const [ChatContextProvider, useChatContext] = constate(() => {
   const { isAuthenticated } = useAuthContext();
@@ -33,7 +26,7 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
       case 'ADD':
         setActivateChatUserIds((prev) => [...prev, userId]);
         chatClient?.subscribe(`/sub/user/${userId}`, (message) => {
-          const body = JSON.parse(message.body);
+          const body = JSON.parse(message.body) as { type: UpdateActions; data: DataType<UpdateActions> };
           handleUpdate(body.type, body.data);
         });
         break;
@@ -45,14 +38,11 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
     }
   };
 
-  const handleUpdate = (type: MessageUserResponseType | MessageChatRoomResponseType, data: unknown) => {
-    console.log('Type', type);
-    console.log('DATA', data);
+  const handleUpdate = <T extends UpdateActions>(type: T, data: DataType<T>) => {
     switch (type) {
       case 'READ_CHATS':
-        const userId = data as string;
         setChatRooms((prev) => {
-          const index = prev.findIndex((chatRoom) => chatRoom.otherUser.userId === userId);
+          const index = prev.findIndex((chatRoom) => chatRoom.otherUser.userId === (data as string));
           if (index === -1) return prev;
           const newChatRooms = [...prev];
           newChatRooms[index].chats = newChatRooms[index].chats.map((chat) => ({ ...chat, readCount: 0 }));
@@ -60,45 +50,40 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
         });
         break;
       case 'CHATROOM_INFO':
-        const chatRoomInfo = data as ChatRoom;
         setChatRooms((prev) => {
-          const index = prev.findIndex((chatRoom) => chatRoom.chatRoomNo === chatRoomInfo.chatRoomNo);
+          const index = prev.findIndex((chatRoom) => chatRoom.chatRoomNo === (data as ChatRoom).chatRoomNo);
           if (index === -1) return prev;
           const newChatRooms = [...prev];
-          newChatRooms[index] = chatRoomInfo;
+          newChatRooms[index] = data as ChatRoom;
           return newChatRooms;
         });
         break;
       case 'USER_INFO':
-        const userInfo = data as User;
         setChatRooms((prev) => {
-          const index = prev.findIndex((chatRoom) => chatRoom.otherUser.userId === userInfo.userId);
+          const index = prev.findIndex((chatRoom) => chatRoom.otherUser.userId === (data as User).userId);
           if (index === -1) return prev;
           const newChatRooms = [...prev];
-          newChatRooms[index].otherUser = userInfo;
+          newChatRooms[index].otherUser = data as User;
           return newChatRooms;
         });
         break;
       case 'CONNECT_STATUS':
-        const userConnStatus = data as UserConnStatus;
         setChatRooms((prev) => {
-          const index = prev.findIndex((chatRoom) => chatRoom.otherUser.userId === userConnStatus.userId);
+          const index = prev.findIndex((chatRoom) => chatRoom.otherUser.userId === (data as UserConnStatus).userId);
           if (index === -1) return prev;
           const newChatRooms = [...prev];
-          newChatRooms[index].otherUser.status = userConnStatus.connStatus;
+          newChatRooms[index].otherUser.status = (data as UserConnStatus).connStatus;
           return newChatRooms;
         });
         break;
       case 'CHAT_MESSAGE':
-        const chatMessage = data as Chat;
         setChatRooms((prev) => {
-          const index = prev.findIndex((chatRoom) => chatRoom.otherUser.userId === chatMessage.senderId);
+          const index = prev.findIndex((chatRoom) => chatRoom.otherUser.userId === (data as Chat).senderId);
           if (index === -1) return prev;
           const newChatRooms = [...prev];
-          newChatRooms[index].chats.push(chatMessage);
+          newChatRooms[index].chats.push(data as Chat);
           return newChatRooms;
         });
-        break;
     }
   };
 
@@ -128,12 +113,12 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
             console.log('ON ERROR', frame);
           },
           onConnect: () => {
-            const { id } = JSON.parse(atob(token.accessToken.split('.')[1]));
+            const { id } = JSON.parse(atob(token.accessToken.split('.')[1])) as { id: string };
             setCurrentUserId(id);
             console.log('Chat client connected, Current user Id is', id);
             client.subscribe(`/sub/user/${id}`, () => {});
-            client.subscribe('/sub/init_chat', async (message) => {
-              const chatRoomList = (await JSON.parse(message.body)) as ChatRooms;
+            client.subscribe('/sub/init_chat', (message) => {
+              const chatRoomList = JSON.parse(message.body) as ChatRooms;
               console.log('Init ChatROOMS', chatRoomList);
               setChatRooms(chatRoomList ?? []);
             });
