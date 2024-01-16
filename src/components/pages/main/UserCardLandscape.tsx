@@ -21,7 +21,7 @@ interface UserCardLandscapeProps {
 
 export default function UserCardLandscape(props: UserCardLandscapeProps) {
   const { summoner } = props;
-  const { chatClient, disclosure } = useChatContext();
+  const { currentUserId, chatClient, disclosure } = useChatContext();
 
   async function handleNameCopyButtonClick() {
     await navigator.clipboard.writeText(summoner.name);
@@ -29,6 +29,7 @@ export default function UserCardLandscape(props: UserCardLandscapeProps) {
 
   function handleChatButtonClick() {
     const { id } = summoner;
+    if (!currentUserId) return;
     if (chatClient && id) {
       chatClient.publish({
         destination: `/pub/user/${id}`,
