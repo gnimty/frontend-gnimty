@@ -6,9 +6,8 @@ import profileIconUrl from '@/apis/utils/profileIconUrl';
 import ExitIcon from '@/assets/icons/system/exit.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
 
-import { ChatContext } from './ChatBubble';
-
 import type { ChatRoom } from './types';
+import { useChatContext } from '@/contexts/ChatContext';
 
 interface ChatProps extends ChatRoom {
   selected?: boolean;
@@ -17,28 +16,17 @@ interface ChatProps extends ChatRoom {
 
 function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps) {
   const theme = useTheme();
-  const chatContext = useContext(ChatContext);
+  const { chatClient, exitChatRoom, handleUpdate } = useChatContext();
   const [isOnHover, setIsOnHover] = useState(false);
   const { summonerName, iconId, status } = otherUser;
-  const exitChat = () => {
-    chatContext.chatClient?.publish({
-      destination: `/pub/chatRoom/${chatRoomNo}`,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        type: 'EXIT',
-      }),
-    });
-  };
 
   useEffect(() => {
-    if (selected) {
-      chatContext.chatClient?.subscribe(`/sub/chatRoom/${chatRoomNo}`, (message) => {
+    if (selected && chatClient) {
+      chatClient.subscribe(`/sub/chatRoom/${chatRoomNo}`, (message) => {
         const body = JSON.parse(message.body);
-        chatContext.handleUpdate(body.type, body.data);
+        handleUpdate(body.type, body.data);
       });
-      chatContext.chatClient?.publish({
+      chatClient?.publish({
         destination: `/pub/chatRoom/${chatRoomNo}`,
         headers: {
           'Content-Type': 'application/json',
@@ -48,7 +36,7 @@ function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps
         }),
       });
     }
-  }, [chatContext, selected, chatRoomNo]);
+  }, [chatClient, selected, chatRoomNo]);
 
   return (
     <HStack
@@ -89,25 +77,27 @@ function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps
           )}
         </VStack>
       </VStack>
-      {isOnHover && <ExitIcon width="16px" height="16px" color={theme.colors.gray500} onClick={exitChat} />}
+      {isOnHover && (
+        <ExitIcon width="16px" height="16px" color={theme.colors.gray500} onClick={() => exitChatRoom(chatRoomNo)} />
+      )}
     </HStack>
   );
 }
 
 function ChatList() {
   const theme = useTheme();
-  const chatContext = useContext(ChatContext);
+  const { chatRooms, selectChatRoom, selectedChatRoomNo } = useChatContext();
   const handleChatClick = (chatRoomNo: number) => {
-    chatContext.selectChatRoom(chatRoomNo);
+    selectChatRoom(chatRoomNo);
   };
   return (
     <Box w="260px" h="100%" borderRight={`1px solid ${theme.colors.gray100}`}>
       <VStack role="listbox" w="full" h="max-content" overflowY="auto" spacing="1px">
-        {chatContext.chatRooms.map((chatRoom) => (
+        {chatRooms.map((chatRoom) => (
           <Chat
             key={chatRoom.chatRoomNo}
             {...chatRoom}
-            selected={chatContext.selectedChatRoomNo === chatRoom.chatRoomNo}
+            selected={selectedChatRoomNo === chatRoom.chatRoomNo}
             handleClick={handleChatClick}
           />
         ))}

@@ -1,13 +1,13 @@
 import { Box, HStack, VStack } from '@chakra-ui/react';
-import { useContext, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import Chat from './Chat';
-import { ChatContext } from './ChatBubble';
 import ChatInput from './ChatInput';
 import UserCard from './UserCard';
+import { useChatContext } from '@/contexts/ChatContext';
 
 function CurrentChat() {
-  const { chatRooms, selectedChatRoomNo } = useContext(ChatContext);
+  const { chatRooms, selectedChatRoomNo } = useChatContext();
   const scrollRef = useRef<HTMLDivElement>(null);
   const chats = chatRooms.find((chatRoom) => chatRoom.chatRoomNo === selectedChatRoomNo)?.chats ?? [];
   const otherUserId = chatRooms.find((chatRoom) => chatRoom.chatRoomNo === selectedChatRoomNo)?.otherUser.userId;
@@ -20,6 +20,7 @@ function CurrentChat() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, []);
+
   return (
     <VStack w="400px" h="100%" position="relative" justify="flex-start">
       {/* if user exists */}

@@ -1,12 +1,12 @@
 import { Box, HStack, Input, VStack, useDisclosure } from '@chakra-ui/react';
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 
 import EditVerticalIcon from '@/assets/icons/system/edit-vertical.svg';
 
-import { ChatContext } from './ChatBubble';
+import { useChatContext } from '@/contexts/ChatContext';
 
 function ChatInput() {
-  const { currentUserId, chatClient, selectedChatRoomNo } = useContext(ChatContext);
+  const { currentUserId, chatClient, selectedChatRoomNo } = useChatContext();
   const chatRef = useRef<HTMLInputElement>(null);
   const { isOpen, onToggle } = useDisclosure();
   const handleEnterKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -90,18 +90,8 @@ function ChatInput() {
 }
 
 function ToggleMenu() {
-  const { selectedChatRoomNo, chatClient } = useContext(ChatContext);
-  const exitChat = () => {
-    chatClient?.publish({
-      destination: `/pub/chatRoom/${selectedChatRoomNo}`,
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        type: 'EXIT',
-      }),
-    });
-  };
+  const { selectedChatRoomNo, exitChatRoom } = useChatContext();
+
   return (
     <VStack
       w="124px"
@@ -137,7 +127,7 @@ function ToggleMenu() {
           color: 'gray800',
         }}
         p="10px 12px"
-        onClick={exitChat}
+        onClick={() => exitChatRoom(selectedChatRoomNo as number)}
       >
         채팅방 나가기
       </Box>

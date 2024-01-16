@@ -13,6 +13,7 @@ import chakraTheme from '@/styles/theme/chakraTheme';
 import emotionTheme from '@/styles/theme/emotionTheme';
 
 import type { AppProps } from 'next/app';
+import { ChatContextProvider } from '@/contexts/ChatContext';
 
 const emotionCache = createCache({
   key: 'css',
@@ -50,10 +51,12 @@ export default function App({ Component, pageProps }: AppProps) {
           <Fonts />
           <ThemeProvider theme={emotionTheme}>
             <AuthContextProvider>
-              <BaseLayout>
-                <Component {...pageProps} />
-              </BaseLayout>
-              <ChatBubble />
+              <ChatContextProvider>
+                <BaseLayout>
+                  <Component {...pageProps} />
+                </BaseLayout>
+                <ChatBubble />
+              </ChatContextProvider>
             </AuthContextProvider>
           </ThemeProvider>
         </ChakraBaseProvider>
