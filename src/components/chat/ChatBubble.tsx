@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 
 import ChatIcon from '@/assets/icons/system/chat.svg';
+import { useChatContext } from '@/contexts/ChatContext';
 
 import ChatFrame from './ChatFrame';
-import { useChatContext } from '@/contexts/ChatContext';
 
 const ChatBubbleContainer = styled.div<{ $open: boolean }>`
   position: fixed;

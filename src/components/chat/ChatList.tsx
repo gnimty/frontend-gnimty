@@ -5,9 +5,9 @@ import { useContext, useEffect, useState } from 'react';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
 import ExitIcon from '@/assets/icons/system/exit.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
+import { useChatContext } from '@/contexts/ChatContext';
 
 import type { ChatRoom } from './types';
-import { useChatContext } from '@/contexts/ChatContext';
 
 interface ChatProps extends ChatRoom {
   selected?: boolean;

@@ -9,11 +9,11 @@ import { useState } from 'react';
 import ChatBubble from '@/components/chat/ChatBubble';
 import BaseLayout from '@/components/layouts/BaseLayout';
 import { AuthContextProvider } from '@/contexts/AuthContext';
+import { ChatContextProvider } from '@/contexts/ChatContext';
 import chakraTheme from '@/styles/theme/chakraTheme';
 import emotionTheme from '@/styles/theme/emotionTheme';
 
 import type { AppProps } from 'next/app';
-import { ChatContextProvider } from '@/contexts/ChatContext';
 
 const emotionCache = createCache({
   key: 'css',

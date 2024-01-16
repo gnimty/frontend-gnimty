@@ -2,7 +2,6 @@ import { Box, HStack, Input, VStack, useDisclosure } from '@chakra-ui/react';
 import React, { useRef } from 'react';
 
 import EditVerticalIcon from '@/assets/icons/system/edit-vertical.svg';
-
 import { useChatContext } from '@/contexts/ChatContext';
 
 function ChatInput() {
@@ -127,7 +126,7 @@ function ToggleMenu() {
           color: 'gray800',
         }}
         p="10px 12px"
-        onClick={() => exitChatRoom(selectedChatRoomNo as number)}
+        onClick={() => exitChatRoom(selectedChatRoomNo!)}
       >
         채팅방 나가기
       </Box>

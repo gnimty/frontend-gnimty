@@ -11,9 +11,9 @@ import Copy from '@/assets/icons/system/copy.svg';
 import PositionImage from '@/components/common/position-image/PositionImage';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
+import { useChatContext } from '@/contexts/ChatContext';
 
 import * as style from './UserCardLandscape.style';
-import { useChatContext } from '@/contexts/ChatContext';
 
 interface UserCardLandscapeProps {
   summoner: RecommendedSummonersEntry;

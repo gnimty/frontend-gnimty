@@ -1,10 +1,11 @@
 import { Box, HStack, VStack } from '@chakra-ui/react';
 import { useEffect, useRef } from 'react';
 
+import { useChatContext } from '@/contexts/ChatContext';
+
 import Chat from './Chat';
 import ChatInput from './ChatInput';
 import UserCard from './UserCard';
-import { useChatContext } from '@/contexts/ChatContext';
 
 function CurrentChat() {
   const { chatRooms, selectedChatRoomNo } = useChatContext();
