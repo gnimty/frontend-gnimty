@@ -3,6 +3,7 @@ name: Deploy Gnimty(dev)
 on:
   push:
     branches: ['dev']
+  workflow_dispatch:
 
 jobs:
   ci:
@@ -31,7 +32,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Copy files
-        uses: appleboy/scp-action@v0.1.4
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USERNAME }}
@@ -41,14 +42,14 @@ jobs:
           rm: true
 
       - name: Deploy
-        uses: appleboy/ssh-action@v1.0.0
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
             cd ${{ vars.DEPLOY_PATH }}
-            docker build . -t ${{ needs.deploy-setup.outputs.docker_image }}
+            docker build --build-arg API_BASE_URL=${{ vars.DEV_API_BASE_URL }} . -t ${{ needs.deploy-setup.outputs.docker_image }}
             docker stop ${{ needs.deploy-setup.outputs.container_name }}
             docker rm ${{ needs.deploy-setup.outputs.container_name }}
             docker run -p 3000:3000 -d --name=${{ needs.deploy-setup.outputs.container_name }} ${{ needs.deploy-setup.outputs.docker_image }}

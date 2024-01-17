@@ -60,6 +60,7 @@ export const tier = (theme: Theme) =>
   css({
     ...theme.fonts.t2,
     color: theme.colors.gray800,
+    width: '24px',
   });
 
 export const leaguePoints = (theme: Theme) =>

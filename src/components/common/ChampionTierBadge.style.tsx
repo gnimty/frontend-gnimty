@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import type { ChampionTier } from '@/api/types';
+import type { ChampionTier } from '@/apis/types';
 
 import type { Theme } from '@emotion/react';
 
@@ -10,8 +10,7 @@ const tierBackground = (theme: Theme): Record<ChampionTier, string> => ({
   '3': theme.colors.yellow800,
   '4': theme.colors.green800,
   '5': theme.colors.blue800,
-  OP: '',
-  RIP: '',
+  OP: theme.colors.purple800,
 });
 
 export const badgeRoot = (options: { tier: ChampionTier }) => (theme: Theme) => {

@@ -35,12 +35,21 @@ const size = {
     [$borderRadius.variable]: '4px',
     [$height.variable]: '48px',
   }),
+  sm: helpers.definePartsStyle({
+    [$padding.variable]: '10px 10px 10px 12px',
+    [$borderRadius.variable]: '4px',
+    [$height.variable]: '40px',
+  }),
 };
 
 const sizes = {
   lg: helpers.definePartsStyle({
     field: size.lg,
     group: size.lg,
+  }),
+  sm: helpers.definePartsStyle({
+    field: size.sm,
+    group: size.sm,
   }),
 };
 
@@ -93,9 +102,46 @@ const variantUnstyled = helpers.definePartsStyle({
   },
 });
 
+const variantDefault = helpers.definePartsStyle((props) => {
+  const { theme } = props;
+  const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props);
+
+  return {
+    field: {
+      bg: 'white',
+      textStyle: 't2',
+      fontWeight: '400',
+      border: '1px solid',
+      borderColor: 'gray200',
+      _readOnly: {
+        boxShadow: 'none !important',
+        userSelect: 'all',
+      },
+      _invalid: {
+        borderColor: getColorVar(theme, ec, '') as string,
+      },
+      _focusVisible: {
+        zIndex: 1,
+        borderColor: getColorVar(theme, fc, '') as string,
+      },
+      _disabled: {
+        bg: 'gray200',
+        border: '1px solid',
+        borderColor: 'gray300',
+      },
+      _placeholder: {
+        textStyle: 't2',
+        fontWeight: 'regular',
+        color: 'gray500',
+      },
+    },
+  };
+});
+
 const variants = {
   outline: variantOutline,
   unstyled: variantUnstyled,
+  default: variantDefault,
 };
 
 const inputTheme = helpers.defineMultiStyleConfig({

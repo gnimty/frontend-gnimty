@@ -88,5 +88,8 @@ export const colors = {
   magenta700: '#F147B6',
   magenta800: '#EE19A4',
 
+  ip: '#0acbe6',
+  rp: '#c79a3b',
+
   kakao: '#FEE500',
 };
