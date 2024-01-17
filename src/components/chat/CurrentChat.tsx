@@ -20,7 +20,7 @@ function CurrentChat() {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, []);
+  }, [chats]);
 
   return (
     <VStack w="400px" h="100%" position="relative" justify="flex-start">

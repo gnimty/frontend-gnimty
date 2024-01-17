@@ -8,26 +8,7 @@ function ChatInput() {
   const { currentUserId, chatClient, selectedChatRoomNo } = useChatContext();
   const chatRef = useRef<HTMLInputElement>(null);
   const { isOpen, onToggle } = useDisclosure();
-  const handleEnterKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      const chat = chatRef.current?.value;
-      if (chat) {
-        chatClient?.publish({
-          destination: `/pub/chatRoom/${selectedChatRoomNo}`,
-          headers: {
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify({
-            type: 'CHAT',
-            data: chat,
-          }),
-        });
-      }
-    }
-  };
-
-  const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const publishChat = () => {
     const chat = chatRef.current?.value;
     if (chat) {
       chatClient?.publish({
@@ -41,6 +22,17 @@ function ChatInput() {
         }),
       });
     }
+    chatRef.current!.value = '';
+  };
+  const handleEnterKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      publishChat();
+    }
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    publishChat();
   };
 
   return (

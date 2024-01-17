@@ -17,18 +17,10 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
   const [activateChatUserIds, setActivateChatUserIds] = useState<string[]>([]);
   const [selectedChatRoomNo, setSelectedChatRoomNo] = useState<number | null>(null);
 
-  const selectChatRoom = (chatRoomNo: number) => {
-    setSelectedChatRoomNo(chatRoomNo);
-  };
-
   const updateActivateChatUserIds = (userId: string, type: 'ADD' | 'REMOVE') => {
     switch (type) {
       case 'ADD':
         setActivateChatUserIds((prev) => [...prev, userId]);
-        chatClient?.subscribe(`/sub/user/${userId}`, (message) => {
-          const body = JSON.parse(message.body) as { type: UpdateActions; data: DataType<UpdateActions> };
-          handleUpdate(body.type, body.data);
-        });
         break;
       case 'REMOVE':
         setActivateChatUserIds((prev) => prev.filter((id) => id !== userId));
@@ -39,6 +31,7 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
   };
 
   const handleUpdate = <T extends UpdateActions>(type: T, data: DataType<T>) => {
+    console.log(data);
     switch (type) {
       case 'READ_CHATS':
         setChatRooms((prev) => {
@@ -78,13 +71,20 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
         break;
       case 'CHAT_MESSAGE':
         setChatRooms((prev) => {
-          const index = prev.findIndex((chatRoom) => chatRoom.otherUser.userId === (data as Chat).senderId);
+          const currentChatRoomNo = selectedChatRoomNo;
+          if (currentChatRoomNo === null) return prev;
+          const index = prev.findIndex((chatRoom) => chatRoom.chatRoomNo === currentChatRoomNo);
           if (index === -1) return prev;
           const newChatRooms = [...prev];
-          newChatRooms[index].chats.push(data as Chat);
+          if (newChatRooms[index].chats.some((chat) => chat.sendDate === (data as Chat).sendDate)) return prev;
+          newChatRooms[index].chats = [...newChatRooms[index].chats, data as Chat];
           return newChatRooms;
         });
     }
+  };
+
+  const selectChatRoom = (chatRoomNo: number) => {
+    setSelectedChatRoomNo(chatRoomNo);
   };
 
   const exitChatRoom = (chatRoomNo: number) => {
@@ -97,6 +97,7 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
         type: 'EXIT',
       }),
     });
+    setChatRooms((prev) => prev.filter((chatRoom) => chatRoom.chatRoomNo !== chatRoomNo));
   };
 
   useEffect(() => {
@@ -128,7 +129,34 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
         setChatClient(client);
       }
     }
-  }, [isAuthenticated, activateChatUserIds]);
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    activateChatUserIds.forEach((userId) => {
+      chatClient?.subscribe(`/sub/user/${userId}`, (message) => {
+        const body = JSON.parse(message.body) as { type: UpdateActions; data: DataType<UpdateActions> };
+        handleUpdate(body.type, body.data);
+      });
+    });
+  }, [activateChatUserIds]);
+
+  useEffect(() => {
+    if (selectedChatRoomNo !== null) {
+      chatClient?.publish({
+        destination: `/pub/chatRoom/${selectedChatRoomNo}`,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'READ_CHATS',
+        }),
+      });
+      chatClient?.subscribe(`/sub/chatRoom/${selectedChatRoomNo}`, (message) => {
+        const body = JSON.parse(message.body) as { type: UpdateActions; data: DataType<UpdateActions> };
+        handleUpdate(body.type, body.data);
+      });
+    }
+  }, [selectedChatRoomNo]);
 
   return {
     disclosure,

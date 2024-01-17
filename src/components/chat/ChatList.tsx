@@ -16,27 +16,9 @@ interface ChatProps extends ChatRoom {
 
 function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps) {
   const theme = useTheme();
-  const { chatClient, exitChatRoom, handleUpdate } = useChatContext();
+  const { exitChatRoom } = useChatContext();
   const [isOnHover, setIsOnHover] = useState(false);
   const { summonerName, iconId, status } = otherUser;
-
-  useEffect(() => {
-    if (selected && chatClient && chatClient.connected) {
-      chatClient.subscribe(`/sub/chatRoom/${chatRoomNo}`, (message) => {
-        const body = JSON.parse(message.body);
-        handleUpdate(body.type, body.data);
-      });
-      chatClient?.publish({
-        destination: `/pub/chatRoom/${chatRoomNo}`,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          type: 'READ_CHATS',
-        }),
-      });
-    }
-  }, [chatClient, selected, chatRoomNo]);
 
   return (
     <HStack
