@@ -23,6 +23,7 @@ interface UserCardProps {
   flexRankInfo: RankInfo;
 }
 
+// TODO: 유저 카드 정보 - 랭크정보, 해시태그 등 추가/수정 필요
 function UserCard({ username, hashtag, avatarUrl, soloRankInfo, flexRankInfo }: UserCardProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const theme = useTheme();

@@ -138,7 +138,7 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
         handleUpdate(body.type, body.data);
       });
     });
-  }, [activateChatUserIds]);
+  }, [activateChatUserIds, chatClient, handleUpdate]);
 
   useEffect(() => {
     if (selectedChatRoomNo !== null) {
@@ -156,7 +156,7 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
         handleUpdate(body.type, body.data);
       });
     }
-  }, [selectedChatRoomNo]);
+  }, [selectedChatRoomNo, chatClient, handleUpdate]);
 
   return {
     disclosure,
