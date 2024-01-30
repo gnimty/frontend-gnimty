@@ -6,7 +6,7 @@ export default function MainRoute() {
   return (
     <>
       <Head>
-        <title>그님티</title>
+        <title>마이페이지</title>
       </Head>
       <MyPage />
     </>
