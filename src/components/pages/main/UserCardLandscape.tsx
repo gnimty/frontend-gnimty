@@ -11,6 +11,7 @@ import Copy from '@/assets/icons/system/copy.svg';
 import PositionImage from '@/components/common/position-image/PositionImage';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
+import { useChatContext } from '@/contexts/ChatContext';
 
 import * as style from './UserCardLandscape.style';
 
@@ -20,12 +21,25 @@ interface UserCardLandscapeProps {
 
 export default function UserCardLandscape(props: UserCardLandscapeProps) {
   const { summoner } = props;
+  const { currentUserId, chatClient, disclosure, updateActivateChatUserIds } = useChatContext();
 
   async function handleNameCopyButtonClick() {
-    await navigator.clipboard.writeText(summoner.summonerName);
+    await navigator.clipboard.writeText(summoner.name);
   }
 
-  function handleChatButtonClick() {}
+  function handleChatButtonClick() {
+    const { id } = summoner;
+    if (!currentUserId) return;
+    if (chatClient && id) {
+      chatClient.publish({
+        destination: `/pub/user/${id}`,
+      });
+      updateActivateChatUserIds(String(id), 'ADD');
+    }
+    if (disclosure.isOpen !== true) {
+      disclosure.onOpen();
+    }
+  }
 
   return (
     <article css={style.userCardLandscape}>
@@ -40,7 +54,7 @@ export default function UserCardLandscape(props: UserCardLandscapeProps) {
           }}
         />
         <div css={style.summonerNameWrapper}>
-          <p css={style.summonerName}>{summoner.summonerName}</p>
+          <p css={style.summonerName}>{summoner.name}</p>
           <button type="button" css={style.copyNameButton} aria-label="닉네임 복사">
             <Copy width={16} height={16} aria-hidden onClick={handleNameCopyButtonClick} />
           </button>
@@ -51,7 +65,7 @@ export default function UserCardLandscape(props: UserCardLandscapeProps) {
       </div>
       <div css={style.tierInfo}>
         <TierImage tier={summoner.queue} width={24} height={24} />
-        <p css={style.tier}>{shortTierName({ division: summoner.division, tier: summoner.queue })}</p>
+        <p css={style.tier}>{shortTierName(summoner.queue, summoner.division)}</p>
         <p css={style.leaguePoints}>{Intl.NumberFormat().format(summoner.lp)}LP</p>
       </div>
       <ol css={style.positionInfo}>

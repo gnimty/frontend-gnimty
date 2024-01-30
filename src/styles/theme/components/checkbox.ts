@@ -25,7 +25,7 @@ const baseStyleControl = defineStyle({
 const baseStyleContainer = defineStyle({});
 
 const baseStyleLabel = defineStyle({
-  marginLeft: '4px',
+  marginLeft: '8px',
   userSelect: 'none',
 });
 

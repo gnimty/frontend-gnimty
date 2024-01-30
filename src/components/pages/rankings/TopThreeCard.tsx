@@ -34,23 +34,25 @@ export default function TopThreeCard(props: TopThreeCardProps) {
     return;
   }
 
-  const winPercentage = Math.floor(summonerRank.winRate * 100);
+  const winPercentage = Math.floor(summonerRank.tierInfo.winRate * 100);
   const defeatPercentage = 100 - winPercentage;
 
   return (
     <Box w="352px" h="210px">
       <Flex w="352px" h="202px" gap="20px" p="28px 0 4px 28px" pos="relative">
-        <Image
-          src={championSplashUrl(summonerRank.mostPlayedChampionIds[0])}
-          alt=""
-          fill
-          css={{
-            objectPosition: '140px',
-            zIndex: -1,
-            borderTopLeftRadius: '4px',
-            borderTopRightRadius: '4px',
-          }}
-        />
+        {summonerRank.tierInfo.mostChampionIds.length > 0 && (
+          <Image
+            src={championSplashUrl(summonerRank.tierInfo.mostChampionIds[0])}
+            alt=""
+            fill
+            css={{
+              objectPosition: '140px',
+              zIndex: -1,
+              borderTopLeftRadius: '4px',
+              borderTopRightRadius: '4px',
+            }}
+          />
+        )}
         <Box
           pos="absolute"
           top={0}
@@ -64,7 +66,7 @@ export default function TopThreeCard(props: TopThreeCardProps) {
         />
         <Box pos="relative">
           <Image
-            src={profileIconUrl(summonerRank.summoner.profileIconId)}
+            src={profileIconUrl(summonerRank.profileIconId)}
             alt=""
             width={56}
             height={56}
@@ -89,25 +91,25 @@ export default function TopThreeCard(props: TopThreeCardProps) {
               overflowX="hidden"
               whiteSpace="nowrap"
             >
-              {summonerRank.summoner.summonerName}
+              {summonerRank.summonerName}
             </Text>
             <HStack gap="4px">
-              <TierImage tier={summonerRank.summoner.soloTierInfo.tier} width={24} height={24} />
+              <TierImage tier={summonerRank.tierInfo.tier} width={24} height={24} />
               <Box w="36px" textStyle="t2" fontWeight="bold" textAlign="center" color="gray800">
-                {shortTierName(summonerRank.summoner.soloTierInfo)}
+                {shortTierName(summonerRank.summoner.soloTierInfo.tier, summonerRank.summoner.soloTierInfo.division)}
               </Box>
               <Box textStyle="t2" fontWeight="normal" color="gray500">
-                {Intl.NumberFormat().format(summonerRank.summoner.soloTierInfo.lp)}LP
+                {Intl.NumberFormat().format(summonerRank.tierInfo.lp)}LP
               </Box>
             </HStack>
             <HStack gap="8px">
-              {summonerRank.mostLanes.slice(0, 2).map((lane) => (
+              {summonerRank.tierInfo.mostLanes.slice(0, 2).map((lane) => (
                 <PositionImage key={lane} position={lane} width={24} height={24} />
               ))}
             </HStack>
           </Flex>
           <HStack gap="8px">
-            {summonerRank.mostPlayedChampionIds.map((championId) => (
+            {summonerRank.tierInfo.mostChampionIds.map((championId) => (
               <Image
                 key={championId}
                 src={championIconUrl(championIdEnNameMap[championId])}
@@ -123,11 +125,11 @@ export default function TopThreeCard(props: TopThreeCardProps) {
           <HStack gap="4px">
             <Flex gap="2px" textStyle="t2" fontWeight="normal" color="gray600">
               <Box>W</Box>
-              <Box w="28px">{summonerRank.totalWin}</Box>
+              <Box w="28px">{summonerRank.tierInfo.wins}</Box>
             </Flex>
             <Flex gap="2px" textStyle="t2" fontWeight="normal" color="gray600">
               <Box>L</Box>
-              <Box w="28px">{summonerRank.totalDefeat}</Box>
+              <Box w="28px">{summonerRank.tierInfo.defeats}</Box>
             </Flex>
             <Box textStyle="t1" fontWeight="bold" color="blue800">
               {winPercentage.toString().padStart(2, '0')}%

@@ -1,41 +1,28 @@
-import { Box, HStack, Image, StackDivider, VStack } from '@chakra-ui/react';
+import { Box, HStack, Image, VStack } from '@chakra-ui/react';
+import { useTheme } from '@emotion/react';
+import { useContext, useEffect, useState } from 'react';
 
+import profileIconUrl from '@/apis/utils/profileIconUrl';
+import ExitIcon from '@/assets/icons/system/exit.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
+import { useChatContext } from '@/contexts/ChatContext';
 
-const CHATS: {
-  profileImg: string;
-  username: string;
-  status: 'ONLINE' | 'AWAY' | 'OFFLINE';
-  topMsg: string;
-  selected: boolean;
-}[] = [
-  {
-    profileImg: 'https://ddragon.leagueoflegends.com/cdn/13.12.1/img/profileicon/0.png',
-    username: 'hide on bush',
-    status: 'ONLINE',
-    topMsg: '자리있나요?',
-    selected: true,
-  },
-  {
-    profileImg: 'https://ddragon.leagueoflegends.com/cdn/13.12.1/img/profileicon/0.png',
-    username: 'hide on bush',
-    status: 'OFFLINE',
-    topMsg: '자리있나요?',
-    selected: false,
-  },
-];
+import type { ChatRoom } from './types';
 
-interface ChatProps {
-  profileImg: string;
-  username: string;
-  status: 'ONLINE' | 'AWAY' | 'OFFLINE';
-  topMsg: string;
-  selected: boolean;
+interface ChatProps extends ChatRoom {
+  selected?: boolean;
+  handleClick: (chatRoomNo: number) => void;
 }
 
-function Chat({ profileImg, username, status, topMsg, selected }: ChatProps) {
+function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps) {
+  const theme = useTheme();
+  const { exitChatRoom } = useChatContext();
+  const [isOnHover, setIsOnHover] = useState(false);
+  const { summonerName, iconId, status } = otherUser;
+
   return (
     <HStack
+      role="option"
       aria-selected={selected}
       w="260px"
       h="64px"
@@ -48,30 +35,62 @@ function Chat({ profileImg, username, status, topMsg, selected }: ChatProps) {
       _selected={{
         bg: 'main',
       }}
+      onClick={() => handleClick(chatRoomNo)}
+      onMouseEnter={() => setIsOnHover(true)}
+      onMouseLeave={() => setIsOnHover(false)}
+      borderBottom={`1px solid ${theme.colors.gray100}`}
     >
-      <Image src={profileImg} alt={username} w="40px" h="40px" borderRadius="50%" />
+      <Image src={profileIconUrl(Number(iconId ?? '10'))} alt={summonerName} w="40px" h="40px" borderRadius="50%" />
       <VStack h="40px" gap="4px">
         <HStack h="20px" justify="space-between">
-          <Box textStyle="t2">{username}</Box>
+          <Box textStyle="t2" color={selected ? 'white' : 'gray800'}>
+            {summonerName}
+          </Box>
+          {/* <Box textStyle="t2" fontWeight="400" color={selected ? 'gray400' : 'gray600'}>
+            {hashtag}
+          </Box> */}
           <StatusIndicator status={status} />
         </HStack>
         <VStack h="20px" w="100%">
-          <Box textStyle="body" textAlign="left" w="100%">
-            {topMsg}
-          </Box>
+          {chats && chats.length > 0 && (
+            <Box textStyle="body" textAlign="left" w="100%" color={selected ? 'white' : 'gray800'}>
+              {chats[chats.length - 1].message}
+            </Box>
+          )}
         </VStack>
       </VStack>
+      {isOnHover && (
+        <ExitIcon
+          width="16px"
+          height="16px"
+          color={theme.colors.gray500}
+          onClick={() => exitChatRoom(chatRoomNo)}
+          cursor="pointer"
+        />
+      )}
     </HStack>
   );
 }
 
 function ChatList() {
+  const theme = useTheme();
+  const { chatRooms, selectChatRoom, selectedChatRoomNo } = useChatContext();
+  const handleChatClick = (chatRoomNo: number) => {
+    selectChatRoom(chatRoomNo);
+  };
   return (
-    <VStack w="260px" h="100%" divider={<StackDivider borderColor="gray100" />} spacing="1px">
-      {CHATS.map((info) => (
-        <Chat key={info.username} {...info} />
-      ))}
-    </VStack>
+    <Box w="261px" h="100%" borderRight={`1px solid ${theme.colors.gray100}`}>
+      <VStack role="listbox" w="full" h="max-content" overflowY="auto" spacing="1px">
+        {chatRooms.map((chatRoom) => (
+          <Chat
+            key={chatRoom.chatRoomNo}
+            {...chatRoom}
+            selected={selectedChatRoomNo === chatRoom.chatRoomNo}
+            handleClick={handleChatClick}
+          />
+        ))}
+      </VStack>
+    </Box>
   );
 }
 

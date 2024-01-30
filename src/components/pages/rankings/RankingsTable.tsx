@@ -30,7 +30,7 @@ export default function RankingsTable(props: RankingsTableProps) {
           textStyle="t2"
           fontWeight="regular"
           color="gray800"
-          background="gray200"
+          bg="gray200"
           borderBottom="1px solid"
           borderColor="gray300"
         >
@@ -56,16 +56,16 @@ export default function RankingsTable(props: RankingsTableProps) {
       </Thead>
       <Tbody>
         {ranks.map((rank) => {
-          const winPercentage = Math.floor(rank.winRate * 100);
+          const winPercentage = Math.floor(rank.tierInfo.winRate * 100);
 
           return (
-            <Tr key={rank.rank} display="flex" alignItems="center" gap="40px" w="1080px" p="8px 20px">
+            <Tr key={rank.puuid} display="flex" alignItems="center" gap="40px" w="1080px" p="8px 20px">
               <Td w="36px" textAlign="center" textStyle="t2" fontWeight="regular" color="gray800">
                 {rank.rank}
               </Td>
               <Td flex="1 1 0" display="flex" alignItems="center" gap="12px">
                 <Image
-                  src={profileIconUrl(rank.summoner.profileIconId)}
+                  src={profileIconUrl(rank.profileIconId)}
                   alt=""
                   width={40}
                   height={40}
@@ -82,32 +82,32 @@ export default function RankingsTable(props: RankingsTableProps) {
                   overflowX="hidden"
                   whiteSpace="nowrap"
                 >
-                  {rank.summoner.summonerName}
+                  {rank.summonerName}
                 </Text>
               </Td>
               <Td w="80px" display="flex" gap="8px" justifyContent="center">
-                {rank.mostLanes.slice(0, 2).map((position) => (
+                {rank.tierInfo.mostLanes.slice(0, 2).map((position) => (
                   <PositionImage key={position} position={position} width={24} height={24} />
                 ))}
               </Td>
               <Td w="140px" display="flex" gap="8px" alignItems="center" justifyContent="center">
-                <TierImage tier={rank.summoner.soloTierInfo.tier} width={24} height={24} />
+                <TierImage tier={rank.tierInfo.tier} width={24} height={24} />
                 <Box w="24px" textStyle="t2" fontWeight="bold" color="gray800" textAlign="center">
-                  {shortTierName(rank.summoner.soloTierInfo)}
+                  {shortTierName(rank.summoner.soloTierInfo.tier, rank.summoner.soloTierInfo.division)}
                 </Box>
                 <Box w="56px" textStyle="t2" fontWeight="regular" color="gray500">
-                  {Intl.NumberFormat().format(rank.summoner.soloTierInfo.lp)}LP
+                  {Intl.NumberFormat().format(rank.tierInfo.lp)}LP
                 </Box>
               </Td>
               <Td w="200px" display="flex" gap="8px" alignItems="center">
                 <Flex gap="4px" textStyle="t2" fontWeight="regular" color="gray600">
                   <Flex gap="2px">
                     <Box>W</Box>
-                    <Box w="28px">{rank.totalWin}</Box>
+                    <Box w="28px">{rank.tierInfo.wins}</Box>
                   </Flex>
                   <Flex gap="2px">
                     <Box>L</Box>
-                    <Box w="28px">{rank.totalDefeat}</Box>
+                    <Box w="28px">{rank.tierInfo.defeats}</Box>
                   </Flex>
                 </Flex>
                 <Box textStyle="t1" fontWeight="bold" color="gray800">
@@ -119,7 +119,7 @@ export default function RankingsTable(props: RankingsTableProps) {
                 </Flex>
               </Td>
               <Td w="112px" display="flex" gap="8px">
-                {rank.mostPlayedChampionIds.map((id) => (
+                {rank.tierInfo.mostChampionIds.map((id) => (
                   <Image
                     key={id}
                     src={championIconUrl(championIdEnNameMap[id])}

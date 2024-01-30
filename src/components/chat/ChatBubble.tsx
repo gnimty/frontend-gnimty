@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
 
 import ChatIcon from '@/assets/icons/system/chat.svg';
+import { useChatContext } from '@/contexts/ChatContext';
 
 import ChatFrame from './ChatFrame';
 
@@ -16,16 +16,15 @@ const ChatBubbleContainer = styled.div<{ $open: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
 `;
 
 function ChatBubble() {
-  const [chatOpen, setChatOpen] = useState(false);
-  const closeChat = () => setChatOpen(false);
+  const { disclosure } = useChatContext();
+  const { isOpen, onClose, onToggle } = disclosure;
   return (
-    <ChatBubbleContainer $open={chatOpen} onClick={() => setChatOpen((prev) => !prev)}>
-      <ChatIcon color="#fff" width="36px" height="36px" />
-      {chatOpen && <ChatFrame closeChat={closeChat} />}
+    <ChatBubbleContainer $open={isOpen}>
+      <ChatIcon color="#fff" width="36px" height="36px" onClick={onToggle} cursor="pointer" />
+      {isOpen && <ChatFrame closeChat={onClose} />}
     </ChatBubbleContainer>
   );
 }
