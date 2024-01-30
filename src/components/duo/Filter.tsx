@@ -1,57 +1,17 @@
-import { css } from '@emotion/react';
+import { useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { useState, type MouseEvent, useRef } from 'react';
+import { HStack, UseDisclosureReturn } from '@chakra-ui/react';
 
-import Bot from '@/assets/icons/game/position/bot.svg';
-import Every from '@/assets/icons/game/position/every.svg';
-import Jug from '@/assets/icons/game/position/jug.svg';
-import Mid from '@/assets/icons/game/position/mid.svg';
-import Sup from '@/assets/icons/game/position/sup.svg';
-import Top from '@/assets/icons/game/position/top.svg';
 import FilterSet from '@/assets/icons/system/filter-set.svg';
 import FilterIcon from '@/assets/icons/system/filter.svg';
 import ResetIcon from '@/assets/icons/system/reset.svg';
 import Select from '@/components/common/select/Select';
-import SpeechBubble from '@/components/common/SpeechBubble';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
-import ToggleSwitch from '@/components/common/ToggleSwitch';
-import PositionImage from '@/components/common/position-image/PositionImage';
 import Unselected from '@/components/common/position-image/Unselected';
-import { useTheme } from '@chakra-ui/react';
-
-const FilterWrapper = styled.div`
-  width: 67.5rem;
-  margin: 0 auto;
-  height: 2.5rem;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const FilterBox = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-`;
-
-const FilterLeft = styled(FilterBox)`
-  width: max-content;
-`;
-
-const FilterRight = styled(FilterBox)`
-  width: 141px;
-  svg {
-    cursor: pointer;
-  }
-`;
-
-const ResetWrapper = styled.div`
-  width: 2.5rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+import PositionImage from '@/components/common/position-image/PositionImage';
+import SpeechBubble from '@/components/common/SpeechBubble';
+import ToggleSwitch from '@/components/common/ToggleSwitch';
 
 const FilterIconBox = styled.ul`
   width: 240px;
@@ -64,7 +24,7 @@ const FilterIconBox = styled.ul`
 
 const FilterIconItem = styled.li<{ selected?: boolean }>`
   width: 40px;
-  height: 100%;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -95,7 +55,7 @@ const FilterIconItem = styled.li<{ selected?: boolean }>`
 
 const FilterDetailButton = styled.button<{ $open: boolean }>`
   width: 40px;
-  height: 100%;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -125,19 +85,26 @@ const SpeechBubbleContent = styled.div`
   }
 `;
 
+const ResetWrapper = styled.div`
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 interface FilterProps {
+  disclosure: UseDisclosureReturn;
   allOpen: boolean;
   toggleAll: () => void;
-  detailOpen: boolean;
-  toggleDetail: () => void;
 }
 
-function Filter({ allOpen, toggleAll, detailOpen, toggleDetail }: FilterProps) {
-  const theme = useTheme();
+const Filter = ({ disclosure, allOpen, toggleAll }: FilterProps) => {
+  const { isOpen, onToggle } = disclosure;
   const [selected, setSelected] = useState<string[]>([]);
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
   const ulRef = useRef<HTMLUListElement>(null);
-  const handlePositionSelect = (e: MouseEvent<HTMLUListElement>) => {
+  const handlePositionSelect = (e: React.MouseEvent<HTMLUListElement>) => {
     let target = e.target as HTMLElement;
     while (target && !(target instanceof HTMLLIElement)) {
       if (target.parentElement) {
@@ -156,16 +123,14 @@ function Filter({ allOpen, toggleAll, detailOpen, toggleDetail }: FilterProps) {
       }
     }
   };
-
   return (
-    <FilterWrapper>
-      <FilterLeft>
+    <HStack w="full" justify="space-between">
+      <HStack w="max-content" spacing="8px">
         <Select
           options={[
             { text: '솔로 랭크', value: 'soloRank' },
             { text: '자유 랭크', value: 'freeRank' },
             { text: '칼바람 나락', value: 'bridge' },
-            { text: '아레나', value: 'arena' },
           ]}
           css={{ width: '124px' }}
         />
@@ -231,8 +196,8 @@ function Filter({ allOpen, toggleAll, detailOpen, toggleDetail }: FilterProps) {
         </FilterIconBox>
 
         <FilterDetailButton
-          $open={detailOpen}
-          onClick={toggleDetail}
+          $open={isOpen}
+          onClick={onToggle}
           onMouseEnter={() => setShowSpeechBubble(true)}
           onMouseLeave={() => setShowSpeechBubble(false)}
         >
@@ -244,7 +209,7 @@ function Filter({ allOpen, toggleAll, detailOpen, toggleDetail }: FilterProps) {
               </div>
             </SpeechBubbleContent>
           </SpeechBubble>
-          {detailOpen ? (
+          {isOpen ? (
             <FilterSet
               width="24px"
               height="24px"
@@ -262,15 +227,23 @@ function Filter({ allOpen, toggleAll, detailOpen, toggleDetail }: FilterProps) {
             />
           )}
         </FilterDetailButton>
-      </FilterLeft>
-      <FilterRight>
+      </HStack>
+
+      <HStack
+        w="141px"
+        css={{
+          svg: {
+            cursor: 'pointer',
+          },
+        }}
+      >
         <ToggleSwitch onOff={allOpen} onClick={toggleAll} label="펼쳐보기" />
         <ResetWrapper>
           <ResetIcon width="24px" height="24px" />
         </ResetWrapper>
-      </FilterRight>
-    </FilterWrapper>
+      </HStack>
+    </HStack>
   );
-}
+};
 
 export default Filter;
