@@ -93,7 +93,7 @@ export default function RankingsTable(props: RankingsTableProps) {
               <Td w="140px" display="flex" gap="8px" alignItems="center" justifyContent="center">
                 <TierImage tier={rank.tierInfo.tier} width={24} height={24} />
                 <Box w="24px" textStyle="t2" fontWeight="bold" color="gray800" textAlign="center">
-                  {shortTierName(rank.summoner.soloTierInfo.tier, rank.summoner.soloTierInfo.division)}
+                  {shortTierName(rank.tierInfo.tier, rank.tierInfo.division)}
                 </Box>
                 <Box w="56px" textStyle="t2" fontWeight="regular" color="gray500">
                   {Intl.NumberFormat().format(rank.tierInfo.lp)}LP
