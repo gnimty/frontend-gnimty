@@ -13,10 +13,12 @@ function CurrentChat() {
   const chats = chatRooms?.find((chatRoom) => chatRoom.chatRoomNo === selectedChatRoomNo)?.chats ?? [];
   const otherUserId = chatRooms?.find((chatRoom) => chatRoom.chatRoomNo === selectedChatRoomNo)?.otherUser.userId;
   const today = new Date();
-  const chatsBeforeToday = chats?.filter((chat) => new Date(chat.sendDate).getDate() < today.getDate());
-  const chatsToday = chats?.filter((chat) => new Date(chat.sendDate).getDate() === today.getDate());
+  const chatsBeforeToday = chats?.filter((chat) => new Date(chat.sendDate) < today);
+  const chatsToday = chats?.slice(chatsBeforeToday.length, chats.length);
 
   useEffect(() => {
+    console.log(chats);
+    console.log(chatsBeforeToday);
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
@@ -48,11 +50,10 @@ function CurrentChat() {
       <Box overflowY="scroll" w="full" flex="1" mb="70px" ref={scrollRef}>
         {chats && chats.length > 0 && otherUserId && (
           <VStack w="full" spacing="8px" p="0 20px">
-            {chatsBeforeToday &&
-              chatsBeforeToday.map((chatInfo) => (
-                <Chat key={chatInfo.sendDate} otherUserId={otherUserId} {...chatInfo} />
-              ))}
-            {chatsBeforeToday.length > 0 && chatsToday.length > 0 && (
+            {chatsBeforeToday.map((chatInfo) => (
+              <Chat key={chatInfo.sendDate} otherUserId={otherUserId} {...chatInfo} />
+            ))}
+            {chatsBeforeToday && chatsToday.length > 0 && (
               <HStack w="360px" m="0 auto" justify="space-between" alignItems="center">
                 <Box w="full" h="1px" border="0.5px solid gray300" />
                 <Box w="52px" textStyle="body" color="gray300" textAlign="center">
