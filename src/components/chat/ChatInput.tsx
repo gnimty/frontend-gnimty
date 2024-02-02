@@ -5,12 +5,12 @@ import EditVerticalIcon from '@/assets/icons/system/edit-vertical.svg';
 import { useChatContext } from '@/contexts/ChatContext';
 
 function ChatInput() {
-  const { currentUserId, chatClient, selectedChatRoomNo } = useChatContext();
+  const { chatClient, selectedChatRoomNo } = useChatContext();
   const chatRef = useRef<HTMLInputElement>(null);
   const { isOpen, onToggle } = useDisclosure();
   const publishChat = () => {
     const chat = chatRef.current?.value;
-    if (chat) {
+    if (chat && chat.trim().length > 0) {
       chatClient?.publish({
         destination: `/pub/chatRoom/${selectedChatRoomNo}`,
         headers: {
@@ -21,8 +21,8 @@ function ChatInput() {
           data: chat,
         }),
       });
+      chatRef.current.value = '';
     }
-    chatRef.current!.value = '';
   };
   const handleEnterKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {

@@ -31,7 +31,6 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
   };
 
   const handleUpdate = <T extends UpdateActions>(type: T, data: DataType<T>) => {
-    console.log(data);
     switch (type) {
       case 'READ_CHATS':
         setChatRooms((prev) => {

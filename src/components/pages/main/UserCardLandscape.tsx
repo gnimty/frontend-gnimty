@@ -36,7 +36,7 @@ export default function UserCardLandscape(props: UserCardLandscapeProps) {
       });
       updateActivateChatUserIds(String(id), 'ADD');
     }
-    if (disclosure.isOpen !== true) {
+    if (!disclosure.isOpen) {
       disclosure.onOpen();
     }
   }

@@ -17,8 +17,6 @@ function CurrentChat() {
   const chatsToday = chats?.slice(chatsBeforeToday.length, chats.length);
 
   useEffect(() => {
-    console.log(chats);
-    console.log(chatsBeforeToday);
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
