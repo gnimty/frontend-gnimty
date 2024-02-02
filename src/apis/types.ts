@@ -106,6 +106,29 @@ export interface SummonerRankDto {
   rank: number;
 }
 
+export interface SummonerDto {
+  /** 소환사명 */
+  summonerName: string;
+  /** 소환사명의 모든 공백 제거 및 lowerCase로 적용한 문자열 */
+  internalName: string;
+  /** 소환사 태그라인 */
+  tagLine: string;
+  /** internalName + '#' + 태그라인 lowerCase로 적용한 문자열 */
+  internalTagName: string;
+  /** 소환사 puuid */
+  puuid: string;
+  /** 소환사 id */
+  summonerId: string;
+  /** 소환사 프로필 아이콘 id */
+  profileIconId: number;
+  /** 소환사 레벨 */
+  summonerLevel: number;
+  /** 솔로랭크 티어 정보 */
+  soloTierInfo: SummonerTierDto;
+  /** 자유랭크 티어 정보 */
+  flexTierInfo: SummonerTierDto | null;
+}
+
 export type ChampionTier = 'OP' | '1' | '2' | '3' | '4' | '5';
 
 export interface ChampionDto {
