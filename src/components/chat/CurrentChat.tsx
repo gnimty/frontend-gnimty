@@ -1,5 +1,5 @@
 import { Box, HStack, VStack } from '@chakra-ui/react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 import { useChatContext } from '@/contexts/ChatContext';
 
@@ -10,7 +10,10 @@ import UserCard from './UserCard';
 function CurrentChat() {
   const { chatRooms, selectedChatRoomNo } = useChatContext();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const chats = chatRooms?.find((chatRoom) => chatRoom.chatRoomNo === selectedChatRoomNo)?.chats ?? [];
+  const chats = useMemo(
+    () => chatRooms?.find((chatRoom) => chatRoom.chatRoomNo === selectedChatRoomNo)?.chats ?? [],
+    [chatRooms, selectedChatRoomNo],
+  );
   const otherUserId = chatRooms?.find((chatRoom) => chatRoom.chatRoomNo === selectedChatRoomNo)?.otherUser.userId;
   const today = new Date();
   const chatsBeforeToday = chats?.filter((chat) => new Date(chat.sendDate) < today);
