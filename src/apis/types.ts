@@ -237,3 +237,9 @@ export interface ProfileEntry {
   riotDependentInfo: RiotDependentInfo;
   oauthInfos: OauthInfoEntry[];
 }
+
+export interface ApiStatus {
+  message: string;
+  code: number;
+  field: string;
+}
