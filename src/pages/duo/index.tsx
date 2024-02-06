@@ -2,6 +2,7 @@ import { Grid, useDisclosure, VStack } from '@chakra-ui/react';
 import DetailDrawer from '@/components/duo/DetailDrawer';
 import Filter from '@/components/duo/Filter';
 import { useState } from 'react';
+import SummonerCard from '@/components/duo/SummonerCard';
 
 export default function Duo() {
   const drawerDisclosure = useDisclosure();
@@ -26,9 +27,7 @@ export default function Duo() {
         <Filter disclosure={drawerDisclosure} allOpen={allOpen} toggleAll={toggleAll} />
         <Grid templateColumns="repeat(3, 350px)" gap="12px">
           {cardOpens.map((open, index) => (
-            <div key={index} onClick={() => toggleCard(index)}>
-              {open ? '열림' : '닫힘'}
-            </div>
+            <SummonerCard key={index} open={open} toggle={() => toggleCard(index)} />
           ))}
         </Grid>
       </VStack>
