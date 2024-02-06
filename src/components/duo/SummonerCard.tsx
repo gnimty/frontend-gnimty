@@ -132,7 +132,13 @@ const OpenCloseButton = styled.button`
 const CHAMP_URL = 'https://ddragon.leagueoflegends.com/cdn/13.12.1/img/champion/Kaisa.png';
 const PROFILE_URL = 'https://ddragon.leagueoflegends.com/cdn/13.12.1/img/profileicon/0.png';
 
-export default function SummonerCard({ open, toggle }: { open: boolean; toggle: () => void }) {
+interface SummonerCardProps {
+  open: boolean;
+  toggle: () => void;
+  // summonerInfo
+}
+
+export default function SummonerCard({ open, toggle }: SummonerCardProps) {
   return (
     <CardWrapper $open={open}>
       <CardHeader $flexColumn="true" $align="flex-start">
