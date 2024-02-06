@@ -164,6 +164,8 @@ export const champions = {
   질리언: 'Zilean',
   조이: 'Zoe',
   자이라: 'Zyra',
+  흐웨이: 'Hwei',
+  스몰더: 'Smolder',
 } as const;
 
 export type ChampionName = keyof typeof champions;
