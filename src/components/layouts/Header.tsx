@@ -11,7 +11,7 @@ import * as style from './Header.style';
 // TODO: 링크 정해지면 추가하기
 const links = [
   { name: '홈', link: '/' },
-  { name: '듀오 찾기', link: '' },
+  { name: '듀오 찾기', link: '/duo' },
   { name: '챔피언 분석', link: '' },
   { name: '랭킹', link: '/rankings?page=1' },
   { name: '할인/패치노트', link: '/information' },

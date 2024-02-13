@@ -1,6 +1,7 @@
-import { champions, type ChampionName } from '@/constants/champions';
+import dataDragonVersion from '@/apis/constants/dataDragonVersion';
+import champions from '@/apis/constants/champions';
 
-export const getChampionSprite = (championName: ChampionName) => {
-  const englishName = champions[championName];
-  return `https://ddragon.leagueoflegends.com/cdn/13.18.1/img/champion/${englishName}.png`;
+export const getChampionSprite = (championName: string) => {
+  const englishName = champions.find((champion) => champion.krName === championName)?.enName;
+  return `https://ddragon.leagueoflegends.com/cdn/${dataDragonVersion}/img/champion/${englishName}.png`;
 };

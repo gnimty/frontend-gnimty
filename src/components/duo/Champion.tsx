@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 
 import CheckIcon from '@/assets/icons/system/check.svg';
-import { type ChampionName } from '@/constants/champions';
 import { getChampionSprite } from '@/utils/championSprite';
 
 const Container = styled.div`
@@ -67,9 +66,9 @@ const SelectedChecker = styled.div<{ selected: boolean }>`
 `;
 
 interface ChampionProps {
-  championName: ChampionName;
+  championName: string;
   selected?: boolean;
-  onClick: (championName: ChampionName) => void;
+  onClick: (championName: string) => void;
 }
 
 const Champion = ({ championName, selected = false, onClick }: ChampionProps) => {

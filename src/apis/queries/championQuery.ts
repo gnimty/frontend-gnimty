@@ -10,13 +10,16 @@ interface ChampionsResponse {
   };
 }
 
+export async function getChampions() {
+  const res = await request.get<ChampionsResponse>('/asset/champion');
+  return res.data;
+}
+
 const championsQuery = () =>
   queryOptions({
     queryKey: ['champions'],
-    async queryFn() {
-      const res = await request.get<ChampionsResponse>('/asset/champion');
-      return res.data;
-    },
+    queryFn: getChampions,
+    staleTime: 1000 * 60 * 60 * 24,
   });
 
 export default championsQuery;

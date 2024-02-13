@@ -6,6 +6,16 @@ import SummonerCard from '@/components/duo/SummonerCard';
 
 export default function Duo() {
   const drawerDisclosure = useDisclosure();
+  const [requestParams, setRequestParams] = useState({
+    preferenceChampions: [],
+    sortType: '',
+    duoAvailable: false,
+    timeAvailable: false,
+  });
+
+  const updateRequestParams = (toUpdate: { [key: string]: any }) =>
+    setRequestParams((prev) => ({ ...prev, ...toUpdate }));
+
   const [allOpen, setAllOpen] = useState(false);
   // TODO: 서버에서 받아온 CARD로 교체
   const [cardOpens, setCardOpens] = useState<boolean[]>(() => Array(18).fill(false));

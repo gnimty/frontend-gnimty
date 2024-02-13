@@ -54,7 +54,7 @@ interface RadioProps {
 const Radio = ({ width, height, label, name }: RadioProps) => {
   return (
     <Container $width={width} $height={height}>
-      <RadioInput type="radio" name={name} id={label} />
+      <RadioInput type="radio" name={name} id={label} value={label} />
       <Label htmlFor={label}>{label}</Label>
     </Container>
   );
