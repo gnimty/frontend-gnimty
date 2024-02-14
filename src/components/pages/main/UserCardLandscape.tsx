@@ -11,6 +11,7 @@ import Copy from '@/assets/icons/system/copy.svg';
 import PositionImage from '@/components/common/position-image/PositionImage';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
+import { useChatContext } from '@/contexts/ChatContext';
 
 import * as style from './UserCardLandscape.style';
 
@@ -20,12 +21,25 @@ interface UserCardLandscapeProps {
 
 export default function UserCardLandscape(props: UserCardLandscapeProps) {
   const { summoner } = props;
+  const { currentUserId, chatClient, disclosure, updateActivateChatUserIds } = useChatContext();
 
   async function handleNameCopyButtonClick() {
     await navigator.clipboard.writeText(summoner.name);
   }
 
-  function handleChatButtonClick() {}
+  function handleChatButtonClick() {
+    const { id } = summoner;
+    if (!currentUserId) return;
+    if (chatClient && id) {
+      chatClient.publish({
+        destination: `/pub/user/${id}`,
+      });
+      updateActivateChatUserIds(String(id), 'ADD');
+    }
+    if (!disclosure.isOpen) {
+      disclosure.onOpen();
+    }
+  }
 
   return (
     <article css={style.userCardLandscape}>

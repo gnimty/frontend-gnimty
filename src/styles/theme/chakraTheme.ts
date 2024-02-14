@@ -39,6 +39,17 @@ const chakraTheme = {
           "'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif",
         backgroundColor: 'gray100',
       },
+      '&::-webkit-scrollbar': {
+        width: '6px',
+      },
+      '&::-webkit-scrollbar-thumb': {
+        backgroundClip: 'padding-box',
+        border: '3px solid #ccc',
+        borderRadius: '999px',
+      },
+      '&::-webkit-scrollbar-track': {
+        backgroundColor: '#f2f2f2',
+      },
     },
   },
 };

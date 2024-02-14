@@ -5,8 +5,10 @@ import { CacheProvider, Global, ThemeProvider } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import ChatBubble from '@/components/chat/ChatBubble';
 import BaseLayout from '@/components/layouts/BaseLayout';
 import { AuthContextProvider } from '@/contexts/AuthContext';
+import { ChatContextProvider } from '@/contexts/ChatContext';
 import chakraTheme from '@/styles/theme/chakraTheme';
 import emotionTheme from '@/styles/theme/emotionTheme';
 
@@ -48,9 +50,12 @@ export default function App({ Component, pageProps }: AppProps) {
           <Fonts />
           <ThemeProvider theme={emotionTheme}>
             <AuthContextProvider>
-              <BaseLayout>
-                <Component {...pageProps} />
-              </BaseLayout>
+              <ChatContextProvider>
+                <BaseLayout>
+                  <Component {...pageProps} />
+                </BaseLayout>
+                <ChatBubble />
+              </ChatContextProvider>
             </AuthContextProvider>
           </ThemeProvider>
         </ChakraBaseProvider>
