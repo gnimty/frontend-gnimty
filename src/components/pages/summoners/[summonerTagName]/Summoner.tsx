@@ -21,15 +21,20 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import Head from 'next/head';
 import Image from 'next/image';
 
+import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
+import championIdKrNameMap from '@/apis/constants/championIdKrNameMap';
 import summonerMatchesInfoQuery from '@/apis/queries/summonerMatchesInfoQuery';
 import useRenewSummoner from '@/apis/useRenewSummoner';
+import championIconUrl from '@/apis/utils/championIconUrl';
 import fullTierName from '@/apis/utils/fullTierName';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
 import Chat from '@/assets/icons/system/chat.svg';
 import Copy from '@/assets/icons/system/copy.svg';
 import Like from '@/assets/icons/system/like.svg';
+import PositionImage from '@/components/common/position-image/PositionImage';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
+import proportionalValue from '@/utils/proportionalValue';
 
 import RankCard from './RankCard';
 
@@ -186,9 +191,103 @@ export default function Summoner(props: SummonerProps) {
                 />
               )}
             </HStack>
-            <Flex bg="white" h="140px" w="full">
-              최근 게임 결과 카드
-            </Flex>
+            <VStack alignItems="normal" gap="12px" bg="white" h="140px" w="full" p="20px" borderRadius="4px">
+              <Text textStyle="t2" fontWeight="regular" color="gray700">
+                최근 게임 결과
+              </Text>
+              <HStack justifyContent="space-between">
+                <VStack gap="12px" alignItems="normal">
+                  <HStack gap="20px">
+                    <Text textStyle="t2" fontWeight="bold" color="gray700">
+                      {data.data.matchSummary.plays}전 {data.data.matchSummary.wins}승 {data.data.matchSummary.defeats}
+                      패
+                    </Text>
+                    <Text textStyle="t2" fontWeight="bold" color="green800">
+                      {data.data.matchSummary.avgKda.toFixed(2)} 평점
+                    </Text>
+                  </HStack>
+                  <HStack gap="20px">
+                    {data.data.matchSummary.championSummary.map((champion) => (
+                      // TODO: 백엔드 분들 께 챔피언 서머리에 챔피언 아이디 넘겨 달라고 해야함
+                      <HStack key={champion.avgKda} gap="12px" alignItems="normal">
+                        <Image
+                          src={championIconUrl(championIdEnNameMap[10])}
+                          width={36}
+                          height={36}
+                          alt={championIdKrNameMap[10]}
+                          css={{ borderRadius: '999px' }}
+                        />
+                        <VStack alignItems="normal" gap={0}>
+                          <Text w="48px" textStyle="t2" color="gray800" fontWeight="bold">
+                            {Math.floor(champion.winRate * 100)}%
+                          </Text>
+                          <Text w="60px" textStyle="body" color="orange800" fontWeight="bold">
+                            {champion.avgKda.toFixed(2)} 평점
+                          </Text>
+                        </VStack>
+                      </HStack>
+                    ))}
+                  </HStack>
+                </VStack>
+                <VStack gap={0}>
+                  <HStack gap="20px">
+                    {/* TODO: 이 부분 백엔드에서 라인별 데이터 보내달라고 해야 함 */}
+                    <Box w="12px" h="48px" bg="gray200" pos="relative">
+                      <Box
+                        w="full"
+                        bg="red800"
+                        h={`${proportionalValue(100, 0.5 * 100, 48)}px`}
+                        pos="absolute"
+                        bottom="0"
+                      />
+                    </Box>
+                    <Box w="12px" h="48px" bg="gray200" pos="relative">
+                      <Box
+                        w="full"
+                        bg="red800"
+                        h={`${proportionalValue(100, 0.2 * 100, 48)}px`}
+                        pos="absolute"
+                        bottom="0"
+                      />
+                    </Box>
+                    <Box w="12px" h="48px" bg="gray200" pos="relative">
+                      <Box
+                        w="full"
+                        bg="red800"
+                        h={`${proportionalValue(100, 0.9 * 100, 48)}px`}
+                        pos="absolute"
+                        bottom="0"
+                      />
+                    </Box>
+                    <Box w="12px" h="48px" bg="gray200" pos="relative">
+                      <Box
+                        w="full"
+                        bg="red800"
+                        h={`${proportionalValue(100, 0.4 * 100, 48)}px`}
+                        pos="absolute"
+                        bottom="0"
+                      />
+                    </Box>
+                    <Box w="12px" h="48px" bg="gray200" pos="relative">
+                      <Box
+                        w="full"
+                        bg="red800"
+                        h={`${proportionalValue(100, 0.01 * 100, 48)}px`}
+                        pos="absolute"
+                        bottom="0"
+                      />
+                    </Box>
+                  </HStack>
+                  <HStack gap="16px" pt="4px" px="8px" borderTop="1px solid" borderColor="gray500">
+                    <PositionImage position="TOP" width={16} height={16} />
+                    <PositionImage position="JUNGLE" width={16} height={16} />
+                    <PositionImage position="MIDDLE" width={16} height={16} />
+                    <PositionImage position="BOTTOM" width={16} height={16} />
+                    <PositionImage position="UTILITY" width={16} height={16} />
+                  </HStack>
+                </VStack>
+              </HStack>
+            </VStack>
           </VStack>
         </HStack>
         <Tabs display="flex" flexDir="column" gap="12px" w="full">

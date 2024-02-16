@@ -238,6 +238,25 @@ export interface ProfileEntry {
   oauthInfos: OauthInfoEntry[];
 }
 
+export interface ChampionSummaryDto {
+  plays: number;
+  wins: number;
+  defeats: number;
+  winRate: number;
+  avgKda: number;
+  isPerfect: boolean;
+}
+
+export interface MatchSummaryDto {
+  plays: number;
+  wins: number;
+  defeats: number;
+  winRate: number;
+  avgKda: number;
+  isPerfect: boolean;
+  championSummary: ChampionSummaryDto[];
+}
+
 export interface ApiStatus {
   message: string;
   code: number;
