@@ -31,6 +31,8 @@ import Like from '@/assets/icons/system/like.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
 
+import RankCard from './RankCard';
+
 dayjs.locale('ko');
 dayjs.extend(relativeTime);
 dayjs.extend(duration);
@@ -164,9 +166,26 @@ export default function Summoner(props: SummonerProps) {
             </VStack>
           </VStack>
           <VStack gap="12px" flex="1">
-            <Flex bg="white" h="112px" w="full">
-              솔로 랭크 정보 카드
-            </Flex>
+            <HStack gap="12px" h="112px" w="full">
+              <RankCard
+                tierType="solo"
+                tier={data.data.summoner.soloTierInfo.tier}
+                division={data.data.summoner.soloTierInfo.division}
+                lp={data.data.summoner.soloTierInfo.lp}
+                // TODO: API에 순위 정보가 추가 되면 같이 업데이트 필요
+                rank={1}
+              />
+              {data.data.summoner.flexTierInfo !== null && (
+                <RankCard
+                  tierType="flex"
+                  tier={data.data.summoner.flexTierInfo.tier}
+                  division={data.data.summoner.flexTierInfo.division}
+                  lp={data.data.summoner.flexTierInfo.lp}
+                  // TODO: API에 순위 정보가 추가 되면 같이 업데이트 필요
+                  rank={1}
+                />
+              )}
+            </HStack>
             <Flex bg="white" h="140px" w="full">
               최근 게임 결과 카드
             </Flex>
