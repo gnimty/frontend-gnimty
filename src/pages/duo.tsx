@@ -1,6 +1,6 @@
-import Image from 'next/image';
 import { Grid, useDisclosure, VStack, Text } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 import duoSummonersQuery from '@/apis/queries/duoSummonersQuery';
@@ -61,19 +61,18 @@ export default function Duo() {
           updateParams={updateRequestParams}
         />
         <Grid templateColumns="repeat(3, 350px)" gap="12px">
-          {summoners &&
-            summoners.map((summoner) => {
-              return (
-                <SummonerCard
-                  key={summoner.id}
-                  summoner={summoner}
-                  open={summoner.open}
-                  toggle={() =>
-                    setSummoners((prev) => prev.map((s) => (s.id === summoner.id ? { ...s, open: !s.open } : s)))
-                  }
-                />
-              );
-            })}
+          {summoners?.map((summoner) => {
+            return (
+              <SummonerCard
+                key={summoner.id}
+                summoner={summoner}
+                open={summoner.open}
+                toggle={() =>
+                  setSummoners((prev) => prev.map((s) => (s.id === summoner.id ? { ...s, open: !s.open } : s)))
+                }
+              />
+            );
+          })}
         </Grid>
         {summoners.length === 0 && (
           <VStack pt="120px" gap="24px" justify="center">
