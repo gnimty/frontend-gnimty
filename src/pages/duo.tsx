@@ -1,9 +1,11 @@
-import { Grid, useDisclosure, VStack } from '@chakra-ui/react';
+import Image from 'next/image';
+import { Grid, useDisclosure, VStack, Text } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import duoSummonersQuery from '@/apis/queries/duoSummonersQuery';
 import type { RecommendedSummonersEntry, DuoSummonersRequest } from '@/apis/types';
+import NotFound from '@/assets/images/duo-not-found.png';
 import DetailDrawer from '@/components/duo/DetailDrawer';
 import Filter from '@/components/duo/Filter';
 import SummonerCard from '@/components/duo/SummonerCard';
@@ -16,8 +18,10 @@ export const defaultDuoSummonersRequest: DuoSummonersRequest = {
   gameMode: 'RANK_SOLO',
   status: 'ONLINE',
   sortBy: 'RECOMMEND',
+  tier: '',
   lastSummonerId: 0,
   lastSummonerUpCount: 0,
+  lastSummonerMmr: 0,
   pageSize: 18,
 };
 
@@ -57,19 +61,33 @@ export default function Duo() {
           updateParams={updateRequestParams}
         />
         <Grid templateColumns="repeat(3, 350px)" gap="12px">
-          {summoners?.map((summoner) => {
-            return (
-              <SummonerCard
-                key={summoner.id}
-                summoner={summoner}
-                open={summoner.open}
-                toggle={() =>
-                  setSummoners((prev) => prev.map((s) => (s.id === summoner.id ? { ...s, open: !s.open } : s)))
-                }
-              />
-            );
-          })}
+          {summoners &&
+            summoners.map((summoner) => {
+              return (
+                <SummonerCard
+                  key={summoner.id}
+                  summoner={summoner}
+                  open={summoner.open}
+                  toggle={() =>
+                    setSummoners((prev) => prev.map((s) => (s.id === summoner.id ? { ...s, open: !s.open } : s)))
+                  }
+                />
+              );
+            })}
         </Grid>
+        {summoners.length === 0 && (
+          <VStack pt="120px" gap="24px" justify="center">
+            <Image src={NotFound} alt="검색 결과가 없습니다." />
+            <VStack gap="4px">
+              <Text textStyle="t1" color="gray500" fontWeight="700">
+                검색 조건에 맞는 소환사가 없어요.
+              </Text>
+              <Text textStyle="t1" color="gray500" fontWeight="400">
+                다른 소환사를 찾아보는 것은 어떨까요?
+              </Text>
+            </VStack>
+          </VStack>
+        )}
       </VStack>
     </>
   );
