@@ -1,5 +1,6 @@
 import { Grid, useDisclosure, VStack, Text } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
+import Head from 'next/head';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
@@ -51,6 +52,9 @@ export default function Duo() {
 
   return (
     <>
+      <Head>
+        <title>듀오 찾기</title>
+      </Head>
       <DetailDrawer disclosure={drawerDisclosure} updateParams={updateRequestParams} />
       <VStack maxW="1080px" spacing="16px" m="0 auto" pt="40px">
         <Filter
