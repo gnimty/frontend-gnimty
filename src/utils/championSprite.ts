@@ -1,5 +1,5 @@
-import dataDragonVersion from '@/apis/constants/dataDragonVersion';
 import champions from '@/apis/constants/champions';
+import dataDragonVersion from '@/apis/constants/dataDragonVersion';
 
 export const getChampionSprite = (championName: string) => {
   const englishName = champions.find((champion) => champion.krName === championName)?.enName;

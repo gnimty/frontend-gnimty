@@ -1,4 +1,3 @@
-import React, { useRef, useState } from 'react';
 import {
   Box,
   Drawer,
@@ -19,11 +18,12 @@ import {
   Flex,
   Button,
 } from '@chakra-ui/react';
+import React, { useRef, useState } from 'react';
 
-import type { ChampionDto } from '@/apis/types';
+import champions from '@/apis/constants/champions';
+import type { ChampionDto, DuoSummonersRequest } from '@/apis/types';
 import ResetIcon from '@/assets/icons/system/reset.svg';
 import SearchIcon from '@/assets/icons/system/search.svg';
-import champions from '@/apis/constants/champions';
 import Radio from '@/components/common/Radio';
 
 import Champion from './Champion';
@@ -34,9 +34,10 @@ type ChampionType = {
 
 interface DetailDrawerProps {
   disclosure: UseDisclosureReturn;
+  updateParams: (toUpdate: Record<string, DuoSummonersRequest[keyof DuoSummonersRequest]>) => void;
 }
 
-const DetailDrawer = ({ disclosure }: DetailDrawerProps) => {
+const DetailDrawer = ({ disclosure, updateParams }: DetailDrawerProps) => {
   const theme = useTheme();
   const formRef = useRef<HTMLFormElement>(null);
   const [filteredChampions, setFilteredChampions] = useState<ChampionType[]>([]);
@@ -53,9 +54,10 @@ const DetailDrawer = ({ disclosure }: DetailDrawerProps) => {
     const searchedChampions = champions.filter((championInfo) => championInfo.krName.includes(value));
     setFilteredChampions(searchedChampions.map((championInfo) => ({ ...championInfo, selected: false })));
   };
+
   const handleChampionClick = (championName: string) => {
     setFilteredChampions((prev) => {
-      if (prev.filter(({ selected }) => selected).length >= 7) {
+      if (prev.filter(({ selected }) => selected).length >= 3) {
         return prev;
       }
       return prev.map((championInfo) => {
@@ -67,18 +69,17 @@ const DetailDrawer = ({ disclosure }: DetailDrawerProps) => {
     });
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = Object.fromEntries(new FormData(e.currentTarget)) as Partial<DuoSummonersRequest>;
+    updateParams(formData);
+  };
+
   return (
     <Drawer isOpen={disclosure.isOpen} onClose={disclosure.onClose}>
       <DrawerOverlay />
       <DrawerContent>
-        <form
-          ref={formRef}
-          onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-            const formData = new FormData(e.currentTarget);
-            console.log(Object.fromEntries(formData));
-          }}
-        >
+        <form ref={formRef} onSubmit={handleSubmit}>
           <DrawerHeader borderBottomWidth="1px" alignItems="center">
             <Box textStyle="t1" color="gray800" fontWeight="700">
               상세 필터
@@ -158,8 +159,11 @@ const DetailDrawer = ({ disclosure }: DetailDrawerProps) => {
                   )}
                   <input
                     type="hidden"
-                    name="preferenceChampions"
-                    value={filteredChampions.filter(({ selected }) => selected).map(({ krName }) => krName)}
+                    name="preferChampionIds"
+                    value={filteredChampions
+                      .filter(({ selected }) => selected)
+                      .map(({ championId }) => String(championId))
+                      .join(',')}
                   />
                 </VStack>
               )}

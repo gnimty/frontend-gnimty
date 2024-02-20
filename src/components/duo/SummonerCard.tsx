@@ -1,5 +1,10 @@
 import styled from '@emotion/styled';
 
+import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
+import type { RecommendedSummonersEntry } from '@/apis/types';
+import championIconUrl from '@/apis/utils/championIconUrl';
+import profileIconUrl from '@/apis/utils/profileIconUrl';
+import shortTierName from '@/apis/utils/shortTierName';
 import Chat from '@/assets/icons/system/chat.svg';
 import Copy from '@/assets/icons/system/copy.svg';
 import ArrowDown from '@/assets/icons/system/down.svg';
@@ -128,42 +133,55 @@ const OpenCloseButton = styled.button`
   justify-content: center;
 `;
 
-// Example
-const CHAMP_URL = 'https://ddragon.leagueoflegends.com/cdn/13.12.1/img/champion/Kaisa.png';
-const PROFILE_URL = 'https://ddragon.leagueoflegends.com/cdn/13.12.1/img/profileicon/0.png';
-
 interface SummonerCardProps {
   open: boolean;
   toggle: () => void;
   // summonerInfo
+  summoner: RecommendedSummonersEntry;
 }
 
-export default function SummonerCard({ open, toggle }: SummonerCardProps) {
+export default function SummonerCard({ open, toggle, summoner }: SummonerCardProps) {
+  const {
+    name,
+    tagLine,
+    status,
+    queue,
+    lp,
+    division,
+    frequentLane1,
+    frequentLane2,
+    frequentChampionId1,
+    frequentChampionId2,
+    frequentChampionId3,
+    introduction,
+    upCount,
+    iconId,
+  } = summoner;
   return (
     <CardWrapper $open={open}>
       <CardHeader $flexColumn="true" $align="flex-start">
         <CardColumn $justify="space-between" $marginBottom="1rem">
           <SummonerBasicInfo>
-            <IconImage src={PROFILE_URL} width={40} height={40} alt="icon" />
+            <IconImage src={profileIconUrl(iconId)} width={40} height={40} alt="icon" />
             <SummonerId>
-              T1 Gumayusi
+              {name} #{tagLine}
               <Copy width="16px" height={16} />
             </SummonerId>
-            <StatusIndicator status="ONLINE" />
+            <StatusIndicator status={status} />
           </SummonerBasicInfo>
           <ChatButton type="button">
             <Chat width="24px" height="24px" />
           </ChatButton>
         </CardColumn>
         <CardColumn width={120} $gap={8} $marginBottom="0.5rem">
-          <TierImage tier="diamond" width={24} />
-          <SummonerTier>CH</SummonerTier>
-          <SummonerLP>1,123 LP</SummonerLP>
+          <TierImage tier={queue} width={24} />
+          <SummonerTier>{shortTierName(queue, division)}</SummonerTier>
+          <SummonerLP>{lp} LP</SummonerLP>
         </CardColumn>
         <CardColumn $gap={8} $justify="space-between">
           <CardColumn $gap={8}>
-            <PositionImage position="TOP" width={24} />
-            <PositionImage position="JUNGLE" width={24} />
+            {frequentLane1 && <PositionImage position={frequentLane1} width={24} />}
+            {frequentLane2 && <PositionImage position={frequentLane2} width={24} />}
           </CardColumn>
           {!open && (
             <OpenCloseButton type="button" onClick={() => toggle()}>
@@ -174,17 +192,38 @@ export default function SummonerCard({ open, toggle }: SummonerCardProps) {
       </CardHeader>
       <CardBody $flexColumn="true" $open={open} $gap={16}>
         <CardColumn $gap={8}>
-          <IconImage src={CHAMP_URL} width={32} height={32} alt="icon" />
-          <IconImage src={CHAMP_URL} width={32} height={32} alt="icon" />
-          <IconImage src={CHAMP_URL} width={32} height={32} alt="icon" />
+          {frequentChampionId1 && (
+            <IconImage
+              src={championIconUrl(championIdEnNameMap[frequentChampionId1])}
+              width={32}
+              height={32}
+              alt="icon"
+            />
+          )}
+          {frequentChampionId2 && (
+            <IconImage
+              src={championIconUrl(championIdEnNameMap[frequentChampionId2])}
+              width={32}
+              height={32}
+              alt="icon"
+            />
+          )}
+          {frequentChampionId3 && (
+            <IconImage
+              src={championIconUrl(championIdEnNameMap[frequentChampionId3])}
+              width={32}
+              height={32}
+              alt="icon"
+            />
+          )}
         </CardColumn>
         <CardColumn>
-          <SummonerDetail>Lorem ipsum dolor sit amet consectetur adipisicing elit.</SummonerDetail>
+          <SummonerDetail>{introduction}</SummonerDetail>
         </CardColumn>
         <CardColumn $justify="space-between">
           <SummonerLiked>
             <Like width="20px" height="20px" />
-            <span>1234</span>
+            <span>{upCount}</span>
           </SummonerLiked>
           <OpenCloseButton type="button" onClick={() => toggle()}>
             <ArrowUp width="40px" height="24px" />

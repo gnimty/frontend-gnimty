@@ -1,17 +1,21 @@
-import { useRef, useState } from 'react';
+import { HStack, useTheme } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { HStack, UseDisclosureReturn } from '@chakra-ui/react';
+import React, { useEffect, useRef, useState } from 'react';
 
+import { type DuoSummonersRequest } from '@/apis/types';
 import FilterSet from '@/assets/icons/system/filter-set.svg';
 import FilterIcon from '@/assets/icons/system/filter.svg';
 import ResetIcon from '@/assets/icons/system/reset.svg';
+import PositionImage from '@/components/common/position-image/PositionImage';
+import Unselected from '@/components/common/position-image/Unselected';
 import Select from '@/components/common/select/Select';
+import SpeechBubble from '@/components/common/SpeechBubble';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
-import Unselected from '@/components/common/position-image/Unselected';
-import PositionImage from '@/components/common/position-image/PositionImage';
-import SpeechBubble from '@/components/common/SpeechBubble';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
+import { defaultDuoSummonersRequest } from '@/pages/duo';
+
+import type { UseDisclosureReturn } from '@chakra-ui/react';
 
 const FilterIconBox = styled.ul`
   width: 240px;
@@ -97,9 +101,12 @@ interface FilterProps {
   disclosure: UseDisclosureReturn;
   allOpen: boolean;
   toggleAll: () => void;
+  requestParams: DuoSummonersRequest;
+  updateParams: (toUpdate: Record<string, DuoSummonersRequest[keyof DuoSummonersRequest]>) => void;
 }
 
-const Filter = ({ disclosure, allOpen, toggleAll }: FilterProps) => {
+const Filter = ({ disclosure, allOpen, toggleAll, requestParams, updateParams }: FilterProps) => {
+  const theme = useTheme();
   const { isOpen, onToggle } = disclosure;
   const [selected, setSelected] = useState<string[]>([]);
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
@@ -113,7 +120,7 @@ const Filter = ({ disclosure, allOpen, toggleAll }: FilterProps) => {
     }
     if (target instanceof HTMLLIElement) {
       const { position } = target.dataset;
-      if (position) {
+      if (position && position !== 'ALL') {
         setSelected((prev) => {
           if (prev.includes(position)) {
             return prev.filter((p) => p !== position);
@@ -121,30 +128,47 @@ const Filter = ({ disclosure, allOpen, toggleAll }: FilterProps) => {
           return [...prev, position];
         });
       }
+      if (position === 'ALL') {
+        setSelected([]);
+      }
     }
   };
+
+  const resetFilter = () => {
+    setSelected([]);
+    updateParams({ ...defaultDuoSummonersRequest });
+  };
+
+  useEffect(() => {
+    updateParams({ lanes: selected });
+  }, [selected, updateParams]);
+
   return (
     <HStack w="full" justify="space-between">
       <HStack w="max-content" spacing="8px">
         <Select
           options={[
-            { text: '솔로 랭크', value: 'soloRank' },
-            { text: '자유 랭크', value: 'freeRank' },
-            { text: '칼바람 나락', value: 'bridge' },
+            { text: '솔로 랭크', value: 'RANK_SOLO' },
+            { text: '자유 랭크', value: 'RANK_FLEX' },
+            { text: '일반/칼바람', value: 'BLIND' },
           ]}
+          externalValue={requestParams.gameMode}
+          onChange={(v) => updateParams({ gameMode: v })}
           css={{ width: '124px' }}
         />
         <Select
           options={[
-            { text: '온라인', value: 'online', leftAsset: <StatusIndicator status="ONLINE" /> },
-            { text: '오프라인', value: 'offline', leftAsset: <StatusIndicator status="OFFLINE" /> },
-            { text: '자리비움', value: 'away', leftAsset: <StatusIndicator status="AWAY" /> },
+            { text: '온라인', value: 'ONLINE', leftAsset: <StatusIndicator status="ONLINE" /> },
+            { text: '오프라인', value: 'OFFLINE', leftAsset: <StatusIndicator status="OFFLINE" /> },
+            { text: '자리비움', value: 'AWAY', leftAsset: <StatusIndicator status="AWAY" /> },
           ]}
+          externalValue={requestParams.status}
+          onChange={(v) => updateParams({ status: v })}
           css={{ width: '124px' }}
         />
         <Select
           options={[
-            { text: '언랭크 이상', value: 'unranked', leftAsset: <TierImage tier="UNRANKED" fill sizes="20px" /> },
+            { text: '언랭크 이상', value: '', leftAsset: <TierImage tier="UNRANKED" fill sizes="20px" /> },
             { text: '아이언 이상', value: 'iron', leftAsset: <TierImage tier="iron" fill sizes="20px" /> },
             { text: '브론즈 이상', value: 'bronze', leftAsset: <TierImage tier="bronze" fill sizes="20px" /> },
             { text: '실버 이상', value: 'silver', leftAsset: <TierImage tier="silver" fill sizes="20px" /> },
@@ -172,26 +196,28 @@ const Filter = ({ disclosure, allOpen, toggleAll }: FilterProps) => {
               leftAsset: <TierImage tier="challenger" fill sizes="20px" />,
             },
           ]}
+          externalValue={requestParams.tier}
+          onChange={(v) => updateParams({ tier: v })}
           css={{ width: '148px' }}
         />
         <FilterIconBox onClick={handlePositionSelect} ref={ulRef}>
-          <FilterIconItem data-position="every" selected={selected.includes('every')}>
-            <Unselected fill={selected.includes('every') ? '#fff' : undefined} />
+          <FilterIconItem data-position="ALL" selected={selected.length === 0}>
+            <Unselected fill={selected.length === 0 ? theme.colors.white : undefined} />
           </FilterIconItem>
           <FilterIconItem data-position="top" selected={selected.includes('top')}>
-            <PositionImage position="TOP" fill={selected.includes('top') ? '#fff' : undefined} />
+            <PositionImage position="TOP" fill={selected.includes('top') ? theme.colors.white : undefined} />
           </FilterIconItem>
           <FilterIconItem data-position="jug" selected={selected.includes('jug')}>
-            <PositionImage position="JUNGLE" fill={selected.includes('jug') ? '#fff' : undefined} />
+            <PositionImage position="JUNGLE" fill={selected.includes('jug') ? theme.colors.white : undefined} />
           </FilterIconItem>
           <FilterIconItem data-position="mid" selected={selected.includes('mid')}>
-            <PositionImage position="MIDDLE" fill={selected.includes('mid') ? '#fff' : undefined} />
+            <PositionImage position="MIDDLE" fill={selected.includes('mid') ? theme.colors.white : undefined} />
           </FilterIconItem>
           <FilterIconItem data-position="bot" selected={selected.includes('bot')}>
-            <PositionImage position="BOTTOM" fill={selected.includes('bot') ? '#fff' : undefined} />
+            <PositionImage position="BOTTOM" fill={selected.includes('bot') ? theme.colors.white : undefined} />
           </FilterIconItem>
           <FilterIconItem data-position="sup" selected={selected.includes('sup')}>
-            <PositionImage position="UTILITY" fill={selected.includes('sup') ? '#fff' : undefined} />
+            <PositionImage position="UTILITY" fill={selected.includes('sup') ? theme.colors.white : undefined} />
           </FilterIconItem>
         </FilterIconBox>
 
@@ -200,6 +226,9 @@ const Filter = ({ disclosure, allOpen, toggleAll }: FilterProps) => {
           onClick={onToggle}
           onMouseEnter={() => setShowSpeechBubble(true)}
           onMouseLeave={() => setShowSpeechBubble(false)}
+          css={{
+            backgroundColor: selected.length > 0 && !isOpen ? theme.colors.main : 'transparent',
+          }}
         >
           <SpeechBubble width="150px" height="48px" show={showSpeechBubble}>
             <SpeechBubbleContent>
@@ -214,7 +243,16 @@ const Filter = ({ disclosure, allOpen, toggleAll }: FilterProps) => {
               width="24px"
               height="24px"
               css={{
-                color: '#DE2E39',
+                color: theme.colors.main,
+              }}
+            />
+          ) : selected.length > 0 ? (
+            <FilterSet
+              width="24px"
+              height="24px"
+              css={{
+                backgroundColor: theme.colors.main,
+                color: theme.colors.gray200,
               }}
             />
           ) : (
@@ -222,7 +260,7 @@ const Filter = ({ disclosure, allOpen, toggleAll }: FilterProps) => {
               width="24px"
               height="24px"
               css={{
-                color: '#111111',
+                color: theme.colors.gray800,
               }}
             />
           )}
@@ -238,7 +276,7 @@ const Filter = ({ disclosure, allOpen, toggleAll }: FilterProps) => {
         }}
       >
         <ToggleSwitch onOff={allOpen} onClick={toggleAll} label="펼쳐보기" />
-        <ResetWrapper>
+        <ResetWrapper onClick={resetFilter}>
           <ResetIcon width="24px" height="24px" />
         </ResetWrapper>
       </HStack>
