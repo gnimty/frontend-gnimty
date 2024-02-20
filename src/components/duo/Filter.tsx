@@ -227,7 +227,7 @@ const Filter = ({ disclosure, allOpen, toggleAll, requestParams, updateParams }:
           onMouseEnter={() => setShowSpeechBubble(true)}
           onMouseLeave={() => setShowSpeechBubble(false)}
           css={{
-            backgroundColor: selected.length > 0 && !isOpen ? theme.colors.main : 'transparent',
+            backgroundColor: selected.length > 0 && !isOpen ? theme.colors.main : theme.colors.white,
           }}
         >
           <SpeechBubble width="150px" height="48px" show={showSpeechBubble}>

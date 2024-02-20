@@ -69,10 +69,16 @@ const DetailDrawer = ({ disclosure, updateParams }: DetailDrawerProps) => {
     });
   };
 
+  const resetForm = () => {
+    formRef.current?.reset();
+    setFilteredChampions([]);
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(e.currentTarget)) as Partial<DuoSummonersRequest>;
     updateParams(formData);
+    disclosure.onClose();
   };
 
   return (
@@ -173,9 +179,9 @@ const DetailDrawer = ({ disclosure, updateParams }: DetailDrawerProps) => {
                 정렬 기준
               </Text>
               <HStack spacing="12px" h="40px">
-                <Radio name="sortType" width="88px" height="2.5rem" label="추천순" />
-                <Radio name="sortType" width="88px" height="2.5rem" label="티어순" />
-                <Radio name="sortType" width="88px" height="2.5rem" label="A-Z순" />
+                <Radio name="sortBy" width="88px" height="2.5rem" label="추천순" />
+                <Radio name="sortBy" width="88px" height="2.5rem" label="티어순" />
+                <Radio name="sortBy" width="88px" height="2.5rem" label="A-Z순" />
               </HStack>
             </VStack>
             <VStack spacing="12px" w="full" alignItems="flex-start" gap="12px">
@@ -191,8 +197,8 @@ const DetailDrawer = ({ disclosure, updateParams }: DetailDrawerProps) => {
                   size="md"
                   textStyle="t2"
                   fontWeight="400"
-                  id="duoAvailable"
-                  name="duoAvailable"
+                  id="duoable"
+                  name="duoable"
                   value="true"
                 >
                   듀오 가능한 유저만 보기
@@ -212,8 +218,8 @@ const DetailDrawer = ({ disclosure, updateParams }: DetailDrawerProps) => {
                   size="md"
                   textStyle="t2"
                   fontWeight="400"
-                  id="timeAvailable"
-                  name="timeAvailable"
+                  id="timeMatch"
+                  name="timeMatch"
                   value="true"
                 >
                   게임 가능한 유저만 보기
@@ -234,6 +240,7 @@ const DetailDrawer = ({ disclosure, updateParams }: DetailDrawerProps) => {
                 textStyle="t2"
                 color="gray500"
                 fontWeight="400"
+                onClick={resetForm}
               >
                 초기화
               </Button>
