@@ -144,8 +144,8 @@ const DetailDrawer = ({ disclosure, updateParams }: DetailDrawerProps) => {
                     <Grid templateColumns="repeat(8, 1fr)" gap="8px" h="max-content" minH="60px">
                       {filteredChampions
                         .filter(({ selected }) => !selected)
-                        .map(({ krName }) => (
-                          <Champion key={krName} championName={krName} onClick={handleChampionClick} />
+                        .map(({ enName }) => (
+                          <Champion key={enName} championName={enName} onClick={handleChampionClick} />
                         ))}
                     </Grid>
                   )}
@@ -153,10 +153,10 @@ const DetailDrawer = ({ disclosure, updateParams }: DetailDrawerProps) => {
                     <Grid templateColumns="repeat(8, 1fr)" gap="8px">
                       {filteredChampions
                         .filter(({ selected }) => selected)
-                        .map(({ krName, selected }) => (
+                        .map(({ enName, selected }) => (
                           <Champion
-                            key={krName}
-                            championName={krName}
+                            key={enName}
+                            championName={enName}
                             onClick={handleChampionClick}
                             selected={selected}
                           />

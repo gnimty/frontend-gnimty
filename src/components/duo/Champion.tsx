@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 
 import CheckIcon from '@/assets/icons/system/check.svg';
-import { getChampionSprite } from '@/utils/championSprite';
+import championIconUrl from '@/apis/utils/championIconUrl';
 
 const Container = styled.div`
   width: 2.5rem;
@@ -66,13 +66,12 @@ const SelectedChecker = styled.div<{ selected: boolean }>`
 `;
 
 interface ChampionProps {
-  championName: string;
+  championName: string; // championEnName
   selected?: boolean;
   onClick: (championName: string) => void;
 }
 
 const Champion = ({ championName, selected = false, onClick }: ChampionProps) => {
-  const sprite = getChampionSprite(championName);
   return (
     <Container onClick={() => onClick(championName)}>
       <ChampionImageWrapper selected={selected}>
@@ -81,7 +80,7 @@ const Champion = ({ championName, selected = false, onClick }: ChampionProps) =>
             <CheckIcon fill="#fff" width="70%" />
           </SelectedChecker>
         )}
-        <Image src={sprite} alt={championName} width={40} height={40} />
+        <Image src={championIconUrl(championName)} alt={championName} width={40} height={40} />
       </ChampionImageWrapper>
       <ChampionName>{championName}</ChampionName>
     </Container>
