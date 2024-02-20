@@ -25,6 +25,8 @@ export interface SoloTierDto {
   lp: number;
 }
 
+export type SortBy = 'RECOMMEND' | 'TIER' | 'ATOZ';
+
 export interface RecommendedSummonersEntry {
   /** 소환사 id */
   id: number;
@@ -242,4 +244,20 @@ export interface ApiStatus {
   message: string;
   code: number;
   field: string;
+}
+
+export interface DuoSummonersRequest {
+  gameMode?: GameMode;
+  status?: Status;
+  preferChampionIds?: string[]; // max 3
+  duoable?: boolean;
+  tier?: Tier;
+  lanes?: Position[];
+  sortBy?: SortBy;
+  timeMatch?: boolean;
+  lastSummonerId?: number;
+  lastName?: string;
+  lastSummonerMmr?: number;
+  lastSummonerUpCount?: number;
+  pageSize: number;
 }
