@@ -17,8 +17,8 @@ import {
   Flex,
   Button,
 } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
 import { useTheme } from '@emotion/react';
+import React, { useRef, useState } from 'react';
 
 import champions from '@/apis/constants/champions';
 import type { ChampionDto, DuoSummonersRequest } from '@/apis/types';

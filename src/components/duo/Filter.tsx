@@ -1,6 +1,6 @@
 import { HStack } from '@chakra-ui/react';
-import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
+import styled from '@emotion/styled';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { type DuoSummonersRequest } from '@/apis/types';
