@@ -32,6 +32,7 @@ import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
 
 import RankCard from './RankCard';
+import Champion from './Champion';
 
 dayjs.locale('ko');
 dayjs.extend(relativeTime);
@@ -200,7 +201,9 @@ export default function Summoner(props: SummonerProps) {
           </TabList>
           <TabPanels>
             <TabPanel>전적 정보</TabPanel>
-            <TabPanel>챔피언 정보</TabPanel>
+            <TabPanel>
+              <Champion summonerTagName={summonerTagName} />
+            </TabPanel>
             <TabPanel>인게임</TabPanel>
             <TabPanel>그님티 정보</TabPanel>
           </TabPanels>
