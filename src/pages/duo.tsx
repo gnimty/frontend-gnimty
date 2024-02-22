@@ -19,7 +19,7 @@ export const defaultDuoSummonersRequest: DuoSummonersRequest = {
   gameMode: 'RANK_SOLO',
   status: 'ONLINE',
   sortBy: 'RECOMMEND',
-  tier: '',
+  tier: 'unknown',
   lastSummonerId: 0,
   lastSummonerUpCount: 0,
   lastSummonerMmr: 0,
@@ -30,8 +30,9 @@ export default function Duo() {
   const drawerDisclosure = useDisclosure();
   const [requestParams, setRequestParams] = useState<DuoSummonersRequest>(defaultDuoSummonersRequest);
   const { data } = useQuery(duoSummonersQuery(requestParams));
-  const updateRequestParams = (toUpdate: Record<string, DuoSummonersRequest[keyof DuoSummonersRequest]>) =>
+  const updateRequestParams = (toUpdate: Record<string, DuoSummonersRequest[keyof DuoSummonersRequest]>) => {
     setRequestParams((prev) => ({ ...prev, ...toUpdate }));
+  };
 
   const [summoners, setSummoners] = useState<SummonerCardItem[]>([]);
   const [allOpen, setAllOpen] = useState(false);
@@ -65,10 +66,11 @@ export default function Duo() {
           updateParams={updateRequestParams}
         />
         <Grid templateColumns="repeat(3, 350px)" gap="12px">
-          {summoners?.map((summoner) => {
+          {summoners?.map((summoner, idx) => {
             return (
               <SummonerCard
-                key={summoner.id}
+                // key={summoner.id} - 중복되는 key가 있어서 주석처리
+                key={idx}
                 summoner={summoner}
                 open={summoner.open}
                 toggle={() =>
