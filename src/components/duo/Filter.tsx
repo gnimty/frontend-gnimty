@@ -15,6 +15,7 @@ import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
 import { defaultDuoSummonersRequest } from '@/pages/duo';
+import { isEqualArray } from '@/utils/array';
 
 import type { UseDisclosureReturn } from '@chakra-ui/react';
 
@@ -109,6 +110,7 @@ interface FilterProps {
 const Filter = ({ disclosure, allOpen, toggleAll, requestParams, updateParams }: FilterProps) => {
   const theme = useTheme();
   const { isOpen, onToggle } = disclosure;
+  // lanes
   const [selected, setSelected] = useState<string[]>([]);
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
   const ulRef = useRef<HTMLUListElement>(null);
@@ -141,8 +143,13 @@ const Filter = ({ disclosure, allOpen, toggleAll, requestParams, updateParams }:
   };
 
   useEffect(() => {
-    updateParams({ lanes: selected });
-  }, [selected, updateParams]);
+    if (requestParams.lanes === undefined) {
+      updateParams({ lanes: selected });
+    }
+    if (Array.isArray(requestParams.lanes) && !isEqualArray(requestParams.lanes, selected)) {
+      updateParams({ lanes: selected });
+    }
+  }, [selected, updateParams, requestParams.lanes]);
 
   return (
     <HStack w="full" justify="space-between">

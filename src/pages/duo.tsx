@@ -82,7 +82,7 @@ export default function Duo() {
         </Grid>
         {summoners.length === 0 && (
           <VStack pt="120px" gap="24px" justify="center">
-            <Image src={NotFound} alt="검색 결과가 없습니다." />
+            <Image src={NotFound} alt="검색 결과가 없습니다." priority />
             <VStack gap="4px">
               <Text textStyle="t1" color="gray500" fontWeight="700">
                 검색 조건에 맞는 소환사가 없어요.
