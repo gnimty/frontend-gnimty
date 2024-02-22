@@ -179,9 +179,9 @@ const DetailDrawer = ({ disclosure, updateParams }: DetailDrawerProps) => {
                 정렬 기준
               </Text>
               <HStack spacing="12px" h="40px">
-                <Radio name="sortBy" width="88px" height="2.5rem" label="추천순" />
-                <Radio name="sortBy" width="88px" height="2.5rem" label="티어순" />
-                <Radio name="sortBy" width="88px" height="2.5rem" label="A-Z순" />
+                <Radio name="sortBy" width="88px" height="2.5rem" label="추천순" value="RECOMMEND" />
+                <Radio name="sortBy" width="88px" height="2.5rem" label="티어순" value="TIER" />
+                <Radio name="sortBy" width="88px" height="2.5rem" label="A-Z순" value="ATOZ" />
               </HStack>
             </VStack>
             <VStack spacing="12px" w="full" alignItems="flex-start" gap="12px">

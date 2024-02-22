@@ -48,13 +48,14 @@ interface RadioProps {
   width: string;
   height: string;
   label: string;
+  value: string;
   name: string;
 }
 
-const Radio = ({ width, height, label, name }: RadioProps) => {
+const Radio = ({ width, height, label, value, name }: RadioProps) => {
   return (
     <Container $width={width} $height={height}>
-      <RadioInput type="radio" name={name} id={label} value={label} />
+      <RadioInput type="radio" name={name} id={label} value={value} />
       <Label htmlFor={label}>{label}</Label>
     </Container>
   );

@@ -251,7 +251,7 @@ export interface DuoSummonersRequest {
   status?: Status;
   preferChampionIds?: string[]; // max 3
   duoable?: boolean;
-  tier?: Tier | '';
+  tier?: Tier | 'unknown';
   lanes?: Position[];
   sortBy?: SortBy;
   timeMatch?: boolean;
