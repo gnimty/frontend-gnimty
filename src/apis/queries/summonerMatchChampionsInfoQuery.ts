@@ -21,7 +21,7 @@ const summonerMatchChampionsInfoQuery = ({ summonerTagName, brief = false, queue
     queryKey: ['summonerMatchChampionsInfo', summonerTagName, brief, queue_type],
     async queryFn() {
       const res = await httpRequest.get<SummonerMatchChampionsInfoResponse>(
-        `/statistics/summoner/champion/${summonerTagName}`,
+        `/statistics/summoners/champion/${summonerTagName}`,
         {
           params: {
             brief,
