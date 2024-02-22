@@ -12,13 +12,13 @@ import {
   VStack,
   type UseDisclosureReturn,
   Input,
-  useTheme,
   Grid,
   Checkbox,
   Flex,
   Button,
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
+import { useTheme } from '@emotion/react';
 
 import champions from '@/apis/constants/champions';
 import type { ChampionDto, DuoSummonersRequest } from '@/apis/types';

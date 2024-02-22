@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 
-import CheckIcon from '@/assets/icons/system/check.svg';
 import championIconUrl from '@/apis/utils/championIconUrl';
+import CheckIcon from '@/assets/icons/system/check.svg';
 
 const Container = styled.div`
   width: 2.5rem;
