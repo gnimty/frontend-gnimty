@@ -1,10 +1,13 @@
 import { Box, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react';
 
-import type { SummonerPlayDto } from '@/apis/types';
+import type { QueueType, SummonerPlayDto } from '@/apis/types';
 import Select from '@/components/common/select/Select';
 import Image from 'next/image';
 import championIconUrl from '@/apis/utils/championIconUrl';
 import championIdKrNameMap from '@/apis/constants/championIdKrNameMap';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import summonerMatchChampionsInfoQuery from '@/apis/queries/summonerMatchChampionsInfoQuery';
 
 const dummyData: SummonerPlayDto[] = [
   {
@@ -50,6 +53,12 @@ interface ChampionProps {
 }
 
 export default function Champion({ summonerTagName }: ChampionProps) {
+  const [options, setOptions] = useState<{ summonerTagName: string; brief: boolean; queue_type: QueueType }>({
+    summonerTagName,
+    brief: false,
+    queue_type: 'ALL',
+  });
+  const { data: championsData } = useQuery(summonerMatchChampionsInfoQuery(options));
   return (
     <VStack w="full" gap="12px" pt="12px" align="flex-start">
       <Select
@@ -61,6 +70,7 @@ export default function Champion({ summonerTagName }: ChampionProps) {
         css={{
           width: '220px',
         }}
+        onChange={(v: QueueType) => setOptions({ ...options, queue_type: v })}
       />
       <TableContainer w="full" bgColor="white">
         <Table>
@@ -107,10 +117,10 @@ export default function Champion({ summonerTagName }: ChampionProps) {
             </Tr>
           </Thead>
           <Tbody>
-            {dummyData.map((data, index) => {
-              const isLast = index === dummyData.length - 1;
-              const winRate = (data.totalWin / data.totalPlays) * 100;
-              const defeatRate = (data.totalDefeat / data.totalPlays) * 100;
+            {championsData?.data.summonerPlays.map((champion, index, currentArray) => {
+              const isLast = index === currentArray.length - 1;
+              const winRate = (champion.totalWin / champion.totalPlays) * 100;
+              const defeatRate = (champion.totalDefeat / champion.totalPlays) * 100;
               return (
                 <Tr
                   key={index}
@@ -127,61 +137,61 @@ export default function Champion({ summonerTagName }: ChampionProps) {
                   </Td>
                   <Td w="332px" textAlign="left" display="flex" gap="8px" alignItems="center">
                     <Image
-                      src={championIconUrl(String(data.championId))}
-                      alt={data.championName}
+                      src={championIconUrl(String(champion.championId))}
+                      alt={champion.championName}
                       width={32}
                       height={32}
                       style={{ borderRadius: '16px' }}
                     />
-                    <Text fontWeight="700">{data.championName}</Text>
+                    <Text fontWeight="700">{champion.championName}</Text>
                   </Td>
                   <Td w="160px" display="flex">
                     <Box w={`${winRate}%`} h="16px" bg="blue800" borderLeftRadius="8px">
                       <Text textStyle="body" color="white" pl="8px">
-                        {data.totalWin}승
+                        {champion.totalWin}승
                       </Text>
                     </Box>
                     {defeatRate > 0 && (
                       <Box w={`${defeatRate}%`} h="16px" bg="red800" borderRightRadius="8px">
                         <Text textStyle="body" color="white" pr="8px" textAlign="right">
-                          {data.totalDefeat}패
+                          {champion.totalDefeat}패
                         </Text>
                       </Box>
                     )}
                   </Td>
                   <Td w="100px" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
                     <Text textStyle="body" color="main">
-                      {data.avgKda}
+                      {champion.avgKda}
                     </Text>
                     <Text textStyle="body">
-                      {data.avgKill} / {data.avgDeath} / {data.avgAssist}
+                      {champion.avgKill} / {champion.avgDeath} / {champion.avgAssist}
                     </Text>
                   </Td>
                   <Td w="80px" display="flex" justifyContent="center" alignItems="center" gap="4px">
-                    <Text textStyle="body">{data.avgGold}</Text>
+                    <Text textStyle="body">{champion.avgGold}</Text>
                     <Text textStyle="body" color="gray500">
                       ?
                     </Text>
                   </Td>
                   <Td w="80px" display="flex" justifyContent="center" alignItems="center" gap="4px">
-                    <Text textStyle="body">{data.avgCs}</Text>
+                    <Text textStyle="body">{champion.avgCs}</Text>
                     <Text textStyle="body" color="gray500">
-                      ({data.avgCsPerMinute})
+                      ({champion.avgCsPerMinute})
                     </Text>
                   </Td>
                   <Td w="80px">
                     <Text textStyle="body" textAlign="center">
-                      {data.avgDamage}
+                      {champion.avgDamage}
                     </Text>
                   </Td>
                   <Td w="52px">
                     <Text textStyle="body" textAlign="center">
-                      {data.maxKill}
+                      {champion.maxKill}
                     </Text>
                   </Td>
                   <Td w="52px">
                     <Text textStyle="body" textAlign="center">
-                      {data.maxDeath}
+                      {champion.maxDeath}
                     </Text>
                   </Td>
                 </Tr>
