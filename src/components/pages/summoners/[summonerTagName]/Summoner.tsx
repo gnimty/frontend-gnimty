@@ -36,6 +36,7 @@ import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
 import proportionalValue from '@/utils/proportionalValue';
 
+import CurrentGameTab from './CurrentGameTab/CurrentGameTab';
 import RankCard from './RankCard';
 
 dayjs.locale('ko');
@@ -300,7 +301,9 @@ export default function Summoner(props: SummonerProps) {
           <TabPanels>
             <TabPanel>전적 정보</TabPanel>
             <TabPanel>챔피언 정보</TabPanel>
-            <TabPanel>인게임</TabPanel>
+            <TabPanel>
+              <CurrentGameTab summonerTagName={summonerTagName} />
+            </TabPanel>
             <TabPanel>그님티 정보</TabPanel>
           </TabPanels>
         </Tabs>
