@@ -1,4 +1,4 @@
-FROM node:18-alpine AS base
+FROM node:20-alpine AS base
 
 ARG API_BASE_URL
 ENV NEXT_PUBLIC_API_BASE_URL=${API_BASE_URL}
