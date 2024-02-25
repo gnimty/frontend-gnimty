@@ -9,6 +9,32 @@ const nextConfig = {
           },
         ]
       : undefined,
+  async redirects() {
+    return [
+      {
+        source: '/oauth/google/:state*',
+        destination: `https://accounts.google.com/o/oauth2/v2/auth?client_id=${
+          process.env.GOOGLE_CLIENT_ID
+        }&redirect_uri=${process.env.NEXT_PUBLIC_API_BASE_URL.replace(
+          /\/api$/,
+          '',
+        )}/community/oauth/redirect&response_type=code&scope=profile&state=/:state*`,
+        basePath: false,
+        permanent: true,
+      },
+      {
+        source: '/oauth/kakao/:state*',
+        destination: `https://kauth.kakao.com/oauth/authorize?client_id=${
+          process.env.KAKAO_CLIENT_ID
+        }&redirect_uri=${process.env.NEXT_PUBLIC_API_BASE_URL.replace(
+          /\/api$/,
+          '',
+        )}/community/oauth/redirect&response_type=code&state=/:state*`,
+        basePath: false,
+        permanent: true,
+      },
+    ];
+  },
   reactStrictMode: true,
   compiler: {
     emotion: true,
