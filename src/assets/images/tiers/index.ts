@@ -10,12 +10,12 @@ import iron from './iron.png';
 import master from './master.png';
 import platinum from './platinum.png';
 import silver from './silver.png';
-import UNRANKED from './UNRANKED.png';
+import unknown from './unknown.png';
 
 import type { StaticImageData } from 'next/image';
 
 const tiers: Record<Tier, StaticImageData> = {
-  UNRANKED,
+  unknown,
   bronze,
   iron,
   silver,

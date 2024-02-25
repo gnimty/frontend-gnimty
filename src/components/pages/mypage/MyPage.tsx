@@ -89,7 +89,7 @@ export default function MyPage() {
         <UserProfileCard
           nickname={mainAccount?.name ?? myProfile.nickname}
           tag={mainAccount?.tagLine ?? ''}
-          tier={mainAccount?.queue ?? 'UNRANKED'}
+          tier={mainAccount?.queue ?? 'unknown'}
           leaguePoints={mainAccount?.lp ?? 0}
           email={myProfile.email}
         />

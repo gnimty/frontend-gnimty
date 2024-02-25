@@ -1,7 +1,7 @@
 export type Status = 'ONLINE' | 'OFFLINE' | 'AWAY';
 
 export type Tier =
-  | 'UNRANKED'
+  | 'unknown'
   | 'iron'
   | 'bronze'
   | 'silver'
