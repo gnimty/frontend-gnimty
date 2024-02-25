@@ -25,6 +25,8 @@ export interface SoloTierDto {
   lp: number;
 }
 
+export type SortBy = 'RECOMMEND' | 'TIER' | 'ATOZ';
+
 export interface RecommendedSummonersEntry {
   /** 소환사 id */
   id: number;
@@ -139,6 +141,7 @@ export interface ChampionDto {
 
 export interface ChampionTierDto {
   championId: number;
+  championName: string;
   winRate: number;
   pickRate: number;
   banRate: number;
@@ -257,8 +260,86 @@ export interface MatchSummaryDto {
   championSummary: ChampionSummaryDto[];
 }
 
+export interface SummonerPlayDto {
+  totalPlays: number;
+  avgCs: number;
+  avgCsPerMinute: number;
+  avgKda: number;
+  avgKill: number;
+  avgDeath: number;
+  avgAssist: number;
+  winRate: number;
+  totalWin: number;
+  totalDefeat: number;
+  championId: number;
+  championName: string;
+  avgGold: number;
+  avgDamage: number;
+  maxKill: number;
+  maxDeath: number;
+  perfect: boolean;
+}
+
+export interface StatPerk {
+  defense: number;
+  offense: number;
+  flex: number;
+}
+
+export interface Selection {
+  perk: number;
+  var1: number;
+  var2: number;
+  var3: number;
+}
+
+export interface PerkDetail {
+  description: string;
+  style: number;
+  selections: Selection[];
+}
+
+export interface Perk {
+  statPerks: StatPerk;
+  styles: PerkDetail[];
+}
+
+export interface CurrentGameParticipantDto {
+  teamId: number;
+  summoner: SummonerDto;
+  championId: number;
+  championName: string;
+  summonerPlayDto: SummonerPlayDto;
+  spellDId: number;
+  spellFId: number;
+  perks: Perk;
+}
+
+export interface QueueDto {
+  /** 큐 ID */
+  queueId: number;
+  name: string;
+  map: string;
+}
+
 export interface ApiStatus {
   message: string;
   code: number;
   field: string;
+}
+
+export interface DuoSummonersRequest {
+  gameMode?: GameMode;
+  status?: Status;
+  preferChampionIds?: string[]; // max 3
+  duoable?: boolean;
+  tier?: Tier | 'unknown';
+  lanes?: Position[];
+  sortBy?: SortBy;
+  timeMatch?: boolean;
+  lastSummonerId?: number;
+  lastName?: string;
+  lastSummonerMmr?: number;
+  lastSummonerUpCount?: number;
+  pageSize: number;
 }

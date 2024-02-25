@@ -9,6 +9,7 @@ import type { ComponentPropsWithoutRef } from 'react';
 
 interface SelectProps<T> extends Omit<ComponentPropsWithoutRef<'div'>, 'onChange'> {
   options: TSelectOption<T>[];
+  externalValue?: T;
   onChange?: (value: T) => void;
   CustomSelectButton?: typeof SelectButton;
   CustomSelectList?: typeof SelectList;
@@ -20,10 +21,11 @@ interface SelectProps<T> extends Omit<ComponentPropsWithoutRef<'div'>, 'onChange
  * 사용자에게 나쁜 경험을 줍니다.
  */
 export default function Select<T extends string>(props: SelectProps<T>) {
-  const { options, onChange, CustomSelectButton, CustomSelectList, ...restProps } = props;
+  const { options, externalValue, onChange, CustomSelectButton, CustomSelectList, ...restProps } = props;
 
   const { isOpened, selectedValue, selectedOption, toggleDropdown, onOptionClick } = useSelect<T>({
     options,
+    externalValue,
     onChange,
   });
 
