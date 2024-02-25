@@ -1,78 +1,14 @@
+'use client';
 import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 
-import type { ProfileEntry } from '@/apis/types';
+import useGetMyInfo from '@/apis/useGetMyInfo';
 import BlockManagementTab from '@/components/pages/mypage/blockManagement/BlockManagementTab';
 import ChangeStateTab from '@/components/pages/mypage/changeState/ChangeStateTab';
 import UserInfoTab from '@/components/pages/mypage/userInfo/UserInfoTab';
 import UserProfileCard from '@/components/pages/mypage/UserProfileCard';
 
 export default function MyPage() {
-  const myProfile: ProfileEntry = {
-    id: 2,
-    email: 'help@gnimty.com',
-    nickname: '힝구링퐁퐁퐁퐁',
-    upCount: 0,
-    riotDependentInfo: {
-      isLinked: false,
-      status: 'OFFLINE',
-      introductions: [
-        {
-          id: 1,
-          content: '테스트 소개 1',
-          isMain: true,
-        },
-        {
-          id: 2,
-          content: '테스트 소개 2',
-          isMain: false,
-        },
-      ],
-      schedules: [
-        {
-          dayOfWeek: 'SUNDAY',
-          startTime: 19,
-          endTime: 23,
-        },
-      ],
-      preferGameModes: [
-        {
-          gameMode: 'RANK_FLEX',
-        },
-        {
-          gameMode: 'RANK_SOLO',
-        },
-      ],
-      riotAccounts: [
-        {
-          id: 0,
-          name: '힝구링퐁퐁퐁퐁',
-          tagLine: '#KR1',
-          isMain: true,
-          puuid: 0,
-          queue: 'grandmaster',
-          lp: 0,
-          division: 1,
-          mmr: 0,
-          frequentLane1: 'TOP',
-          frequentLane2: 'TOP',
-          frequentChampionId1: 0,
-          frequentChampionId2: 0,
-          frequentChampionId3: 0,
-          queueFlex: 'gold',
-          lpFlex: 0,
-          divisionFlex: 0,
-          mmrFlex: 0,
-          frequentLane1Flex: 'TOP',
-          frequentLane2Flex: 'TOP',
-          frequentChampionId1Flex: 0,
-          frequentChampionId2Flex: 0,
-          frequentChampionId3Flex: 0,
-          iconId: 0,
-        },
-      ],
-    },
-    oauthInfos: [],
-  };
+  const myProfile = useGetMyInfo();
 
   if (myProfile) {
     const mainAccount = myProfile.riotDependentInfo.riotAccounts.find((account) => account.isMain);

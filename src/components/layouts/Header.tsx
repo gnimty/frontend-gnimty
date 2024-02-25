@@ -1,6 +1,13 @@
 import { useDisclosure } from '@chakra-ui/hooks';
-import { Button } from '@chakra-ui/react';
+import { Button, Flex, IconButton } from '@chakra-ui/react';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 
+import useGetMyInfo from '@/apis/useGetMyInfo';
+import { logout } from '@/apis/useLogout';
+import IconLike from '@/assets/icons/system/like.svg';
+import IconSearch from '@/assets/icons/system/search.svg';
+import Select from '@/components/common/select/Select';
 import AccountModal from '@/components/pages/account/AccountModal';
 import { useAuthContext } from '@/contexts/AuthContext';
 
@@ -17,9 +24,23 @@ const links = [
   { name: '할인/패치노트', link: '/information' },
 ];
 
+const DynamicProfileImage = dynamic(async () => import('@/components/common/ProfileImage'));
+
 export default function Header() {
   const { isOpen: isOpenLoginModal, onOpen: onOpenLoginModal, onClose: onCloseLoginModal } = useDisclosure();
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, setIsAuthenticated } = useAuthContext();
+  const myInfo = useGetMyInfo();
+  setIsAuthenticated(!!myInfo);
+
+  const router = useRouter();
+  const onSelect = async (value: string) => {
+    switch (value) {
+      case 'mypage':
+        return router.push('/mypage');
+      case 'logout':
+        logout().then(() => router.reload());
+    }
+  };
 
   return (
     <>
@@ -37,7 +58,38 @@ export default function Header() {
           ))}
         </nav>
 
-        {!isAuthenticated && (
+        {isAuthenticated ? (
+          <Flex position="relative" gap="8px">
+            <Flex w="40px" h="40px" justifyContent="center" alignContent="center">
+              <IconButton w="28px" aria-label="search" icon={<IconSearch />} />
+            </Flex>
+            <Flex w="40px" h="40px" justifyContent="center" alignContent="center">
+              <IconButton w="28px" aria-label="search" icon={<IconLike />} />
+            </Flex>
+            <Flex w="40px" h="40px" justifyContent="center" alignContent="center">
+              <Select
+                options={[
+                  { text: '마이페이지', value: 'mypage' },
+                  { text: '로그아웃', value: 'logout' },
+                ]}
+                onChange={onSelect}
+                CustomSelectButton={({ toggleDropdown }) => (
+                  <DynamicProfileImage
+                    iconId={myInfo?.riotDependentInfo.riotAccounts.find((account) => account.isMain)?.iconId ?? 1}
+                    onClick={toggleDropdown}
+                  />
+                )}
+                css={{
+                  'div:last-child': {
+                    top: 'calc(100% + 8px)',
+                    right: '10px',
+                    width: '124px',
+                  },
+                }}
+              />
+            </Flex>
+          </Flex>
+        ) : (
           <Button variant="default" size="md" width="80px" onClick={onOpenLoginModal}>
             로그인
           </Button>
