@@ -2,7 +2,7 @@ import { queryOptions } from '@tanstack/react-query';
 
 import httpRequest from '@/apis/httpRequest';
 
-import type { SummonerDto } from '../types';
+import type { MatchSummaryDto, SummonerDto } from '../types';
 
 interface SummonerMatchesInfoResponse {
   data: {
@@ -10,6 +10,7 @@ interface SummonerMatchesInfoResponse {
     renewableAfter: string;
     // TODO: 추후 사용할 때 추가
     matches: never[];
+    matchSummary: MatchSummaryDto;
   };
 }
 
