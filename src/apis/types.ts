@@ -1,7 +1,7 @@
 export type Status = 'ONLINE' | 'OFFLINE' | 'AWAY';
 
 export type Tier =
-  | 'UNRANKED'
+  | 'unknown'
   | 'iron'
   | 'bronze'
   | 'silver'
@@ -199,7 +199,7 @@ interface PreferGameModeEntry {
   gameMode: GameMode;
 }
 
-interface RiotAccountEntry {
+export interface RiotAccountEntry {
   id: number;
   name: string;
   tagLine: string;
@@ -228,7 +228,7 @@ interface RiotAccountEntry {
 
 export interface OauthInfoEntry {
   email: string;
-  provider: 'Google' | 'Kakao';
+  provider: 'GOOGLE' | 'KAKAO';
 }
 
 export interface ProfileEntry {

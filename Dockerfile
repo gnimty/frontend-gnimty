@@ -2,6 +2,8 @@ FROM node:20-alpine AS base
 
 ARG API_BASE_URL
 ENV NEXT_PUBLIC_API_BASE_URL=${API_BASE_URL}
+ENV GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+ENV KAKAO_CLIENT_ID=${KAKAO_CLIENT_ID}
 
 # Install dependencies only when needed
 FROM base AS deps

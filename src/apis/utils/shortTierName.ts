@@ -8,9 +8,9 @@ export default function shortTierName(tier: Tier, division?: number) {
       return 'GM';
     case 'master':
       return 'MA';
-    case 'UNRANKED':
+    case 'unknown':
       return 'UN';
     default:
-      return `${tier[0].toUpperCase()}${division}`;
+      return tier ? `${tier[0].toUpperCase()}${division}` : '';
   }
 }

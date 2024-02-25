@@ -8,7 +8,7 @@ export default function fullTierName(tier: Tier, division?: number) {
       return 'Grand Master';
     case 'master':
       return 'Master';
-    case 'UNRANKED':
+    case 'unknown':
       return 'Unranked';
     default:
       return `${tier[0].toUpperCase()}${tier.slice(1)} ${division}`;

@@ -49,7 +49,7 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
             cd ${{ vars.DEPLOY_PATH }}
-            docker build --build-arg API_BASE_URL=${{ vars.DEV_API_BASE_URL }} . -t ${{ needs.deploy-setup.outputs.docker_image }}
+            docker build --build-arg API_BASE_URL=${{ vars.DEV_API_BASE_URL }} --build-arg GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} --build-arg KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }} . -t ${{ needs.deploy-setup.outputs.docker_image }}
             docker stop ${{ needs.deploy-setup.outputs.container_name }}
             docker rm ${{ needs.deploy-setup.outputs.container_name }}
             docker run -p 3000:3000 -d --name=${{ needs.deploy-setup.outputs.container_name }} ${{ needs.deploy-setup.outputs.docker_image }}
