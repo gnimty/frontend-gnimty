@@ -139,6 +139,7 @@ export interface ChampionDto {
 
 export interface ChampionTierDto {
   championId: number;
+  championName: string;
   winRate: number;
   pickRate: number;
   banRate: number;
