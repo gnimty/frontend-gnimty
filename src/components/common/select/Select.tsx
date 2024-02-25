@@ -21,6 +21,7 @@ function Option<T>(props: OptionProps<T>) {
 
 interface SelectProps<T> extends Omit<ComponentPropsWithoutRef<'div'>, 'onChange'> {
   options: SelectOption<T>[];
+  externalValue?: T;
   onChange?: (value: T) => void;
 }
 
@@ -30,10 +31,11 @@ interface SelectProps<T> extends Omit<ComponentPropsWithoutRef<'div'>, 'onChange
  * 사용자에게 나쁜 경험을 줍니다.
  */
 export default function Select<T extends string>(props: SelectProps<T>) {
-  const { options, onChange, ...restProps } = props;
+  const { options, externalValue, onChange, ...restProps } = props;
 
   const { isOpened, selectedValue, selectedOption, toggleDropdown, onOptionClick } = useSelect<T>({
     options,
+    externalValue,
     onChange,
   });
 
