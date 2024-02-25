@@ -2,6 +2,7 @@ import { useDisclosure } from '@chakra-ui/hooks';
 import { Button, Flex, IconButton } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 import useGetMyInfo from '@/apis/useGetMyInfo';
 import { logout } from '@/apis/useLogout';
@@ -30,7 +31,10 @@ export default function Header() {
   const { isOpen: isOpenLoginModal, onOpen: onOpenLoginModal, onClose: onCloseLoginModal } = useDisclosure();
   const { isAuthenticated, setIsAuthenticated } = useAuthContext();
   const myInfo = useGetMyInfo();
-  setIsAuthenticated(!!myInfo);
+
+  useEffect(() => {
+    setIsAuthenticated(!!myInfo);
+  }, [myInfo, setIsAuthenticated]);
 
   const router = useRouter();
   const onSelect = async (value: string) => {
