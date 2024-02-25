@@ -196,7 +196,7 @@ interface PreferGameModeEntry {
   gameMode: GameMode;
 }
 
-interface RiotAccountEntry {
+export interface RiotAccountEntry {
   id: number;
   name: string;
   tagLine: string;
@@ -225,7 +225,7 @@ interface RiotAccountEntry {
 
 export interface OauthInfoEntry {
   email: string;
-  provider: 'Google' | 'Kakao';
+  provider: 'GOOGLE' | 'KAKAO';
 }
 
 export interface ProfileEntry {
