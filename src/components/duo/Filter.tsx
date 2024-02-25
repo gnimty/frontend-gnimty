@@ -176,7 +176,7 @@ const Filter = ({ disclosure, allOpen, toggleAll, requestParams, updateParams }:
         />
         <Select
           options={[
-            { text: '언랭크 이상', value: 'unknown', leftAsset: <TierImage tier="UNRANKED" fill sizes="20px" /> },
+            { text: '언랭크 이상', value: 'unknown', leftAsset: <TierImage tier="unknown" fill sizes="20px" /> },
             { text: '아이언 이상', value: 'iron', leftAsset: <TierImage tier="iron" fill sizes="20px" /> },
             { text: '브론즈 이상', value: 'bronze', leftAsset: <TierImage tier="bronze" fill sizes="20px" /> },
             { text: '실버 이상', value: 'silver', leftAsset: <TierImage tier="silver" fill sizes="20px" /> },
