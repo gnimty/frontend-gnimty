@@ -6,7 +6,7 @@ import tiers from '@/assets/images/tiers/index';
 import type { ImageProps } from 'next/image';
 
 const alts: Record<Tier, string> = {
-  UNRANKED: '언랭크',
+  unknown: '언랭크',
   iron: '아이언',
   bronze: '브론즈',
   silver: '실버',
