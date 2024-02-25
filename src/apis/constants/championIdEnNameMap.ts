@@ -162,6 +162,7 @@ const championIdEnNameMap: Record<number, string> = {
   888: 'Renata',
   895: 'Nilah',
   897: 'KSante',
+  901: 'Smolder',
   902: 'Milio',
   950: 'Naafiri',
 };
