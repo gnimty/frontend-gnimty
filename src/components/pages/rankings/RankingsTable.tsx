@@ -1,3 +1,4 @@
+import { Link } from '@chakra-ui/next-js';
 import { Box, Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
 import Image from 'next/image';
 
@@ -82,7 +83,9 @@ export default function RankingsTable(props: RankingsTableProps) {
                   overflowX="hidden"
                   whiteSpace="nowrap"
                 >
-                  {rank.summonerName}
+                  <Link href={`/summoners/${rank.summonerName}-${rank.tagLine}`} color="inherit" textDecor="none">
+                    {rank.summonerName}
+                  </Link>
                 </Text>
               </Td>
               <Td w="80px" display="flex" gap="8px" justifyContent="center">
