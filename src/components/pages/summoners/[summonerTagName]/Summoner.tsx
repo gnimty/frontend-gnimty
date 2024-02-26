@@ -148,7 +148,7 @@ export default function Summoner(props: SummonerProps) {
                   마지막 갱신
                 </Text>{' '}
                 <Text textStyle="body" fontWeight="bold" color="gray500">
-                  {dayjs().from(dayjs(data.data.renewableAfter))}
+                  {dayjs(data.data.renewableAfter).from(dayjs())}
                 </Text>
               </HStack>
               <HStack gap="12px">
