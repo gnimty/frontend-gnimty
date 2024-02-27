@@ -242,6 +242,7 @@ export interface ProfileEntry {
 }
 
 export interface ChampionSummaryDto {
+  championId: number;
   plays: number;
   wins: number;
   defeats: number;

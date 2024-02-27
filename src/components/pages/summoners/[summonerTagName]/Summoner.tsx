@@ -211,13 +211,12 @@ export default function Summoner(props: SummonerProps) {
                   </HStack>
                   <HStack gap="20px">
                     {data.data.matchSummary.championSummary.map((champion) => (
-                      // TODO: 백엔드 분들 께 챔피언 서머리에 챔피언 아이디 넘겨 달라고 해야함
                       <HStack key={champion.avgKda} gap="12px" alignItems="normal">
                         <Image
-                          src={championIconUrl(championIdEnNameMap[10])}
+                          src={championIconUrl(championIdEnNameMap[champion.championId])}
                           width={36}
                           height={36}
-                          alt={championIdKrNameMap[10]}
+                          alt={championIdKrNameMap[champion.championId]}
                           css={{ borderRadius: '999px' }}
                         />
                         <VStack alignItems="normal" gap={0}>
