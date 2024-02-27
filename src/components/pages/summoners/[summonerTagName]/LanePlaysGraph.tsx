@@ -1,27 +1,65 @@
 import { Box, HStack, VStack } from '@chakra-ui/react';
 
+import type { LaneSummaryDto } from '@/apis/types';
 import PositionImage from '@/components/common/position-image/PositionImage';
 import proportionalValue from '@/utils/proportionalValue';
 
-export default function LanePlaysGraph() {
+interface LanePlaysGraphProps {
+  laneSummary: LaneSummaryDto;
+}
+
+export default function LanePlaysGraph(props: LanePlaysGraphProps) {
+  const { laneSummary } = props;
+
+  const totalLanePlays = Object.values(laneSummary).reduce((count, sum) => count + sum);
+
   return (
     <VStack gap={0}>
       <HStack gap="20px">
-        {/* TODO: 이 부분 백엔드에서 라인별 데이터 보내달라고 해야 함 */}
         <Box w="12px" h="48px" bg="gray200" pos="relative">
-          <Box w="full" bg="red800" h={`${proportionalValue(100, 0.5 * 100, 48)}px`} pos="absolute" bottom="0" />
+          <Box
+            w="full"
+            bg="red800"
+            h={`${proportionalValue(totalLanePlays, laneSummary.TOP, 48)}px`}
+            pos="absolute"
+            bottom="0"
+          />
         </Box>
         <Box w="12px" h="48px" bg="gray200" pos="relative">
-          <Box w="full" bg="red800" h={`${proportionalValue(100, 0.2 * 100, 48)}px`} pos="absolute" bottom="0" />
+          <Box
+            w="full"
+            bg="red800"
+            h={`${proportionalValue(totalLanePlays, laneSummary.JUNGLE, 48)}px`}
+            pos="absolute"
+            bottom="0"
+          />
         </Box>
         <Box w="12px" h="48px" bg="gray200" pos="relative">
-          <Box w="full" bg="red800" h={`${proportionalValue(100, 0.9 * 100, 48)}px`} pos="absolute" bottom="0" />
+          <Box
+            w="full"
+            bg="red800"
+            h={`${proportionalValue(totalLanePlays, laneSummary.MIDDLE, 48)}px`}
+            pos="absolute"
+            bottom="0"
+          />
         </Box>
         <Box w="12px" h="48px" bg="gray200" pos="relative">
-          <Box w="full" bg="red800" h={`${proportionalValue(100, 0.4 * 100, 48)}px`} pos="absolute" bottom="0" />
+          <Box
+            w="full"
+            bg="red800"
+            h={`${proportionalValue(totalLanePlays, laneSummary.BOTTOM, 48)}px`}
+            pos="absolute"
+            bottom="0"
+          />
         </Box>
         <Box w="12px" h="48px" bg="gray200" pos="relative">
-          <Box w="full" bg="red800" h={`${proportionalValue(100, 0.01 * 100, 48)}px`} pos="absolute" bottom="0" />
+          <Box
+            w="full"
+            bg="red800"
+            h={`${proportionalValue(totalLanePlays, laneSummary.UTILITY, 48)}px`}
+            pos="absolute"
+            bottom="0"
+          />
         </Box>
       </HStack>
       <HStack gap="16px" pt="4px" px="8px" borderTop="1px solid" borderColor="gray500">

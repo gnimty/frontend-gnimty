@@ -230,7 +230,7 @@ export default function Summoner(props: SummonerProps) {
                     ))}
                   </HStack>
                 </VStack>
-                <LanePlaysGraph />
+                <LanePlaysGraph laneSummary={data.data.matchSummary.laneSummary} />
               </HStack>
             </VStack>
           </VStack>
