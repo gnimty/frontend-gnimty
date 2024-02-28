@@ -1,10 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
 
-import type { BaseMutationProps, BaseResponse } from '@/apis/httpRequest';
+import type { BaseMutationProps } from '@/apis/httpRequest';
 import httpRequest from '@/apis/httpRequest';
 import type { AuthToken } from '@/contexts/AuthContext';
-import { StorageAuthKey, useAuthContext } from '@/contexts/AuthContext';
-import { setStorageItem } from '@/utils/storage';
+import { useAuthContext } from '@/contexts/AuthContext';
 
 interface UseLoginMutationProps extends BaseMutationProps<LoginResponse, Error, LoginRequest> {}
 
@@ -15,7 +14,7 @@ interface LoginRequestBody {
 
 interface LoginRequest extends LoginRequestBody {}
 
-interface LoginResponse extends BaseResponse {
+interface LoginResponse {
   data: AuthToken;
 }
 
@@ -30,14 +29,6 @@ const useLogin = ({ onSuccess, onError }: UseLoginMutationProps) => {
     mutationFn: login,
     onSuccess: (response, variables, context) => {
       onSuccess?.(response, variables, context);
-      setStorageItem<AuthToken>({
-        key: StorageAuthKey,
-        item: {
-          accessToken: response.data.accessToken.slice(7),
-          refreshToken: response.data.refreshToken.slice(7),
-        },
-        storage: localStorage,
-      });
       setIsAuthenticated(true);
     },
     onError: (error, variables, context) => {

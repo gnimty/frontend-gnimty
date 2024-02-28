@@ -162,6 +162,7 @@ const championIdKrNameMap: Record<number, string> = {
   888: '레나타 글라스크',
   895: '닐라',
   897: '크산테',
+  901: '스몰더',
   902: '밀리오',
   950: '나피리',
 };

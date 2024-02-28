@@ -5,28 +5,18 @@ import Image from 'next/image';
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import championIdKrNameMap from '@/apis/constants/championIdKrNameMap';
 import championsTierQuery from '@/apis/queries/championsTierQuery';
-import type { Position } from '@/apis/types';
+import type { ChampionTierDto } from '@/apis/types';
 import championIconUrl from '@/apis/utils/championIconUrl';
 import ChampionTierBadge from '@/components/common/ChampionTierBadge';
 
 import * as style from './ChampionsTable.style';
 
 interface ChampionTabPanelProps {
-  position: Position;
+  champions: ChampionTierDto[];
 }
 
-/*
- * TODO: 후에 API 요청 받아올 때는 activePosition도 하나 받아가지고
- * position !== activePosition과 다르다면 API 요청을 하지 않도록 설정
- */
-
 function ChampionTabPanel(props: ChampionTabPanelProps) {
-  const { position } = props;
-  const { data, status } = useQuery(championsTierQuery({ position, brief: true }));
-
-  if (status !== 'success') {
-    return;
-  }
+  const { champions } = props;
 
   return (
     <TabPanel>
@@ -41,7 +31,7 @@ function ChampionTabPanel(props: ChampionTabPanelProps) {
           </tr>
         </thead>
         <tbody css={style.tableHeadBody}>
-          {data.data.champions.map((champion, i) => (
+          {champions.slice(0, 5).map((champion, i) => (
             <tr key={champion.championId} css={style.tableRow}>
               <td css={style.championRanking}>{i + 1}</td>
               <td css={style.championNameAndImage}>
@@ -67,9 +57,19 @@ function ChampionTabPanel(props: ChampionTabPanelProps) {
   );
 }
 
-const positions: Position[] = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY'];
-
 export default function ChampionsTable() {
+  const { data, status } = useQuery(championsTierQuery({ brief: true }));
+
+  if (status !== 'success') {
+    return;
+  }
+
+  const top = data.data.results.find((result) => result.position === 'TOP')!;
+  const jungle = data.data.results.find((result) => result.position === 'JUNGLE')!;
+  const middle = data.data.results.find((result) => result.position === 'MIDDLE')!;
+  const bottom = data.data.results.find((result) => result.position === 'BOTTOM')!;
+  const utility = data.data.results.find((result) => result.position === 'UTILITY')!;
+
   return (
     <article css={style.championsRoot}>
       <Tabs>
@@ -86,8 +86,8 @@ export default function ChampionsTable() {
           </TabList>
         </header>
         <TabPanels>
-          {positions.map((position) => (
-            <ChampionTabPanel key={position} position={position} />
+          {[top, jungle, middle, bottom, utility].map((result) => (
+            <ChampionTabPanel key={result.position} champions={result.champions} />
           ))}
         </TabPanels>
       </Tabs>

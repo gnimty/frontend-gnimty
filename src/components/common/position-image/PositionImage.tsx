@@ -27,6 +27,7 @@ const positionLabels: Record<Position, string> = {
 
 interface PositionImageProps extends PositionIconProps {
   position: Position;
+  fill?: string;
 }
 
 export default function PositionImage(props: PositionImageProps) {

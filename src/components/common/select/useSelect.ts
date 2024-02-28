@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import type { ReactNode } from 'react';
 
@@ -10,13 +10,14 @@ export interface SelectOption<T> {
 
 export interface UseSelectOptions<T> {
   options: SelectOption<T>[];
+  externalValue?: T;
   onChange?: (value: T) => void;
 }
 
 export default function useSelect<T>(hookOptions: UseSelectOptions<T>) {
-  const { options, onChange } = hookOptions;
+  const { options, externalValue, onChange } = hookOptions;
 
-  const [selectedValue, setSelectedValue] = useState<T>(options[0].value);
+  const [selectedValue, setSelectedValue] = useState<T>(externalValue ?? options[0].value);
   const selectedOption = options.find((option) => option.value === selectedValue) ?? options[0];
 
   const [isOpened, setIsOpened] = useState(false);
@@ -33,6 +34,12 @@ export default function useSelect<T>(hookOptions: UseSelectOptions<T>) {
     },
     [onChange],
   );
+
+  useEffect(() => {
+    if (externalValue !== undefined && externalValue !== selectedValue) {
+      setSelectedValue(externalValue);
+    }
+  }, [externalValue, selectedValue]);
 
   return { isOpened, selectedValue, selectedOption, toggleDropdown, onOptionClick };
 }
