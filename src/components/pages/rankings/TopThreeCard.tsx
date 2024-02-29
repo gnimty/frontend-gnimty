@@ -1,3 +1,4 @@
+import { Link } from '@chakra-ui/next-js';
 import { Box, Flex, HStack, Text } from '@chakra-ui/react';
 import Image from 'next/image';
 
@@ -91,7 +92,13 @@ export default function TopThreeCard(props: TopThreeCardProps) {
               overflowX="hidden"
               whiteSpace="nowrap"
             >
-              {summonerRank.summonerName}
+              <Link
+                href={`/summoners/${summonerRank.summonerName}-${summonerRank.tagLine}`}
+                color="inherit"
+                textDecor="none"
+              >
+                {summonerRank.summonerName}
+              </Link>
             </Text>
             <HStack gap="4px">
               <TierImage tier={summonerRank.tierInfo.tier} width={24} height={24} />

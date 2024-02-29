@@ -1,5 +1,6 @@
 import { Flex, Heading } from '@chakra-ui/react';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 
 import rankTiersQuery from '@/apis/queries/rankTiersQuery';
 import type { GameMode } from '@/apis/types';
@@ -11,7 +12,7 @@ import Pagination from './Pagination';
 import RankingsTable from './RankingsTable';
 import TopThreeSection from './TopThreeSection';
 
-const queueSelectOptions: SelectOption<GameMode>[] = [
+const queueSelectOptions: SelectOption<Extract<GameMode, 'RANK_SOLO' | 'RANK_FLEX'>>[] = [
   {
     text: '솔로 랭크',
     value: 'RANK_SOLO',
@@ -33,7 +34,13 @@ interface RankingsInnerProps {
  */
 function RankingsInner(props: RankingsInnerProps) {
   const { page } = props;
-  const { data } = useSuspenseQuery(rankTiersQuery({ page }));
+
+  const [queueType, setQueueType] = useState<Extract<GameMode, 'RANK_SOLO' | 'RANK_FLEX'>>('RANK_SOLO');
+  const { data, status } = useQuery(rankTiersQuery({ page, queueType }));
+
+  if (status !== 'success') {
+    return;
+  }
 
   return (
     <Flex flexDir="column" w="1080px" m="40px auto 60px">
@@ -42,10 +49,17 @@ function RankingsInner(props: RankingsInnerProps) {
       </Heading>
       <Flex mt="24px" justifyContent="space-between">
         <Flex>
-          <Select options={queueSelectOptions} css={{ width: '140px' }} />
+          <Select
+            options={queueSelectOptions}
+            externalValue={queueType}
+            onChange={(value) => {
+              setQueueType(value);
+            }}
+            css={{ width: '140px' }}
+          />
         </Flex>
       </Flex>
-      <TopThreeSection mt="24px" />
+      <TopThreeSection queueType={queueType} mt="24px" />
       <RankingsTable ranks={data.data.ranks} mt="24px" />
       <Pagination currentPage={page} totalItems={data.data.totalSummoners} maxItemsInPage={100} mt="40px" />
     </Flex>
