@@ -244,6 +244,7 @@ export interface ProfileEntry {
 }
 
 export interface ChampionSummaryDto {
+  championId: number;
   plays: number;
   wins: number;
   defeats: number;
@@ -251,6 +252,8 @@ export interface ChampionSummaryDto {
   avgKda: number;
   isPerfect: boolean;
 }
+
+export type LaneSummaryDto = Record<Position, number>;
 
 export interface MatchSummaryDto {
   plays: number;
@@ -260,6 +263,7 @@ export interface MatchSummaryDto {
   avgKda: number;
   isPerfect: boolean;
   championSummary: ChampionSummaryDto[];
+  laneSummary: LaneSummaryDto;
 }
 
 export interface SummonerPlayDto {
