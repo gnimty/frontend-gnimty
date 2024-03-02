@@ -34,10 +34,10 @@ import Like from '@/assets/icons/system/like.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
 
+import Champion from './Champion';
 import CurrentGameTab from './CurrentGameTab/CurrentGameTab';
 import LanePlaysGraph from './LanePlaysGraph';
 import RankCard from './RankCard';
-import Champion from './Champion';
 
 dayjs.locale('ko');
 dayjs.extend(relativeTime);

@@ -334,25 +334,6 @@ export interface ApiStatus {
   field: string;
 }
 
-export interface SummonerPlayDto {
-  championId: number;
-  championName: string;
-  totalPlays: number;
-  avgCsPerMinute: number;
-  avgKda: number;
-  avgKill: number;
-  avgDeath: number;
-  avgAssist: number;
-  avgGold: number;
-  avgDamage: number;
-  maxKill: number;
-  maxDeath: number;
-  totalWin: number;
-  totalDefeat: number;
-  avgCs: number;
-  perfect: boolean;
-}
-
 export interface DuoSummonersRequest {
   gameMode?: GameMode;
   status?: Status;

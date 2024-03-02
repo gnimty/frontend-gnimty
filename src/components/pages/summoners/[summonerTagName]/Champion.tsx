@@ -1,52 +1,14 @@
 import { Box, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react';
-
-import type { QueueType, SummonerPlayDto } from '@/apis/types';
-import Select from '@/components/common/select/Select';
-import Image from 'next/image';
-import championIconUrl from '@/apis/utils/championIconUrl';
-import championIdKrNameMap from '@/apis/constants/championIdKrNameMap';
-import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import summonerMatchChampionsInfoQuery from '@/apis/queries/summonerMatchChampionsInfoQuery';
+import Image from 'next/image';
+import { useState } from 'react';
 
-const dummyData: SummonerPlayDto[] = [
-  {
-    championId: 1,
-    championName: championIdKrNameMap[1],
-    totalPlays: 10,
-    totalWin: 7,
-    totalDefeat: 3,
-    avgCsPerMinute: 8,
-    avgKda: 4,
-    avgKill: 5,
-    avgDeath: 3,
-    avgAssist: 6,
-    avgGold: 7777,
-    avgDamage: 18000,
-    maxKill: 10,
-    maxDeath: 5,
-    avgCs: 180,
-    perfect: false,
-  },
-  {
-    championId: 3,
-    championName: championIdKrNameMap[3],
-    totalPlays: 10,
-    totalWin: 7,
-    totalDefeat: 3,
-    avgCsPerMinute: 8,
-    avgKda: 4,
-    avgKill: 5,
-    avgDeath: 3,
-    avgAssist: 6,
-    avgGold: 7777,
-    avgDamage: 18000,
-    maxKill: 10,
-    maxDeath: 5,
-    avgCs: 180,
-    perfect: false,
-  },
-];
+import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
+import championIdKrNameMap from '@/apis/constants/championIdKrNameMap';
+import summonerMatchChampionsInfoQuery from '@/apis/queries/summonerMatchChampionsInfoQuery';
+import type { QueueType } from '@/apis/types';
+import championIconUrl from '@/apis/utils/championIconUrl';
+import Select from '@/components/common/select/Select';
 
 interface ChampionProps {
   summonerTagName: string;
@@ -133,26 +95,38 @@ export default function Champion({ summonerTagName }: ChampionProps) {
                   borderBottomColor="gray200"
                 >
                   <Td w="24px" textAlign="center" color="gray500" fontWeight="400">
-                    {index}
+                    {index + 1}
                   </Td>
                   <Td w="332px" textAlign="left" display="flex" gap="8px" alignItems="center">
                     <Image
-                      src={championIconUrl(String(champion.championId))}
+                      src={championIconUrl(championIdEnNameMap[champion.championId])}
                       alt={champion.championName}
                       width={32}
                       height={32}
                       style={{ borderRadius: '16px' }}
                     />
-                    <Text fontWeight="700">{champion.championName}</Text>
+                    <Text fontWeight="700">{championIdKrNameMap[champion.championId]}</Text>
                   </Td>
                   <Td w="160px" display="flex">
-                    <Box w={`${winRate}%`} h="16px" bg="blue800" borderLeftRadius="8px">
+                    <Box
+                      w={`${winRate}%`}
+                      h="16px"
+                      bg="blue800"
+                      borderLeftRadius="8px"
+                      borderRightRadius={defeatRate === 0 ? '8px' : '0'}
+                    >
                       <Text textStyle="body" color="white" pl="8px">
                         {champion.totalWin}승
                       </Text>
                     </Box>
                     {defeatRate > 0 && (
-                      <Box w={`${defeatRate}%`} h="16px" bg="red800" borderRightRadius="8px">
+                      <Box
+                        w={`${defeatRate}%`}
+                        h="16px"
+                        bg="red800"
+                        borderRightRadius="8px"
+                        borderLeftRadius={winRate === 0 ? '8px' : '0'}
+                      >
                         <Text textStyle="body" color="white" pr="8px" textAlign="right">
                           {champion.totalDefeat}패
                         </Text>
@@ -161,7 +135,7 @@ export default function Champion({ summonerTagName }: ChampionProps) {
                   </Td>
                   <Td w="100px" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
                     <Text textStyle="body" color="main">
-                      {champion.avgKda}
+                      {!champion.perfect ? `${champion.avgKda}:1` : 'Perfect'}
                     </Text>
                     <Text textStyle="body">
                       {champion.avgKill} / {champion.avgDeath} / {champion.avgAssist}
