@@ -3,21 +3,19 @@ import { Client } from '@stomp/stompjs';
 import constate from 'constate';
 import { useCallback, useEffect, useState } from 'react';
 
+import useGetMyInfo from '@/apis/useGetMyInfo';
 import type { Chat, ChatRoom, ChatRooms, DataType, UpdateActions, User, UserConnStatus } from '@/components/chat/types';
-import { getStorageItem } from '@/utils/storage';
-
-import { type AuthToken, StorageAuthKey, useAuthContext } from './AuthContext';
 
 export const [ChatContextProvider, useChatContext] = constate(() => {
-  const { isAuthenticated } = useAuthContext();
+  const myInfo = useGetMyInfo();
   const disclosure = useDisclosure();
   const [chatClient, setChatClient] = useState<Client | null>(null);
   const [chatRooms, setChatRooms] = useState<ChatRooms>([]);
-  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
-  const [activateChatUserIds, setActivateChatUserIds] = useState<string[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<number | null>(null);
+  const [activateChatUserIds, setActivateChatUserIds] = useState<number[]>([]);
   const [selectedChatRoomNo, setSelectedChatRoomNo] = useState<number | null>(null);
 
-  const updateActivateChatUserIds = (userId: string, type: 'ADD' | 'REMOVE') => {
+  const updateActivateChatUserIds = (userId: number, type: 'ADD' | 'REMOVE') => {
     switch (type) {
       case 'ADD':
         setActivateChatUserIds((prev) => [...prev, userId]);
@@ -103,23 +101,21 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
-      const token = getStorageItem<AuthToken>({ key: StorageAuthKey, storage: localStorage });
-      if (token) {
+    if (myInfo !== undefined) {
+      const currentUserId = myInfo.id;
+      if (currentUserId) {
         const client = new Client({
           brokerURL: 'wss://gnimty.kro.kr/community/chat',
           connectHeaders: {
             'accept-version': '1.2',
-            Authorization: `Bearer ${token.accessToken}`,
           },
           onStompError: (frame) => {
             console.log('ON ERROR', frame);
           },
           onConnect: () => {
-            const { id } = JSON.parse(atob(token.accessToken.split('.')[1])) as { id: string };
-            setCurrentUserId(id);
-            console.log('Chat client connected, Current user Id is', id);
-            client.subscribe(`/sub/user/${id}`, () => {});
+            setCurrentUserId(currentUserId);
+            console.log('Chat client connected, Current user Id is', currentUserId);
+            client.subscribe(`/sub/user/${currentUserId}`, () => {});
             client.subscribe('/sub/init_chat', (message) => {
               const chatRoomList = JSON.parse(message.body) as ChatRooms;
               console.log('Init ChatROOMS', chatRoomList);
@@ -131,7 +127,7 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
         setChatClient(client);
       }
     }
-  }, [isAuthenticated]);
+  }, [myInfo]);
 
   useEffect(() => {
     activateChatUserIds.forEach((userId) => {

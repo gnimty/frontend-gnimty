@@ -34,7 +34,7 @@ export default function UserCardLandscape(props: UserCardLandscapeProps) {
       chatClient.publish({
         destination: `/pub/user/${id}`,
       });
-      updateActivateChatUserIds(String(id), 'ADD');
+      updateActivateChatUserIds(id, 'ADD');
     }
     if (!disclosure.isOpen) {
       disclosure.onOpen();
