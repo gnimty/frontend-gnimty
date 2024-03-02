@@ -138,9 +138,10 @@ interface SummonerCardProps {
   toggle: () => void;
   // summonerInfo
   summoner: RecommendedSummonersEntry;
+  refObject?: (node: HTMLDivElement | null) => void;
 }
 
-export default function SummonerCard({ open, toggle, summoner }: SummonerCardProps) {
+export default function SummonerCard({ open, toggle, summoner, refObject }: SummonerCardProps) {
   const {
     name,
     tagLine,
@@ -158,7 +159,7 @@ export default function SummonerCard({ open, toggle, summoner }: SummonerCardPro
     iconId,
   } = summoner;
   return (
-    <CardWrapper $open={open}>
+    <CardWrapper $open={open} ref={refObject}>
       <CardHeader $flexColumn="true" $align="flex-start">
         <CardColumn $justify="space-between" $marginBottom="1rem">
           <SummonerBasicInfo>

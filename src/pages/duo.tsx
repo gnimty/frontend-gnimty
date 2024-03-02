@@ -1,10 +1,9 @@
 import { Grid, useDisclosure, VStack, Text } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import Head from 'next/head';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import duoSummonersQuery from '@/apis/queries/duoSummonersQuery';
+import { useInfiniteDuoSummonersQuery } from '@/apis/queries/duoSummonersQuery';
 import type { RecommendedSummonersEntry, DuoSummonersRequest } from '@/apis/types';
 import NotFound from '@/assets/images/duo-not-found.png';
 import DetailDrawer from '@/components/duo/DetailDrawer';
@@ -20,16 +19,34 @@ export const defaultDuoSummonersRequest: DuoSummonersRequest = {
   status: 'ONLINE',
   sortBy: 'RECOMMEND',
   tier: 'unknown',
-  lastSummonerId: 0,
-  lastSummonerUpCount: 0,
-  lastSummonerMmr: 0,
+  lastSummonerId: null,
+  lastName: null,
+  lastSummonerUpCount: null,
+  lastSummonerMmr: null,
   pageSize: 18,
 };
 
 export default function Duo() {
   const drawerDisclosure = useDisclosure();
   const [requestParams, setRequestParams] = useState<DuoSummonersRequest>(defaultDuoSummonersRequest);
-  const { data } = useQuery(duoSummonersQuery(requestParams));
+  const {
+    data: infiniteData,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteDuoSummonersQuery(requestParams ?? defaultDuoSummonersRequest);
+  const observer = useRef<IntersectionObserver | null>(null);
+  const lastSummonerRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasNextPage) {
+          fetchNextPage();
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [fetchNextPage, hasNextPage],
+  );
   const updateRequestParams = (toUpdate: Record<string, DuoSummonersRequest[keyof DuoSummonersRequest]>) => {
     setRequestParams((prev) => ({ ...prev, ...toUpdate }));
   };
@@ -42,14 +59,22 @@ export default function Duo() {
 
   useEffect(() => {
     setSummoners(() => {
-      if (!data) return [];
-      return data?.data?.recommendedSummoners.map((summoner) => ({ ...summoner, open: false }));
+      if (!infiniteData) return [];
+      return infiniteData.pages
+        .map((page) => page.data.recommendedSummoners?.map((summoner) => ({ ...summoner, open: false })))
+        .flat();
     });
-  }, [data]);
+  }, [infiniteData]);
 
   useEffect(() => {
     setSummoners((prev) => prev.map((summoner) => ({ ...summoner, open: allOpen })));
   }, [allOpen]);
+
+  useEffect(() => {
+    return () => {
+      if (observer.current) observer.current.disconnect();
+    };
+  }, []);
 
   return (
     <>
@@ -66,7 +91,7 @@ export default function Duo() {
           updateParams={updateRequestParams}
         />
         <Grid templateColumns="repeat(3, 350px)" gap="12px">
-          {summoners?.map((summoner, idx) => {
+          {summoners?.map((summoner, idx, summonersArray) => {
             return (
               <SummonerCard
                 // key={summoner.id} - 중복되는 key가 있어서 주석처리
@@ -76,6 +101,7 @@ export default function Duo() {
                 toggle={() =>
                   setSummoners((prev) => prev.map((s) => (s.id === summoner.id ? { ...s, open: !s.open } : s)))
                 }
+                refObject={summonersArray.length - 1 === idx ? lastSummonerRef : undefined}
               />
             );
           })}
