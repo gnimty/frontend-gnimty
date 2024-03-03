@@ -143,9 +143,6 @@ export default function Champion({ summonerTagName }: ChampionProps) {
                   </Td>
                   <Td w="80px" display="flex" justifyContent="center" alignItems="center" gap="4px">
                     <Text textStyle="body">{champion.avgGold}</Text>
-                    <Text textStyle="body" color="gray500">
-                      ?
-                    </Text>
                   </Td>
                   <Td w="80px" display="flex" justifyContent="center" alignItems="center" gap="4px">
                     <Text textStyle="body">{champion.avgCs}</Text>
