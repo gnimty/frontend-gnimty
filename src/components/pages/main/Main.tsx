@@ -1,4 +1,4 @@
-import { Flex, HStack, VStack, Link } from '@chakra-ui/react';
+import { Flex, HStack, Link, VStack } from '@chakra-ui/react';
 import { useState } from 'react';
 
 import type { GameMode } from '@/apis/types';
@@ -9,7 +9,7 @@ import type { SelectOption } from '@/components/common/select/useSelect';
 import ChampionsTable from './ChampionsTable';
 import RecentMatches from './RecentMatches';
 import RecommendedSummonersSection from './RecommendedSummonersSection';
-import Search from './Search';
+import Search from './search/Search';
 
 const queueSelectOptions: SelectOption<GameMode>[] = [
   {
