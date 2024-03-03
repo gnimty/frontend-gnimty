@@ -1,4 +1,4 @@
-import { queryOptions } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 import request from '../httpRequest';
 
@@ -10,16 +10,25 @@ interface DuoSummonersResponse {
   };
 }
 
-const duoSummonersQuery = (options: DuoSummonersRequest) =>
-  queryOptions({
-    queryKey: ['duoSummoners', options],
-    async queryFn() {
+export const useInfiniteDuoSummonersQuery = (options: DuoSummonersRequest) =>
+  useInfiniteQuery({
+    queryKey: ['duoSummoners', Object.values(options)],
+    queryFn: async ({ pageParam = {} }) => {
       const res = await request.get<DuoSummonersResponse>('/community/summoners', {
-        params: options,
+        params: { ...options, ...pageParam },
       });
       return res.data;
     },
-    enabled: options.pageSize > 0,
+    initialPageParam: options,
+    getNextPageParam: (lastPage) => {
+      const lastSummoner = lastPage.data.recommendedSummoners?.slice(-1)[0] ?? [];
+      if (!lastSummoner) return undefined;
+      return {
+        ...options,
+        lastSummonerId: lastSummoner.id,
+        lastName: lastSummoner.name,
+        lastSummonerMmr: lastSummoner.mmr,
+        lastSummonerUpCount: lastSummoner.upCount,
+      };
+    },
   });
-
-export default duoSummonersQuery;

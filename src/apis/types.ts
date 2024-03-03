@@ -343,9 +343,9 @@ export interface DuoSummonersRequest {
   lanes?: Position[];
   sortBy?: SortBy;
   timeMatch?: boolean;
-  lastSummonerId?: number;
-  lastName?: string;
-  lastSummonerMmr?: number;
-  lastSummonerUpCount?: number;
+  lastSummonerId: number | null;
+  lastName: string | null;
+  lastSummonerMmr: number | null;
+  lastSummonerUpCount: number | null;
   pageSize: number;
 }
