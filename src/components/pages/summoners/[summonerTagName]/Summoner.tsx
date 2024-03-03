@@ -34,6 +34,7 @@ import Like from '@/assets/icons/system/like.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
 
+import Champion from './Champion';
 import CurrentGameTab from './CurrentGameTab/CurrentGameTab';
 import LanePlaysGraph from './LanePlaysGraph';
 import RankCard from './RankCard';
@@ -244,7 +245,9 @@ export default function Summoner(props: SummonerProps) {
           </TabList>
           <TabPanels>
             <TabPanel>전적 정보</TabPanel>
-            <TabPanel>챔피언 정보</TabPanel>
+            <TabPanel>
+              <Champion summonerTagName={summonerTagName} />
+            </TabPanel>
             <TabPanel>
               <CurrentGameTab summonerTagName={summonerTagName} />
             </TabPanel>

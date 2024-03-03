@@ -19,6 +19,8 @@ export type PositionFilter = Position | 'ALL';
 
 export type GameMode = 'RANK_SOLO' | 'RANK_FLEX' | 'BLIND';
 
+export type QueueType = 'ARAM' | 'ALL' | GameMode;
+
 export interface SoloTierDto {
   tier: Tier;
   division: number;
