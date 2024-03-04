@@ -46,6 +46,7 @@ export const optionText = (theme: Theme) =>
     fontWeight: '400',
     display: 'flex',
     alignItems: 'center',
+    textWrap: 'nowrap',
   });
 
 export const options = (options: { isOpened: boolean }) => (theme: Theme) =>
