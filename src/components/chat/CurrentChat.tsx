@@ -6,6 +6,8 @@ import { useChatContext } from '@/contexts/ChatContext';
 import Chat from './Chat';
 import ChatInput from './ChatInput';
 import UserCard from './UserCard';
+import { useQuery } from '@tanstack/react-query';
+import summonerInfoQuery from '@/apis/queries/summonerInfoQuery';
 
 function CurrentChat() {
   const { chatRooms, selectedChatRoomNo } = useChatContext();
@@ -14,7 +16,13 @@ function CurrentChat() {
     () => chatRooms?.find((chatRoom) => chatRoom.chatRoomNo === selectedChatRoomNo)?.chats ?? [],
     [chatRooms, selectedChatRoomNo],
   );
-  const otherUserId = chatRooms?.find((chatRoom) => chatRoom.chatRoomNo === selectedChatRoomNo)?.otherUser.userId;
+  const otherUser = chatRooms?.find((chatRoom) => chatRoom.chatRoomNo === selectedChatRoomNo)?.otherUser;
+  const otherUserId = otherUser?.userId;
+  const otherUserName = otherUser?.name;
+  const otherUserTagLine = otherUser?.tagLine;
+  const { data: summonerInfo } = useQuery(
+    summonerInfoQuery({ summonerTagName: `${otherUserName}-${otherUserTagLine}` }),
+  );
   const today = new Date();
   const chatsBeforeToday = chats?.filter((chat) => new Date(chat.sendDate) < today);
   const chatsToday = chats?.slice(chatsBeforeToday.length, chats.length);
@@ -29,23 +37,11 @@ function CurrentChat() {
     <VStack w="400px" h="100%" position="relative" justify="flex-start">
       {/* if user exists */}
       <UserCard
-        username="TestUserName"
-        hashtag="#KR1"
-        avatarUrl="#"
-        soloRankInfo={{
-          tier: 'challenger',
-          division: 1,
-          lp: 1000,
-          mainPosition: 'MIDDLE',
-          subPosition: 'TOP',
-        }}
-        flexRankInfo={{
-          tier: 'master',
-          division: 1,
-          lp: 200,
-          mainPosition: 'MIDDLE',
-          subPosition: 'TOP',
-        }}
+        summonerName="TestUserName"
+        tagLine="#KR1"
+        profileIconId={100}
+        soloTierInfo={summonerInfo?.data.summoner.soloTierInfo}
+        flexTierInfo={summonerInfo?.data.summoner.flexTierInfo}
       />
       {/* if chat exists */}
       <Box overflowY="scroll" w="full" flex="1" mb="70px" ref={scrollRef}>
