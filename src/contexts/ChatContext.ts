@@ -146,7 +146,7 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          type: 'READ_CHATS',
+          type: 'READ',
         }),
       });
       chatClient?.subscribe(`/sub/chatRoom/${selectedChatRoomNo}`, (message) => {
