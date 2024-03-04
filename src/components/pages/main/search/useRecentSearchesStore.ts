@@ -3,6 +3,11 @@ import { persist } from 'zustand/middleware';
 
 import type { SearchPopRowItem } from './SearchPopRow';
 
+/*
+ * TODO: 아래 링크 참고해서 storage 이벤트 연결하기
+ * https://docs.pmnd.rs/zustand/integrations/persisting-store-data#how-can-i-rehydrate-on-storage-event
+ */
+
 const RECENT_SEARCHES_MAX = 10;
 
 interface RecentSearchesState {
