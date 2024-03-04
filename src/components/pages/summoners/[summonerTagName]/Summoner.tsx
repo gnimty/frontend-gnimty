@@ -20,6 +20,7 @@ import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useRef } from 'react';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import championIdKrNameMap from '@/apis/constants/championIdKrNameMap';
@@ -34,6 +35,8 @@ import Like from '@/assets/icons/system/like.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
 import copyText from '@/utils/copyText';
+
+import useRecentSearchesStore from '../../main/search/useRecentSearchesStore';
 
 import Champion from './Champion';
 import CurrentGameTab from './CurrentGameTab/CurrentGameTab';
@@ -55,8 +58,23 @@ export default function Summoner(props: SummonerProps) {
 
   const { renewSummoner } = useRenewSummoner();
 
+  const addRecentSearch = useRecentSearchesStore((state) => state.addRecentSearch);
+  const isRecentSearchAdded = useRef(false);
+
   if (status !== 'success') {
     return;
+  }
+
+  if (!isRecentSearchAdded.current) {
+    isRecentSearchAdded.current = true;
+    addRecentSearch({
+      puuid: data.data.summoner.puuid,
+      summonerName: data.data.summoner.summonerName,
+      tagLine: data.data.summoner.tagLine,
+      profileIconId: data.data.summoner.profileIconId,
+      // TODO: 동적으로 설정
+      isVerified: false,
+    });
   }
 
   return (
