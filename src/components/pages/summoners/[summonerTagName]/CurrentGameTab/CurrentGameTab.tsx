@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 
 import summonerCurrentGameInfoQuery from '@/apis/queries/summonerCurrentGameInfoQuery';
 import type { CurrentGameParticipantDto } from '@/apis/types';
+import useStopWatch from '@/hooks/useStopwatch';
 
 import CurrentGameRow from './CurrentGameRow';
 
@@ -22,11 +23,21 @@ export default function CurrentGameTab(props: CurrentGameTabProps) {
 
   const { data, status } = useQuery(summonerCurrentGameInfoQuery({ summonerTagName }));
 
+  const { elapsedSeconds, start, isRunning } = useStopWatch();
+
   if (status !== 'success') {
     return;
   }
 
-  const [gameLengthMinutes, gameLengthSeconds] = secondsToMinutesSeconds(data.data.gameLength);
+  /**
+   * 최대한 정확한 시간 체크를 위해 인게임 정보를 받아온 후(`status === 'success'`)에
+   * 타이머를 시작
+   */
+  if (!isRunning) {
+    start();
+  }
+
+  const [gameLengthMinutes, gameLengthSeconds] = secondsToMinutesSeconds(data.data.gameLength + elapsedSeconds);
   const participantsByTeam = data.data.participants.reduce(
     (team, participant) => {
       if (participant.teamId === 100) {
