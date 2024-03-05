@@ -1,9 +1,13 @@
+import RankPage from '@/components/pages/champion/RankPage';
 import Head from 'next/head';
 
 export default function ChampionRank() {
   return (
-    <Head>
-      <title>챔피언 분석</title>
-    </Head>
+    <>
+      <Head>
+        <title>챔피언 분석</title>
+      </Head>
+      <RankPage />
+    </>
   );
 }
