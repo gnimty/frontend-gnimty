@@ -12,6 +12,7 @@ import PositionImage from '@/components/common/position-image/PositionImage';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
 import { useChatContext } from '@/contexts/ChatContext';
+import copyText from '@/utils/copyText';
 
 import * as style from './UserCardLandscape.style';
 
@@ -24,7 +25,7 @@ export default function UserCardLandscape(props: UserCardLandscapeProps) {
   const { currentUserId, chatClient, disclosure, updateActivateChatUserIds } = useChatContext();
 
   async function handleNameCopyButtonClick() {
-    await navigator.clipboard.writeText(summoner.name);
+    await copyText(summoner.name, '소환사 이름을 성공적으로 복사하였습니다.');
   }
 
   function handleChatButtonClick() {

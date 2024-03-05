@@ -33,6 +33,7 @@ import Copy from '@/assets/icons/system/copy.svg';
 import Like from '@/assets/icons/system/like.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
+import copyText from '@/utils/copyText';
 
 import Champion from './Champion';
 import CurrentGameTab from './CurrentGameTab/CurrentGameTab';
@@ -109,8 +110,9 @@ export default function Summoner(props: SummonerProps) {
                       display="inline-flex"
                       aria-label="소환사명 복사"
                       onClick={async () => {
-                        await navigator.clipboard.writeText(
+                        await copyText(
                           `${data.data.summoner.summonerName}#${data.data.summoner.tagLine}`,
+                          '소환사 이름을 성공적으로 복사하였습니다.',
                         );
                       }}
                     >
