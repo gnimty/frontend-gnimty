@@ -1,13 +1,13 @@
 import { Box, HStack, VStack } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useRef } from 'react';
 
+import summonerInfoQuery from '@/apis/queries/summonerInfoQuery';
 import { useChatContext } from '@/contexts/ChatContext';
 
 import Chat from './Chat';
 import ChatInput from './ChatInput';
 import UserCard from './UserCard';
-import { useQuery } from '@tanstack/react-query';
-import summonerInfoQuery from '@/apis/queries/summonerInfoQuery';
 
 function CurrentChat() {
   const { chatRooms, selectedChatRoomNo } = useChatContext();

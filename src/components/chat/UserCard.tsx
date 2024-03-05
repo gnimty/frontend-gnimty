@@ -2,12 +2,12 @@ import { Avatar, Box, HStack, VStack, useDisclosure } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 
 import type { SummonerTierDto } from '@/apis/types';
+import profileIconUrl from '@/apis/utils/profileIconUrl';
+import shortTierName from '@/apis/utils/shortTierName';
 import CopyIcon from '@/assets/icons/system/copy.svg';
 
 import PositionImage from '../common/position-image/PositionImage';
 import TierImage from '../common/TierImage';
-import profileIconUrl from '@/apis/utils/profileIconUrl';
-import shortTierName from '@/apis/utils/shortTierName';
 
 interface UserCardProps {
   summonerName: string;
