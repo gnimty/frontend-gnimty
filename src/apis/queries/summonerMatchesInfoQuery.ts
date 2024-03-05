@@ -23,7 +23,7 @@ interface Options {
 
 const summonerMatchesInfoQuery = (options: Options) =>
   queryOptions({
-    queryKey: ['summonerMatchesInfo'],
+    queryKey: ['summonerMatchesInfo', options],
     async queryFn() {
       const res = await httpRequest.get<SummonerMatchesInfoResponse>(
         `/statistics/summoners/matches/${options.summonerTagName}`,
