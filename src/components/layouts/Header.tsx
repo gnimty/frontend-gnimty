@@ -20,7 +20,7 @@ import * as style from './Header.style';
 const links = [
   { name: '홈', link: '/' },
   { name: '듀오 찾기', link: '/duo' },
-  { name: '챔피언 분석', link: '' },
+  { name: '챔피언 분석', link: '/champion/rank' },
   { name: '랭킹', link: '/rankings?page=1' },
   { name: '할인/패치노트', link: '/information' },
 ];
