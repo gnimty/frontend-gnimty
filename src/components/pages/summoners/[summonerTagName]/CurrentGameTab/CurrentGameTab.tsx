@@ -8,12 +8,6 @@ import useStopWatch from '@/hooks/useStopwatch';
 
 import CurrentGameRow from './CurrentGameRow';
 
-function secondsToMinutesSeconds(totalSeconds: number): [number, number] {
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  return [minutes, seconds];
-}
-
 interface CurrentGameTabProps {
   summonerTagName: string;
 }
@@ -37,7 +31,8 @@ export default function CurrentGameTab(props: CurrentGameTabProps) {
     start();
   }
 
-  const [gameLengthMinutes, gameLengthSeconds] = secondsToMinutesSeconds(data.data.gameLength + elapsedSeconds);
+  const gameElapsedSeconds = data.data.gameLength + elapsedSeconds;
+
   const participantsByTeam = data.data.participants.reduce(
     (team, participant) => {
       if (participant.teamId === 100) {
@@ -58,7 +53,7 @@ export default function CurrentGameTab(props: CurrentGameTabProps) {
         </Text>
         <HStack gap="8px" fontSize="14px" fontWeight="regular" color="red200">
           <Text>플레이 시간</Text>
-          <Text>{dayjs.duration({ minutes: gameLengthMinutes, seconds: gameLengthSeconds }).format('mm:ss')}</Text>
+          <Text>{dayjs.duration(gameElapsedSeconds, 's').format('mm:ss')}</Text>
         </HStack>
       </HStack>
       <HStack bg="linear-gradient(270deg, #FDE7EA 44.32%, #EBF3FE 55.1%)" gap={0}>
