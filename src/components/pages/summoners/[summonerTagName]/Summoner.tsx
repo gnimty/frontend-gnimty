@@ -36,7 +36,7 @@ import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
 import copyText from '@/utils/copyText';
 
-import useRecentSearchesStore from '../../main/search/useRecentSearchesStore';
+import { useRecentSearchesStore } from '../../main/search/recentSearchesStore';
 
 import Champion from './Champion';
 import CurrentGameTab from './CurrentGameTab/CurrentGameTab';

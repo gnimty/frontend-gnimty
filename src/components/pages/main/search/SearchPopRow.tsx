@@ -6,7 +6,7 @@ import ProfileImage from '@/components/common/ProfileImage';
 import VerifiedTag from '@/components/common/VerifiedTag';
 import FavoriteIcon from '@/components/icons/FavoriteIcon';
 
-import useFavoriteSummonerMapStore from './useFavoriteSummonerMapStore';
+import { useFavoriteSummonerMapStore } from './favoriteSummonerMapStore';
 
 export interface SearchPopRowItem {
   puuid: string;

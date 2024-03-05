@@ -1,5 +1,5 @@
+import { useRecentSearchesStore } from './recentSearchesStore';
 import SearchPopBody from './SearchPopBody';
-import useRecentSearchesStore from './useRecentSearchesStore';
 
 export default function RecentSearchTab() {
   const recentSearches = useRecentSearchesStore((state) => state.recentSearches);

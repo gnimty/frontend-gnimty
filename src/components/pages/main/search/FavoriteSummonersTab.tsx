@@ -1,5 +1,5 @@
+import { useFavoriteSummonerMapStore } from './favoriteSummonerMapStore';
 import SearchPopBody from './SearchPopBody';
-import useFavoriteSummonerMapStore from './useFavoriteSummonerMapStore';
 
 export default function FavoriteSummonersTab() {
   const favoriteSummonerMap = useFavoriteSummonerMapStore((state) => state.favoriteSummonerMap);

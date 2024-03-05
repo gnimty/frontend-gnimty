@@ -9,6 +9,7 @@ import ChatBubble from '@/components/chat/ChatBubble';
 import BaseLayout from '@/components/layouts/BaseLayout';
 import { AuthContextProvider } from '@/contexts/AuthContext';
 import { ChatContextProvider } from '@/contexts/ChatContext';
+import StoreProviders from '@/providers/StoreProviders';
 import chakraTheme from '@/styles/theme/chakraTheme';
 import emotionTheme from '@/styles/theme/emotionTheme';
 
@@ -45,21 +46,23 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <CacheProvider value={emotionCache}>
-        <ChakraBaseProvider theme={chakraTheme} resetCSS={false}>
-          <Fonts />
-          <ThemeProvider theme={emotionTheme}>
-            <AuthContextProvider>
-              <ChatContextProvider>
-                <BaseLayout>
-                  <Component {...pageProps} />
-                </BaseLayout>
-                <ChatBubble />
-              </ChatContextProvider>
-            </AuthContextProvider>
-          </ThemeProvider>
-        </ChakraBaseProvider>
-      </CacheProvider>
+      <StoreProviders>
+        <CacheProvider value={emotionCache}>
+          <ChakraBaseProvider theme={chakraTheme} resetCSS={false}>
+            <Fonts />
+            <ThemeProvider theme={emotionTheme}>
+              <AuthContextProvider>
+                <ChatContextProvider>
+                  <BaseLayout>
+                    <Component {...pageProps} />
+                  </BaseLayout>
+                  <ChatBubble />
+                </ChatContextProvider>
+              </AuthContextProvider>
+            </ThemeProvider>
+          </ChakraBaseProvider>
+        </CacheProvider>
+      </StoreProviders>
     </QueryClientProvider>
   );
 }
