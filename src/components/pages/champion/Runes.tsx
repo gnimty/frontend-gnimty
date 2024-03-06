@@ -1,8 +1,8 @@
 import { Box, HStack, Text, VStack } from '@chakra-ui/react';
 
 import PerkImage from '@/components/common/PerkImage';
-import PerkStatImage from '@/components/common/PerkStatImage';
 import PerkStyleImage from '@/components/common/PerkStyleImage';
+import StatPerkImage from '@/components/common/StatPerkImage';
 
 export default function Runes() {
   return (
@@ -104,21 +104,21 @@ function RunePage() {
           {/* 파편 - 공격 */}
           <VStack w="252px" gap="20px">
             <HStack w="184px" gap="20px" justify="space-between">
-              <PerkStatImage perkStatId={5008} width="48" height="48" />
-              <PerkStatImage perkStatId={5005} width="48" height="48" style={{ filter: 'grayscale(100%)' }} />
-              <PerkStatImage perkStatId={5007} width="48" height="48" style={{ filter: 'grayscale(100%)' }} />
+              <StatPerkImage statPerkId={5008} width="48" height="48" />
+              <StatPerkImage statPerkId={5005} width="48" height="48" style={{ filter: 'grayscale(100%)' }} />
+              <StatPerkImage statPerkId={5007} width="48" height="48" style={{ filter: 'grayscale(100%)' }} />
             </HStack>
             {/* 파편 - 유연 */}
             <HStack w="184px" gap="20px" justify="space-between">
-              <PerkStatImage perkStatId={5008} width="48" height="48" />
-              <PerkStatImage perkStatId={5002} width="48" height="48" style={{ filter: 'grayscale(100%)' }} />
-              <PerkStatImage perkStatId={5003} width="48" height="48" style={{ filter: 'grayscale(100%)' }} />
+              <StatPerkImage statPerkId={5008} width="48" height="48" />
+              <StatPerkImage statPerkId={5002} width="48" height="48" style={{ filter: 'grayscale(100%)' }} />
+              <StatPerkImage statPerkId={5003} width="48" height="48" style={{ filter: 'grayscale(100%)' }} />
             </HStack>
             {/* 파편 - 방어 */}
             <HStack w="184px" gap="20px" justify="space-between">
-              <PerkStatImage perkStatId={5001} width="48" height="48" />
-              <PerkStatImage perkStatId={5002} width="48" height="48" style={{ filter: 'grayscale(100%)' }} />
-              <PerkStatImage perkStatId={5003} width="48" height="48" style={{ filter: 'grayscale(100%)' }} />
+              <StatPerkImage statPerkId={5001} width="48" height="48" />
+              <StatPerkImage statPerkId={5002} width="48" height="48" style={{ filter: 'grayscale(100%)' }} />
+              <StatPerkImage statPerkId={5003} width="48" height="48" style={{ filter: 'grayscale(100%)' }} />
             </HStack>
           </VStack>
         </VStack>
