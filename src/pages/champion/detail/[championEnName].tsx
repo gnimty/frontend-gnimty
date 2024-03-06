@@ -1,6 +1,7 @@
-import DetailPage from '@/components/pages/champion/DetailPage';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+
+import DetailPage from '@/components/pages/champion/DetailPage';
 
 export default function ChampionDetail() {
   const router = useRouter();

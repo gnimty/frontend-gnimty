@@ -1,5 +1,6 @@
-import RankPage from '@/components/pages/champion/RankPage';
 import Head from 'next/head';
+
+import RankPage from '@/components/pages/champion/RankPage';
 
 export default function ChampionRank() {
   return (

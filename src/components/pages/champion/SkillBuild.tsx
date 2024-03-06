@@ -1,9 +1,10 @@
-import championIconUrl from '@/apis/utils/championIconUrl';
 import { Box, HStack, Text, VStack } from '@chakra-ui/react';
-import Image from 'next/image';
-import NextIcon from '@/assets/icons/system/next.svg';
-import { Fragment } from 'react';
 import { useTheme } from '@emotion/react';
+import Image from 'next/image';
+
+import championIconUrl from '@/apis/utils/championIconUrl';
+import NextIcon from '@/assets/icons/system/next.svg';
+
 
 export default function SkillBuild() {
   const theme = useTheme();

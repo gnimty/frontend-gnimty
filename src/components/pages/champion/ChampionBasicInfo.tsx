@@ -1,9 +1,10 @@
+import { Box, HStack, VStack, Text } from '@chakra-ui/react';
+import { useTheme } from '@emotion/react';
+import Image from 'next/image';
+
 import championIconUrl from '@/apis/utils/championIconUrl';
 import ChampionTierBadge from '@/components/common/ChampionTierBadge';
 import PositionImage from '@/components/common/position-image/PositionImage';
-import Image from 'next/image';
-import { Box, HStack, VStack, Text } from '@chakra-ui/react';
-import { useTheme } from '@emotion/react';
 
 // interface ChampionBasicInfoProps {}
 

@@ -1,7 +1,8 @@
+import { Box, HStack, Text, VStack } from '@chakra-ui/react';
+
 import PerkImage from '@/components/common/PerkImage';
 import PerkStatImage from '@/components/common/PerkStatImage';
 import PerkStyleImage from '@/components/common/PerkStyleImage';
-import { Box, HStack, Text, VStack } from '@chakra-ui/react';
 
 export default function Runes() {
   return (

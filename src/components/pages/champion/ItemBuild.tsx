@@ -1,6 +1,7 @@
-import championIconUrl from '@/apis/utils/championIconUrl';
 import { Box, HStack, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
+
+import championIconUrl from '@/apis/utils/championIconUrl';
 
 export default function ItemBuild() {
   return (

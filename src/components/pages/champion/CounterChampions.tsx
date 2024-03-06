@@ -1,6 +1,7 @@
-import championIconUrl from '@/apis/utils/championIconUrl';
 import { Box, VStack, Text, HStack } from '@chakra-ui/react';
 import Image from 'next/image';
+
+import championIconUrl from '@/apis/utils/championIconUrl';
 
 interface CounterChampionsProps {
   counterType: 'easy' | 'hard';

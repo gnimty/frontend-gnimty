@@ -1,6 +1,7 @@
-import profileIconUrl from '@/apis/utils/profileIconUrl';
 import { Box, HStack, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
+
+import profileIconUrl from '@/apis/utils/profileIconUrl';
 
 export default function SummonerRank() {
   return (

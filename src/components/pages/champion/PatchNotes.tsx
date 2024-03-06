@@ -1,4 +1,3 @@
-import championIconUrl from '@/apis/utils/championIconUrl';
 import {
   Accordion,
   AccordionButton,
@@ -11,6 +10,8 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import Image from 'next/image';
+
+import championIconUrl from '@/apis/utils/championIconUrl';
 
 export default function PatchNotes() {
   return (

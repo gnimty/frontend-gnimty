@@ -1,10 +1,11 @@
 import { HStack, VStack } from '@chakra-ui/react';
+
 import ChampionBasicInfo from './ChampionBasicInfo';
 import CounterChampions from './CounterChampions';
+import ItemBuild from './ItemBuild';
 import PatchNotes from './PatchNotes';
 import Runes from './Runes';
 import SkillBuild from './SkillBuild';
-import ItemBuild from './ItemBuild';
 import SummonerRank from './SummonerRank';
 
 interface DetailPageProps {
