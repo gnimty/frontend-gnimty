@@ -29,5 +29,5 @@ export default function createSSRStore<S, State>(
     return useZustandStore(store, selector);
   }
 
-  return [StoreProvider, useStore] as const;
+  return [StoreProvider, useStore, StoreContext] as const;
 }
