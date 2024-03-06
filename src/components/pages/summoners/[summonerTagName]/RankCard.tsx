@@ -1,19 +1,17 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
 
-import type { Tier } from '@/apis/types';
+import type { SummonerTierDto } from '@/apis/types';
 import fullTierName from '@/apis/utils/fullTierName';
 import TierImage from '@/components/common/TierImage';
 
 interface RankCardProps {
   tierType: 'solo' | 'flex';
-  tier: Tier;
-  division: number;
-  lp: number;
-  rank: number;
+  tierInfo: SummonerTierDto | null;
 }
 
 export default function RankCard(props: RankCardProps) {
-  const { tierType, tier, division, lp, rank } = props;
+  const { tierType, tierInfo } = props;
+  const { tier = 'unknown', division, lp, rank } = tierInfo ?? {};
 
   return (
     <VStack alignItems="normal" bg="white" flex="1 1 0" p="20px" borderRadius="4px" gap="12px">
@@ -26,14 +24,22 @@ export default function RankCard(props: RankCardProps) {
           <Text textStyle="t1" fontWeight="bold" color="gray800">
             {fullTierName(tier, division)}
           </Text>
-          <HStack gap="8px">
+          {tier === 'unknown' ? (
             <Text textStyle="body" fontWeight="regular" color="gray500">
-              {lp}LP
+              -
             </Text>
-            <Text textStyle="body" fontWeight="regular" color="gray500">
-              랭크 {rank}위
-            </Text>
-          </HStack>
+          ) : (
+            <HStack gap="8px">
+              <Text textStyle="body" fontWeight="regular" color="gray500">
+                {lp}LP
+              </Text>
+              {rank !== undefined && (
+                <Text textStyle="body" fontWeight="regular" color="gray500">
+                  랭크 {rank}위
+                </Text>
+              )}
+            </HStack>
+          )}
         </VStack>
       </HStack>
     </VStack>
