@@ -89,6 +89,8 @@ export interface SummonerTierDto {
   mostChampionIds: number[];
   /** 최근 20게임 자주 가는 포지션 */
   mostLanes: Position[];
+  /** 솔로랭크 순위정보로, 마스터 이상 유저에 한해서만 해당 필드가 노출됩니다. */
+  rank?: number;
 }
 
 export interface SummonerRankDto {
