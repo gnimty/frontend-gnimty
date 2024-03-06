@@ -5,6 +5,7 @@ import PatchNotes from './PatchNotes';
 import Runes from './Runes';
 import SkillBuild from './SkillBuild';
 import ItemBuild from './ItemBuild';
+import SummonerRank from './SummonerRank';
 
 interface DetailPageProps {
   championEnName: string;
@@ -30,6 +31,7 @@ export default function DetailPage({ championEnName }: DetailPageProps) {
       {/* 4 아이템 빌드, 소환사 랭킹 */}
       <HStack w="full" gap="12px" justify="space-between">
         <ItemBuild />
+        <SummonerRank />
       </HStack>
       {/* 5 운영 팁 */}
     </VStack>
