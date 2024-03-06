@@ -4,6 +4,7 @@ import CounterChampions from './CounterChampions';
 import PatchNotes from './PatchNotes';
 import Runes from './Runes';
 import SkillBuild from './SkillBuild';
+import ItemBuild from './ItemBuild';
 
 interface DetailPageProps {
   championEnName: string;
@@ -27,6 +28,9 @@ export default function DetailPage({ championEnName }: DetailPageProps) {
       {/* 3 스킬 빌드 */}
       <SkillBuild />
       {/* 4 아이템 빌드, 소환사 랭킹 */}
+      <HStack w="full" gap="12px" justify="space-between">
+        <ItemBuild />
+      </HStack>
       {/* 5 운영 팁 */}
     </VStack>
   );
