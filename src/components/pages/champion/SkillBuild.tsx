@@ -5,7 +5,6 @@ import Image from 'next/image';
 import championIconUrl from '@/apis/utils/championIconUrl';
 import NextIcon from '@/assets/icons/system/next.svg';
 
-
 export default function SkillBuild() {
   const theme = useTheme();
   return (
