@@ -175,24 +175,8 @@ export default function Summoner(props: SummonerProps) {
           </VStack>
           <VStack gap="12px" flex="1">
             <HStack gap="12px" h="112px" w="full">
-              <RankCard
-                tierType="solo"
-                tier={data.data.summoner.soloTierInfo.tier}
-                division={data.data.summoner.soloTierInfo.division}
-                lp={data.data.summoner.soloTierInfo.lp}
-                // TODO: API에 순위 정보가 추가 되면 같이 업데이트 필요
-                rank={1}
-              />
-              {data.data.summoner.flexTierInfo !== null && (
-                <RankCard
-                  tierType="flex"
-                  tier={data.data.summoner.flexTierInfo.tier}
-                  division={data.data.summoner.flexTierInfo.division}
-                  lp={data.data.summoner.flexTierInfo.lp}
-                  // TODO: API에 순위 정보가 추가 되면 같이 업데이트 필요
-                  rank={1}
-                />
-              )}
+              <RankCard tierType="solo" tierInfo={data.data.summoner.soloTierInfo} />
+              <RankCard tierType="flex" tierInfo={data.data.summoner.flexTierInfo} />
             </HStack>
             <VStack alignItems="normal" gap="12px" bg="white" h="140px" w="full" p="20px" borderRadius="4px">
               <Text textStyle="t2" fontWeight="regular" color="gray700">
