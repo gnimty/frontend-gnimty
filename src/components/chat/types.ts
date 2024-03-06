@@ -25,7 +25,8 @@ export type ChatRooms = ChatRoom[];
 
 export interface User {
   userId: string;
-  summonerName: string;
+  name: string;
+  tagLine: string;
   tier: Tier;
   division: number;
   iconId: string;

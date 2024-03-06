@@ -19,7 +19,14 @@ interface HeaderProps {
 
 const Header = ({ closeChat }: HeaderProps) => {
   return (
-    <HStack w="100%" h="56px" p="16px 20px" justify="space-between">
+    <HStack
+      w="100%"
+      h="56px"
+      p="16px 20px"
+      justify="space-between"
+      borderBottom="1px solid"
+      borderBottomColor="gray100"
+    >
       <Box textStyle="t1" color="gray800">
         채팅 목록
       </Box>

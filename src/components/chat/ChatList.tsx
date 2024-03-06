@@ -18,7 +18,7 @@ function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps
   const theme = useTheme();
   const { exitChatRoom } = useChatContext();
   const [isOnHover, setIsOnHover] = useState(false);
-  const { summonerName, iconId, status } = otherUser;
+  const { name, iconId, status } = otherUser;
 
   return (
     <HStack
@@ -40,11 +40,11 @@ function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps
       onMouseLeave={() => setIsOnHover(false)}
       borderBottom={`1px solid ${theme.colors.gray100}`}
     >
-      <Image src={profileIconUrl(Number(iconId ?? '10'))} alt={summonerName} w="40px" h="40px" borderRadius="50%" />
+      <Image src={profileIconUrl(Number(iconId ?? '10'))} alt={name} w="40px" h="40px" borderRadius="50%" />
       <VStack h="40px" gap="4px">
         <HStack h="20px" justify="space-between">
           <Box textStyle="t2" color={selected ? 'white' : 'gray800'}>
-            {summonerName}
+            {name}
           </Box>
           {/* <Box textStyle="t2" fontWeight="400" color={selected ? 'gray400' : 'gray600'}>
             {hashtag}

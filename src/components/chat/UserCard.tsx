@@ -1,30 +1,24 @@
 import { Avatar, Box, HStack, VStack, useDisclosure } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 
-import type { Position, Tier } from '@/apis/types';
+import type { SummonerTierDto } from '@/apis/types';
+import profileIconUrl from '@/apis/utils/profileIconUrl';
+import shortTierName from '@/apis/utils/shortTierName';
 import CopyIcon from '@/assets/icons/system/copy.svg';
 
 import PositionImage from '../common/position-image/PositionImage';
 import TierImage from '../common/TierImage';
 
-interface RankInfo {
-  tier: Tier;
-  division: number; // 1 ~ 4
-  lp: number;
-  mainPosition: Position;
-  subPosition?: Position;
-}
-
 interface UserCardProps {
-  username: string;
-  hashtag: string;
-  avatarUrl: string;
-  soloRankInfo: RankInfo;
-  flexRankInfo: RankInfo;
+  summonerName: string;
+  tagLine: string;
+  profileIconId: number;
+  soloTierInfo?: SummonerTierDto;
+  flexTierInfo?: SummonerTierDto | null;
 }
 
 // TODO: 유저 카드 정보 - 랭크정보, 해시태그 등 추가/수정 필요
-function UserCard({ username, hashtag, avatarUrl, soloRankInfo, flexRankInfo }: UserCardProps) {
+function UserCard({ summonerName, tagLine, profileIconId, soloTierInfo, flexTierInfo }: UserCardProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const theme = useTheme();
   return (
@@ -39,13 +33,13 @@ function UserCard({ username, hashtag, avatarUrl, soloRankInfo, flexRankInfo }: 
       {/* 유저 기본정보 */}
       <HStack w="full" h="full" justifyContent="space-between">
         <HStack w="max-content" align="center" spacing="8px">
-          <Avatar w={isOpen ? '24px' : '16px'} src={avatarUrl} />
+          <Avatar w={isOpen ? '24px' : '16px'} src={profileIconUrl(profileIconId)} />
           <HStack w="max-content" align="center" spacing="4px">
             <Box textStyle="t2" color="gray800" fontWeight="700">
-              {username}
+              {summonerName}
             </Box>
             <Box textStyle="body" color="gray600">
-              {hashtag}
+              {tagLine}
             </Box>
             <CopyIcon width="16" color="gray500" onClick={() => console.log('Copied!')} />
           </HStack>
@@ -59,8 +53,8 @@ function UserCard({ username, hashtag, avatarUrl, soloRankInfo, flexRankInfo }: 
       {/* 유저 정보 디테일 */}
       {isOpen && (
         <HStack w="full" spacing="24px" justifyContent="space-between">
-          <RankInfo type="solo" rankInfo={soloRankInfo} />
-          <RankInfo type="flex" rankInfo={flexRankInfo} />
+          {soloTierInfo && <RankInfo type="solo" rankInfo={soloTierInfo} />}
+          {flexTierInfo && <RankInfo type="flex" rankInfo={flexTierInfo} />}
           <Box textStyle="body" color="gray500" onClick={onClose} alignSelf="end">
             접어두기
           </Box>
@@ -70,25 +64,25 @@ function UserCard({ username, hashtag, avatarUrl, soloRankInfo, flexRankInfo }: 
   );
 }
 
-function RankInfo({ type, rankInfo }: { type: 'solo' | 'flex'; rankInfo: RankInfo }) {
-  const { tier, lp, mainPosition, subPosition } = rankInfo;
+function RankInfo({ type, rankInfo }: { type: 'solo' | 'flex'; rankInfo: SummonerTierDto }) {
   return (
     <VStack spacing="8px" align="start">
       <Box textStyle="body" color="gray500">
         {type === 'solo' ? '솔로 랭크' : '자유 랭크'}
       </Box>
       <HStack spacing="4px">
-        <TierImage tier={tier} width={16} />
+        <TierImage tier={rankInfo?.tier} width={16} />
         <Box textStyle="body" color="gray800" fontWeight="700">
-          {tier.slice(0, 2).toUpperCase()}
+          {shortTierName(rankInfo?.tier)}
         </Box>
         <Box textStyle="body" color="gray500">
-          {lp.toLocaleString('ko-KR')}LP
+          {rankInfo?.lp.toLocaleString('ko-KR')}LP
         </Box>
       </HStack>
       <HStack spacing="4px">
-        <PositionImage position={mainPosition} width="16px" />
-        {subPosition && <PositionImage position={subPosition} width="16px" />}
+        {rankInfo?.mostLanes?.map((lane) => {
+          return <PositionImage key={lane} position={lane} width="16px" />;
+        })}
       </HStack>
     </VStack>
   );
