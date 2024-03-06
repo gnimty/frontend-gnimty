@@ -16,7 +16,6 @@ import ActiveLink from '../common/ActiveLink';
 
 import * as style from './Header.style';
 
-// TODO: 링크 정해지면 추가하기
 const links = [
   { name: '홈', link: '/' },
   { name: '듀오 찾기', link: '/duo' },
