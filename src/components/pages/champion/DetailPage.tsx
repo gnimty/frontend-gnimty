@@ -2,6 +2,7 @@ import { HStack, VStack } from '@chakra-ui/react';
 import ChampionBasicInfo from './ChampionBasicInfo';
 import CounterChampions from './CounterChampions';
 import PatchNotes from './PatchNotes';
+import Runes from './Runes';
 
 interface DetailPageProps {
   championEnName: string;
@@ -21,6 +22,7 @@ export default function DetailPage({ championEnName }: DetailPageProps) {
         <PatchNotes />
       </HStack>
       {/* 2 룬*/}
+      <Runes />
       {/* 3 스킬 빌드 */}
       {/* 4 아이템 빌드, 소환사 랭킹 */}
       {/* 5 운영 팁 */}
