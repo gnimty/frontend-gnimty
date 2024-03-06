@@ -1,6 +1,7 @@
 import { HStack, VStack } from '@chakra-ui/react';
 import ChampionBasicInfo from './ChampionBasicInfo';
 import CounterChampions from './CounterChampions';
+import PatchNotes from './PatchNotes';
 
 interface DetailPageProps {
   championEnName: string;
@@ -17,6 +18,7 @@ export default function DetailPage({ championEnName }: DetailPageProps) {
           <CounterChampions counterType="easy" />
           <CounterChampions counterType="hard" />
         </VStack>
+        <PatchNotes />
       </HStack>
       {/* 2 룬*/}
       {/* 3 스킬 빌드 */}
