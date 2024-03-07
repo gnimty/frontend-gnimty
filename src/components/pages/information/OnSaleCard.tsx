@@ -39,8 +39,15 @@ export default function OnSaleCard(props: OnSaleCardProps) {
           -{Math.floor(discountedRate * 100)}%
         </Center>
       </Box>
-      <HStack w="352px" px="12px" justifyContent="space-between" gap="12px">
-        <Box textStyle="t1" fontWeight="bold">
+      <HStack w="352px" px="12px" justifyContent="space-between" gap="12px" whiteSpace="nowrap">
+        <Box
+          textStyle="t1"
+          fontWeight="bold"
+          color="gray800"
+          overflow="hidden"
+          whiteSpace="nowrap"
+          textOverflow="ellipsis"
+        >
           {name}
         </Box>
         <HStack gap="8px">
@@ -52,7 +59,7 @@ export default function OnSaleCard(props: OnSaleCardProps) {
               <Rp width={22} height={22} />
             </Flex>
             <Box textStyle="t1" fontWeight="bold" color="gray800">
-              {discountedRp}
+              {discountedRp}RP
             </Box>
           </HStack>
           {originIp !== undefined ? (
@@ -61,7 +68,7 @@ export default function OnSaleCard(props: OnSaleCardProps) {
                 <Ip width={22} height={22} />
               </Flex>
               <Box textStyle="t1" fontWeight="bold" color="gray800">
-                {originIp}
+                {originIp}BE
               </Box>
             </HStack>
           ) : null}
