@@ -4,14 +4,9 @@ import dayjs from 'dayjs';
 
 import summonerCurrentGameInfoQuery from '@/apis/queries/summonerCurrentGameInfoQuery';
 import type { CurrentGameParticipantDto } from '@/apis/types';
+import useStopWatch from '@/hooks/useStopwatch';
 
 import CurrentGameRow from './CurrentGameRow';
-
-function secondsToMinutesSeconds(totalSeconds: number): [number, number] {
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  return [minutes, seconds];
-}
 
 interface CurrentGameTabProps {
   summonerTagName: string;
@@ -22,11 +17,22 @@ export default function CurrentGameTab(props: CurrentGameTabProps) {
 
   const { data, status } = useQuery(summonerCurrentGameInfoQuery({ summonerTagName }));
 
+  const { elapsedSeconds, start, isRunning } = useStopWatch();
+
   if (status !== 'success') {
     return;
   }
 
-  const [gameLengthMinutes, gameLengthSeconds] = secondsToMinutesSeconds(data.data.gameLength);
+  /**
+   * 최대한 정확한 시간 체크를 위해 인게임 정보를 받아온 후(`status === 'success'`)에
+   * 타이머를 시작
+   */
+  if (!isRunning) {
+    start();
+  }
+
+  const gameElapsedSeconds = data.data.gameLength + elapsedSeconds;
+
   const participantsByTeam = data.data.participants.reduce(
     (team, participant) => {
       if (participant.teamId === 100) {
@@ -47,7 +53,7 @@ export default function CurrentGameTab(props: CurrentGameTabProps) {
         </Text>
         <HStack gap="8px" fontSize="14px" fontWeight="regular" color="red200">
           <Text>플레이 시간</Text>
-          <Text>{dayjs.duration({ minutes: gameLengthMinutes, seconds: gameLengthSeconds }).format('mm:ss')}</Text>
+          <Text>{dayjs.duration(gameElapsedSeconds, 's').format('mm:ss')}</Text>
         </HStack>
       </HStack>
       <HStack bg="linear-gradient(270deg, #FDE7EA 44.32%, #EBF3FE 55.1%)" gap={0}>
