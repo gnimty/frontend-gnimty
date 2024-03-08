@@ -9,6 +9,7 @@ import NotFound from '@/assets/images/duo-not-found.png';
 import DetailDrawer from '@/components/duo/DetailDrawer';
 import Filter from '@/components/duo/Filter';
 import SummonerCard from '@/components/duo/SummonerCard';
+import { useChatContext } from '@/contexts/ChatContext';
 
 type SummonerCardItem = {
   open: boolean;
@@ -28,6 +29,19 @@ export const defaultDuoSummonersRequest: DuoSummonersRequest = {
 
 export default function Duo() {
   const drawerDisclosure = useDisclosure();
+  const { currentUserId, chatClient, disclosure, updateActivateChatUserIds } = useChatContext();
+  const handleChatButtonClick = (id: number) => {
+    if (!currentUserId) return;
+    if (chatClient && id) {
+      chatClient.publish({
+        destination: `/pub/user/${id}`,
+      });
+      updateActivateChatUserIds(id, 'ADD');
+    }
+    if (!disclosure.isOpen) {
+      disclosure.onOpen();
+    }
+  };
   const [requestParams, setRequestParams] = useState<DuoSummonersRequest>(defaultDuoSummonersRequest);
   const {
     data: infiniteData,
@@ -102,6 +116,7 @@ export default function Duo() {
                   setSummoners((prev) => prev.map((s) => (s.id === summoner.id ? { ...s, open: !s.open } : s)))
                 }
                 refObject={summonersArray.length - 1 === idx ? lastSummonerRef : undefined}
+                openChat={() => handleChatButtonClick(summoner.id)}
               />
             );
           })}
