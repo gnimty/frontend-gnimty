@@ -1,6 +1,6 @@
 import { Box, HStack, Image, VStack } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import profileIconUrl from '@/apis/utils/profileIconUrl';
 import ExitIcon from '@/assets/icons/system/exit.svg';
@@ -64,7 +64,10 @@ function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps
           width="16px"
           height="16px"
           color={theme.colors.gray500}
-          onClick={() => exitChatRoom(chatRoomNo)}
+          onClick={(e: React.MouseEvent) => {
+            e.stopPropagation();
+            exitChatRoom(chatRoomNo);
+          }}
           cursor="pointer"
         />
       )}
