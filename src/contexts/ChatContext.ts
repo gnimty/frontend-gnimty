@@ -43,9 +43,12 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
         case 'CHATROOM_INFO':
           setChatRooms((prev) => {
             const index = prev.findIndex((chatRoom) => chatRoom.chatRoomNo === (data as ChatRoom).chatRoomNo);
-            if (index === -1) return prev;
             const newChatRooms = [...prev];
-            newChatRooms[index] = data as ChatRoom;
+            if (index === -1) {
+              newChatRooms.push(data as ChatRoom);
+            } else {
+              newChatRooms[index] = data as ChatRoom;
+            }
             return newChatRooms;
           });
           break;
