@@ -101,8 +101,8 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
   };
 
   useEffect(() => {
-    if (myInfo === undefined && chatClient !== null) {
-      chatClient.deactivate();
+    if (myInfo === undefined) {
+      chatClient?.deactivate();
     }
     if (myInfo !== undefined) {
       const currentUserId = myInfo.id;
@@ -130,7 +130,7 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
         setChatClient(client);
       }
     }
-  }, [myInfo]);
+  }, [myInfo, chatClient]);
 
   useEffect(() => {
     activateChatUserIds.forEach((userId) => {
