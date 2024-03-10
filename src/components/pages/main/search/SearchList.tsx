@@ -1,17 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 
 import summonerAutoCompleteQuery, { type SummonerAutoCompleteResponse } from '@/apis/queries/summonerAutoCompleteQuery';
+import summonerDtoToSearchPopRowItem from '@/utils/summonerDtoToSearchPopRowItem';
 
 import SearchPopBody from './SearchPopBody';
 
 const summonerAutoCompleteToSearchPopRowItems = (data: SummonerAutoCompleteResponse) =>
-  data.data.summoners.map((summoner) => ({
-    puuid: summoner.puuid,
-    summonerName: summoner.summonerName,
-    tagLine: summoner.tagLine,
-    profileIconId: summoner.profileIconId,
-    isVerified: false,
-  }));
+  data.data.summoners.map(summonerDtoToSearchPopRowItem);
 
 interface SearchListProps {
   keyword: string;

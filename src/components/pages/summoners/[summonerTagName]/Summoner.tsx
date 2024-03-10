@@ -36,6 +36,7 @@ import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
 import FavoriteIcon from '@/components/icons/FavoriteIcon';
 import copyText from '@/utils/copyText';
+import summonerDtoToSearchPopRowItem from '@/utils/summonerDtoToSearchPopRowItem';
 
 import { useFavoriteSummonerMapStore } from '../../main/search/favoriteSummonerMapStore';
 import { useRecentSearchesStore } from '../../main/search/recentSearchesStore';
@@ -70,14 +71,7 @@ export default function Summoner(props: SummonerProps) {
     return;
   }
 
-  const searchPopRowItem = {
-    puuid: data.data.summoner.puuid,
-    summonerName: data.data.summoner.summonerName,
-    tagLine: data.data.summoner.tagLine,
-    profileIconId: data.data.summoner.profileIconId,
-    // TODO: 동적으로 설정
-    isVerified: false,
-  };
+  const searchPopRowItem = summonerDtoToSearchPopRowItem(data.data.summoner);
   const isFavorite = Object.hasOwn(favoriteSummonerMap, searchPopRowItem.puuid);
 
   if (!isRecentSearchAdded.current) {
