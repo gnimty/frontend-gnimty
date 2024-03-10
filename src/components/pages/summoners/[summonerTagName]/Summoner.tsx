@@ -34,8 +34,10 @@ import Copy from '@/assets/icons/system/copy.svg';
 import Like from '@/assets/icons/system/like.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
+import FavoriteIcon from '@/components/icons/FavoriteIcon';
 import copyText from '@/utils/copyText';
 
+import { useFavoriteSummonerMapStore } from '../../main/search/favoriteSummonerMapStore';
 import { useRecentSearchesStore } from '../../main/search/recentSearchesStore';
 
 import Champion from './Champion';
@@ -61,20 +63,26 @@ export default function Summoner(props: SummonerProps) {
   const addRecentSearch = useRecentSearchesStore((state) => state.addRecentSearch);
   const isRecentSearchAdded = useRef(false);
 
+  const favoriteSummonerMap = useFavoriteSummonerMapStore((state) => state.favoriteSummonerMap);
+  const toggleFavoriteSummoner = useFavoriteSummonerMapStore((state) => state.toggleFavoriteSummoner);
+
   if (status !== 'success') {
     return;
   }
 
+  const searchPopRowItem = {
+    puuid: data.data.summoner.puuid,
+    summonerName: data.data.summoner.summonerName,
+    tagLine: data.data.summoner.tagLine,
+    profileIconId: data.data.summoner.profileIconId,
+    // TODO: 동적으로 설정
+    isVerified: false,
+  };
+  const isFavorite = Object.hasOwn(favoriteSummonerMap, searchPopRowItem.puuid);
+
   if (!isRecentSearchAdded.current) {
     isRecentSearchAdded.current = true;
-    addRecentSearch({
-      puuid: data.data.summoner.puuid,
-      summonerName: data.data.summoner.summonerName,
-      tagLine: data.data.summoner.tagLine,
-      profileIconId: data.data.summoner.profileIconId,
-      // TODO: 동적으로 설정
-      isVerified: false,
-    });
+    addRecentSearch(searchPopRowItem);
   }
 
   return (
@@ -153,12 +161,33 @@ export default function Summoner(props: SummonerProps) {
                     LP
                   </Text>
                 </HStack>
-                <HStack border="1px solid" borderColor="gray400" borderRadius="20px" p="4px 10px 4px 8px" gap="4px">
-                  <Like width={20} height={20} css={(theme) => ({ color: theme.colors.gray600 })} />
-                  <Text textStyle="t2" fontWeight="regular" color="gray700">
-                    {/* TODO: API에 관련 정보 추가해달라고 요청해야함 */}
-                    {Intl.NumberFormat().format(1234)}
-                  </Text>
+                <HStack>
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      toggleFavoriteSummoner(searchPopRowItem);
+                    }}
+                    display="flex"
+                    borderWidth="1px"
+                    borderColor="gray400"
+                    borderStyle={isFavorite ? 'none' : 'solid'}
+                    borderRadius="20px"
+                    p="4px 10px 4px 8px"
+                    gap="4px"
+                    bg={isFavorite ? 'main' : 'transparent'}
+                  >
+                    <FavoriteIcon width={20} height={20} color={isFavorite ? '#fff' : '#4e4e4e'} isOn={isFavorite} />
+                    <Text textStyle="t2" fontWeight="regular" color={isFavorite ? 'white' : 'gray700'}>
+                      즐겨찾기
+                    </Text>
+                  </Button>
+                  <HStack border="1px solid" borderColor="gray400" borderRadius="20px" p="4px 10px 4px 8px" gap="4px">
+                    <Like width={20} height={20} css={(theme) => ({ color: theme.colors.gray600 })} />
+                    <Text textStyle="t2" fontWeight="regular" color="gray700">
+                      {/* TODO: API에 관련 정보 추가해달라고 요청해야함 */}
+                      {Intl.NumberFormat().format(1234)}
+                    </Text>
+                  </HStack>
                 </HStack>
               </VStack>
             </HStack>
