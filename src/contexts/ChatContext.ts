@@ -98,6 +98,7 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
       }),
     });
     setChatRooms((prev) => prev.filter((chatRoom) => chatRoom.chatRoomNo !== chatRoomNo));
+    setSelectedChatRoomNo(null);
   };
 
   useEffect(() => {
