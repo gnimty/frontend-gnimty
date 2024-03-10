@@ -238,7 +238,7 @@ export default function Summoner(props: SummonerProps) {
                   </HStack>
                   <HStack gap="20px">
                     {data.data.matchSummary.championSummary.map((champion) => (
-                      <HStack key={champion.avgKda} gap="12px" alignItems="normal">
+                      <HStack key={champion.championId} gap="12px" alignItems="normal">
                         <Image
                           src={championIconUrl(championIdEnNameMap[champion.championId])}
                           width={36}
