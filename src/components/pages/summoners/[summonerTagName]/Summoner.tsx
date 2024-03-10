@@ -251,7 +251,7 @@ export default function Summoner(props: SummonerProps) {
                             {Math.floor(champion.winRate * 100)}%
                           </Text>
                           <Text w="60px" textStyle="body" color="orange800" fontWeight="bold">
-                            {champion.avgKda.toFixed(2)} 평점
+                            {champion.isPerfect ? 'Perfect' : `${champion.avgKda.toFixed(2)} 평점`}
                           </Text>
                         </VStack>
                       </HStack>
