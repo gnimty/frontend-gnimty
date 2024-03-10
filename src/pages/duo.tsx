@@ -40,7 +40,9 @@ export default function Duo() {
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && hasNextPage) {
-          fetchNextPage();
+          fetchNextPage().then(() => {
+            observer.current?.disconnect();
+          });
         }
       });
       if (node) observer.current.observe(node);
