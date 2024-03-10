@@ -18,7 +18,7 @@ const nextConfig = {
         }&redirect_uri=${process.env.NEXT_PUBLIC_API_BASE_URL.replace(
           /\/api$/,
           '',
-        )}/community/oauth/redirect&response_type=code&scope=profile&state=/:state*`,
+        )}/redirect&response_type=code&scope=email&state=/:state*`,
         basePath: false,
         permanent: true,
       },
@@ -29,7 +29,7 @@ const nextConfig = {
         }&redirect_uri=${process.env.NEXT_PUBLIC_API_BASE_URL.replace(
           /\/api$/,
           '',
-        )}/community/oauth/redirect&response_type=code&state=/:state*`,
+        )}/redirect&response_type=code&state=/:state*`,
         basePath: false,
         permanent: true,
       },

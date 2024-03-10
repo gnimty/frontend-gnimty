@@ -8,7 +8,11 @@ import { useAuthContext } from '@/contexts/AuthContext';
 
 import type { GetServerSideProps } from 'next';
 
-function Page({ redirectUrl }: { redirectUrl: string }) {
+interface RedirectPageProps {
+  redirectUrl: string;
+}
+
+function Redirect({ redirectUrl }: RedirectPageProps) {
   const router = useRouter();
   const checkToken = useGetMyInfo();
   const { setIsAuthenticated } = useAuthContext();
@@ -44,7 +48,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const host = context.req.headers.host;
     const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
-    const redirectUri = `${protocol}://${host}/community/oauth/redirect`;
+    const redirectUri = `${protocol}://${host}/redirect`;
 
     try {
       const data = {
@@ -82,4 +86,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 };
 
-export default Page;
+export default Redirect;
