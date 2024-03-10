@@ -35,7 +35,7 @@ export default function CurrentGameTab(props: CurrentGameTabProps) {
 
   const participantsByTeam = data.data.participants.reduce(
     (team, participant) => {
-      if (participant.teamId === 100) {
+      if (participant.teamId === 200) {
         team.red.push(participant);
       } else {
         team.blue.push(participant);
