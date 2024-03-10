@@ -4,7 +4,7 @@ import SearchPopRow, { type SearchPopRowItem } from './SearchPopRow';
 
 export interface SearchPopBodyProps {
   items: SearchPopRowItem[];
-  textWhenEmpty: string;
+  textWhenEmpty?: string;
   onXButtonClick?: (puuid: string) => void;
 }
 
@@ -12,6 +12,10 @@ export default function SearchPopBody(props: SearchPopBodyProps) {
   const { textWhenEmpty, items, onXButtonClick } = props;
 
   if (items.length === 0) {
+    if (textWhenEmpty === undefined) {
+      return null;
+    }
+
     return (
       <Center h="180px">
         <Text textStyle="t2" fontWeight="regular" color="gray500">

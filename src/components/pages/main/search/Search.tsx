@@ -1,21 +1,26 @@
 import { Box, HStack, IconButton, Input, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { useState, type FormEventHandler } from 'react';
 
 import SearchIcon from '@/assets/icons/system/search.svg';
 
 import FavoriteSummonersTab from './FavoriteSummonersTab';
 import RecentSearchTab from './RecentSearchesTab';
+import SearchList from './SearchList';
 
 import type { BoxProps } from '@chakra-ui/react';
 
 export interface SearchProps extends Omit<BoxProps, 'children'> {}
 
 export default function Search(props: SearchProps) {
-  const [searchText, setSearchText] = useState('');
+  const [searchKeyword, setSearchKeyword] = useState('');
   const [searchPopState, setSearchPopState] = useState<'hidden' | 'recent-favorite' | 'search'>('hidden');
+
+  const router = useRouter();
 
   const handleSubmit: FormEventHandler = (event) => {
     event.preventDefault();
+    router.push(`/summoners/${encodeURIComponent(searchKeyword.replaceAll('#', '-'))}`);
   };
 
   return (
@@ -46,9 +51,9 @@ export default function Search(props: SearchProps) {
         <HStack as="form" onSubmit={handleSubmit} alignItems="center" gap="12px" flex="1 0 0">
           <Input
             type="search"
-            value={searchText}
+            value={searchKeyword}
             onChange={(event) => {
-              setSearchText(event.target.value);
+              setSearchKeyword(event.target.value);
               if (event.target.value.length > 0) {
                 setSearchPopState('search');
               } else {
@@ -72,22 +77,34 @@ export default function Search(props: SearchProps) {
           </IconButton>
         </HStack>
       </HStack>
-      {searchPopState === 'recent-favorite' && (
-        <Tabs variant="mainSearch" w="420px" pos="absolute" top="calc(100% + 4px)" left="0" zIndex="dropdown">
-          <TabList>
-            <Tab w="210px">최근 검색</Tab>
-            <Tab w="210px">즐겨찾기</Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel>
-              <RecentSearchTab />
-            </TabPanel>
-            <TabPanel>
-              <FavoriteSummonersTab />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      )}
+      <Box
+        w="420px"
+        pos="absolute"
+        top="calc(100% + 4px)"
+        left="0"
+        zIndex="dropdown"
+        bg="white"
+        boxShadow="0px 4px 6px 0px rgb(17 17 17 / .1)"
+        borderRadius="8px"
+      >
+        {searchPopState === 'recent-favorite' && (
+          <Tabs variant="mainSearch">
+            <TabList>
+              <Tab w="210px">최근 검색</Tab>
+              <Tab w="210px">즐겨찾기</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                <RecentSearchTab />
+              </TabPanel>
+              <TabPanel>
+                <FavoriteSummonersTab />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        )}
+        {searchPopState === 'search' && <SearchList keyword={searchKeyword} />}
+      </Box>
     </Box>
   );
 }

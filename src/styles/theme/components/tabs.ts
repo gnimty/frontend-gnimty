@@ -20,10 +20,6 @@ const tabVariant = helpers.definePartsStyle({
 });
 
 const mainSearchTabVariant = helpers.definePartsStyle({
-  root: {
-    borderRadius: '8px',
-    boxShadow: '0px 4px 6px 0px rgb(17 17 17 / .1)',
-  },
   tab: {
     bg: 'gray200',
     p: '12px 20px',
@@ -42,11 +38,6 @@ const mainSearchTabVariant = helpers.definePartsStyle({
       bg: 'white',
       color: 'gray800',
     },
-  },
-
-  tabpanels: {
-    bg: 'white',
-    borderBottomRadius: '8px',
   },
 });
 
