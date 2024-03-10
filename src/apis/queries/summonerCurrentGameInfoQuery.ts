@@ -22,7 +22,7 @@ interface Options {
 
 const summonerCurrentGameInfoQuery = (options: Options) =>
   queryOptions({
-    queryKey: ['summonerCurrentGameInfo'],
+    queryKey: ['summonerCurrentGameInfo', options],
     async queryFn() {
       const res = await httpRequest.get<SummonerCurrentGameInfoResponse>(
         `/statistics/summoners/ingame/${options.summonerTagName}`,
