@@ -312,8 +312,11 @@ export interface Perk {
   styles: PerkDetail[];
 }
 
+/** 100이 블루팀 200이 레드팀 */
+export type TEAM_ID = 100 | 200;
+
 export interface CurrentGameParticipantDto {
-  teamId: number;
+  teamId: TEAM_ID;
   summoner: SummonerDto;
   championId: number;
   championName: string;

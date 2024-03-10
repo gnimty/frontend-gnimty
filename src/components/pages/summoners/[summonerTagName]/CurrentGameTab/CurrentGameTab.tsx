@@ -2,6 +2,7 @@ import { Box, HStack, Text } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
+import { RED_TEAM } from '@/apis/constants/teamId';
 import summonerCurrentGameInfoQuery from '@/apis/queries/summonerCurrentGameInfoQuery';
 import type { CurrentGameParticipantDto } from '@/apis/types';
 import useStopWatch from '@/hooks/useStopwatch';
@@ -35,7 +36,7 @@ export default function CurrentGameTab(props: CurrentGameTabProps) {
 
   const participantsByTeam = data.data.participants.reduce(
     (team, participant) => {
-      if (participant.teamId === 200) {
+      if (participant.teamId === RED_TEAM) {
         team.red.push(participant);
       } else {
         team.blue.push(participant);
