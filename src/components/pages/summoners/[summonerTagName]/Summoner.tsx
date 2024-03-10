@@ -146,14 +146,19 @@ export default function Summoner(props: SummonerProps) {
                   #{data.data.summoner.tagLine}
                 </Text>
                 <HStack gap="8px">
-                  <TierImage tier={data.data.summoner.soloTierInfo.tier} width={28} height={28} />
+                  <TierImage tier={data.data.summoner.soloTierInfo?.tier ?? 'unknown'} width={28} height={28} />
                   <Text textStyle="h3" color="gray800" fontWeight="bold">
-                    {fullTierName(data.data.summoner.soloTierInfo.tier, data.data.summoner.soloTierInfo.division)}
+                    {fullTierName(
+                      data.data.summoner.soloTierInfo?.tier ?? 'unknown',
+                      data.data.summoner.soloTierInfo?.division,
+                    )}
                   </Text>
-                  <Text textStyle="h3" fontWeight="regular" color="gray500">
-                    {Intl.NumberFormat().format(data.data.summoner.soloTierInfo.lp)}
-                    LP
-                  </Text>
+                  {data.data.summoner.soloTierInfo !== null && (
+                    <Text textStyle="h3" fontWeight="regular" color="gray500">
+                      {Intl.NumberFormat().format(data.data.summoner.soloTierInfo.lp)}
+                      LP
+                    </Text>
+                  )}
                 </HStack>
                 <HStack>
                   <Button
