@@ -23,13 +23,13 @@ function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps
   return (
     <HStack
       role="option"
-      position="relative"
       aria-selected={selected}
       w="260px"
       h="64px"
       bgColor="white"
       p="12px 20px"
       gap="12px"
+      justify="space-between"
       _hover={{
         bg: 'gray100',
       }}
@@ -42,7 +42,7 @@ function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps
       borderBottom={`1px solid ${theme.colors.gray100}`}
     >
       <Image src={profileIconUrl(Number(iconId ?? '10'))} alt={name} w="40px" h="40px" borderRadius="50%" />
-      <VStack h="40px" gap="4px">
+      <VStack h="40px" gap="4px" flex="1">
         <HStack h="20px" justify="space-between">
           <Box textStyle="t2" color={selected ? 'white' : 'gray800'}>
             {name}
@@ -61,19 +61,16 @@ function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps
         </VStack>
       </VStack>
       {isOnHover && (
-        <Box
-          position="absolute"
-          top="50%"
-          right="20px"
-          transform="translateY(-50%)"
+        <ExitIcon
+          width="16px"
+          height="16px"
+          color={theme.colors.gray500}
           onClick={(e: React.MouseEvent) => {
             e.stopPropagation();
             exitChatRoom(chatRoomNo);
           }}
           cursor="pointer"
-        >
-          <ExitIcon width="16px" height="16px" color={theme.colors.gray500} />
-        </Box>
+        />
       )}
     </HStack>
   );
