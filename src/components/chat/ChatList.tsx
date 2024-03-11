@@ -23,6 +23,7 @@ function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps
   return (
     <HStack
       role="option"
+      position="relative"
       aria-selected={selected}
       w="260px"
       h="64px"
@@ -60,16 +61,19 @@ function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps
         </VStack>
       </VStack>
       {isOnHover && (
-        <ExitIcon
-          width="16px"
-          height="16px"
-          color={theme.colors.gray500}
+        <Box
+          position="absolute"
+          top="50%"
+          right="20px"
+          transform="translateY(-50%)"
           onClick={(e: React.MouseEvent) => {
             e.stopPropagation();
             exitChatRoom(chatRoomNo);
           }}
           cursor="pointer"
-        />
+        >
+          <ExitIcon width="16px" height="16px" color={theme.colors.gray500} />
+        </Box>
       )}
     </HStack>
   );
