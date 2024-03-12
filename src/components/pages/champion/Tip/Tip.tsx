@@ -2,6 +2,7 @@ import ToggleSwitch from '@/components/common/ToggleSwitch';
 import { HStack, Text, VStack } from '@chakra-ui/react';
 import TipInput from './TipInput';
 import dataDragonVersion from '@/apis/constants/dataDragonVersion';
+import Comment from './Comment';
 
 export default function Tip() {
   return (
@@ -20,6 +21,9 @@ export default function Tip() {
       {/* Input */}
       <TipInput />
       {/* Comments */}
+      {Array.from({ length: 3 }).map((_, index) => (
+        <Comment key={index} replies={index === 1 ? ['1', '2'] : []} />
+      ))}
     </VStack>
   );
 }
