@@ -1,7 +1,8 @@
 import { VStack, HStack, Box, Text, Divider, Button } from '@chakra-ui/react';
 import Image from 'next/image';
-import TierImage from '@/components/common/TierImage';
+
 import profileIconUrl from '@/apis/utils/profileIconUrl';
+import TierImage from '@/components/common/TierImage';
 
 function Reply() {
   return (

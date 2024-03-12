@@ -1,10 +1,10 @@
-import { useState } from 'react';
 import { Box, Grid, HStack, Menu, MenuButton, MenuList, Text, VStack, useDisclosure } from '@chakra-ui/react';
+import { useState } from 'react';
 
-import Down from '@/assets/icons/system/down.svg';
-import Up from '@/assets/icons/system/up.svg';
-import Exit from '@/assets/icons/system/exit.svg';
 import champions from '@/apis/constants/champions';
+import Down from '@/assets/icons/system/down.svg';
+import Exit from '@/assets/icons/system/exit.svg';
+import Up from '@/assets/icons/system/up.svg';
 import Champion from '@/components/duo/Champion';
 
 export default function ChampionSelect() {

@@ -1,9 +1,11 @@
+import { Box, Button, HStack, Textarea, VStack } from '@chakra-ui/react';
+import Image from 'next/image';
+
 import dataDragonVersion from '@/apis/constants/dataDragonVersion';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
 import PositionImage from '@/components/common/position-image/PositionImage';
 import Select from '@/components/common/select/Select';
-import { Box, Button, HStack, Textarea, VStack } from '@chakra-ui/react';
-import Image from 'next/image';
+
 import ChampionSelect from './ChampionSelect';
 
 export default function TipInput() {

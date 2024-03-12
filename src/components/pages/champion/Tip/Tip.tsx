@@ -1,8 +1,10 @@
-import ToggleSwitch from '@/components/common/ToggleSwitch';
 import { HStack, Text, VStack } from '@chakra-ui/react';
-import TipInput from './TipInput';
+
 import dataDragonVersion from '@/apis/constants/dataDragonVersion';
+import ToggleSwitch from '@/components/common/ToggleSwitch';
+
 import Comment from './Comment';
+import TipInput from './TipInput';
 
 export default function Tip() {
   return (
