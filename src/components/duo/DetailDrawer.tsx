@@ -80,6 +80,8 @@ const DetailDrawer = ({ disclosure, updateParams }: DetailDrawerProps) => {
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(e.currentTarget)) as Partial<DuoSummonersRequest>;
     updateParams(formData);
+    // reset champions
+    setFilteredChampions([]);
     disclosure.onClose();
   };
 
