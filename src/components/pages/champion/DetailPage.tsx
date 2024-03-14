@@ -7,7 +7,7 @@ import PatchNotes from './PatchNotes';
 import Runes from './Runes';
 import SkillBuild from './SkillBuild';
 import SummonerRank from './SummonerRank';
-import Tip from './Tip/Tip';
+import Tip from './tip/Tip';
 
 interface DetailPageProps {
   championEnName: string;
