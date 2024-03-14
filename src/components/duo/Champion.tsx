@@ -66,23 +66,24 @@ const SelectedChecker = styled.div<{ selected: boolean }>`
 `;
 
 interface ChampionProps {
-  championName: string; // championEnName
+  championKrName: string; // championKrName
+  championEnName: string; // championEnName
   selected?: boolean;
   onClick: (championName: string) => void;
 }
 
-const Champion = ({ championName, selected = false, onClick }: ChampionProps) => {
+const Champion = ({ championKrName, championEnName, selected = false, onClick }: ChampionProps) => {
   return (
-    <Container onClick={() => onClick(championName)}>
+    <Container onClick={() => onClick(championEnName)}>
       <ChampionImageWrapper selected={selected}>
         {selected && (
           <SelectedChecker selected={selected}>
             <CheckIcon fill="#fff" width="70%" />
           </SelectedChecker>
         )}
-        <Image src={championIconUrl(championName)} alt={championName} width={40} height={40} />
+        <Image src={championIconUrl(championEnName)} alt={championEnName} width={40} height={40} />
       </ChampionImageWrapper>
-      <ChampionName>{championName}</ChampionName>
+      <ChampionName>{championKrName}</ChampionName>
     </Container>
   );
 };
