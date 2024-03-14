@@ -53,16 +53,17 @@ export default function ChampionSelect() {
               </HStack>
               <Box w="full" h="389px" overflowY="scroll" p="20px">
                 <Grid templateColumns="repeat(7, 1fr)">
-                  {champions.map(({ enName }) => (
+                  {champions.map(({ enName, krName }) => (
                     // TODO: krName으로 표기하도록 수정
                     <Champion
                       key={enName}
-                      championName={enName}
+                      championKrName={krName}
+                      championEnName={enName}
                       onClick={() => {
-                        handleChampionSelect(enName);
+                        handleChampionSelect(krName);
                         onClose();
                       }}
-                      selected={selectedChampion === enName}
+                      selected={selectedChampion === krName}
                     />
                   ))}
                 </Grid>
