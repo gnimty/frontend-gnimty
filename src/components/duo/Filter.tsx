@@ -144,7 +144,7 @@ const Filter = ({ disclosure, allOpen, toggleAll, requestParams, updateParams }:
 
   useEffect(() => {
     updateParams({ lanes: selected.join(',') });
-  }, [selected, updateParams, requestParams.lanes]);
+  }, [selected]);
 
   return (
     <HStack w="full" justify="space-between">
