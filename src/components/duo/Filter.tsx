@@ -143,12 +143,7 @@ const Filter = ({ disclosure, allOpen, toggleAll, requestParams, updateParams }:
   };
 
   useEffect(() => {
-    if (requestParams.lanes === undefined) {
-      updateParams({ lanes: selected });
-    }
-    if (Array.isArray(requestParams.lanes) && !isEqualArray(requestParams.lanes, selected)) {
-      updateParams({ lanes: selected });
-    }
+    updateParams({ lanes: selected.join(',') });
   }, [selected, updateParams, requestParams.lanes]);
 
   return (
@@ -212,20 +207,20 @@ const Filter = ({ disclosure, allOpen, toggleAll, requestParams, updateParams }:
           <FilterIconItem data-position="ALL" selected={selected.length === 0}>
             <Unselected fill={selected.length === 0 ? theme.colors.white : undefined} />
           </FilterIconItem>
-          <FilterIconItem data-position="top" selected={selected.includes('top')}>
-            <PositionImage position="TOP" fill={selected.includes('top') ? theme.colors.white : undefined} />
+          <FilterIconItem data-position="TOP" selected={selected.includes('TOP')}>
+            <PositionImage position="TOP" fill={selected.includes('TOP') ? theme.colors.white : undefined} />
           </FilterIconItem>
-          <FilterIconItem data-position="jug" selected={selected.includes('jug')}>
-            <PositionImage position="JUNGLE" fill={selected.includes('jug') ? theme.colors.white : undefined} />
+          <FilterIconItem data-position="JUNGLE" selected={selected.includes('JUNGLE')}>
+            <PositionImage position="JUNGLE" fill={selected.includes('JUNGLE') ? theme.colors.white : undefined} />
           </FilterIconItem>
-          <FilterIconItem data-position="mid" selected={selected.includes('mid')}>
-            <PositionImage position="MIDDLE" fill={selected.includes('mid') ? theme.colors.white : undefined} />
+          <FilterIconItem data-position="MIDDLE" selected={selected.includes('MIDDLE')}>
+            <PositionImage position="MIDDLE" fill={selected.includes('MIDDLE') ? theme.colors.white : undefined} />
           </FilterIconItem>
-          <FilterIconItem data-position="bot" selected={selected.includes('bot')}>
-            <PositionImage position="BOTTOM" fill={selected.includes('bot') ? theme.colors.white : undefined} />
+          <FilterIconItem data-position="BOTTOM" selected={selected.includes('BOTTOM')}>
+            <PositionImage position="BOTTOM" fill={selected.includes('BOTTOM') ? theme.colors.white : undefined} />
           </FilterIconItem>
-          <FilterIconItem data-position="sup" selected={selected.includes('sup')}>
-            <PositionImage position="UTILITY" fill={selected.includes('sup') ? theme.colors.white : undefined} />
+          <FilterIconItem data-position="UTILITY" selected={selected.includes('UTILITY')}>
+            <PositionImage position="UTILITY" fill={selected.includes('UTILITY') ? theme.colors.white : undefined} />
           </FilterIconItem>
         </FilterIconBox>
 

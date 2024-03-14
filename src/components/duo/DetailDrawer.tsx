@@ -51,7 +51,9 @@ const DetailDrawer = ({ disclosure, updateParams }: DetailDrawerProps) => {
     if (!value) {
       return setFilteredChampions([]);
     }
-    const searchedChampions = champions.filter((championInfo) => championInfo.krName.includes(value));
+    const searchedChampions = champions.filter(
+      (championInfo) => championInfo.krName.includes(value) || championInfo.enName.includes(value),
+    );
     setFilteredChampions(searchedChampions.map((championInfo) => ({ ...championInfo, selected: false })));
   };
 
@@ -61,7 +63,7 @@ const DetailDrawer = ({ disclosure, updateParams }: DetailDrawerProps) => {
         return prev;
       }
       return prev.map((championInfo) => {
-        if (championInfo.krName === championName) {
+        if (championInfo.enName === championName) {
           return { ...championInfo, selected: !championInfo.selected };
         }
         return championInfo;
@@ -78,6 +80,8 @@ const DetailDrawer = ({ disclosure, updateParams }: DetailDrawerProps) => {
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(e.currentTarget)) as Partial<DuoSummonersRequest>;
     updateParams(formData);
+    // reset champions
+    setFilteredChampions([]);
     disclosure.onClose();
   };
 
@@ -144,8 +148,13 @@ const DetailDrawer = ({ disclosure, updateParams }: DetailDrawerProps) => {
                     <Grid templateColumns="repeat(8, 1fr)" gap="8px" h="max-content" minH="60px">
                       {filteredChampions
                         .filter(({ selected }) => !selected)
-                        .map(({ enName }) => (
-                          <Champion key={enName} championName={enName} onClick={handleChampionClick} />
+                        .map(({ krName, enName }) => (
+                          <Champion
+                            key={enName}
+                            championKrName={krName}
+                            championEnName={enName}
+                            onClick={handleChampionClick}
+                          />
                         ))}
                     </Grid>
                   )}
@@ -153,10 +162,11 @@ const DetailDrawer = ({ disclosure, updateParams }: DetailDrawerProps) => {
                     <Grid templateColumns="repeat(8, 1fr)" gap="8px">
                       {filteredChampions
                         .filter(({ selected }) => selected)
-                        .map(({ enName, selected }) => (
+                        .map(({ krName, enName, selected }) => (
                           <Champion
                             key={enName}
-                            championName={enName}
+                            championKrName={krName}
+                            championEnName={enName}
                             onClick={handleChampionClick}
                             selected={selected}
                           />

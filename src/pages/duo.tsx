@@ -19,6 +19,7 @@ export const defaultDuoSummonersRequest: DuoSummonersRequest = {
   status: 'ONLINE',
   sortBy: 'RECOMMEND',
   tier: 'unknown',
+  lanes: [],
   lastSummonerId: null,
   lastName: null,
   lastSummonerUpCount: null,
