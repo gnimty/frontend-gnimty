@@ -15,7 +15,6 @@ import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
 import { defaultDuoSummonersRequest } from '@/pages/duo';
-import { isEqualArray } from '@/utils/array';
 
 import type { UseDisclosureReturn } from '@chakra-ui/react';
 
@@ -144,7 +143,7 @@ const Filter = ({ disclosure, allOpen, toggleAll, requestParams, updateParams }:
 
   useEffect(() => {
     updateParams({ lanes: selected.join(',') });
-  }, [selected]);
+  }, [selected, updateParams]);
 
   return (
     <HStack w="full" justify="space-between">
