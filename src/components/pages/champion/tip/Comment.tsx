@@ -7,7 +7,6 @@ import Up from '@/assets/icons/system/up.svg';
 import PositionImage from '@/components/common/position-image/PositionImage';
 import TierImage from '@/components/common/TierImage';
 
-
 import Replies from './Replies';
 // import Down from '@/assets/icons/system/down.svg';
 
