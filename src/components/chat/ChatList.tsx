@@ -18,7 +18,8 @@ function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps
   const theme = useTheme();
   const { exitChatRoom } = useChatContext();
   const [isOnHover, setIsOnHover] = useState(false);
-  const { name, iconId, status } = otherUser;
+  const { name, tagLine, iconId, status } = otherUser;
+  const myUnreadChats = chats?.filter((chat) => chat.senderId === otherUser.userId && chat.readCount === 1);
 
   return (
     <HStack
@@ -42,15 +43,21 @@ function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps
       borderBottom={`1px solid ${theme.colors.gray100}`}
     >
       <Image src={profileIconUrl(Number(iconId ?? '10'))} alt={name} w="40px" h="40px" borderRadius="50%" />
-      <VStack h="40px" gap="4px" flex="1">
-        <HStack h="20px" justify="space-between">
+      <VStack h="40px" gap="4px" align="flex-start">
+        <HStack h="20px">
           <Box textStyle="t2" color={selected ? 'white' : 'gray800'}>
             {name}
           </Box>
-          {/* <Box textStyle="t2" fontWeight="400" color={selected ? 'gray400' : 'gray600'}>
-            {hashtag}
-          </Box> */}
-          <StatusIndicator status={status} />
+          <Box textStyle="t2" fontWeight="400" color={selected ? 'gray400' : 'gray600'}>
+            #{tagLine}
+          </Box>
+          {myUnreadChats && myUnreadChats.length > 0 ? (
+            <Box w="44px" textStyle="body" fontWeight="400" color="gray500">
+              {myUnreadChats.length}
+            </Box>
+          ) : (
+            <StatusIndicator status={status} />
+          )}
         </HStack>
         <VStack h="20px" w="100%">
           {chats && chats.length > 0 && (
