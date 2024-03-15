@@ -40,8 +40,8 @@ function CurrentChat() {
         summonerName="TestUserName"
         tagLine="#KR1"
         profileIconId={100}
-        soloTierInfo={summonerInfo?.data.summoner.soloTierInfo}
-        flexTierInfo={summonerInfo?.data.summoner.flexTierInfo}
+        soloTierInfo={summonerInfo?.data.summoner?.soloTierInfo}
+        flexTierInfo={summonerInfo?.data.summoner?.flexTierInfo}
       />
       {/* if chat exists */}
       <Box overflowY="scroll" w="full" flex="1" mb="70px" ref={scrollRef}>

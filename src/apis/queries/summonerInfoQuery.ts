@@ -1,8 +1,10 @@
 import { queryOptions } from '@tanstack/react-query';
 
+
 import httpRequest from '../httpRequest';
 
 import type { SummonerDto } from '../types';
+import type { AxiosError } from 'axios';
 
 interface Options {
   summonerTagName: string;
@@ -22,6 +24,11 @@ const summonerInfoQuery = ({ summonerTagName }: Options) =>
       return res.data;
     },
     enabled: !!summonerTagName,
+    retry(failureCount, error: AxiosError) {
+      if (error.response?.status === 404) return false;
+      if (failureCount < 3) return true;
+      return false;
+    },
   });
 
 export default summonerInfoQuery;
