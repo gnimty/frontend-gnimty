@@ -1,10 +1,11 @@
-import { VStack } from '@chakra-ui/react';
+import { HStack } from '@chakra-ui/react';
+
+import ChampionsSummaryTabs from './ChampionsSummaryTabs';
 
 export default function ChampionsPage() {
   return (
-    <VStack w="1080px" m="0 auto">
-      {/* 라인별 챔피언 목록 */}
-      {/* 필터 + 필터에 해당하는 랭킹정보 */}
-    </VStack>
+    <HStack w="1080px" gap="12px" m="40px auto 68px">
+      <ChampionsSummaryTabs />
+    </HStack>
   );
 }
