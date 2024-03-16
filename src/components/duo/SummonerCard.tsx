@@ -170,6 +170,7 @@ export default function SummonerCard({ open, toggle, summoner, refObject }: Summ
               <Copy
                 width="16px"
                 height={16}
+                cursor="pointer"
                 onClick={async () => await copyText(`${name}#${tagLine}`, '소환사 이름을 성공적으로 복사하였습니다.')}
               />
             </SummonerId>
