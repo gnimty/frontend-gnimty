@@ -1,3 +1,4 @@
+import { IconButton } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
@@ -167,10 +168,11 @@ export default function SummonerCard({ open, toggle, summoner, refObject }: Summ
             <IconImage src={profileIconUrl(iconId)} width={40} height={40} alt="icon" />
             <SummonerId>
               {name}#{tagLine}
-              <Copy
-                width="16px"
-                height={16}
-                cursor="pointer"
+              <IconButton
+                aria-label="copy"
+                icon={<Copy />}
+                w="16px"
+                h="16px"
                 onClick={async () => await copyText(`${name}#${tagLine}`, '소환사 이름을 성공적으로 복사하였습니다.')}
               />
             </SummonerId>
