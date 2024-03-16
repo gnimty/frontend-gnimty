@@ -17,14 +17,6 @@ const positionImages: Record<Position, FC<PositionIconProps>> = {
   UTILITY: Utility,
 };
 
-const positionLabels: Record<Position, string> = {
-  TOP: '탑',
-  JUNGLE: '정글',
-  MIDDLE: '미드',
-  BOTTOM: '바텀',
-  UTILITY: '서포터',
-};
-
 interface PositionImageProps extends PositionIconProps {
   position: Position;
   fill?: string;
@@ -34,5 +26,5 @@ export default function PositionImage(props: PositionImageProps) {
   const { position, ...restProps } = props;
 
   const Icon = positionImages[position];
-  return <Icon aria-label={positionLabels[position]} {...restProps} />;
+  return <Icon {...restProps} />;
 }
