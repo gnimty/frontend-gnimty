@@ -2,11 +2,18 @@ import { queryOptions } from '@tanstack/react-query';
 
 import request from '../httpRequest';
 
-import type { ChampionTierDto, Position, Tier } from '../types';
+import type { ChampionTierDto, Position, PositionFilter, Tier } from '../types';
 
 interface ChampionsTierResponse {
   data: {
     results: { position: Position; champions: ChampionTierDto[] }[];
+    version: string;
+  };
+}
+
+interface ChampionsTierData {
+  data: {
+    champions: Record<PositionFilter, ChampionTierDto[]>;
     version: string;
   };
 }
@@ -26,6 +33,27 @@ const championsTierQuery = (options: Options) =>
         params: options,
       });
       return res.data;
+    },
+    select(data): ChampionsTierData {
+      const TOP = data.data.results.find((result) => result.position === 'TOP')!.champions;
+      const JUNGLE = data.data.results.find((result) => result.position === 'JUNGLE')!.champions;
+      const MIDDLE = data.data.results.find((result) => result.position === 'MIDDLE')!.champions;
+      const BOTTOM = data.data.results.find((result) => result.position === 'BOTTOM')!.champions;
+      const UTILITY = data.data.results.find((result) => result.position === 'UTILITY')!.champions;
+
+      return {
+        data: {
+          version: data.data.version,
+          champions: {
+            ALL: [...TOP, ...JUNGLE, ...MIDDLE, ...BOTTOM, ...UTILITY],
+            TOP,
+            JUNGLE,
+            MIDDLE,
+            BOTTOM,
+            UTILITY,
+          },
+        },
+      };
     },
   });
 
