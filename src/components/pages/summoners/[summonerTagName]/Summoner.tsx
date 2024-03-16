@@ -243,7 +243,7 @@ export default function Summoner(props: SummonerProps) {
                   </HStack>
                   <HStack gap="20px">
                     {data.data.matchSummary.championSummary.map((champion) => (
-                      <HStack key={champion.avgKda} gap="12px" alignItems="normal">
+                      <HStack key={champion.championId} gap="12px" alignItems="normal">
                         <Image
                           src={championIconUrl(championIdEnNameMap[champion.championId])}
                           width={36}
@@ -256,7 +256,7 @@ export default function Summoner(props: SummonerProps) {
                             {Math.floor(champion.winRate * 100)}%
                           </Text>
                           <Text w="60px" textStyle="body" color="orange800" fontWeight="bold">
-                            {champion.avgKda.toFixed(2)} 평점
+                            {champion.isPerfect ? 'Perfect' : `${champion.avgKda.toFixed(2)} 평점`}
                           </Text>
                         </VStack>
                       </HStack>
