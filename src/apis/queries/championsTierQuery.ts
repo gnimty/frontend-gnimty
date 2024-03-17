@@ -2,7 +2,7 @@ import { queryOptions } from '@tanstack/react-query';
 
 import request from '../httpRequest';
 
-import type { ChampionTierDto, Position, PositionFilter, Tier } from '../types';
+import type { ChampionTierDto, GameMode, Position, PositionFilter, Tier } from '../types';
 
 interface ChampionsTierResponse {
   data: {
@@ -23,6 +23,8 @@ interface Options {
   tier?: Tier;
   /** true로 지정할 경우에 포지션 내에서 score가 가장 높은 상위 5개의 챔피언 티어 정보만 조회 */
   brief?: boolean;
+  /** 검색하려는 큐 정보 */
+  queue_type?: Extract<GameMode, 'RANK_SOLO' | 'RANK_FLEX'>;
 }
 
 const championsTierQuery = (options: Options) =>

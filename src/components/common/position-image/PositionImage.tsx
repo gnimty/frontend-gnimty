@@ -9,7 +9,7 @@ import Utility from './Utility';
 import type { PositionIconProps } from './types';
 import type { FC } from 'react';
 
-const positionImages: Record<Position, FC<PositionIconProps>> = {
+export const positionImages: Record<Position, FC<PositionIconProps>> = {
   TOP: Top,
   JUNGLE: Jungle,
   MIDDLE: Middle,
