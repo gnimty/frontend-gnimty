@@ -20,6 +20,7 @@ import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useRef } from 'react';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
@@ -59,13 +60,15 @@ export default function Summoner(props: SummonerProps) {
 
   const { data, status } = useQuery(summonerMatchesInfoQuery({ summonerTagName }));
 
-  const { renewSummoner } = useRenewSummoner();
+  const { renewSummoner, status: renewSummonerStatus } = useRenewSummoner();
 
   const addRecentSearch = useRecentSearchesStore((state) => state.addRecentSearch);
   const isRecentSearchAdded = useRef(false);
 
   const favoriteSummonerMap = useFavoriteSummonerMapStore((state) => state.favoriteSummonerMap);
   const toggleFavoriteSummoner = useFavoriteSummonerMapStore((state) => state.toggleFavoriteSummoner);
+
+  const router = useRouter();
 
   if (status !== 'success') {
     return;
@@ -206,12 +209,27 @@ export default function Summoner(props: SummonerProps) {
                   bg="black"
                   color="white"
                   flex="1 1 0"
+                  isDisabled={renewSummonerStatus === 'pending'}
+                  _disabled={{
+                    cursor: 'wait',
+                    bg: 'gray200',
+                    color: 'gray500',
+                  }}
                   onClick={() => {
-                    // TODO: 로딩 처리와 성공 혹은 에러 시 유저에게 피드백 필요
-                    renewSummoner({ puuid: data.data.summoner.puuid });
+                    // TODO: 에러에 대한 처리 필요
+                    renewSummoner(
+                      { puuid: data.data.summoner.puuid },
+                      {
+                        onSuccess() {
+                          alert('성공적으로 소환사 정보가 갱신됐습니다!');
+                          // TODO: 페이지 새로고침 대신 `invalidateQueries()`를 사용해 데이터 갱신
+                          router.reload();
+                        },
+                      },
+                    );
                   }}
                 >
-                  전적 갱신
+                  {renewSummonerStatus === 'pending' ? '갱신중' : '전적 갱신'}
                 </Button>
                 <Button size="lg" variant="default" flex="1 1 0" display="inline-flex" gap="4px">
                   <Chat width={24} height={24} aria-hidden /> 채팅하기
