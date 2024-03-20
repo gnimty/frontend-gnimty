@@ -89,7 +89,16 @@ export default function Summoner(props: SummonerProps) {
       </Head>
       <VStack gap="40px" w="1080px" m="40px auto 60px">
         <HStack gap="12px" w="full">
-          <VStack alignItems="normal" w="447px" h="264px" bg="white" p="20px" gap="12px">
+          <VStack
+            gap={0}
+            alignItems="normal"
+            alignSelf="stretch"
+            w="447px"
+            bg="white"
+            p="20px"
+            justify="space-between"
+            borderRadius="4px"
+          >
             <HStack alignItems="normal" gap="24px">
               <Box pos="relative" width="100px" height="100px">
                 <Image
@@ -238,11 +247,11 @@ export default function Summoner(props: SummonerProps) {
             </VStack>
           </VStack>
           <VStack gap="12px" flex="1">
-            <HStack gap="12px" h="112px" w="full">
+            <HStack gap="12px" w="full">
               <RankCard tierType="solo" tierInfo={data.data.summoner.soloTierInfo} />
               <RankCard tierType="flex" tierInfo={data.data.summoner.flexTierInfo} />
             </HStack>
-            <VStack alignItems="normal" gap="12px" bg="white" h="140px" w="full" p="20px" borderRadius="4px">
+            <VStack alignItems="normal" gap="12px" bg="white" w="full" p="20px" borderRadius="4px">
               <Text textStyle="t2" fontWeight="regular" color="gray700">
                 최근 게임 결과
               </Text>
@@ -272,6 +281,9 @@ export default function Summoner(props: SummonerProps) {
                         <VStack alignItems="normal" gap={0}>
                           <Text w="48px" textStyle="t2" color="gray800" fontWeight="bold">
                             {Math.floor(champion.winRate * 100)}%
+                          </Text>
+                          <Text textStyle="caption" fontWeight="normal" color="gray800">
+                            {champion.wins}승 {champion.defeats}패
                           </Text>
                           <Text w="60px" textStyle="body" color="orange800" fontWeight="bold">
                             {champion.isPerfect ? 'Perfect' : `${champion.avgKda.toFixed(2)} 평점`}
