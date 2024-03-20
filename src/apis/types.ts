@@ -143,12 +143,20 @@ export interface ChampionDto {
   enName: string;
 }
 
+export interface CounterChampionDto {
+  championId: number;
+  winRate: number;
+  pickRate: number;
+  plays: number;
+}
+
 export interface ChampionTierDto {
   championId: number;
   championName: string;
+  counters: CounterChampionDto[] | null;
   winRate: number;
   pickRate: number;
-  banRate: number;
+  banRate?: number;
   plays: number;
   tier: ChampionTier;
 }
@@ -312,8 +320,11 @@ export interface Perk {
   styles: PerkDetail[];
 }
 
+/** 100이 블루팀 200이 레드팀 */
+export type TEAM_ID = 100 | 200;
+
 export interface CurrentGameParticipantDto {
-  teamId: number;
+  teamId: TEAM_ID;
   summoner: SummonerDto;
   championId: number;
   championName: string;

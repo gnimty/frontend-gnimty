@@ -2,8 +2,9 @@ import { Box, HStack, Text } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
+import { BLUE_TEAM, RED_TEAM } from '@/apis/constants/teamId';
 import summonerCurrentGameInfoQuery from '@/apis/queries/summonerCurrentGameInfoQuery';
-import type { CurrentGameParticipantDto } from '@/apis/types';
+import type { CurrentGameParticipantDto, TEAM_ID } from '@/apis/types';
 import useStopWatch from '@/hooks/useStopwatch';
 
 import CurrentGameRow from './CurrentGameRow';
@@ -35,14 +36,10 @@ export default function CurrentGameTab(props: CurrentGameTabProps) {
 
   const participantsByTeam = data.data.participants.reduce(
     (team, participant) => {
-      if (participant.teamId === 100) {
-        team.red.push(participant);
-      } else {
-        team.blue.push(participant);
-      }
+      team[participant.teamId].push(participant);
       return team;
     },
-    { red: [] as CurrentGameParticipantDto[], blue: [] as CurrentGameParticipantDto[] },
+    { [BLUE_TEAM]: [], [RED_TEAM]: [] } as Record<TEAM_ID, CurrentGameParticipantDto[]>,
   );
 
   return (
@@ -57,8 +54,8 @@ export default function CurrentGameTab(props: CurrentGameTabProps) {
         </HStack>
       </HStack>
       <HStack bg="linear-gradient(270deg, #FDE7EA 44.32%, #EBF3FE 55.1%)" gap={0}>
-        <CurrentGameRow team="blue" participants={participantsByTeam.blue} />
-        <CurrentGameRow team="red" participants={participantsByTeam.red} />
+        <CurrentGameRow team="blue" participants={participantsByTeam[BLUE_TEAM]} />
+        <CurrentGameRow team="red" participants={participantsByTeam[RED_TEAM]} />
       </HStack>
     </Box>
   );

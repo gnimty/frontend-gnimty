@@ -50,9 +50,12 @@ export default function Duo() {
     },
     [fetchNextPage, hasNextPage],
   );
-  const updateRequestParams = (toUpdate: Record<string, DuoSummonersRequest[keyof DuoSummonersRequest]>) => {
-    setRequestParams((prev) => ({ ...prev, ...toUpdate }));
-  };
+  const updateRequestParams = useCallback(
+    (toUpdate: Record<string, DuoSummonersRequest[keyof DuoSummonersRequest]>) => {
+      setRequestParams((prev) => ({ ...prev, ...toUpdate }));
+    },
+    [],
+  );
 
   const [summoners, setSummoners] = useState<SummonerCardItem[]>([]);
   const [allOpen, setAllOpen] = useState(false);
