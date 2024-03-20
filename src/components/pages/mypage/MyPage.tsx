@@ -29,7 +29,7 @@ export default function MyPage() {
           leaguePoints={mainAccount?.lp ?? 0}
           email={myProfile.email}
         />
-        <Tabs variant="line" flex={1}>
+        <Tabs flex={1}>
           <TabList gap="12px">
             <Tab w="76px">회원 정보</Tab>
             <Tab w="76px">상태 변경</Tab>
