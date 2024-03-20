@@ -53,10 +53,10 @@ const Label = styled.span`
 function ToggleSwitch({ onOff, onClick, width = 32, label }: ToggleSwitchProps) {
   return (
     <WholeWrapper>
+      {label && <Label>{label}</Label>}
       <Wrapper $on={onOff} onClick={onClick} width={width}>
         <Circle $on={onOff} width={width} />
       </Wrapper>
-      {label && <Label>{label}</Label>}
     </WholeWrapper>
   );
 }
