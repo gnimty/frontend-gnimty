@@ -143,12 +143,20 @@ export interface ChampionDto {
   enName: string;
 }
 
+export interface CounterChampionDto {
+  championId: number;
+  winRate: number;
+  pickRate: number;
+  plays: number;
+}
+
 export interface ChampionTierDto {
   championId: number;
   championName: string;
+  counters: CounterChampionDto[] | null;
   winRate: number;
   pickRate: number;
-  banRate: number;
+  banRate?: number;
   plays: number;
   tier: ChampionTier;
 }

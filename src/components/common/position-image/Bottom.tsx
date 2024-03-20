@@ -2,7 +2,7 @@ import type { PositionIconProps } from './types';
 
 export default function Bottom(props: PositionIconProps) {
   return (
-    <svg viewBox="0 0 24 24" {...props}>
+    <svg viewBox="0 0 24 24" aria-label="바텀" {...props}>
       <path
         fill={props.fill ?? '#a2a2a2'}
         d="M4.361 4.355c4.715 0 9.43-.001 14.144.002-.988.98-1.978 1.96-2.969 2.94H7.302v8.235L4.362 18.5c-.002-4.715 0-9.43 0-14.145Z"

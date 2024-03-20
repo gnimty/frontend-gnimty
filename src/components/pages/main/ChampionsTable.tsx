@@ -64,12 +64,6 @@ export default function ChampionsTable() {
     return;
   }
 
-  const top = data.data.results.find((result) => result.position === 'TOP')!;
-  const jungle = data.data.results.find((result) => result.position === 'JUNGLE')!;
-  const middle = data.data.results.find((result) => result.position === 'MIDDLE')!;
-  const bottom = data.data.results.find((result) => result.position === 'BOTTOM')!;
-  const utility = data.data.results.find((result) => result.position === 'UTILITY')!;
-
   return (
     <article css={style.championsRoot}>
       <Tabs>
@@ -86,8 +80,8 @@ export default function ChampionsTable() {
           </TabList>
         </header>
         <TabPanels>
-          {[top, jungle, middle, bottom, utility].map((result) => (
-            <ChampionTabPanel key={result.position} champions={result.champions} />
+          {(['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY'] as const).map((position) => (
+            <ChampionTabPanel key={position} champions={data.data.champions[position]} />
           ))}
         </TabPanels>
       </Tabs>
