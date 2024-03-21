@@ -1,40 +1,97 @@
 import { Box, HStack, Text, VStack } from '@chakra-ui/react';
+import { useState } from 'react';
 
 import PerkImage from '@/components/common/PerkImage';
 import PerkStyleImage from '@/components/common/PerkStyleImage';
 import StatPerkImage from '@/components/common/StatPerkImage';
 
 export default function Runes() {
+  const [tabIndex, setTabIndex] = useState(0);
   return (
-    <VStack w="full" borderRadius="4px" bg="white">
+    <VStack w="full" borderRadius="4px" bg="white" gap="0">
       <Box w="full" h="52px" p="16px 20px" borderBottom="1px solid" borderColor="gray200">
         <Text textStyle="t2" fontWeight="700">
           룬
         </Text>
       </Box>
-      <RunePage />
+      {/* Rune Tab */}
+      <HStack w="full" h="102px">
+        <VStack
+          w="50%"
+          h="full"
+          bg={tabIndex === 0 ? 'white' : 'gray100'}
+          justify="center"
+          align="center"
+          gap="8px"
+          cursor="pointer"
+          onClick={() => setTabIndex(0)}
+        >
+          <HStack gap="4px">
+            <Perk type="main" perkStyleId={8000} />
+            <Perk type="sub" perkStyleId={8100} />
+          </HStack>
+          <HStack gap="8px">
+            <Text textStyle="t1" fontWeight="700" color="blue800">
+              56%
+            </Text>
+            <Text textStyle="body" fontWeight="400" color="gray500">
+              12,132게임
+            </Text>
+          </HStack>
+        </VStack>
+        <VStack
+          w="50%"
+          h="full"
+          bg={tabIndex === 1 ? 'white' : 'gray100'}
+          justify="center"
+          align="center"
+          gap="8px"
+          cursor="pointer"
+          onClick={() => setTabIndex(1)}
+        >
+          <HStack gap="4px">
+            <Perk type="main" perkStyleId={8000} />
+            <Perk type="sub" perkStyleId={8100} />
+          </HStack>
+          <HStack gap="8px">
+            <Text textStyle="t1" fontWeight="700" color="blue800">
+              56%
+            </Text>
+            <Text textStyle="body" fontWeight="400" color="gray500">
+              12,132게임
+            </Text>
+          </HStack>
+        </VStack>
+      </HStack>
+      {/* Rune Page */}
       <RunePage />
     </VStack>
   );
 }
 
+interface PerkProps {
+  type: 'main' | 'sub';
+  perkStyleId: number;
+}
+
+function Perk({ type, perkStyleId }: PerkProps) {
+  return (
+    <Box
+      w="40px"
+      h="40px"
+      overflow="hidden"
+      borderRadius={type === 'main' ? '' : '20px'}
+      bg={type === 'main' ? '' : 'gray200'}
+    >
+      <PerkStyleImage width="40px" height="40px" perkStyleId={perkStyleId} />
+    </Box>
+  );
+}
+
+// TODO: 메인, 서브 선택에 따라 룬 세트 변경
 function RunePage() {
   return (
-    <VStack w="full" h="558px" p="40px" gap="12px">
-      <VStack w="full" h="102px" p="16px 20px" gap="8px">
-        <HStack w="84px" h="40px" gap="4px" align="center">
-          <PerkStyleImage perkStyleId={8000} width="40px" height="40px" />
-          <PerkStyleImage perkStyleId={8100} width="40px" height="40px" />
-        </HStack>
-        <HStack w="100px" gap="8px">
-          <Text textStyle="t1" fontWeight="700" color="blue800">
-            56%
-          </Text>
-          <Text textStyle="body" fontWeight="400" color="gray500">
-            12,132게임
-          </Text>
-        </HStack>
-      </VStack>
+    <VStack w="full" h="444px" p="40px" gap="12px">
       <HStack w="full" h="364px" gap="20px" justify="space-between">
         {/* 메인 */}
         <VStack w="full" h="full" gap="24px">
@@ -98,7 +155,7 @@ function RunePage() {
         <VStack w="full" h="full" gap="24px" justify="space-between">
           <VStack w="60px" h="88px" gap="8px" justify="center">
             <Text textStyle="t2" fontWeight="400" color="gray700">
-              룬 파편
+              룬파편
             </Text>
           </VStack>
           {/* 파편 - 공격 */}
