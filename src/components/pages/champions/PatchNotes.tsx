@@ -15,7 +15,7 @@ import championIconUrl from '@/apis/utils/championIconUrl';
 
 export default function PatchNotes() {
   return (
-    <VStack w="full" h="full" borderRadius="4px" bg="white" gap="0">
+    <VStack w="50%" h="full" borderRadius="4px" bg="white" gap="0">
       <Box w="full" h="52px" p="16px 20px" borderBottom="1px solid" borderColor="gray200">
         <Text textStyle="t2" fontWeight="700">
           패치노트

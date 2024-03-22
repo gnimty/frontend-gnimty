@@ -1,4 +1,7 @@
 import { HStack, VStack } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
+
+import championDetailQuery from '@/apis/queries/championDetailQuery';
 
 import ChampionBasicInfo from './ChampionBasicInfo';
 import CounterChampions from './CounterChampions';
@@ -13,15 +16,17 @@ interface DetailPageProps {
 }
 
 export default function DetailPage({ championEnName }: DetailPageProps) {
+  const capitalizedChampionEnName = championEnName.charAt(0).toUpperCase() + championEnName.slice(1);
+  const { data } = useQuery(championDetailQuery({ championEnName: capitalizedChampionEnName }));
   return (
     <VStack w="1080px" m="0 auto" gap="12px" align="flex-start">
       {/* 챔피언 기본정보 */}
-      <ChampionBasicInfo />
+      {/* <ChampionBasicInfo /> */}
       {/* 1 상대하기 쉬운/어려운 챔피언, 패치노트 */}
       <HStack w="full" gap="12px" justify="space-between">
-        <VStack gap="12px" justify="space-between">
-          <CounterChampions counterType="easy" />
-          <CounterChampions counterType="hard" />
+        <VStack w="50%" gap="12px" justify="space-between">
+          <CounterChampions counterType="easy" counterChampions={data?.data.easyChampions} />
+          <CounterChampions counterType="hard" counterChampions={data?.data.counterChampions} />
         </VStack>
         <PatchNotes />
       </HStack>
