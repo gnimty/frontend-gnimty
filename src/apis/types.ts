@@ -362,3 +362,76 @@ export interface DuoSummonersRequest {
   lastSummonerUpCount: number | null;
   pageSize: number;
 }
+
+// winRate, pickRate, plays를 갖는 interface for extending
+export interface Stat {
+  winRate: number;
+  pickRate: number;
+  plays: number;
+}
+
+export interface CounterStat extends Stat {
+  championId: number;
+}
+
+export interface SpellComponentStat extends Stat {
+  spellD: number;
+  spellF: number;
+}
+
+export interface PerkStyleStat extends Stat {
+  // 주 룬
+  primaryStyleId: number;
+  // 주 룬 - 핵심 룬
+  mainStyleId: number;
+  // 부 룬
+  subStyle: number;
+  primaryStyles: number[];
+  subStyles: number[];
+  statPerks: number[];
+}
+
+export interface ItemStartComponentStat extends Stat {
+  itemStart: number[];
+}
+
+export interface ItemBootsComponentStat extends Stat {
+  itemBoots: number;
+}
+
+export interface ItemBuildComponentStat extends Stat {
+  itemBuild: number[];
+}
+
+export interface SkillComponentStat extends Stat {
+  skillTree: number[];
+}
+
+export interface ChampionPatch extends ChampionDto {
+  version: string;
+  target: string;
+  targetImgUrl: string;
+  changes: string[];
+}
+
+export interface SummonerPlayWithSummonerDto {
+  summoner: SummonerDto;
+  summonerPlay: SummonerPlayDto;
+  rank: number;
+}
+
+export interface ChampionAnalysisResponse {
+  championId: number;
+  lane: Position;
+  championTier: ChampionTierDto;
+  counterChampions: CounterStat[];
+  easyChampions: CounterStat[];
+  spellBuilds: SpellComponentStat[];
+  perkBuilds: PerkStyleStat[];
+  initialItemBuilds: ItemStartComponentStat[];
+  shoesBuilds: ItemBootsComponentStat[];
+  itemBuilds: ItemBuildComponentStat[];
+  skillBuilds: SkillComponentStat[];
+  patches: ChampionPatch[];
+  specialists: SummonerPlayWithSummonerDto[];
+}
