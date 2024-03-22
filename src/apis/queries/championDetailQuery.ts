@@ -18,7 +18,7 @@ const championDetailQuery = ({ championEnName, lane, tier }: Options) =>
   queryOptions({
     queryKey: ['championDetail', championEnName, lane, tier],
     async queryFn() {
-      const res = await request.get<ChampionDetailResponse>(`/statistics/champion/detail/${championEnName}`, {
+      const res = await request.get<ChampionDetailResponse>(`/statistics/champion/stats/detail/${championEnName}`, {
         params: { lane, tier },
       });
       return res.data;
