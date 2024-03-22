@@ -28,7 +28,7 @@ export default function DetailPage({ championEnName }: DetailPageProps) {
           <CounterChampions counterType="easy" counterChampions={data?.data.easyChampions} />
           <CounterChampions counterType="hard" counterChampions={data?.data.counterChampions} />
         </VStack>
-        <PatchNotes />
+        <PatchNotes patches={data?.data.patches} />
       </HStack>
       {/* 2 룬*/}
       <Runes />
