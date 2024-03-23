@@ -58,7 +58,7 @@ interface SummonerProps {
 export default function Summoner(props: SummonerProps) {
   const { summonerTagName } = props;
 
-  const { data, status } = useQuery(summonerMatchesInfoQuery({ summonerTagName }));
+  const { data, status, error } = useQuery(summonerMatchesInfoQuery({ summonerTagName }));
 
   const { renewSummoner, status: renewSummonerStatus } = useRenewSummoner();
 
@@ -69,6 +69,11 @@ export default function Summoner(props: SummonerProps) {
   const toggleFavoriteSummoner = useFavoriteSummonerMapStore((state) => state.toggleFavoriteSummoner);
 
   const router = useRouter();
+
+  if (status === 'error' && error.response?.data.status.code === 404) {
+    router.replace('/404');
+    return;
+  }
 
   if (status !== 'success') {
     return;
