@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import httpRequest from '@/apis/httpRequest';
 
 async function checkToken() {
-  const res = await httpRequest.get('/check');
+  const res = await httpRequest.get('/community/check');
   return res.status === 200;
 }
 const useCheckToken = () => {
