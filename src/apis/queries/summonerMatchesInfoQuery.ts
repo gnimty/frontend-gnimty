@@ -30,6 +30,12 @@ const summonerMatchesInfoQuery = (options: Options) =>
       );
       return res.data;
     },
+    retry(failureCount, error) {
+      if (error.response?.data.status.code === 404) {
+        return false;
+      }
+      return failureCount <= 3;
+    },
   });
 
 export default summonerMatchesInfoQuery;
