@@ -37,7 +37,11 @@ export default function DetailPage({ championEnName }: DetailPageProps) {
       {/* 2 룬*/}
       <Runes perkBuilds={data?.data.perkBuilds} />
       {/* 3 스킬 빌드 */}
-      <SkillBuild skillBuilds={data?.data.skillBuilds} spells={skillData?.data[capitalizedChampionEnName].spells} />
+      <SkillBuild
+        skillBuilds={data?.data.skillBuilds}
+        spells={skillData?.data[capitalizedChampionEnName].spells}
+        isAphelios={capitalizedChampionEnName === 'Aphelios'}
+      />
       {/* 4 소환사 주문, 시작 아이템, 첫 귀환, 신발 */}
       <HStack w="full" gap="12px" justify="space-between">
         {/* 소환사 주문 */}
