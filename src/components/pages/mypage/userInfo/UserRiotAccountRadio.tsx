@@ -1,4 +1,6 @@
 import { Button, Flex, Radio } from '@chakra-ui/react';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 import UserRiotAccountInput from '@/components/pages/mypage/userInfo/UserRiotAccountInput';
 
@@ -10,6 +12,19 @@ interface UserRiotAccountRadioProps {
 }
 
 export default function UserRiotAccountRadio({ riotAccountInfo, radioProps }: UserRiotAccountRadioProps) {
+  const router = useRouter();
+  const pathname = router.pathname;
+  const params = useSearchParams().toString();
+
+  const redirectUrl = pathname !== '/' && params !== '' ? `${pathname}?${params}` : '/';
+
+  const data = {
+    redirectUrl,
+    target: 'riot',
+  };
+
+  const targetUrl = `/oauth/riot/${encodeURIComponent(JSON.stringify(data))}`;
+
   return (
     <Radio w="full" {...radioProps}>
       <Flex w="full" direction="row" alignItems="center">
@@ -23,7 +38,15 @@ export default function UserRiotAccountRadio({ riotAccountInfo, radioProps }: Us
             연결 해제
           </Button>
         ) : (
-          <Button w="80px" ml="8px" size="md" variant="line" borderColor="main" color="main">
+          <Button
+            w="80px"
+            ml="8px"
+            size="md"
+            variant="line"
+            borderColor="main"
+            color="main"
+            onClick={async () => router.replace(targetUrl)}
+          >
             연결
           </Button>
         )}

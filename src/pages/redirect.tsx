@@ -34,10 +34,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const { redirectUrl, target } = JSON.parse(decodeURIComponent(encodeData.substring(1))) as {
       redirectUrl: string;
-      target: 'google' | 'kakao';
+      target: 'google' | 'kakao' | 'riot';
     };
 
-    if (target !== 'google' && target !== 'kakao') {
+    if (target !== 'google' && target !== 'kakao' && target !== 'riot') {
       return {
         props: {
           error: {

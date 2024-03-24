@@ -33,6 +33,15 @@ const nextConfig = {
         basePath: false,
         permanent: true,
       },
+      {
+        source: '/oauth/riot/:state*',
+        destination: `https://auth.riotgames.com/authorize?client_id=e73120cf-d44f-4fd3-9f4f-581f32232a5f&redirect_uri=${process.env.NEXT_PUBLIC_API_BASE_URL.replace(
+          /\/api$/,
+          '',
+        )}/redirect&response_type=code&scope=openid+offline_access&state=/:state*`,
+        basePath: false,
+        permanent: true,
+      },
     ];
   },
   reactStrictMode: true,
