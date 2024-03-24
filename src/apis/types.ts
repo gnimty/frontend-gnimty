@@ -385,7 +385,7 @@ export interface PerkStyleStat extends Stat {
   // 주 룬 - 핵심 룬
   mainStyleId: number;
   // 부 룬
-  subStyle: number;
+  subStyleId: number;
   primaryStyles: number[];
   subStyles: number[];
   statPerks: number[];
