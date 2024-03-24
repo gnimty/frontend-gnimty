@@ -83,8 +83,8 @@ function PatchInfo({ patch }: PatchInfoProps) {
         <Text textStyle="t2" fontWeight="400" color="gray500">
           -최소 물리 피해량 50/125/200 (+총 공격력의 25%)
         </Text>
-        <Text textStyle="t2" fontWeight="400">
-          {'\t'}⇒최소 물리 피해량 64/154/244 (+총 공격력의 25%)
+        <Text textStyle="t2" fontWeight="400" pl="5px">
+          ⇒최소 물리 피해량 64/154/244 (+총 공격력의 25%)
         </Text>
       </AccordionPanel>
     </AccordionItem>
