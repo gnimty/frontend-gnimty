@@ -2,6 +2,7 @@ import { HStack, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 
 import championDetailQuery from '@/apis/queries/championDetailQuery';
+import championSkillsQuery from '@/apis/queries/championSkillsQuery';
 
 import ChampionBasicInfo from './ChampionBasicInfo';
 import CounterChampions from './CounterChampions';
@@ -20,6 +21,7 @@ interface DetailPageProps {
 export default function DetailPage({ championEnName }: DetailPageProps) {
   const capitalizedChampionEnName = championEnName.charAt(0).toUpperCase() + championEnName.slice(1);
   const { data } = useQuery(championDetailQuery({ championEnName: capitalizedChampionEnName }));
+  const { data: skillData } = useQuery(championSkillsQuery({ championEnName: capitalizedChampionEnName }));
   return (
     <VStack w="1080px" m="0 auto" gap="12px" align="flex-start">
       {/* 챔피언 기본정보 */}
@@ -35,17 +37,17 @@ export default function DetailPage({ championEnName }: DetailPageProps) {
       {/* 2 룬*/}
       <Runes perkBuilds={data?.data.perkBuilds} />
       {/* 3 스킬 빌드 */}
-      <SkillBuild />
+      <SkillBuild skillBuilds={data?.data.skillBuilds} spells={skillData?.data[capitalizedChampionEnName].spells} />
       {/* 4 소환사 주문, 시작 아이템, 첫 귀환, 신발 */}
       <HStack w="full" gap="12px" justify="space-between">
         {/* 소환사 주문 */}
-        <EarlyStageInfo type="summoner-spell" />
+        <EarlyStageInfo type="summoner-spell" spellBuilds={data?.data.spellBuilds} />
         {/* 시작 아이템 */}
-        <EarlyStageInfo type="start-item" />
+        <EarlyStageInfo type="start-item" initialItemBuilds={data?.data.initialItemBuilds} />
         {/* 첫 귀환 */}
-        <EarlyStageInfo type="first-return" />
+        <EarlyStageInfo type="first-return" itemMiddleBuilds={data?.data.itemMiddleBuilds} />
         {/* 신발 */}
-        <EarlyStageInfo type="shoes" />
+        <EarlyStageInfo type="shoes" shoesBuilds={data?.data.shoesBuilds} />
       </HStack>
       {/* 5 아이템 빌드, 소환사 랭킹 */}
       <HStack w="full" h="max-content" gap="12px" justify="space-between">
