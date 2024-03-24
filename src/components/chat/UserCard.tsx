@@ -44,14 +44,15 @@ function UserCard({ summonerName, tagLine, profileIconId, soloTierInfo, flexTier
             <CopyIcon width="16" color="gray500" onClick={() => console.log('Copied!')} />
           </HStack>
         </HStack>
-        {!isOpen && (
+        {/* 랭크전적 있을때만 펼치기 가능하도록 */}
+        {soloTierInfo && !isOpen && (
           <Box textStyle="body" color="gray500" onClick={onOpen}>
             펼쳐두기
           </Box>
         )}
       </HStack>
       {/* 유저 정보 디테일 */}
-      {isOpen && (
+      {soloTierInfo && isOpen && (
         <HStack w="full" spacing="24px" justifyContent="space-between">
           {soloTierInfo && <RankInfo type="solo" rankInfo={soloTierInfo} />}
           {flexTierInfo && <RankInfo type="flex" rankInfo={flexTierInfo} />}

@@ -141,10 +141,12 @@ interface SummonerCardProps {
   // summonerInfo
   summoner: RecommendedSummonersEntry;
   refObject?: (node: HTMLDivElement | null) => void;
+  openChat: (id: number) => void;
 }
 
-export default function SummonerCard({ open, toggle, summoner, refObject }: SummonerCardProps) {
+export default function SummonerCard({ open, toggle, summoner, refObject, openChat }: SummonerCardProps) {
   const {
+    id,
     name,
     tagLine,
     status,
@@ -178,7 +180,7 @@ export default function SummonerCard({ open, toggle, summoner, refObject }: Summ
             </SummonerId>
             <StatusIndicator status={status} />
           </SummonerBasicInfo>
-          <ChatButton type="button">
+          <ChatButton type="button" onClick={() => openChat(id)}>
             <Chat width="24px" height="24px" />
           </ChatButton>
         </CardColumn>
