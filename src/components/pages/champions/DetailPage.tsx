@@ -33,7 +33,7 @@ export default function DetailPage({ championEnName }: DetailPageProps) {
         <PatchNotes patches={data?.data.patches} />
       </HStack>
       {/* 2 룬*/}
-      <Runes />
+      <Runes perkBuilds={data?.data.perkBuilds} />
       {/* 3 스킬 빌드 */}
       <SkillBuild />
       {/* 4 소환사 주문, 시작 아이템, 첫 귀환, 신발 */}
