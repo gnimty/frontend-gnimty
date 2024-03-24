@@ -1,10 +1,15 @@
 import { Box, HStack, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 
+import type { ItemBootsComponentStat, ItemStartComponentStat, SpellComponentStat } from '@/apis/types';
 import championIconUrl from '@/apis/utils/championIconUrl';
 
 interface EarlyStageInfoProps {
   type: 'summoner-spell' | 'start-item' | 'first-return' | 'shoes';
+  spellBuilds?: SpellComponentStat[];
+  initialItemBuilds?: ItemStartComponentStat[];
+  shoesBuilds?: ItemBootsComponentStat[];
+  // TODO: 첫 귀환
 }
 
 const TITLE = {
@@ -14,7 +19,20 @@ const TITLE = {
   shoes: '신발',
 };
 
-export default function EarlyStageInfo({ type }: EarlyStageInfoProps) {
+export default function EarlyStageInfo({ type, spellBuilds, initialItemBuilds, shoesBuilds }: EarlyStageInfoProps) {
+  // TODO: 타입에 따라서 spellBuilds, initialItemBuilds, shoesBuilds 중 하나를 선택
+  const target = (() => {
+    switch (type) {
+      case 'summoner-spell':
+        return spellBuilds;
+      case 'start-item':
+        return initialItemBuilds;
+      case 'first-return':
+        return initialItemBuilds;
+      case 'shoes':
+        return shoesBuilds;
+    }
+  })();
   return (
     <VStack w="full" bg="white" borderRadius="4px">
       <Box w="full" h="54px" p="16px 20px" borderBottom="1px solid" borderColor="gray200">
