@@ -92,7 +92,6 @@ interface RunePageProps {
 }
 
 function RunePage({ perkBuild, show }: RunePageProps) {
-  console.log(perkBuild.subStyles);
   return (
     <VStack w="full" h="444px" p="40px" gap="12px" display={show ? 'block' : 'none'}>
       <HStack w="full" h="364px" gap="20px" justify="space-between">
