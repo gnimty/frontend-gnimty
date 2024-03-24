@@ -1,9 +1,7 @@
 import { Box, HStack, Heading, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
-import Image from 'next/image';
 
 import rotationChampionsQuery from '@/apis/queries/rotationChampionsQuery';
-import championIconUrl from '@/apis/utils/championIconUrl';
 import ChampionIcon from '@/components/common/ChampionIcon';
 
 export default function RotationChampions() {
