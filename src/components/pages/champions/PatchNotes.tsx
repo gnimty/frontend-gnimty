@@ -43,6 +43,7 @@ interface PatchInfoProps {
 
 function PatchInfo({ patch }: PatchInfoProps) {
   const { championId, krName, enName, version, target, targetImgUrl, changes } = patch;
+  const capitalizedEnName = enName.charAt(0).toUpperCase() + enName.slice(1);
   return (
     <AccordionItem bg="white">
       <AccordionButton
@@ -56,7 +57,7 @@ function PatchInfo({ patch }: PatchInfoProps) {
       >
         <HStack gap="12px" align="center">
           <Box w="40px" h="40px">
-            <Image src={championIconUrl(enName)} width="40" height="40" alt={enName} />
+            <Image src={championIconUrl(capitalizedEnName)} width="40" height="40" alt={enName} />
           </Box>
           <VStack gap="4px" justify="flex-start">
             <Text textStyle="t1" fontWeight="700">
