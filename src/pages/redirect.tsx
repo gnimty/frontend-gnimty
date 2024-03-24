@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 import httpRequest from '@/apis/httpRequest';
-import useGetMyInfo from '@/apis/useGetMyInfo';
+import useCheckToken from '@/apis/useCheckToken';
 import { useAuthContext } from '@/contexts/AuthContext';
 
 import type { GetServerSideProps } from 'next';
@@ -14,11 +14,11 @@ interface RedirectPageProps {
 
 function Redirect({ redirectUrl }: RedirectPageProps) {
   const router = useRouter();
-  const checkToken = useGetMyInfo();
+  const checkToken = useCheckToken();
   const { setIsAuthenticated } = useAuthContext();
 
   useEffect(() => {
-    setIsAuthenticated(!!checkToken);
+    setIsAuthenticated(checkToken);
     router.replace(redirectUrl).then();
   }, [checkToken, redirectUrl, router, setIsAuthenticated]);
 
@@ -39,7 +39,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     if (target !== 'google' && target !== 'kakao') {
       return {
-        props: {},
+        props: {
+          error: {
+            data: encodeData,
+          },
+        },
         redirect: {
           destination: '/500',
         },
@@ -70,15 +74,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       }
 
       return {
-        props: {},
+        props: {
+          error,
+        },
         redirect: {
           destination: '/500',
         },
       };
     }
-  } catch (e) {
+  } catch (error) {
     return {
-      props: {},
+      props: {
+        error,
+      },
       redirect: {
         destination: '/500',
       },

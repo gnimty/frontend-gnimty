@@ -1,22 +1,15 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import constate from 'constate';
 import { useEffect, useState } from 'react';
 
 import httpRequest from '@/apis/httpRequest';
 
-export interface AuthToken {
-  accessToken: string;
-  refreshToken: string;
-}
-
-export const StorageAuthKey = 'auth';
-
 export const [AuthContextProvider, useAuthContext] = constate(() => {
   const queryClient = useQueryClient();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  /*useEffect(() => {
+  useEffect(() => {
     const responseInterceptor = httpRequest.interceptors.response.use(
       (response) => response,
       async (error) => {
@@ -24,8 +17,12 @@ export const [AuthContextProvider, useAuthContext] = constate(() => {
           try {
             const originReq = error.config;
             if (originReq) {
-              const res = await httpRequest.get('/community/auth/refresh');
+              const res = await axios.get('/community/auth/refresh', {
+                baseURL: originReq.baseURL,
+                headers: originReq.headers,
+              });
               if (res.status === 401) {
+                document.cookie = '';
                 setIsAuthenticated(false);
                 queryClient.clear();
                 return Promise.reject(error);
@@ -46,7 +43,7 @@ export const [AuthContextProvider, useAuthContext] = constate(() => {
     return () => {
       httpRequest.interceptors.response.eject(responseInterceptor);
     };
-  }, [isAuthenticated, queryClient]);*/
+  }, [isAuthenticated, queryClient]);
 
   return { isAuthenticated, setIsAuthenticated };
 });
