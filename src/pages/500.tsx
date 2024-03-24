@@ -6,9 +6,11 @@ import CustomError from '@/components/pages/error/customError';
 
 interface PageProps {
   error: unknown;
+  debugData: unknown;
 }
-export default function Custom500({ error }: PageProps) {
+export default function Custom500({ error, debugData }: PageProps) {
   console.log(error);
+  console.log('debugData : ', debugData);
   return (
     <>
       <Head>

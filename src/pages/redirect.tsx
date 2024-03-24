@@ -10,16 +10,20 @@ import type { GetServerSideProps } from 'next';
 
 interface RedirectPageProps {
   redirectUrl: string;
+  debugData: unknown;
 }
 
-function Redirect({ redirectUrl }: RedirectPageProps) {
+function Redirect({ redirectUrl, debugData }: RedirectPageProps) {
   const router = useRouter();
   const checkToken = useCheckToken();
   const { setIsAuthenticated } = useAuthContext();
 
+  console.log(redirectUrl);
+  console.log(debugData);
+
   useEffect(() => {
     setIsAuthenticated(checkToken);
-    router.replace(redirectUrl).then();
+    // router.replace(redirectUrl).then();
   }, [checkToken, redirectUrl, router, setIsAuthenticated]);
 
   return <></>;
@@ -31,11 +35,28 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   } = context;
 
   const encodeData = Array.isArray(state) ? state[0] : state ?? '/';
+
+  const debugData: Record<string, unknown> = {
+    code: code,
+    state: state,
+    encodeData: encodeData,
+    redirectUrl: '',
+    target: '',
+    host: '',
+    protocol: '',
+    redirectUri: '',
+    res: undefined,
+    error: null,
+  };
+
   try {
     const { redirectUrl, target } = JSON.parse(decodeURIComponent(encodeData.substring(1))) as {
       redirectUrl: string;
       target: 'google' | 'kakao' | 'riot';
     };
+
+    debugData.redirectUrl = redirectUrl;
+    debugData.target = target;
 
     if (target !== 'google' && target !== 'kakao' && target !== 'riot') {
       return {
@@ -43,6 +64,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           error: {
             data: encodeData,
           },
+          debugData,
         },
         redirect: {
           destination: '/500',
@@ -54,12 +76,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
     const redirectUri = `${protocol}://${host}/redirect`;
 
+    debugData.host = host;
+    debugData.protocol = protocol;
+    debugData.redirectUri = redirectUri;
+
     try {
       const data = {
         authCode: code,
         redirectUri,
       };
       const res = await httpRequest.post(`/community/oauth/${target}`, data);
+      debugData.res = res;
 
       context.res.setHeader('Set-Cookie', res.headers['set-cookie'] ?? '');
 
@@ -69,6 +96,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         },
       };
     } catch (error) {
+      debugData.error = error;
       if (error instanceof AxiosError) {
         console.error(error);
       }
@@ -76,6 +104,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       return {
         props: {
           error,
+          debugData,
         },
         redirect: {
           destination: '/500',
@@ -83,9 +112,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       };
     }
   } catch (error) {
+    debugData.error = error;
     return {
       props: {
         error,
+        debugData,
       },
       redirect: {
         destination: '/500',
