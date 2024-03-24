@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios';
+import { red } from 'next/dist/lib/picocolors';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
@@ -21,12 +22,16 @@ function Redirect({ redirectUrl, debugData }: RedirectPageProps) {
   console.log(redirectUrl);
   console.log(debugData);
 
+  const onClick = () => {
+    router.replace(redirectUrl).then();
+  };
+
   useEffect(() => {
     setIsAuthenticated(checkToken);
     // router.replace(redirectUrl).then();
   }, [checkToken, redirectUrl, router, setIsAuthenticated]);
 
-  return <></>;
+  return <button onClick={onClick}>Click</button>;
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
