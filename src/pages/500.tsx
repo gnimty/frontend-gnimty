@@ -4,7 +4,11 @@ import Head from 'next/head';
 import image500 from '@/assets/images/500.png';
 import CustomError from '@/components/pages/error/customError';
 
-export default function Custom500() {
+interface PageProps {
+  error: unknown;
+}
+export default function Custom500({ error }: PageProps) {
+  console.log(error);
   return (
     <>
       <Head>
