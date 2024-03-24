@@ -90,7 +90,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         authCode: code,
         redirectUri,
       };
-      const res = await httpRequest.post(`/community/oauth/${target}`, data);
+      const res = await httpRequest.post(target === 'riot' ? `/members/me/rso` : `/community/oauth/${target}`, data);
       debugData.res = res;
 
       context.res.setHeader('Set-Cookie', res.headers['set-cookie'] ?? '');
