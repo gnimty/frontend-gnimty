@@ -230,7 +230,6 @@ export default function Summoner(props: SummonerProps) {
                     color: 'gray500',
                   }}
                   onClick={() => {
-                    // TODO: 에러에 대한 처리 필요
                     renewSummoner(
                       { puuid: data.data.summoner.puuid },
                       {
@@ -238,6 +237,12 @@ export default function Summoner(props: SummonerProps) {
                           alert('성공적으로 소환사 정보가 갱신됐습니다!');
                           // TODO: 페이지 새로고침 대신 `invalidateQueries()`를 사용해 데이터 갱신
                           router.reload();
+                        },
+                        onError(error) {
+                          // 소환사에 대한 요청이 너무 많습니다. n초 후에 다시 시도해주세요. 에러
+                          if (error.response?.data.status.code === 429) {
+                            alert(error.response.data.status.message);
+                          }
                         },
                       },
                     );
