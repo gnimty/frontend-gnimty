@@ -8,7 +8,6 @@ import PositionImage from '@/components/common/position-image/PositionImage';
 import TierImage from '@/components/common/TierImage';
 
 import Replies from './Replies';
-// import Down from '@/assets/icons/system/down.svg';
 
 interface CommentProps {
   replies: string[];
@@ -50,7 +49,6 @@ export default function Comment({ replies }: CommentProps) {
         <Box p="4px 8px" borderRadius="999px" bgColor="main" color="white">
           <Text textStyle="body" fontWeight="400">
             그님팁
-            {/* 알려주세요! */}
           </Text>
         </Box>
         <Box
