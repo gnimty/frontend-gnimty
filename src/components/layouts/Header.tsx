@@ -63,9 +63,11 @@ export default function Header() {
 
         {isAuthenticated ? (
           <Flex position="relative" gap="8px">
-            <Flex w="40px" h="40px" justifyContent="center" alignContent="center">
-              <IconButton w="28px" aria-label="search" icon={<IconSearch />} />
-            </Flex>
+            {router.pathname !== '/' && (
+              <Flex w="40px" h="40px" justifyContent="center" alignContent="center">
+                <IconButton w="28px" aria-label="search" icon={<IconSearch />} />
+              </Flex>
+            )}
             <Flex w="40px" h="40px" justifyContent="center" alignContent="center">
               <IconButton w="28px" aria-label="search" icon={<IconLike />} />
             </Flex>
