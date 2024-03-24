@@ -48,9 +48,9 @@ export default function DetailPage({ championEnName }: DetailPageProps) {
         <EarlyStageInfo type="shoes" />
       </HStack>
       {/* 5 아이템 빌드, 소환사 랭킹 */}
-      <HStack w="full" gap="12px" justify="space-between">
-        <ItemBuild />
-        <SummonerRank />
+      <HStack w="full" h="max-content" gap="12px" justify="space-between">
+        <ItemBuild itemBuilds={data?.data.itemBuilds} />
+        <SummonerRank specialists={data?.data.specialists} />
       </HStack>
       {/* 5 운영 팁 */}
       <Tip />
