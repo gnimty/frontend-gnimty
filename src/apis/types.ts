@@ -395,6 +395,10 @@ export interface ItemStartComponentStat extends Stat {
   itemStart: number[];
 }
 
+export interface ItemMiddleComponentStat extends Stat {
+  itemMiddle: number;
+}
+
 export interface ItemBootsComponentStat extends Stat {
   itemBoots: number;
 }
@@ -429,6 +433,7 @@ export interface ChampionAnalysisResponse {
   spellBuilds: SpellComponentStat[];
   perkBuilds: PerkStyleStat[];
   initialItemBuilds: ItemStartComponentStat[];
+  itemMiddleBuilds: ItemMiddleComponentStat[];
   shoesBuilds: ItemBootsComponentStat[];
   itemBuilds: ItemBuildComponentStat[];
   skillBuilds: SkillComponentStat[];
