@@ -22,7 +22,7 @@ export default function Runes({ perkBuilds }: RunesProps) {
         </Text>
       </Box>
       {/* Rune Tab */}
-      <HStack w="full" h="102px">
+      <HStack w="full" h="102px" gap="0">
         {perkBuilds?.map((perkBuild, index) => {
           return (
             <VStack
