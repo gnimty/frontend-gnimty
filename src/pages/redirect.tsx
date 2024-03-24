@@ -66,9 +66,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           },
           debugData,
         },
-        redirect: {
+        /*redirect: {
           destination: '/500',
-        },
+        },*/
       };
     }
 
@@ -106,9 +106,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           error,
           debugData,
         },
-        redirect: {
+        /*redirect: {
           destination: '/500',
-        },
+        },*/
       };
     }
   } catch (error) {
@@ -118,9 +118,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         error,
         debugData,
       },
-      redirect: {
+      /*redirect: {
         destination: '/500',
-      },
+      },*/
     };
   }
 };
