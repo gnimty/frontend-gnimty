@@ -13,6 +13,7 @@ import Image from 'next/image';
 
 import type { ChampionPatch } from '@/apis/types';
 import championIconUrl from '@/apis/utils/championIconUrl';
+import { Fragment } from 'react';
 
 interface PatchNotesProps {
   patches?: ChampionPatch[];
@@ -84,12 +85,16 @@ function PatchInfo({ patch }: PatchInfoProps) {
         alignItems="flex-start"
       >
         {/* TODO: changes 형태? */}
-        <Text textStyle="t2" fontWeight="400" color="gray500">
-          -{changes[0].split('⇒')[0]}
-        </Text>
-        <Text textStyle="t2" fontWeight="400" pl="5px">
-          ⇒{changes[0].split('⇒')[1]}
-        </Text>
+        {changes.map((change) => (
+          <Fragment key={change}>
+            <Text textStyle="t2" fontWeight="400" color="gray500">
+              -{change.split('⇒')[0]}
+            </Text>
+            <Text textStyle="t2" fontWeight="400" pl="5px">
+              ⇒{change.split('⇒')[1]}
+            </Text>
+          </Fragment>
+        ))}
       </AccordionPanel>
     </AccordionItem>
   );
