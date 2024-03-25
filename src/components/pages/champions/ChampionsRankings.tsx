@@ -22,8 +22,8 @@ import { useState, type FC } from 'react';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import championIdKrNameMap from '@/apis/constants/championIdKrNameMap';
-import championsTierQuery from '@/apis/queries/championsTierQuery';
-import type { GameMode, PositionFilter, Tier } from '@/apis/types';
+import championsTierQuery, { type ChampionsTierQueueType } from '@/apis/queries/championsTierQuery';
+import type { PositionFilter, Tier } from '@/apis/types';
 import championIconUrl from '@/apis/utils/championIconUrl';
 import ChampionImagesFiller from '@/components/common/ChampionImagesFiller';
 import ChampionTierBadge from '@/components/common/ChampionTierBadge';
@@ -91,19 +91,20 @@ function PositionRadioCard(props: PositionRadioCardProps) {
 }
 
 export default function ChampionsRankings() {
-  const [tier, setTier] = useState<Extract<Tier, 'platinum' | 'emerald' | 'diamond' | 'master'>>('platinum');
-  const [queueType, setQueueType] = useState<Extract<GameMode, 'RANK_SOLO' | 'RANK_FLEX'>>('RANK_SOLO');
-  const [position, setPosition] = useState<PositionFilter>('TOP');
+  const [queueType, setQueueType] = useState<Extract<ChampionsTierQueueType, 'RANK_SOLO' | 'ARAM'>>('RANK_SOLO');
+  const [rankTierFilter, setRankTierFilter] =
+    useState<Extract<Tier, 'platinum' | 'emerald' | 'diamond' | 'master'>>('platinum');
+  const [rankPositionFilter, setRankPositionFilter] = useState<PositionFilter>('TOP');
   const { getRootProps, getRadioProps } = useRadioGroup({
-    value: position,
+    value: rankPositionFilter,
     onChange: (newPosition) => {
-      setPosition(newPosition as PositionFilter);
+      setRankPositionFilter(newPosition as PositionFilter);
     },
   });
 
   const { data, status } = useQuery(
     championsTierQuery({
-      tier,
+      tier: rankTierFilter,
       queue_type: queueType,
     }),
   );
@@ -118,7 +119,7 @@ export default function ChampionsRankings() {
         <Select
           options={[
             { text: '솔로 랭크', value: 'RANK_SOLO' },
-            { text: '칼바람 나락', value: 'RANK_FLEX' },
+            { text: '칼바람 나락', value: 'ARAM' },
           ]}
           externalValue={queueType}
           onChange={(newQueueType) => {
@@ -143,8 +144,8 @@ export default function ChampionsRankings() {
                 },
                 { text: '마스터 이상', value: 'master', leftAsset: <TierImage tier="master" fill sizes="20px" /> },
               ]}
-              externalValue={tier}
-              onChange={(newTier) => setTier(newTier)}
+              externalValue={rankTierFilter}
+              onChange={(newTier) => setRankTierFilter(newTier)}
               css={{ width: '148px' }}
             />
             <Grid
@@ -203,9 +204,9 @@ export default function ChampionsRankings() {
           </Tr>
         </Thead>
         <Tbody>
-          {data.data.champions[position].map((champion, i) => (
+          {data.data.champions[queueType === 'ARAM' ? 'ALL' : rankPositionFilter].map((champion, i) => (
             <Tr
-              key={`${champion.championId}${position}${tier}${queueType}`}
+              key={`${champion.championId}${rankPositionFilter}${rankTierFilter}${queueType}`}
               display="flex"
               alignItems="center"
               gap="12px"
