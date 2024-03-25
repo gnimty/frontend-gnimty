@@ -6,10 +6,11 @@ import Logo from '@/assets/images/logo.svg';
 import Select from '@/components/common/select/Select';
 import type { SelectOption } from '@/components/common/select/useSelect';
 
+import SummonerSearchBar from '../../common/SummonerSearchBar';
+
 import ChampionsTable from './ChampionsTable';
 import RecentMatches from './RecentMatches';
 import RecommendedSummonersSection from './RecommendedSummonersSection';
-import Search from './search/Search';
 
 const queueSelectOptions: SelectOption<GameMode>[] = [
   {
@@ -39,7 +40,7 @@ export default function Main() {
         <Flex color="main">
           <Logo width={170} height={80} aria-label="그님티" />
         </Flex>
-        <Search />
+        <SummonerSearchBar />
       </VStack>
       <HStack mb="16px" justifyContent="space-between" gap={0}>
         <Select options={queueSelectOptions} onChange={handleGameModeChanged} css={{ width: '124px' }} />
