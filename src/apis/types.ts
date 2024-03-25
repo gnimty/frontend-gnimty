@@ -424,6 +424,11 @@ export interface SummonerPlayWithSummonerDto {
   rank: number;
 }
 
+export interface LaneSelectDto {
+  lane: Position;
+  pickRate: number;
+}
+
 export interface ChampionAnalysisResponse {
   championId: number;
   lane: Position;
@@ -439,4 +444,5 @@ export interface ChampionAnalysisResponse {
   skillBuilds: SkillComponentStat[];
   patches: ChampionPatch[];
   specialists: SummonerPlayWithSummonerDto[];
+  laneSelectRates: LaneSelectDto[];
 }
