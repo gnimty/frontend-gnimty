@@ -38,7 +38,7 @@ export default function DetailPage({ championEnName }: DetailPageProps) {
         />
       )}
       {/* 1 상대하기 쉬운/어려운 챔피언, 패치노트 */}
-      <HStack w="full" gap="12px" justify="space-between">
+      <HStack w="full" h="410px" gap="12px" justify="space-between">
         <VStack w="50%" gap="12px" justify="space-between">
           <CounterChampions counterType="easy" counterChampions={data?.data.easyChampions} />
           <CounterChampions counterType="hard" counterChampions={data?.data.counterChampions} />

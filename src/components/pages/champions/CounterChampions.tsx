@@ -12,13 +12,33 @@ interface CounterChampionsProps {
 
 export default function CounterChampions({ counterType, counterChampions }: CounterChampionsProps) {
   return (
-    <VStack w="full" h="max-content" bg="white" borderRadius="4px" overflowX="scroll" align="flex-start">
-      <Box w="full" h="52px" p="16px 20px" borderBottom="1px solid" borderColor="gray200">
+    <VStack
+      w="full"
+      h="max-content"
+      bg="white"
+      borderRadius="4px"
+      overflowX="scroll"
+      align="flex-start"
+      css={{
+        '&::-webkit-scrollbar': {
+          height: '6px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundClip: 'padding-box',
+          border: '3px solid #ccc',
+          borderRadius: '999px',
+        },
+        '&::-webkit-scrollbar-track': {
+          backgroundColor: '#f2f2f2',
+        },
+      }}
+    >
+      <Box w="full" h="52px" p="16px 20px">
         <Text textStyle="t2" fontWeight="700">
           상대하기 {counterType === 'easy' ? '쉬운' : '어려운'} 챔피언
         </Text>
       </Box>
-      <HStack w="700px" h="full" p="20px" gap="12px">
+      <HStack w="700px" h="full" p="20px" gap="12px" borderTop="1px solid" borderColor="gray200">
         {counterChampions?.map((counterChampion) => {
           const championName = champions?.find(
             (champion) => champion.championId === counterChampion.championId,
