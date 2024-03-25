@@ -65,8 +65,8 @@ export default function ChampionBasicInfo({
             </Text>
           </VStack>
         </HStack>
-        <HStack w="156px" h="40px" borderRadius="4px" border="1px solid" borderColor="gray200" gap="0">
-          {laneSelectRates?.map((laneSelectRate, index) => {
+        <HStack w="max-content" h="40px" borderRadius="4px" gap="0">
+          {laneSelectRates?.map((laneSelectRate, index, currentArray) => {
             let selectedLane;
             if (['UNKNOWN', 'ALL', ''].includes(lane)) {
               selectedLane = index === 0;
@@ -80,7 +80,9 @@ export default function ChampionBasicInfo({
                 w="78px"
                 h="full"
                 p="10px 12px"
-                borderRight="1px solid"
+                borderLeftRadius={index === 0 ? '4px' : 'none'}
+                borderRightRadius={index === currentArray.length - 1 ? '4px' : 'none'}
+                borderRight={index !== currentArray.length - 1 ? '1px solid' : 'none'}
                 borderColor="gray200"
                 aria-selected={selectedLane}
                 color="gray700"
