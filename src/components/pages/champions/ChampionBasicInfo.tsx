@@ -2,23 +2,40 @@ import { Box, HStack, VStack, Text } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import Image from 'next/image';
 
+import champions from '@/apis/constants/champions';
+import type { ChampionTierDto, LaneSelectDto, PositionFilter } from '@/apis/types';
 import championIconUrl from '@/apis/utils/championIconUrl';
 import ChampionTierBadge from '@/components/common/ChampionTierBadge';
 import PositionImage from '@/components/common/position-image/PositionImage';
 
-// interface ChampionBasicInfoProps {}
+interface ChampionBasicInfoProps {
+  championTier: ChampionTierDto;
+  laneSelectRates?: LaneSelectDto[];
+  lane: PositionFilter | 'UNKNOWN' | '';
+  handleUpdateLane: (lane: PositionFilter) => void;
+}
 
-export default function ChampionBasicInfo() {
+export default function ChampionBasicInfo({
+  championTier,
+  laneSelectRates,
+  lane,
+  handleUpdateLane,
+}: ChampionBasicInfoProps) {
   const theme = useTheme();
   return (
     <HStack w="full" h="160px" p="0 20px" gap="12px" align="flex-start">
       <Box w="100px" h="100px" borderRadius="99px" overflow="hidden">
-        <Image src={championIconUrl('Jhin')} alt="Jhin" width="100" height="100" />
+        <Image
+          src={championIconUrl(championTier?.championName)}
+          alt={championTier?.championName}
+          width="100"
+          height="100"
+        />
       </Box>
       <VStack w="328px" h="148px" gap="16px" align="flex-start" justify="space-between">
         <HStack>
           <Text textStyle="h2" fontWeight="700">
-            진
+            {champions.filter((champion) => champion.enName === championTier.championName)[0].krName}
           </Text>
           <ChampionTierBadge tier="1" />
         </HStack>
@@ -28,7 +45,7 @@ export default function ChampionBasicInfo() {
               승률
             </Text>
             <Text textStyle="t2" fontWeight="700" color="gray800">
-              50.94%
+              {(championTier.winRate * 100).toFixed(2)}%
             </Text>
           </VStack>
           <VStack w="80px" p="0 24px 0 0" borderRight="1px solid" borderRightColor="gray300">
@@ -36,7 +53,7 @@ export default function ChampionBasicInfo() {
               픽률
             </Text>
             <Text textStyle="t2" fontWeight="700" color="gray800">
-              50.94%
+              {(championTier.pickRate * 100).toFixed(2)}%
             </Text>
           </VStack>
           <VStack w="80px" p="0 24px 0 0">
@@ -44,63 +61,51 @@ export default function ChampionBasicInfo() {
               밴률
             </Text>
             <Text textStyle="t2" fontWeight="700" color="gray800">
-              50.94%
+              {championTier.banRate && (championTier.banRate * 100).toFixed(2)}%
             </Text>
           </VStack>
         </HStack>
         <HStack w="156px" h="40px" borderRadius="4px" border="1px solid" borderColor="gray200" gap="0">
-          <Box
-            w="78px"
-            h="full"
-            p="10px 12px"
-            borderRight="1px solid"
-            borderColor="gray200"
-            aria-selected="true"
-            bgColor="white"
-            gap="4px"
-            display="flex"
-            align-items="center"
-            justifyContent="center"
-            cursor="pointer"
-            _selected={{
-              bg: theme.colors.main,
-              color: theme.colors.white,
-              svg: {
-                fill: theme.colors.white,
-              },
-            }}
-          >
-            <PositionImage position="BOTTOM" width="20px" height="20px" fill="white" />
-            <Text textStyle="t2" color="white">
-              98%
-            </Text>
-          </Box>
-          <Box
-            w="78px"
-            h="full"
-            p="10px 12px"
-            borderRight="1px solid"
-            borderColor="gray200"
-            aria-selected="false"
-            bgColor="white"
-            gap="4px"
-            display="flex"
-            align-items="center"
-            justifyContent="center"
-            cursor="pointer"
-            _selected={{
-              bg: theme.colors.main,
-              color: theme.colors.white,
-              svg: {
-                fill: theme.colors.white,
-              },
-            }}
-          >
-            <PositionImage position="MIDDLE" width="20px" height="20px" />
-            <Text textStyle="t2" color="gray700">
-              98%
-            </Text>
-          </Box>
+          {laneSelectRates?.map((laneSelectRate, index) => {
+            let selectedLane;
+            if (['UNKNOWN', 'ALL', ''].includes(lane)) {
+              selectedLane = index === 0;
+            }
+            if (!['UNKNOWN', 'ALL', ''].includes(lane)) {
+              selectedLane = laneSelectRate.lane === lane;
+            }
+            return (
+              <Box
+                key={laneSelectRate.lane}
+                w="78px"
+                h="full"
+                p="10px 12px"
+                borderRight="1px solid"
+                borderColor="gray200"
+                aria-selected={selectedLane}
+                color="gray700"
+                bgColor="white"
+                gap="4px"
+                display="flex"
+                align-items="center"
+                justifyContent="center"
+                cursor="pointer"
+                _selected={{
+                  bg: theme.colors.main,
+                  color: theme.colors.white,
+                  svg: {
+                    fill: theme.colors.white,
+                  },
+                }}
+                onClick={() => handleUpdateLane(laneSelectRate.lane)}
+              >
+                <PositionImage position={laneSelectRate.lane} width="20px" height="20px" />
+                <Text w="30px" textStyle="t2">
+                  {(laneSelectRate.pickRate * 100).toFixed(0)}%
+                </Text>
+              </Box>
+            );
+          })}
         </HStack>
       </VStack>
     </HStack>

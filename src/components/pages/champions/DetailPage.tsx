@@ -1,8 +1,10 @@
 import { HStack, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 
 import championDetailQuery from '@/apis/queries/championDetailQuery';
 import championSkillsQuery from '@/apis/queries/championSkillsQuery';
+import type { PositionFilter } from '@/apis/types';
 
 import ChampionBasicInfo from './ChampionBasicInfo';
 import CounterChampions from './CounterChampions';
@@ -20,12 +22,21 @@ interface DetailPageProps {
 
 export default function DetailPage({ championEnName }: DetailPageProps) {
   const capitalizedChampionEnName = championEnName.charAt(0).toUpperCase() + championEnName.slice(1);
-  const { data } = useQuery(championDetailQuery({ championEnName: capitalizedChampionEnName }));
+  const [lane, setLane] = useState<PositionFilter | 'UNKNOWN' | ''>('');
+  const { data } = useQuery(championDetailQuery({ championEnName: capitalizedChampionEnName, lane }));
   const { data: skillData } = useQuery(championSkillsQuery({ championEnName: capitalizedChampionEnName }));
+  const handleUpdateLane = (lane: PositionFilter) => setLane(lane);
   return (
     <VStack w="1080px" m="0 auto" gap="12px" align="flex-start">
       {/* 챔피언 기본정보 */}
-      {/* TODO: <ChampionBasicInfo /> */}
+      {data?.data.championTier && (
+        <ChampionBasicInfo
+          championTier={data?.data.championTier}
+          laneSelectRates={data?.data.laneSelectRates}
+          lane={lane}
+          handleUpdateLane={handleUpdateLane}
+        />
+      )}
       {/* 1 상대하기 쉬운/어려운 챔피언, 패치노트 */}
       <HStack w="full" gap="12px" justify="space-between">
         <VStack w="50%" gap="12px" justify="space-between">

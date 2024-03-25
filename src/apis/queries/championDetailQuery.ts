@@ -2,7 +2,7 @@ import { queryOptions } from '@tanstack/react-query';
 
 import request from '../httpRequest';
 
-import type { ChampionAnalysisResponse, Position, Tier } from '../types';
+import type { ChampionAnalysisResponse, PositionFilter, Tier } from '../types';
 
 interface ChampionDetailResponse {
   data: ChampionAnalysisResponse;
@@ -10,7 +10,7 @@ interface ChampionDetailResponse {
 
 interface Options {
   championEnName: string;
-  lane?: Position | 'UNKNOWN' | 'ALL';
+  lane?: PositionFilter | 'UNKNOWN' | '';
   tier?: Tier;
 }
 
