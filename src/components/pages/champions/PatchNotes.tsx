@@ -84,8 +84,7 @@ function PatchInfo({ patch }: PatchInfoProps) {
         justifyContent="center"
         alignItems="flex-start"
       >
-        {/* TODO: changes 형태? */}
-        {changes.map((change) => (
+        {/* (
           <Fragment key={change}>
             <Text textStyle="t2" fontWeight="400" color="gray500">
               -{change.split('⇒')[0]}
@@ -94,7 +93,27 @@ function PatchInfo({ patch }: PatchInfoProps) {
               ⇒{change.split('⇒')[1]}
             </Text>
           </Fragment>
-        ))}
+        ) */}
+        {/* TODO: changes 형태? */}
+        {changes.map((change) => {
+          if (change.includes('⇒')) {
+            return (
+              <Fragment key={change}>
+                <Text textStyle="t2" fontWeight="400" color="gray500">
+                  -{change.split('⇒')[0]}
+                </Text>
+                <Text textStyle="t2" fontWeight="400" pl="5px">
+                  ⇒{change.split('⇒')[1]}
+                </Text>
+              </Fragment>
+            );
+          }
+          return (
+            <Text textStyle="t2" fontWeight="400" pl="5px">
+              -{change}
+            </Text>
+          );
+        })}
       </AccordionPanel>
     </AccordionItem>
   );
