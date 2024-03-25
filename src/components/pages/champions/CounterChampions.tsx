@@ -38,7 +38,7 @@ export default function CounterChampions({ counterType, counterChampions }: Coun
           상대하기 {counterType === 'easy' ? '쉬운' : '어려운'} 챔피언
         </Text>
       </Box>
-      <HStack w="700px" h="full" p="20px" gap="12px" borderTop="1px solid" borderColor="gray200">
+      <HStack minW="700px" h="full" p="20px" gap="12px" borderTop="1px solid" borderColor="gray200">
         {counterChampions?.map((counterChampion) => {
           const championName = champions?.find(
             (champion) => champion.championId === counterChampion.championId,
