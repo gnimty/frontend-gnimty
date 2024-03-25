@@ -41,6 +41,7 @@ export default function DetailPage({ championEnName }: DetailPageProps) {
         skillBuilds={data?.data.skillBuilds}
         spells={skillData?.data[capitalizedChampionEnName].spells}
         isAphelios={capitalizedChampionEnName === 'Aphelios'}
+        isUdyr={capitalizedChampionEnName === 'Udyr'}
       />
       {/* 4 소환사 주문, 시작 아이템, 첫 귀환, 신발 */}
       <HStack w="full" gap="12px" justify="space-between">

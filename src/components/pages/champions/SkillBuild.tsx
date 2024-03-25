@@ -11,11 +11,25 @@ interface SkillBuildProps {
   skillBuilds?: SkillComponentStat[];
   spells?: Record<string, string>[];
   isAphelios?: boolean;
+  isUdyr?: boolean;
 }
 
-export default function SkillBuild({ skillBuilds, spells, isAphelios }: SkillBuildProps) {
+export default function SkillBuild({ skillBuilds, spells, isAphelios, isUdyr }: SkillBuildProps) {
   const theme = useTheme();
   const skillIconIds = spells?.map((spell) => spell.id);
+  const skillMap: Record<number, string> = { 1: 'q', 2: 'w', 3: 'e', 4: 'r' };
+  const colorSwitch = (qwer: string) => {
+    switch (qwer) {
+      case 'q':
+        return theme.colors.blue800;
+      case 'w':
+        return theme.colors.teal800;
+      case 'e':
+        return theme.colors.orange800;
+      default:
+        return theme.colors.white;
+    }
+  };
   return (
     <VStack w="full" borderRadius="4px" bg="white">
       <Box w="full" h="54px" p="16px 20px" borderBottom="1px solid" borderColor="gray200">
@@ -27,6 +41,7 @@ export default function SkillBuild({ skillBuilds, spells, isAphelios }: SkillBui
         const { skillOrder, lastSkillIndex, skillLevelsAtEnd } = getSkillOrderAndLastSkillIndex(
           skillBuild.skillTree,
           isAphelios,
+          isUdyr,
         );
         return (
           <HStack key={skillBuild.plays} w="full" h="92px" p="20px" justify="space-between">
@@ -37,13 +52,30 @@ export default function SkillBuild({ skillBuilds, spells, isAphelios }: SkillBui
                   if (!skillIconIds[index]) return;
                   return (
                     <Fragment key={skill}>
-                      <Box w="52px" h="52px" borderRadius="4px" overflow="hidden">
+                      <Box w="52px" h="52px" borderRadius="4px" overflow="hidden" position="relative">
                         <Image
                           src={skillIconUrl(skillIconIds[index])}
                           alt={skillIconIds[index]}
                           width="52"
                           height="52"
                         />
+                        <Box
+                          w="24px"
+                          h="24px"
+                          borderRadius="4px"
+                          p="4px"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          position="absolute"
+                          bottom="0"
+                          right="0"
+                          bgColor="gray800"
+                        >
+                          <Text textStyle="body" fontWeight="700" color={colorSwitch(skillMap[skill])}>
+                            {skillMap[skill].toUpperCase()}
+                          </Text>
+                        </Box>
                       </Box>
                       {index < skillOrder.length - 1 && <NextIcon width="20px" height="20px" />}
                     </Fragment>
@@ -52,23 +84,11 @@ export default function SkillBuild({ skillBuilds, spells, isAphelios }: SkillBui
               </HStack>
               <HStack gap="4px">
                 {skillBuild.skillTree.map((skill, index) => {
-                  const skillMap: Record<number, string> = { 1: 'q', 2: 'w', 3: 'e', 4: 'r' };
                   const maxLevels: Record<number, number> = isAphelios
                     ? { 1: 6, 2: 6, 3: 6 }
                     : { 1: 5, 2: 5, 3: 5, 4: 3 };
                   const isLastSkill = index === lastSkillIndex[skill] && skillLevelsAtEnd[skill] === maxLevels[skill];
-                  const colorSwitch = (qwer: string) => {
-                    switch (qwer) {
-                      case 'q':
-                        return theme.colors.blue800;
-                      case 'w':
-                        return theme.colors.teal800;
-                      case 'e':
-                        return theme.colors.orange800;
-                      default:
-                        return theme.colors.white;
-                    }
-                  };
+
                   return (
                     <VStack key={index} gap="4px">
                       <Box
@@ -119,11 +139,15 @@ export default function SkillBuild({ skillBuilds, spells, isAphelios }: SkillBui
 }
 
 // TODO: 궁극기의 경우에 대해 항상 마지막에 위치하는 문제에 대한 논의
-const getSkillOrderAndLastSkillIndex = (skillTree: number[], isAphelios?: boolean) => {
+const getSkillOrderAndLastSkillIndex = (skillTree: number[], isAphelios?: boolean, isUdyr?: boolean) => {
   const skillLevels: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0 };
   const lastSkillIndex: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0 };
   const skillOrder: number[] = [];
-  const maxLevels: Record<number, number> = isAphelios ? { 1: 6, 2: 6, 3: 6 } : { 1: 5, 2: 5, 3: 5, 4: 3 };
+  const maxLevels: Record<number, number> = isAphelios
+    ? { 1: 6, 2: 6, 3: 6 }
+    : isUdyr
+      ? { 1: 5, 2: 5, 3: 5, 4: 5 }
+      : { 1: 5, 2: 5, 3: 5, 4: 3 };
 
   skillTree.forEach((skill, index) => {
     skillLevels[skill]++;
