@@ -38,8 +38,8 @@ export default function Search(props: SearchProps) {
         w="420px"
         bg="white"
         borderRadius="40px"
-        border="1px solid"
-        borderColor="gray200"
+        boxShadow="0 0 0 1px"
+        color="gray200"
         {...props}
       >
         <Box w="38px" h="20px">
@@ -72,7 +72,7 @@ export default function Search(props: SearchProps) {
             p={0}
             css={{ '::-webkit-search-cancel-button': { display: 'none' } }}
           />
-          <IconButton type="submit" aria-label="검색" display="inline-flex">
+          <IconButton type="submit" aria-label="검색" display="inline-flex" color="gray800">
             <SearchIcon width={24} height={24} />
           </IconButton>
         </HStack>
