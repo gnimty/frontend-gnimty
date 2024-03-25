@@ -28,9 +28,11 @@ export default function PatchNotes({ patches }: PatchNotesProps) {
       </Box>
       <VStack w="full" h="328px" overflowY="scroll">
         <Accordion w="full" h="500px" allowToggle bg="white">
-          {patches?.map((patch, index) => {
-            return <PatchInfo key={index} patch={patch} />;
-          })}
+          {patches &&
+            patches?.length > 0 &&
+            patches.map((patch, index) => {
+              return <PatchInfo key={index} patch={patch} />;
+            })}
         </Accordion>
       </VStack>
     </VStack>
@@ -42,8 +44,10 @@ interface PatchInfoProps {
 }
 
 function PatchInfo({ patch }: PatchInfoProps) {
-  const { championId, krName, enName, version, target, targetImgUrl, changes } = patch;
+  const { enName, version, target, targetImgUrl, changes } = patch;
   const capitalizedEnName = enName.charAt(0).toUpperCase() + enName.slice(1);
+  // 기본 능력치의 경우 스킬 이미지가 없기 때문에 챔피언 초상화를 사용
+  const imgUrl = targetImgUrl !== null ? `https${targetImgUrl.split('f=http')[1]}` : championIconUrl(capitalizedEnName);
   return (
     <AccordionItem bg="white">
       <AccordionButton
@@ -57,7 +61,7 @@ function PatchInfo({ patch }: PatchInfoProps) {
       >
         <HStack gap="12px" align="center">
           <Box w="40px" h="40px">
-            <Image src={championIconUrl(capitalizedEnName)} width="40" height="40" alt={enName} />
+            <Image src={imgUrl} width="40" height="40" alt={target} />
           </Box>
           <VStack gap="4px" justify="flex-start">
             <Text textStyle="t1" fontWeight="700">
@@ -81,10 +85,10 @@ function PatchInfo({ patch }: PatchInfoProps) {
       >
         {/* TODO: changes 형태? */}
         <Text textStyle="t2" fontWeight="400" color="gray500">
-          -최소 물리 피해량 50/125/200 (+총 공격력의 25%)
+          -{changes[0].split('⇒')[0]}
         </Text>
         <Text textStyle="t2" fontWeight="400" pl="5px">
-          ⇒최소 물리 피해량 64/154/244 (+총 공격력의 25%)
+          ⇒{changes[0].split('⇒')[1]}
         </Text>
       </AccordionPanel>
     </AccordionItem>
