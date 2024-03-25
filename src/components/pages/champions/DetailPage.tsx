@@ -1,7 +1,9 @@
 import { HStack, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
+import champions from '@/apis/constants/champions';
 import championDetailQuery from '@/apis/queries/championDetailQuery';
 import championSkillsQuery from '@/apis/queries/championSkillsQuery';
 import type { PositionFilter } from '@/apis/types';
@@ -21,11 +23,18 @@ interface DetailPageProps {
 }
 
 export default function DetailPage({ championEnName }: DetailPageProps) {
+  const router = useRouter();
   const capitalizedChampionEnName = championEnName.charAt(0).toUpperCase() + championEnName.slice(1);
   const [lane, setLane] = useState<PositionFilter | 'UNKNOWN' | ''>('');
   const { data } = useQuery(championDetailQuery({ championEnName: capitalizedChampionEnName, lane }));
   const { data: skillData } = useQuery(championSkillsQuery({ championEnName: capitalizedChampionEnName }));
   const handleUpdateLane = (lane: PositionFilter) => setLane(lane);
+
+  useEffect(() => {
+    if (champions.find((champion) => champion.enName.toLowerCase() === championEnName.toLowerCase())) return;
+    router.push('/404');
+  }, [championEnName, router]);
+
   return (
     <VStack w="1080px" m="0 auto" gap="12px" align="flex-start">
       {/* 챔피언 기본정보 */}
