@@ -4,15 +4,22 @@ import { useState, type FormEventHandler } from 'react';
 
 import SearchIcon from '@/assets/icons/system/search.svg';
 
-import FavoriteSummonersTab from './FavoriteSummonersTab';
-import RecentSearchTab from './RecentSearchesTab';
-import SearchList from './SearchList';
+import FavoriteSummonersTab from '../pages/main/search/FavoriteSummonersTab';
+import RecentSearchTab from '../pages/main/search/RecentSearchesTab';
+import SearchList from '../pages/main/search/SearchList';
 
 import type { BoxProps } from '@chakra-ui/react';
 
-export interface SearchProps extends Omit<BoxProps, 'children'> {}
+export interface SummonerSearchBarProps extends Omit<BoxProps, 'children'> {
+  /**
+   * @defaultValue `'in-home'`
+   */
+  size?: 'in-home' | 'in-header';
+}
 
-export default function Search(props: SearchProps) {
+export default function SummonerSearchBar(props: SummonerSearchBarProps) {
+  const { size = 'in-home', ...restProps } = props;
+
   const [searchKeyword, setSearchKeyword] = useState('');
   const [searchPopState, setSearchPopState] = useState<'hidden' | 'recent-favorite' | 'search'>('hidden');
 
@@ -34,15 +41,15 @@ export default function Search(props: SearchProps) {
     >
       <HStack
         gap="12px"
-        p="12px 24px"
-        w="420px"
+        p={size === 'in-home' ? '12px 24px' : '8px 20px'}
+        w={size === 'in-home' ? '420px' : '280px'}
         bg="white"
         borderRadius="40px"
-        border="1px solid"
-        borderColor="gray200"
-        {...props}
+        boxShadow="0 0 0 1px"
+        color="gray200"
+        {...restProps}
       >
-        <Box w="38px" h="20px">
+        <Box w={size === 'in-home' ? '38px' : undefined}>
           <Text textStyle="t2" fontWeight="regular" color="gray800">
             KR
           </Text>
@@ -72,7 +79,7 @@ export default function Search(props: SearchProps) {
             p={0}
             css={{ '::-webkit-search-cancel-button': { display: 'none' } }}
           />
-          <IconButton type="submit" aria-label="검색" display="inline-flex">
+          <IconButton type="submit" aria-label="검색" display="inline-flex" color="gray800">
             <SearchIcon width={24} height={24} />
           </IconButton>
         </HStack>

@@ -7,12 +7,12 @@ import { useEffect } from 'react';
 import useGetMyInfo from '@/apis/useGetMyInfo';
 import { logout } from '@/apis/useLogout';
 import IconLike from '@/assets/icons/system/like.svg';
-import IconSearch from '@/assets/icons/system/search.svg';
 import Select from '@/components/common/select/Select';
 import AccountModal from '@/components/pages/account/AccountModal';
 import { useAuthContext } from '@/contexts/AuthContext';
 
 import ActiveLink from '../common/ActiveLink';
+import SummonerSearchBar from '../common/SummonerSearchBar';
 
 import * as style from './Header.style';
 
@@ -63,9 +63,7 @@ export default function Header() {
 
         {isAuthenticated ? (
           <Flex position="relative" gap="8px">
-            <Flex w="40px" h="40px" justifyContent="center" alignContent="center">
-              <IconButton w="28px" aria-label="search" icon={<IconSearch />} />
-            </Flex>
+            {router.pathname !== '/' && <SummonerSearchBar size="in-header" />}
             <Flex w="40px" h="40px" justifyContent="center" alignContent="center">
               <IconButton w="28px" aria-label="search" icon={<IconLike />} />
             </Flex>
