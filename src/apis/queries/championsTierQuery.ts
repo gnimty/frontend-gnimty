@@ -27,7 +27,7 @@ interface Options {
   queue_type?: Extract<GameMode, 'RANK_SOLO' | 'RANK_FLEX'>;
 }
 
-const championsTierQuery = (options: Options) =>
+const championsTierQuery = (options: Options = {}) =>
   queryOptions({
     queryKey: ['rankTiers', options],
     async queryFn() {
