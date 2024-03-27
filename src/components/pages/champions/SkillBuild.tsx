@@ -9,22 +9,21 @@ import NextIcon from '@/assets/icons/system/next.svg';
 
 interface SkillBuildProps {
   skillBuilds?: SkillComponentStat[];
-  spells?: Record<string, string>[];
-  isAphelios?: boolean;
-  isUdyr?: boolean;
+  skillData?: { id: string; maxrank: number }[];
 }
 
-export default function SkillBuild({ skillBuilds, spells, isAphelios, isUdyr }: SkillBuildProps) {
+export default function SkillBuild({ skillBuilds, skillData }: SkillBuildProps) {
   const theme = useTheme();
-  const skillIconIds = spells?.map((spell) => spell.id);
-  const skillMap: Record<number, string> = { 1: 'q', 2: 'w', 3: 'e', 4: 'r' };
+  const skillIconIds = skillData?.map((spell) => spell.id);
+  const skillMaxRanks = skillData?.map((spell) => spell.maxrank);
+  const skillMap: Record<number, string> = { 1: 'Q', 2: 'W', 3: 'E', 4: 'R' };
   const colorSwitch = (qwer: string) => {
     switch (qwer) {
-      case 'q':
+      case 'Q':
         return theme.colors.blue800;
-      case 'w':
+      case 'W':
         return theme.colors.teal800;
-      case 'e':
+      case 'E':
         return theme.colors.orange800;
       default:
         return theme.colors.white;
@@ -37,140 +36,119 @@ export default function SkillBuild({ skillBuilds, spells, isAphelios, isUdyr }: 
           스킬 빌드
         </Text>
       </Box>
-      {skillBuilds?.map((skillBuild) => {
-        const { skillOrder, lastSkillIndex, skillLevelsAtEnd } = getSkillOrderAndLastSkillIndex(
-          skillBuild.skillTree,
-          isAphelios,
-          isUdyr,
-        );
-        return (
-          <HStack key={skillBuild.plays} w="full" h="92px" p="20px" justify="space-between">
-            <HStack gap="24px">
-              <HStack gap="4px">
-                {skillOrder.map((skill, index) => {
-                  if (!skillIconIds) return;
-                  if (!skillIconIds[index]) return;
-                  return (
-                    <Fragment key={skill}>
-                      <Box w="52px" h="52px" borderRadius="4px" overflow="hidden" position="relative">
-                        <Image
-                          src={skillIconUrl(skillIconIds[index])}
-                          alt={skillIconIds[index]}
-                          width="52"
-                          height="52"
-                        />
+      {skillMaxRanks &&
+        skillBuilds?.map((skillBuild) => {
+          const { skillOrder, skillLevelsAtEnd } = getSkillOrderAndLastSkillIndex(skillBuild.skillTree, skillMaxRanks);
+          return (
+            <HStack key={skillBuild.plays} w="full" h="92px" p="20px" justify="space-between">
+              <HStack gap="24px">
+                <HStack gap="4px">
+                  {skillOrder.map((skill, index, currentArray) => {
+                    if (!skillIconIds) return;
+                    if (!skillIconIds[skill - 1]) return;
+                    return (
+                      <Fragment key={skill}>
+                        <Box w="52px" h="52px" borderRadius="4px" overflow="hidden" position="relative">
+                          <Image
+                            src={skillIconUrl(skillIconIds[skill - 1])}
+                            alt={skillIconIds[skill - 1]}
+                            width="52"
+                            height="52"
+                          />
+                          <Box
+                            w="24px"
+                            h="24px"
+                            borderRadius="4px"
+                            p="4px"
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            position="absolute"
+                            bottom="0"
+                            right="0"
+                            bgColor="gray800"
+                          >
+                            <Text textStyle="body" fontWeight="700" color={colorSwitch(skillMap[skill])}>
+                              {skillMap[skill]}
+                            </Text>
+                          </Box>
+                        </Box>
+                        {index !== currentArray.length - 1 && <NextIcon width="16px" height="16px" />}
+                      </Fragment>
+                    );
+                  })}
+                </HStack>
+                <HStack gap="4px">
+                  {skillBuild.skillTree.map((skill, index, currentArray) => {
+                    const isLastSkill =
+                      index === currentArray.lastIndexOf(skill) && skillLevelsAtEnd[skill] === skillMaxRanks[skill - 1];
+                    return (
+                      <VStack key={index} gap="4px">
                         <Box
                           w="24px"
                           h="24px"
                           borderRadius="4px"
                           p="4px"
+                          bgColor="gray200"
+                          textStyle="t2"
+                          fontWeight="400"
+                          textAlign="center"
+                          color="gray700"
+                        >
+                          {index + 1}
+                        </Box>
+                        <Box
+                          w="24px"
+                          h="24px"
+                          borderRadius="4px"
+                          bgColor={skill === 4 ? 'gray800' : isLastSkill ? colorSwitch(skillMap[skill]) : 'gray800'}
+                          textStyle="t2"
+                          fontWeight="700"
                           display="flex"
                           justifyContent="center"
                           alignItems="center"
-                          position="absolute"
-                          bottom="0"
-                          right="0"
-                          bgColor="gray800"
+                          color={skill === 4 ? 'white' : isLastSkill ? 'white' : colorSwitch(skillMap[skill])}
                         >
-                          <Text textStyle="body" fontWeight="700" color={colorSwitch(skillMap[skill])}>
-                            {skillMap[skill].toUpperCase()}
-                          </Text>
+                          {skillMap[skill]}
                         </Box>
-                      </Box>
-                      {index < skillOrder.length - 1 && <NextIcon width="20px" height="20px" />}
-                    </Fragment>
-                  );
-                })}
+                      </VStack>
+                    );
+                  })}
+                </HStack>
               </HStack>
-              <HStack gap="4px">
-                {skillBuild.skillTree.map((skill, index) => {
-                  const maxLevels: Record<number, number> = isAphelios
-                    ? { 1: 6, 2: 6, 3: 6 }
-                    : { 1: 5, 2: 5, 3: 5, 4: 3 };
-                  const isLastSkill = index === lastSkillIndex[skill] && skillLevelsAtEnd[skill] === maxLevels[skill];
-
-                  return (
-                    <VStack key={index} gap="4px">
-                      <Box
-                        w="24px"
-                        h="24px"
-                        borderRadius="4px"
-                        p="4px"
-                        bgColor="gray200"
-                        textStyle="t2"
-                        fontWeight="400"
-                        textAlign="center"
-                        color="gray700"
-                      >
-                        {index + 1}
-                      </Box>
-                      <Box
-                        w="24px"
-                        h="24px"
-                        borderRadius="4px"
-                        bgColor={skill === 4 ? 'gray800' : isLastSkill ? colorSwitch(skillMap[skill]) : 'gray800'}
-                        textStyle="t2"
-                        fontWeight="700"
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        color={skill === 4 ? 'white' : isLastSkill ? 'white' : colorSwitch(skillMap[skill])}
-                      >
-                        {skillMap[skill]}
-                      </Box>
-                    </VStack>
-                  );
-                })}
+              <HStack gap="8px" align="center">
+                <Text textStyle="t1" fontWeight="700" color="blue800">
+                  {(skillBuild.winRate * 100).toFixed(2)}%
+                </Text>
+                <Text textStyle="body" fontWeight="400" color="gray600">
+                  {skillBuild.plays.toLocaleString('ko-KR')}게임
+                </Text>
               </HStack>
             </HStack>
-            <HStack gap="8px" align="center">
-              <Text textStyle="t1" fontWeight="700" color="blue800">
-                {(skillBuild.winRate * 100).toFixed(2)}%
-              </Text>
-              <Text textStyle="body" fontWeight="400" color="gray600">
-                {skillBuild.plays.toLocaleString('ko-KR')}게임
-              </Text>
-            </HStack>
-          </HStack>
-        );
-      })}
+          );
+        })}
     </VStack>
   );
 }
 
-// TODO: 궁극기의 경우에 대해 항상 마지막에 위치하는 문제에 대한 논의
-const getSkillOrderAndLastSkillIndex = (skillTree: number[], isAphelios?: boolean, isUdyr?: boolean) => {
+const getSkillOrderAndLastSkillIndex = (skillTree: number[], maxRanks: number[]) => {
   const skillLevels: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0 };
-  const lastSkillIndex: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0 };
   const skillOrder: number[] = [];
-  const maxLevels: Record<number, number> = isAphelios
-    ? { 1: 6, 2: 6, 3: 6 }
-    : isUdyr
-      ? { 1: 5, 2: 5, 3: 5, 4: 5 }
-      : { 1: 5, 2: 5, 3: 5, 4: 3 };
+  const skillLevelsAtEnd: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0 };
 
-  skillTree.forEach((skill, index) => {
+  skillTree.forEach((skill) => {
     skillLevels[skill]++;
-
-    lastSkillIndex[skill] = index;
-    if (skillLevels[skill] === maxLevels[skill]) {
+    if (skillLevels[skill] === maxRanks[skill - 1]) {
       skillOrder.push(skill);
     }
+    skillLevelsAtEnd[skill] = skillLevels[skill];
   });
 
-  const remainingSkillsWithSkillLevel = Object.entries(skillLevels).filter(
-    ([skill, level]) => level < maxLevels[parseInt(skill, 10)],
-  );
+  const skillsAtEnd = Object.entries(skillLevelsAtEnd)
+    .filter(([skill, level]) => level !== maxRanks[Number(skill) - 1])
+    .sort((a, b) => b[1] - a[1]);
 
-  if (remainingSkillsWithSkillLevel.length === 3) {
-    skillOrder.push(4);
-  }
+  skillsAtEnd.forEach(([skill]) => skillOrder.push(Number(skill)));
 
-  remainingSkillsWithSkillLevel
-    .toSorted((a, b) => b[1] - a[1])
-    .forEach(([skill]) => {
-      skillOrder.push(parseInt(skill, 10));
-    });
-
-  return { skillOrder, lastSkillIndex, skillLevelsAtEnd: skillLevels };
+  return { skillOrder, skillLevelsAtEnd };
 };

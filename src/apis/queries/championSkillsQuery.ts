@@ -9,6 +9,7 @@ interface ChampionSkillsResponse {
     {
       spells: {
         id: string;
+        maxrank: number;
       }[];
     }
   >;
