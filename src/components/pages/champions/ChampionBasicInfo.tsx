@@ -77,7 +77,7 @@ export default function ChampionBasicInfo({
             return (
               <Box
                 key={laneSelectRate.lane}
-                w="78px"
+                w="88px"
                 h="full"
                 p="10px 12px"
                 borderLeftRadius={index === 0 ? '4px' : 'none'}
@@ -90,7 +90,7 @@ export default function ChampionBasicInfo({
                 gap="4px"
                 display="flex"
                 align-items="center"
-                justifyContent="center"
+                justifyContent="space-between"
                 cursor="pointer"
                 _selected={{
                   bg: theme.colors.main,
@@ -102,7 +102,7 @@ export default function ChampionBasicInfo({
                 onClick={() => handleUpdateLane(laneSelectRate.lane)}
               >
                 <PositionImage position={laneSelectRate.lane} width="20px" height="20px" />
-                <Text w="30px" textStyle="t2">
+                <Text minW="30px" textStyle="t2">
                   {(laneSelectRate.pickRate * 100).toFixed(0)}%
                 </Text>
               </Box>
