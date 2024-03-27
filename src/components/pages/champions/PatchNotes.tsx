@@ -10,10 +10,10 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import Image from 'next/image';
+import { Fragment } from 'react';
 
 import type { ChampionPatch } from '@/apis/types';
 import championIconUrl from '@/apis/utils/championIconUrl';
-import { Fragment } from 'react';
 
 interface PatchNotesProps {
   patches?: ChampionPatch[];
@@ -109,7 +109,7 @@ function PatchInfo({ patch }: PatchInfoProps) {
             );
           }
           return (
-            <Text textStyle="t2" fontWeight="400" pl="5px">
+            <Text key={change} textStyle="t2" fontWeight="400" pl="5px">
               -{change}
             </Text>
           );
