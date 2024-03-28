@@ -67,13 +67,7 @@ export default function ChampionBasicInfo({
         </HStack>
         <HStack w="max-content" h="40px" borderRadius="4px" gap="0">
           {laneSelectRates?.map((laneSelectRate, index, currentArray) => {
-            let selectedLane;
-            if (['UNKNOWN', 'ALL', ''].includes(lane)) {
-              selectedLane = index === 0;
-            }
-            if (!['UNKNOWN', 'ALL', ''].includes(lane)) {
-              selectedLane = laneSelectRate.lane === lane;
-            }
+            const selectedLane = ['UNKNOWN', 'ALL', ''].includes(lane) ? index === 0 : laneSelectRate.lane === lane;
             return (
               <Box
                 key={laneSelectRate.lane}
