@@ -68,10 +68,10 @@ function PatchInfo({ patch }: PatchInfoProps) {
             <Text textStyle="t1" fontWeight="700">
               {version} 패치노트
             </Text>
-            <Text textStyle="body" fontWeight="400" color="gray600">
-              {/* TODO: date difference */}
+            {/* TODO: date difference */}
+            {/* <Text textStyle="body" fontWeight="400" color="gray600">
               2020.11.10 1101일 전
-            </Text>
+            </Text> */}
           </VStack>
         </HStack>
         <AccordionIcon />
@@ -84,17 +84,6 @@ function PatchInfo({ patch }: PatchInfoProps) {
         justifyContent="center"
         alignItems="flex-start"
       >
-        {/* (
-          <Fragment key={change}>
-            <Text textStyle="t2" fontWeight="400" color="gray500">
-              -{change.split('⇒')[0]}
-            </Text>
-            <Text textStyle="t2" fontWeight="400" pl="5px">
-              ⇒{change.split('⇒')[1]}
-            </Text>
-          </Fragment>
-        ) */}
-        {/* TODO: changes 형태? */}
         {changes.map((change) => {
           if (change.includes('⇒')) {
             return (
