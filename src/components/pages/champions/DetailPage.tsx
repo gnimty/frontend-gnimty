@@ -31,7 +31,7 @@ export default function DetailPage({ championEnName }: DetailPageProps) {
   const handleUpdateLane = (lane: PositionFilter) => setLane(lane);
 
   useEffect(() => {
-    if (error?.message === '챔피언 정보를 찾을 수 없습니다.') {
+    if (error?.response?.data.status.code === 404) {
       router.replace('/404');
     }
   }, [error, router]);
