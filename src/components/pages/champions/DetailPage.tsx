@@ -31,9 +31,10 @@ export default function DetailPage({ championEnName }: DetailPageProps) {
   const handleUpdateLane = (lane: PositionFilter) => setLane(lane);
 
   useEffect(() => {
-    if (champions.find((champion) => champion.enName.toLowerCase() === championEnName.toLowerCase())) return;
-    router.push('/404');
-  }, [championEnName, router]);
+    if (data?.status.code === 404) {
+      router.replace('/404');
+    }
+  }, [data?.status, router]);
 
   return (
     <VStack w="1080px" m="0 auto" gap="12px" align="flex-start">

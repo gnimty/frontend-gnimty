@@ -1,10 +1,10 @@
 import { queryOptions } from '@tanstack/react-query';
 
-import request from '../httpRequest';
+import request, { type BaseResponse } from '../httpRequest';
 
 import type { ChampionAnalysisResponse, PositionFilter, Tier } from '../types';
 
-interface ChampionDetailResponse {
+interface ChampionDetailResponse extends BaseResponse {
   data: ChampionAnalysisResponse;
 }
 
