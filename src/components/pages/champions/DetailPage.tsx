@@ -26,15 +26,15 @@ export default function DetailPage({ championEnName }: DetailPageProps) {
   const router = useRouter();
   const capitalizedChampionEnName = championEnName.charAt(0).toUpperCase() + championEnName.slice(1);
   const [lane, setLane] = useState<PositionFilter | 'UNKNOWN' | ''>('');
-  const { data } = useQuery(championDetailQuery({ championEnName: capitalizedChampionEnName, lane }));
+  const { data, error } = useQuery(championDetailQuery({ championEnName: capitalizedChampionEnName, lane }));
   const { data: skillData } = useQuery(championSkillsQuery({ championEnName: capitalizedChampionEnName }));
   const handleUpdateLane = (lane: PositionFilter) => setLane(lane);
 
   useEffect(() => {
-    if (data?.status.code === 404) {
+    if (error?.message === '챔피언 정보를 찾을 수 없습니다.') {
       router.replace('/404');
     }
-  }, [data?.status, router]);
+  }, [error, router]);
 
   return (
     <VStack w="1080px" m="0 auto" gap="12px" align="flex-start">
