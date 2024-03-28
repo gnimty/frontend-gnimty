@@ -1,9 +1,8 @@
 import { Box, HStack, Heading, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
-import Image from 'next/image';
 
 import rotationChampionsQuery from '@/apis/queries/rotationChampionsQuery';
-import championIconUrl from '@/apis/utils/championIconUrl';
+import ChampionIcon from '@/components/common/ChampionIcon';
 
 export default function RotationChampions() {
   const { data, status } = useQuery(rotationChampionsQuery());
@@ -20,7 +19,7 @@ export default function RotationChampions() {
       <HStack as="ul" gap="16px" w="1040px" flexWrap="wrap" justifyContent="center">
         {data.data.champions.map((champ) => (
           <VStack key={champ.championId} as="li" gap="4px">
-            <Image src={championIconUrl(champ.enName)} alt="" width={80} height={80} css={{ borderRadius: '9999px' }} />
+            <ChampionIcon championEnName={champ.enName} width={80} height={80} radius={40} />
             <Box
               w="80px"
               textStyle="t2"
