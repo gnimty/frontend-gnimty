@@ -4,6 +4,11 @@ import httpRequest from '@/apis/httpRequest';
 
 import type { CurrentGameParticipantDto, QueueDto } from '../types';
 
+export const enum SUMMONER_CURRENT_GAME_INFO_ERROR_CODE {
+  /** 현재 소환자가 게임 중이 아닐 때 */
+  NOT_IN_GAME = 404,
+}
+
 interface SummonerCurrentGameInfoResponse {
   data: {
     participants: CurrentGameParticipantDto[];
@@ -28,6 +33,12 @@ const summonerCurrentGameInfoQuery = (options: Options) =>
         `/statistics/summoners/ingame/${options.summonerTagName}`,
       );
       return res.data;
+    },
+    retry(failureCount, error) {
+      if (error.response?.data.status.code === SUMMONER_CURRENT_GAME_INFO_ERROR_CODE.NOT_IN_GAME) {
+        return false;
+      }
+      return failureCount <= 3;
     },
   });
 
