@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import champions from '@/apis/constants/champions';
 import championDetailQuery from '@/apis/queries/championDetailQuery';
 import championSkillsQuery from '@/apis/queries/championSkillsQuery';
 import type { PositionFilter } from '@/apis/types';
