@@ -34,7 +34,7 @@ jobs:
         run: npm run type:check
 
       - name: Linting
-        run: npm run lint
+        run: npm run lint -- --max-warnings 0
 
       - name: Check code format
         run: npm run format:check
