@@ -13,7 +13,7 @@ import Image from 'next/image';
 import { Fragment } from 'react';
 
 import type { ChampionPatch } from '@/apis/types';
-import championIconUrl from '@/apis/utils/championIconUrl';
+import ChampionIcon from '@/components/common/ChampionIcon';
 
 interface PatchNotesProps {
   patches?: ChampionPatch[];
@@ -47,8 +47,6 @@ interface PatchInfoProps {
 function PatchInfo({ patch }: PatchInfoProps) {
   const { enName, version, target, targetImgUrl, changes } = patch;
   const capitalizedEnName = enName.charAt(0).toUpperCase() + enName.slice(1);
-  // 기본 능력치의 경우 스킬 이미지가 없기 때문에 챔피언 초상화를 사용
-  const imgUrl = targetImgUrl !== null ? `https${targetImgUrl.split('f=http')[1]}` : championIconUrl(capitalizedEnName);
   return (
     <AccordionItem bg="white">
       <AccordionButton
@@ -61,9 +59,18 @@ function PatchInfo({ patch }: PatchInfoProps) {
         gap="12px"
       >
         <HStack gap="12px" align="center">
-          <Box w="40px" h="40px">
-            <Image src={imgUrl} width="40" height="40" alt={target} />
-          </Box>
+          {targetImgUrl ? (
+            <Box w="40px" h="40px">
+              <Image
+                src={new URL(targetImgUrl).searchParams.get('f')!.replace(/^http:\/\//, 'https://')}
+                width="40"
+                height="40"
+                alt={target}
+              />
+            </Box>
+          ) : (
+            <ChampionIcon championEnName={capitalizedEnName} width={40} height={40} />
+          )}
           <VStack gap="4px" justify="flex-start">
             <Text textStyle="t1" fontWeight="700">
               {version} 패치노트
