@@ -48,7 +48,10 @@ function PatchInfo({ patch }: PatchInfoProps) {
   const { enName, version, target, targetImgUrl, changes } = patch;
   const capitalizedEnName = enName.charAt(0).toUpperCase() + enName.slice(1);
   // 기본 능력치의 경우 스킬 이미지가 없기 때문에 챔피언 초상화를 사용
-  const imgUrl = targetImgUrl !== null ? `https${targetImgUrl.split('f=http')[1]}` : championIconUrl(capitalizedEnName);
+  const imgUrl =
+    targetImgUrl !== null
+      ? targetImgUrl.split('f=')[1].replace('http://', 'https://')
+      : championIconUrl(capitalizedEnName);
   return (
     <AccordionItem bg="white">
       <AccordionButton
