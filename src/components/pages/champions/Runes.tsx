@@ -37,7 +37,7 @@ export default function Runes({ perkBuilds }: RunesProps) {
               onClick={() => setTabIndex(index)}
             >
               <HStack gap="4px">
-                <Perk type="main" perkStyleId={perkBuild.primaryStyleId} />
+                <PerkImage perkId={perkBuild.mainStyleId} width="40" height="40" />
                 <Perk type="sub" perkStyleId={perkBuild.subStyleId} />
               </HStack>
               <HStack gap="8px">
