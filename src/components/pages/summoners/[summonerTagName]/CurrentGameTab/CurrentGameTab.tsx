@@ -8,6 +8,7 @@ import summonerCurrentGameInfoQuery, {
   SUMMONER_CURRENT_GAME_INFO_ERROR_CODE,
 } from '@/apis/queries/summonerCurrentGameInfoQuery';
 import type { CurrentGameParticipantDto, TEAM_ID } from '@/apis/types';
+import LoadingIcon from '@/assets/icons/system/loading.svg';
 import notInGameImage from '@/assets/images/summoner-not-in-game.png';
 import useStopWatch from '@/hooks/useStopwatch';
 
@@ -25,11 +26,11 @@ export default function CurrentGameTab(props: CurrentGameTabProps) {
   const { elapsedSeconds, start, isRunning } = useStopWatch();
 
   if (status === 'pending') {
-    /**
-     * TODO: 디자인이 나오면 수정
-     * https://www.figma.com/file/TNHy0eQfP8gy0CwgIZ7Xbe?type=design&node-id=3954-16359&mode=design#753661531
-     */
-    return <Center h="416px">로딩 중...</Center>;
+    return (
+      <Center h="416px" color="gray500">
+        <LoadingIcon aria-label="로딩 중" width={48} height={48} />
+      </Center>
+    );
   }
 
   if (status === 'error') {
