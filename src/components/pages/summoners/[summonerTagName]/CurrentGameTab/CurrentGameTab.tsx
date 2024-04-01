@@ -36,7 +36,7 @@ export default function CurrentGameTab(props: CurrentGameTabProps) {
     if (error.response?.data.status.code === SUMMONER_CURRENT_GAME_INFO_ERROR_CODE.NOT_IN_GAME) {
       return <CurrentGameTabNotInGame onRefetchButtonClick={refetch} />;
     }
-    return;
+    return <CurrentGameTabUnknownError onRefetchButtonClick={refetch} />;
   }
 
   /**
@@ -90,6 +90,29 @@ function CurrentGameTabNotInGame(props: { onRefetchButtonClick: () => void }) {
           소환사가 플레이중이 아니거나, 게임 진행중이라면 새로고침을 눌러주세요!
         </Text>
       </VStack>
+      <Button
+        size="md"
+        display="flex"
+        p="10px 12px"
+        minW="80px"
+        bg="gray800"
+        color="white"
+        onClick={onRefetchButtonClick}
+      >
+        새로고침
+      </Button>
+    </VStack>
+  );
+}
+
+function CurrentGameTabUnknownError(props: { onRefetchButtonClick: () => void }) {
+  const { onRefetchButtonClick } = props;
+
+  return (
+    <VStack justifyContent="center" h="300px" gap="20px">
+      <Text textStyle="h3" fontWeight="bold" color="gray800">
+        뭔가가 잘못됐습니다.
+      </Text>
       <Button
         size="md"
         display="flex"
