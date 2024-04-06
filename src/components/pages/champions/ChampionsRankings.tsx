@@ -32,6 +32,7 @@ import type { PositionIconProps } from '@/components/common/position-image/types
 import Unselected from '@/components/common/position-image/Unselected';
 import Select from '@/components/common/select/Select';
 import TierImage from '@/components/common/TierImage';
+import gnimtyChampionUrl from '@/utils/gnimtyChampionUrl';
 
 const QUEUE_TYPES: PositionFilter[] = [
   // TODO: 임시 비활성화
@@ -218,7 +219,7 @@ export default function ChampionsRankings() {
               </Td>
               <Td flex="1 1 0">
                 <Link
-                  href={`/champions/${championIdKrNameMap[champion.championId]}`}
+                  href={gnimtyChampionUrl(champion.championName, position)}
                   css={{
                     display: 'flex',
                     gap: '8px',

@@ -7,13 +7,14 @@ import { useState } from 'react';
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import championIdKrNameMap from '@/apis/constants/championIdKrNameMap';
 import championsTierQuery from '@/apis/queries/championsTierQuery';
-import type { ChampionTierDto } from '@/apis/types';
+import type { ChampionTierDto, PositionFilter } from '@/apis/types';
 import championIconUrl from '@/apis/utils/championIconUrl';
 import PositionImage from '@/components/common/position-image/PositionImage';
 import Unselected from '@/components/common/position-image/Unselected';
+import gnimtyChampionUrl from '@/utils/gnimtyChampionUrl';
 
-function ChampionsSummaryTab(props: { champions: ChampionTierDto[] }) {
-  const { champions } = props;
+function ChampionsSummaryTab(props: { position: PositionFilter; champions: ChampionTierDto[] }) {
+  const { position, champions } = props;
 
   return (
     <Grid as="ul" gap="8px" templateColumns="repeat(6, 1fr)" justifyItems="center">
@@ -26,7 +27,7 @@ function ChampionsSummaryTab(props: { champions: ChampionTierDto[] }) {
         .map((champion) => (
           <GridItem as="li" key={champion.championId}>
             <Link
-              href={`/champions/${champion.championName}`}
+              href={gnimtyChampionUrl(champion.championName, position)}
               display="flex"
               flexDir="column"
               gap="4px"
@@ -106,7 +107,7 @@ export default function ChampionsSummaryTabs() {
               .map(([championId, championKrName]) => (
                 <GridItem as="li" key={championId}>
                   <Link
-                    href={`/champions/${championKrName}`}
+                    href={gnimtyChampionUrl(championIdEnNameMap[parseInt(championId, 10)])}
                     display="flex"
                     flexDir="column"
                     gap="4px"
@@ -137,18 +138,19 @@ export default function ChampionsSummaryTabs() {
               ))}
           </Grid>
         </TabPanel>
-        {[
-          // TODO: 백엔드에서 ALL 데이터를 받아올 수 있게 되면 윗 부분을 삭제하고 밑에 코드 코멘트 해제
-          // data.data.champions.ALL,
-          data.data.champions.TOP,
-          data.data.champions.JUNGLE,
-          data.data.champions.MIDDLE,
-          data.data.champions.BOTTOM,
-          data.data.champions.UTILITY,
-        ].map((champions, i) => (
-          // 위의 배열의 순서는 런타임에서 변경될 일이 절대 없기 때문에 인덱스를 key로 사용
-          <TabPanel key={i}>
-            <ChampionsSummaryTab champions={champions} />
+        {(
+          [
+            // TODO: 백엔드에서 ALL 데이터를 받아올 수 있게 되면 윗 부분을 삭제하고 밑에 코드 코멘트 해제
+            // 'ALL',
+            'TOP',
+            'JUNGLE',
+            'MIDDLE',
+            'BOTTOM',
+            'UTILITY',
+          ] as const
+        ).map((position) => (
+          <TabPanel key={position}>
+            <ChampionsSummaryTab position={position} champions={data.data.champions[position]} />
           </TabPanel>
         ))}
       </TabPanels>
