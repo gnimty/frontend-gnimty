@@ -91,22 +91,43 @@ function PositionRadioCard(props: PositionRadioCardProps) {
   );
 }
 
+interface RankOptions {
+  tier: Extract<Tier, 'platinum' | 'emerald' | 'diamond' | 'master'>;
+  position: PositionFilter;
+}
+
+interface AramOptions {
+  position: 'ALL';
+}
+
+type Options = ({ queueType: 'RANK_SOLO' } & RankOptions) | ({ queueType: 'ARAM' } & AramOptions);
+
 export default function ChampionsRankings() {
   const [queueType, setQueueType] = useState<Extract<ChampionsTierQueueType, 'RANK_SOLO' | 'ARAM'>>('RANK_SOLO');
-  const [rankTierFilter, setRankTierFilter] =
-    useState<Extract<Tier, 'platinum' | 'emerald' | 'diamond' | 'master'>>('platinum');
-  const [rankPositionFilter, setRankPositionFilter] = useState<PositionFilter>('TOP');
+  const [rankOptions, setRankOptions] = useState<RankOptions>({
+    tier: 'platinum',
+    position: 'TOP',
+  });
+  const options = {
+    queueType,
+    ...(queueType === 'RANK_SOLO'
+      ? rankOptions
+      : {
+          position: 'ALL',
+        }),
+  } as Options;
+
   const { getRootProps, getRadioProps } = useRadioGroup({
-    value: rankPositionFilter,
+    value: rankOptions.position,
     onChange: (newPosition) => {
-      setRankPositionFilter(newPosition as PositionFilter);
+      setRankOptions((prev) => ({ ...prev, position: newPosition as PositionFilter }));
     },
   });
 
   const { data, status } = useQuery(
     championsTierQuery({
-      tier: rankTierFilter,
-      queue_type: queueType,
+      queue_type: options.queueType,
+      tier: options.queueType === 'RANK_SOLO' ? options.tier : undefined,
     }),
   );
 
@@ -128,7 +149,7 @@ export default function ChampionsRankings() {
           }}
           css={{ width: '136px' }}
         />
-        {queueType === 'RANK_SOLO' && (
+        {options.queueType === 'RANK_SOLO' && (
           <>
             <Select
               options={[
@@ -145,8 +166,10 @@ export default function ChampionsRankings() {
                 },
                 { text: '마스터 이상', value: 'master', leftAsset: <TierImage tier="master" fill sizes="20px" /> },
               ]}
-              externalValue={rankTierFilter}
-              onChange={(newTier) => setRankTierFilter(newTier)}
+              externalValue={options.tier}
+              onChange={(newTier) => {
+                setRankOptions((prev) => ({ ...prev, tier: newTier }));
+              }}
               css={{ width: '148px' }}
             />
             <Grid
@@ -205,9 +228,9 @@ export default function ChampionsRankings() {
           </Tr>
         </Thead>
         <Tbody>
-          {data.data.champions[queueType === 'ARAM' ? 'ALL' : rankPositionFilter].map((champion, i) => (
+          {data.data.champions[options.position].map((champion, i) => (
             <Tr
-              key={`${champion.championId}${rankPositionFilter}${rankTierFilter}${queueType}`}
+              key={`${champion.championId}${options.queueType}${options.position}${options.queueType === 'RANK_SOLO' ? options.tier : ''}`}
               display="flex"
               alignItems="center"
               gap="12px"
@@ -220,10 +243,7 @@ export default function ChampionsRankings() {
               </Td>
               <Td flex="1 1 0">
                 <Link
-                  href={gnimtyChampionUrl(
-                    champion.championName,
-                    queueType === 'RANK_SOLO' ? rankPositionFilter : undefined,
-                  )}
+                  href={gnimtyChampionUrl(champion.championName, options.position)}
                   css={{
                     display: 'flex',
                     gap: '8px',
