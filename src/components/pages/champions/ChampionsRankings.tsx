@@ -220,7 +220,10 @@ export default function ChampionsRankings() {
               </Td>
               <Td flex="1 1 0">
                 <Link
-                  href={gnimtyChampionUrl(champion.championName, position)}
+                  href={gnimtyChampionUrl(
+                    champion.championName,
+                    queueType === 'RANK_SOLO' ? rankPositionFilter : undefined,
+                  )}
                   css={{
                     display: 'flex',
                     gap: '8px',
