@@ -1,10 +1,15 @@
-import { Box, HStack, Text } from '@chakra-ui/react';
+import { Box, Button, Center, HStack, Text, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
+import Image from 'next/image';
 
 import { BLUE_TEAM, RED_TEAM } from '@/apis/constants/teamId';
-import summonerCurrentGameInfoQuery from '@/apis/queries/summonerCurrentGameInfoQuery';
+import summonerCurrentGameInfoQuery, {
+  SUMMONER_CURRENT_GAME_INFO_ERROR_CODE,
+} from '@/apis/queries/summonerCurrentGameInfoQuery';
 import type { CurrentGameParticipantDto, TEAM_ID } from '@/apis/types';
+import LoadingIcon from '@/assets/icons/system/loading.svg';
+import notInGameImage from '@/assets/images/summoner-not-in-game.png';
 import useStopWatch from '@/hooks/useStopwatch';
 
 import CurrentGameRow from './CurrentGameRow';
@@ -16,12 +21,23 @@ interface CurrentGameTabProps {
 export default function CurrentGameTab(props: CurrentGameTabProps) {
   const { summonerTagName } = props;
 
-  const { data, status } = useQuery(summonerCurrentGameInfoQuery({ summonerTagName }));
+  const { data, error, status, refetch } = useQuery(summonerCurrentGameInfoQuery({ summonerTagName }));
 
   const { elapsedSeconds, start, isRunning } = useStopWatch();
 
-  if (status !== 'success') {
-    return;
+  if (status === 'pending') {
+    return (
+      <Center h="416px" color="gray500">
+        <LoadingIcon aria-label="로딩 중" width={48} height={48} />
+      </Center>
+    );
+  }
+
+  if (status === 'error') {
+    if (error.response?.data.status.code === SUMMONER_CURRENT_GAME_INFO_ERROR_CODE.NOT_IN_GAME) {
+      return <CurrentGameTabNotInGame onRefetchButtonClick={refetch} />;
+    }
+    return <CurrentGameTabUnknownError onRefetchButtonClick={refetch} />;
   }
 
   /**
@@ -58,5 +74,57 @@ export default function CurrentGameTab(props: CurrentGameTabProps) {
         <CurrentGameRow team="red" participants={participantsByTeam[RED_TEAM]} />
       </HStack>
     </Box>
+  );
+}
+
+function CurrentGameTabNotInGame(props: { onRefetchButtonClick: () => void }) {
+  const { onRefetchButtonClick } = props;
+
+  return (
+    <VStack pt="120px" gap="24px">
+      <Image src={notInGameImage} width={160} height={160} alt="" />
+      <VStack gap="4px">
+        <Text textStyle="t1" fontWeight="bold" color="gray500">
+          소환사의 인게임 정보를 확인할 수 없습니다.
+        </Text>
+        <Text textStyle="t1" fontWeight="regular" color="gray500">
+          소환사가 플레이중이 아니거나, 게임 진행중이라면 새로고침을 눌러주세요!
+        </Text>
+      </VStack>
+      <Button
+        size="md"
+        display="flex"
+        p="10px 12px"
+        minW="80px"
+        bg="gray800"
+        color="white"
+        onClick={onRefetchButtonClick}
+      >
+        새로고침
+      </Button>
+    </VStack>
+  );
+}
+
+function CurrentGameTabUnknownError(props: { onRefetchButtonClick: () => void }) {
+  const { onRefetchButtonClick } = props;
+
+  return (
+    <VStack justifyContent="center" h="300px" gap="20px">
+      <Text textStyle="h3" fontWeight="bold" color="gray800">
+        뭔가가 잘못됐습니다.
+      </Text>
+      <Button
+        size="md"
+        display="flex"
+        p="10px 12px"
+        minW="80px"
+        bg="gray800"
+        color="white"
+        onClick={onRefetchButtonClick}
+      >
+        새로고침
+      </Button>
+    </VStack>
   );
 }
