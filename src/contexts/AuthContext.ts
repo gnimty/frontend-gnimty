@@ -1,9 +1,5 @@
-import { useQueryClient } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import constate from 'constate';
-import { useEffect, useState } from 'react';
-
-import httpRequest from '@/apis/httpRequest';
+import { useState } from 'react';
 
 export interface AuthToken {
   accessToken: string;
@@ -13,7 +9,7 @@ export interface AuthToken {
 export const StorageAuthKey = 'auth';
 
 export const [AuthContextProvider, useAuthContext] = constate(() => {
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   /*useEffect(() => {
