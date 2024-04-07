@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint \"**/*.{ts,tsx}\"",
+    "test": "vitest",
     "format": "prettier \"**/*.{ts,tsx,js,css,json,yml,md}\" --write",
     "format:check": "prettier \"**/*.{ts,tsx,js,css,json,yml,md}\" --check",
     "type:check": "tsc",
@@ -45,6 +46,8 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.33.2",
     "prettier": "^3.2.5",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vite-tsconfig-paths": "^4.3.2",
+    "vitest": "^1.4.0"
   }
 }

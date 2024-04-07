@@ -1,0 +1,47 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Ddragon summonerSpells snapshot testing > spellIdImgNameMap snapshot 1`] = `
+{
+  "1": "SummonerBoost",
+  "11": "SummonerSmite",
+  "12": "SummonerTeleport",
+  "13": "SummonerMana",
+  "14": "SummonerDot",
+  "21": "SummonerBarrier",
+  "2201": "SummonerCherryHold",
+  "2202": "SummonerCherryFlash",
+  "3": "SummonerExhaust",
+  "30": "SummonerPoroRecall",
+  "31": "SummonerPoroThrow",
+  "32": "SummonerSnowball",
+  "39": "SummonerSnowURFSnowball_Mark",
+  "4": "SummonerFlash",
+  "54": "Summoner_UltBookPlaceholder",
+  "55": "Summoner_UltBookSmitePlaceholder",
+  "6": "SummonerHaste",
+  "7": "SummonerHeal",
+}
+`;
+
+exports[`Ddragon summonerSpells snapshot testing > spellIdKrNameMap snapshot 1`] = `
+{
+  "1": "정화",
+  "11": "강타",
+  "12": "순간이동",
+  "13": "총명",
+  "14": "점화",
+  "21": "방어막",
+  "2201": "도주",
+  "2202": "점멸",
+  "3": "탈진",
+  "30": "왕을 향해!",
+  "31": "포로 던지기",
+  "32": "표식",
+  "39": "표식",
+  "4": "점멸",
+  "54": "게임 시작 후 결정",
+  "55": "TBD 및 공격-강타",
+  "6": "유체화",
+  "7": "회복",
+}
+`;

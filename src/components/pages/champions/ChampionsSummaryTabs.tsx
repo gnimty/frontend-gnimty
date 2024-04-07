@@ -19,11 +19,7 @@ function ChampionsSummaryTab(props: { position: PositionFilter; champions: Champ
   return (
     <Grid as="ul" gap="8px" templateColumns="repeat(6, 1fr)" justifyItems="center">
       {champions
-        /**
-         * TODO: `??` 연산자는 현재 챔피언 한글 이름이 지정되어 있지 않은 챔피언 때문에 임시로 사용함.
-         * 후에 챔피언 관련 정보를 동적으로 받아올 수 있게 코드가 리팩터링 된 후에 필요없는 `??` 연산자 삭제.
-         */
-        .sort((a, b) => (championIdKrNameMap[a.championId] ?? '').localeCompare(championIdKrNameMap[b.championId]))
+        .sort((a, b) => championIdKrNameMap[a.championId].localeCompare(championIdKrNameMap[b.championId]))
         .map((champion) => (
           <GridItem as="li" key={champion.championId}>
             <Link

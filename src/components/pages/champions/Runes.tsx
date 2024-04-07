@@ -100,12 +100,12 @@ function RunePage({ perkBuild, show }: RunePageProps) {
           <VStack w="60px" h="88px" gap="8px">
             <PerkStyleImage perkStyleId={perkBuild.primaryStyleId} width="60px" height="60px" />
             <Text textStyle="t2" fontWeight="400" color="gray700">
-              {perkNameMap[perkBuild.primaryStyleId as keyof typeof perkNameMap]}
+              {perkNameMap[perkBuild.primaryStyleId]}
             </Text>
           </VStack>
           <VStack w="252px" gap="20px">
             <HStack w="full" gap="20px" justify="space-between">
-              {perkMap[perkBuild.primaryStyleId as keyof typeof perkMap][0].map((perkId) => (
+              {perkMap[perkBuild.primaryStyleId][0].map((perkId) => (
                 // TODO: primary image의 경우 배경이 없음
                 <PerkImage
                   key={perkId}
@@ -117,7 +117,7 @@ function RunePage({ perkBuild, show }: RunePageProps) {
               ))}
             </HStack>
             <HStack minW="184px" gap="20px" justify="space-between">
-              {perkMap[perkBuild.primaryStyleId as keyof typeof perkMap][1].map((perkId) => (
+              {perkMap[perkBuild.primaryStyleId][1].map((perkId) => (
                 <PerkImage
                   key={perkId}
                   perkId={perkId}
@@ -128,7 +128,7 @@ function RunePage({ perkBuild, show }: RunePageProps) {
               ))}
             </HStack>
             <HStack minW="184px" gap="20px" justify="space-between">
-              {perkMap[perkBuild.primaryStyleId as keyof typeof perkMap][2].map((perkId) => (
+              {perkMap[perkBuild.primaryStyleId][2].map((perkId) => (
                 <PerkImage
                   key={perkId}
                   perkId={perkId}
@@ -139,7 +139,7 @@ function RunePage({ perkBuild, show }: RunePageProps) {
               ))}
             </HStack>
             <HStack minW="184px" gap="20px" justify="space-between">
-              {perkMap[perkBuild.primaryStyleId as keyof typeof perkMap][3].map((perkId) => (
+              {perkMap[perkBuild.primaryStyleId][3].map((perkId) => (
                 <PerkImage
                   key={perkId}
                   perkId={perkId}
@@ -156,12 +156,12 @@ function RunePage({ perkBuild, show }: RunePageProps) {
           <VStack w="60px" h="88px" gap="8px">
             <PerkStyleImage perkStyleId={perkBuild.subStyleId} width="60px" height="60px" />
             <Text textStyle="t2" fontWeight="400" color="gray700">
-              {perkNameMap[perkBuild.subStyleId as keyof typeof perkNameMap]}
+              {perkNameMap[perkBuild.subStyleId]}
             </Text>
           </VStack>
           <VStack w="252px" gap="20px">
             <HStack minW="184px" gap="20px" justify="space-between">
-              {perkMap[perkBuild.subStyleId as keyof typeof perkMap][1].map((perkId) => (
+              {perkMap[perkBuild.subStyleId][1].map((perkId) => (
                 <PerkImage
                   key={perkId}
                   perkId={perkId}
@@ -172,7 +172,7 @@ function RunePage({ perkBuild, show }: RunePageProps) {
               ))}
             </HStack>
             <HStack minW="184px" gap="20px" justify="space-between">
-              {perkMap[perkBuild.subStyleId as keyof typeof perkMap][2].map((perkId) => (
+              {perkMap[perkBuild.subStyleId][2].map((perkId) => (
                 <PerkImage
                   key={perkId}
                   perkId={perkId}
@@ -183,7 +183,7 @@ function RunePage({ perkBuild, show }: RunePageProps) {
               ))}
             </HStack>
             <HStack minW="184px" gap="20px" justify="space-between">
-              {perkMap[perkBuild.subStyleId as keyof typeof perkMap][3].map((perkId) => (
+              {perkMap[perkBuild.subStyleId][3].map((perkId) => (
                 <PerkImage
                   key={perkId}
                   perkId={perkId}
