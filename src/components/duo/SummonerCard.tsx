@@ -1,9 +1,7 @@
 import { IconButton } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
-import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import type { RecommendedSummonersEntry } from '@/apis/types';
-import championIconUrl from '@/apis/utils/championIconUrl';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
 import shortTierName from '@/apis/utils/shortTierName';
 import Chat from '@/assets/icons/system/chat.svg';
@@ -16,6 +14,8 @@ import PositionImage from '@/components/common/position-image/PositionImage';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
 import copyText from '@/utils/copyText';
+
+import ChampionImagesFiller from '../common/ChampionImagesFiller';
 
 const CardWrapper = styled.div<{ $open: boolean }>`
   width: 352px;
@@ -202,32 +202,12 @@ export default function SummonerCard({ open, toggle, summoner, refObject, openCh
         </CardColumn>
       </CardHeader>
       <CardBody $flexColumn="true" $open={open} $gap={16}>
-        <CardColumn $gap={8}>
-          {frequentChampionId1 && (
-            <IconImage
-              src={championIconUrl(championIdEnNameMap[frequentChampionId1])}
-              width={32}
-              height={32}
-              alt="icon"
-            />
-          )}
-          {frequentChampionId2 && (
-            <IconImage
-              src={championIconUrl(championIdEnNameMap[frequentChampionId2])}
-              width={32}
-              height={32}
-              alt="icon"
-            />
-          )}
-          {frequentChampionId3 && (
-            <IconImage
-              src={championIconUrl(championIdEnNameMap[frequentChampionId3])}
-              width={32}
-              height={32}
-              alt="icon"
-            />
-          )}
-        </CardColumn>
+        <ChampionImagesFiller
+          championIds={[frequentChampionId1, frequentChampionId2, frequentChampionId3]}
+          imagesSizePx={32}
+          gap="8px"
+          w="full"
+        />
         <CardColumn>
           <SummonerDetail>{introduction}</SummonerDetail>
         </CardColumn>
