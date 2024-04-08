@@ -2,9 +2,10 @@ import { useMutation } from '@tanstack/react-query';
 
 import type { BaseMutationProps } from '@/apis/httpRequest';
 import httpRequest from '@/apis/httpRequest';
+import type { AuthToken } from '@/contexts/AuthContext';
 import { useAuthContext } from '@/contexts/AuthContext';
 
-interface UseLoginMutationProps extends BaseMutationProps<unknown, Error, LoginRequest> {}
+interface UseLoginMutationProps extends BaseMutationProps<LoginResponse, Error, LoginRequest> {}
 
 interface LoginRequestBody {
   email: string;
@@ -13,8 +14,13 @@ interface LoginRequestBody {
 
 interface LoginRequest extends LoginRequestBody {}
 
+interface LoginResponse {
+  data: AuthToken;
+}
+
 async function login({ email, password }: LoginRequest) {
-  return await httpRequest.post('/community/auth/login', { email, password });
+  const { data } = await httpRequest.post<LoginResponse>('/community/auth/login', { email, password });
+  return data;
 }
 
 const useLogin = ({ onSuccess, onError }: UseLoginMutationProps) => {

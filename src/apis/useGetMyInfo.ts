@@ -19,6 +19,10 @@ const useGetMyInfo = () => {
     queryFn: getMyInfo,
     retry: 3,
     retryDelay: 1000,
+    staleTime: 0,
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: 'always',
+    refetchOnReconnect: 'always',
   });
 
   return data?.data;
