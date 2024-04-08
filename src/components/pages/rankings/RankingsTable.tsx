@@ -2,12 +2,10 @@ import { Link } from '@chakra-ui/next-js';
 import { Box, Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
 import Image from 'next/image';
 
-import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
-import championIdKrNameMap from '@/apis/constants/championIdKrNameMap';
 import type { SummonerRankDto } from '@/apis/types';
-import championIconUrl from '@/apis/utils/championIconUrl';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
 import shortTierName from '@/apis/utils/shortTierName';
+import ChampionImagesFiller from '@/components/common/ChampionImagesFiller';
 import PositionImage from '@/components/common/position-image/PositionImage';
 import TierImage from '@/components/common/TierImage';
 
@@ -121,18 +119,13 @@ export default function RankingsTable(props: RankingsTableProps) {
                   <Box flex="1 1 0" bg="red800" />
                 </Flex>
               </Td>
-              <Td w="112px" display="flex" gap="8px">
-                {rank.tierInfo.mostChampionIds.map((id) => (
-                  <Image
-                    key={id}
-                    src={championIconUrl(championIdEnNameMap[id])}
-                    width={32}
-                    height={32}
-                    alt={championIdKrNameMap[id]}
-                    css={{ borderRadius: '9999px' }}
-                  />
-                ))}
-              </Td>
+              <ChampionImagesFiller
+                as="td"
+                championIds={rank.tierInfo.mostChampionIds}
+                imagesSizePx={32}
+                w="112px"
+                gap="8px"
+              />
             </Tr>
           );
         })}

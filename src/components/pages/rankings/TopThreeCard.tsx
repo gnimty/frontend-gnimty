@@ -2,15 +2,14 @@ import { Link } from '@chakra-ui/next-js';
 import { Box, Flex, HStack, Text } from '@chakra-ui/react';
 import Image from 'next/image';
 
-import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import type { SummonerRankDto } from '@/apis/types';
-import championIconUrl from '@/apis/utils/championIconUrl';
 import championSplashUrl from '@/apis/utils/championSplashUrl';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
 import shortTierName from '@/apis/utils/shortTierName';
 import firstPlaceFrame from '@/assets/images/first-place-frame.png';
 import secondPlaceFrame from '@/assets/images/second-place-frame.png';
 import thirdPlaceFrame from '@/assets/images/third-place-frame.png';
+import ChampionImagesFiller from '@/components/common/ChampionImagesFiller';
 import PositionImage from '@/components/common/position-image/PositionImage';
 import TierImage from '@/components/common/TierImage';
 
@@ -115,20 +114,7 @@ export default function TopThreeCard(props: TopThreeCardProps) {
               ))}
             </HStack>
           </Flex>
-          <HStack gap="8px">
-            {summonerRank.tierInfo.mostChampionIds.map((championId) => (
-              <Image
-                key={championId}
-                src={championIconUrl(championIdEnNameMap[championId])}
-                alt=""
-                width={32}
-                height={32}
-                css={{
-                  borderRadius: '999px',
-                }}
-              />
-            ))}
-          </HStack>
+          <ChampionImagesFiller championIds={summonerRank.tierInfo.mostChampionIds} imagesSizePx={32} gap="8px" />
           <HStack gap="4px">
             <Flex gap="2px" textStyle="t2" fontWeight="normal" color="gray600">
               <Box>W</Box>

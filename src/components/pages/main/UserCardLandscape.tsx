@@ -1,13 +1,11 @@
 import Image from 'next/image';
 
-import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
-import championIdKrNameMap from '@/apis/constants/championIdKrNameMap';
 import type { RecommendedSummonersEntry } from '@/apis/types';
-import championIconUrl from '@/apis/utils/championIconUrl';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
 import shortTierName from '@/apis/utils/shortTierName';
 import Chat from '@/assets/icons/system/chat.svg';
 import Copy from '@/assets/icons/system/copy.svg';
+import ChampionImagesFiller from '@/components/common/ChampionImagesFiller';
 import PositionImage from '@/components/common/position-image/PositionImage';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
@@ -76,21 +74,12 @@ export default function UserCardLandscape(props: UserCardLandscapeProps) {
           </li>
         ))}
       </ol>
-      <ol css={style.champions}>
-        {[summoner.frequentChampionId1, summoner.frequentChampionId2, summoner.frequentChampionId3].map(
-          (championId) => (
-            <li key={championId} css={style.championItem}>
-              <Image
-                src={championIconUrl(championIdEnNameMap[championId])}
-                alt={championIdKrNameMap[championId]}
-                width={32}
-                height={32}
-                css={style.championImage}
-              />
-            </li>
-          ),
-        )}
-      </ol>
+      <ChampionImagesFiller
+        championIds={[summoner.frequentChampionId1, summoner.frequentChampionId2, summoner.frequentChampionId3]}
+        imagesSizePx={32}
+        w="112px"
+        gap="8px"
+      />
       <p css={style.introduction}>{summoner.introduction}</p>
       <button type="button" aria-label="채팅하기" onClick={handleChatButtonClick} css={style.chatButton}>
         <Chat width={24} height={24} aria-hidden css={{ display: 'block', lineHeight: 0 }} />
