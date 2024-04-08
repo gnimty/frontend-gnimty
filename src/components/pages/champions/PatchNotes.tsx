@@ -62,7 +62,12 @@ function PatchInfo({ patch }: PatchInfoProps) {
           {targetImgUrl ? (
             <Box w="40px" h="40px">
               <Image
-                src={new URL(targetImgUrl).searchParams.get('f')!.replace(/^http:\/\//, 'https://')}
+                src={
+                  // targetImgUrl의 case가 더 있을 수 있음
+                  targetImgUrl.startsWith('https://am-a.akamaihd.net/')
+                    ? String(new URL(targetImgUrl).searchParams.get('f')?.replace(/^http:\/\//, 'https://'))
+                    : targetImgUrl
+                }
                 width="40"
                 height="40"
                 alt={target}
@@ -96,7 +101,7 @@ function PatchInfo({ patch }: PatchInfoProps) {
             return (
               <Fragment key={change}>
                 <Text textStyle="t2" fontWeight="400" color="gray500">
-                  -{change.split('⇒')[0]}
+                  - {change.split('⇒')[0]}
                 </Text>
                 <Text textStyle="t2" fontWeight="400" pl="5px">
                   ⇒{change.split('⇒')[1]}
@@ -106,7 +111,7 @@ function PatchInfo({ patch }: PatchInfoProps) {
           }
           return (
             <Text key={change} textStyle="t2" fontWeight="400" pl="5px">
-              -{change}
+              - {change}
             </Text>
           );
         })}
