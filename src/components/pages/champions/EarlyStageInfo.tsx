@@ -1,14 +1,12 @@
 import { Box, HStack, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 
-import dataDragonVersion from '@/apis/constants/dataDragonVersion';
 import type {
   ItemBootsComponentStat,
   ItemMiddleComponentStat,
   ItemStartComponentStat,
   SpellComponentStat,
 } from '@/apis/types';
-import championIconUrl from '@/apis/utils/championIconUrl';
 import itemIconUrl from '@/apis/utils/itemIconUrl';
 import spellIconUrl from '@/apis/utils/spellIconUrl';
 
