@@ -446,3 +446,33 @@ export interface ChampionAnalysisResponse {
   specialists: SummonerPlayWithSummonerDto[];
   laneSelectRates: LaneSelectDto[];
 }
+
+export type CommentsType = 'QUESTION' | 'TIP';
+
+export interface ChampionCommentsEntry {
+  description: string;
+  id: number;
+  internalTagName: string;
+  tier: Tier;
+  division: number;
+  lane: Position;
+  opponentChampionId: number;
+  depth: number;
+  mentionedInternalTagName: string;
+  contents: string;
+  commentsType: CommentsType;
+  upCount: number;
+  downCount: number;
+  version: string;
+  createdAt: string;
+  updatedAt: string;
+  deleted: boolean;
+  memberId: number;
+  likeOrNot: boolean;
+  parentChampionCommentsId: number;
+  childChampionComments: ChampionCommentsEntry[];
+}
+
+export interface ChampionCommentsResponse {
+  parentChampionComments: ChampionCommentsEntry[];
+}
