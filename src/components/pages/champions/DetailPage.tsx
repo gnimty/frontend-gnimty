@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 import championDetailQuery from '@/apis/queries/championDetailQuery';
 import championSkillsQuery from '@/apis/queries/championSkillsQuery';
-import type { PositionFilter } from '@/apis/types';
+import type { Position, PositionFilter } from '@/apis/types';
 
 import ChampionBasicInfo from './ChampionBasicInfo';
 import CounterChampions from './CounterChampions';
@@ -19,12 +19,13 @@ import Tip from './tip/Tip';
 
 interface DetailPageProps {
   championEnName: string;
+  queryLane?: Position;
 }
 
-export default function DetailPage({ championEnName }: DetailPageProps) {
+export default function DetailPage({ championEnName, queryLane }: DetailPageProps) {
   const router = useRouter();
   const capitalizedChampionEnName = championEnName.charAt(0).toUpperCase() + championEnName.slice(1);
-  const [lane, setLane] = useState<PositionFilter | 'UNKNOWN' | ''>('');
+  const [lane, setLane] = useState<PositionFilter | 'UNKNOWN' | ''>(queryLane ?? '');
   const { data, error } = useQuery(championDetailQuery({ championEnName: capitalizedChampionEnName, lane }));
   const { data: skillData } = useQuery(championSkillsQuery({ championEnName: capitalizedChampionEnName }));
   const handleUpdateLane = (lane: PositionFilter) => setLane(lane);
