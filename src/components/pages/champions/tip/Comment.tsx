@@ -1,6 +1,7 @@
 import { Box, Button, Divider, HStack, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 
+import type { ChampionCommentsEntry } from '@/apis/types';
 import championIconUrl from '@/apis/utils/championIconUrl';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
 import Up from '@/assets/icons/system/up.svg';
@@ -10,7 +11,7 @@ import TierImage from '@/components/common/TierImage';
 import Replies from './Replies';
 
 interface CommentProps {
-  replies: string[];
+  replies?: ChampionCommentsEntry[];
 }
 
 export default function Comment({ replies }: CommentProps) {

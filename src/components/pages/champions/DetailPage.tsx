@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import champions from '@/apis/constants/champions';
+import { championComments } from '@/apis/queries/championComment';
 import championDetailQuery from '@/apis/queries/championDetailQuery';
 import championSkillsQuery from '@/apis/queries/championSkillsQuery';
 import type { Position, PositionFilter } from '@/apis/types';
@@ -24,10 +26,14 @@ interface DetailPageProps {
 
 export default function DetailPage({ championEnName, queryLane }: DetailPageProps) {
   const router = useRouter();
+  const championId = champions.find(
+    (champion) => champion.enName.toLowerCase() === championEnName.toLowerCase(),
+  )?.championId;
   const capitalizedChampionEnName = championEnName.charAt(0).toUpperCase() + championEnName.slice(1);
   const [lane, setLane] = useState<PositionFilter | 'UNKNOWN' | ''>(queryLane ?? '');
   const { data, error } = useQuery(championDetailQuery({ championEnName: capitalizedChampionEnName, lane }));
   const { data: skillData } = useQuery(championSkillsQuery({ championEnName: capitalizedChampionEnName }));
+  const { data: championCommentsData } = useQuery(championComments({ championId: championId ?? 1 }));
   const handleUpdateLane = (lane: PositionFilter) => setLane(lane);
 
   useEffect(() => {
@@ -76,7 +82,7 @@ export default function DetailPage({ championEnName, queryLane }: DetailPageProp
         <SummonerRank specialists={data?.data.specialists} />
       </HStack>
       {/* 5 운영 팁 */}
-      <Tip />
+      <Tip tipData={championCommentsData?.data.parentChampionComments} />
     </VStack>
   );
 }
