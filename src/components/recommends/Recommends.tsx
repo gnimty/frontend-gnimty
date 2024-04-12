@@ -30,9 +30,8 @@ const RecommendsModal = ({ isOpen, onClose }: RecommendsModalProps) => {
   const [queueType, setQueueType] = useState<Omit<GameMode, 'BLIND'>>('RANK_SOLO');
   const { data } = useQuery(mainRecommendsQuery({ queueType }));
   const [page, setPage] = useState(0);
-  // const total = data?.data.recommendedSummoners.length ?? 0;
-  // const totalPages = Math.ceil(total / 3);
-  const totalPages = 3;
+  const total = data?.data.recommendedSummoners.length ?? 0;
+  const totalPages = Math.ceil(total / 3);
 
   const handleQueueTypeChange = (value: Omit<GameMode, 'BLIND'>) => {
     setQueueType(value);
