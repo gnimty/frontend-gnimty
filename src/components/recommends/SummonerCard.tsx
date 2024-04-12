@@ -1,6 +1,6 @@
 import { Box, Text, VStack, HStack, Button } from '@chakra-ui/react';
 
-import champions from '@/apis/constants/champions';
+import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import type { QueueType, SummonerDto } from '@/apis/types';
 import Like from '@/assets/icons/system/like.svg';
 
@@ -58,7 +58,7 @@ const SummonerCard = ({ summoner, queueType }: SummonerCardProps) => {
               ? soloTierInfo.mostChampionIds.map((championId) => (
                   <ChampionIcon
                     key={championId}
-                    championEnName={champions.find((champion) => champion.championId === championId)!.enName}
+                    championEnName={championIdEnNameMap[championId]}
                     width={32}
                     height={32}
                     radius={16}
@@ -67,7 +67,7 @@ const SummonerCard = ({ summoner, queueType }: SummonerCardProps) => {
               : flexTierInfo!.mostChampionIds.map((championId) => (
                   <ChampionIcon
                     key={championId}
-                    championEnName={champions.find((champion) => champion.championId === championId)!.enName}
+                    championEnName={championIdEnNameMap[championId]}
                     width={32}
                     height={32}
                     radius={16}
