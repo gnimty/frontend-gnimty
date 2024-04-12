@@ -89,7 +89,7 @@ const RecommendsModal = ({ isOpen, onClose }: RecommendsModalProps) => {
           <HStack w="1000px" h="full" gap="20px">
             {data?.data.recommendedSummoners
               .slice(page * 3, page * 3 + 3)
-              .map((summoner) => <SummonerCard key={summoner.summonerId} />)}
+              .map((summoner) => <SummonerCard key={summoner.summonerId} summoner={summoner} queueType={queueType} />)}
           </HStack>
         </VStack>
         <HStack w="full" h="40px" p="16px 0" gap="10px" justify="center" align="center">

@@ -1,46 +1,78 @@
 import { Box, Text, VStack, HStack, Button } from '@chakra-ui/react';
 
+import champions from '@/apis/constants/champions';
+import type { QueueType, SummonerDto } from '@/apis/types';
 import Like from '@/assets/icons/system/like.svg';
 
 import ChampionIcon from '../common/ChampionIcon';
 import ProfileImage from '../common/ProfileImage';
 import TierImage from '../common/TierImage';
 
-const SummonerCard = () => {
+interface SummonerCardProps {
+  summoner: SummonerDto;
+  queueType: Omit<QueueType, 'BLIND'>;
+}
+
+const SummonerCard = ({ summoner, queueType }: SummonerCardProps) => {
+  const { summonerName, tagLine, profileIconId, soloTierInfo, flexTierInfo } = summoner;
   return (
     <VStack w="320px" borderRadius="8px" bgColor="white" p="60px 20px 20px 20px" gap="40px">
       <Box w="60px" h="60px" borderRadius="30px" overflow="hidden">
-        <ProfileImage iconId={2} width={60} height={60} />
+        <ProfileImage iconId={profileIconId} width={60} height={60} />
       </Box>
       <VStack gap="8px" justify="center">
         <Text textStyle="h2" fontWeight="700">
-          2977583581284160
+          {summonerName}
         </Text>
         <Text textStyle="h3" fontWeight="400" color="gray600">
-          #KR1
+          {tagLine}
         </Text>
         <HStack gap="8px">
-          <TierImage tier="grandmaster" width={28} height={28} />
+          {/* queueType이 RANK_FLEX일 경우, 추천된 소환사라면 flexTierInfo가 존재할것이라 가정 */}
+          <TierImage tier={queueType === 'RANK_SOLO' ? soloTierInfo.tier : flexTierInfo!.tier} width={28} height={28} />
           <Text textStyle="h3" fontWeight="700">
-            GM
+            {queueType === 'RANK_SOLO' ? soloTierInfo.tier : flexTierInfo?.tier}
           </Text>
           <Text textStyle="h3" fontWeight="400" color="gray500">
-            {(1200).toLocaleString('ko-KR')}LP
+            {queueType === 'RANK_SOLO'
+              ? soloTierInfo.lp.toLocaleString('ko-KR')
+              : flexTierInfo?.lp.toLocaleString('ko-KR')}
+            LP
           </Text>
         </HStack>
         <VStack w="180px" gap="12px" p="20px 0 0 0" borderTop="1px solid" borderColor="gray300">
           <HStack gap="8px">
             <Text textStyle="h3" fontWeight="400">
-              16게임
+              {queueType === 'RANK_SOLO' ? soloTierInfo.plays : flexTierInfo?.plays}게임
             </Text>
             <Text textStyle="h3" fontWeight="700" color="green800">
-              69%
+              {/* queueType이 RANK_FLEX일 경우, 추천된 소환사라면 flexTierInfo가 존재할것이라 가정 */}
+              {queueType === 'RANK_SOLO'
+                ? (soloTierInfo.winRate * 100).toFixed(2)
+                : (flexTierInfo!.winRate * 100).toFixed(2)}
+              %
             </Text>
           </HStack>
           <HStack gap="12px">
-            <ChampionIcon championEnName="fizz" width={32} height={32} radius={16} />
-            <ChampionIcon championEnName="camille" width={32} height={32} radius={16} />
-            <ChampionIcon championEnName="zed" width={32} height={32} radius={16} />
+            {queueType === 'RANK_SOLO'
+              ? soloTierInfo.mostChampionIds.map((championId) => (
+                  <ChampionIcon
+                    key={championId}
+                    championEnName={champions.find((champion) => champion.championId === championId)!.enName}
+                    width={32}
+                    height={32}
+                    radius={16}
+                  />
+                ))
+              : flexTierInfo!.mostChampionIds.map((championId) => (
+                  <ChampionIcon
+                    key={championId}
+                    championEnName={champions.find((champion) => champion.championId === championId)!.enName}
+                    width={32}
+                    height={32}
+                    radius={16}
+                  />
+                ))}
           </HStack>
         </VStack>
       </VStack>
