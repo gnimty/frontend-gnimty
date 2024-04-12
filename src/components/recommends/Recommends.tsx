@@ -1,5 +1,6 @@
 import {
   HStack,
+  Box,
   IconButton,
   Modal,
   ModalContent,
@@ -9,10 +10,11 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import { useTheme } from '@emotion/react';
 import { useState } from 'react';
 
-import Exit from '@/assets/icons/system/exit.svg';
 import type { GameMode } from '@/apis/types';
+import Exit from '@/assets/icons/system/exit.svg';
 
 import SummonerCard from './SummonerCard';
 
@@ -22,6 +24,7 @@ interface RecommendsModalProps {
 }
 
 const RecommendsModal = ({ isOpen, onClose }: RecommendsModalProps) => {
+  const theme = useTheme();
   const [queueType, setQueueType] = useState<Omit<GameMode, 'BLIND'>>('RANK_SOLO');
 
   const handleQueueTypeChange = (value: Omit<GameMode, 'BLIND'>) => {
@@ -32,7 +35,6 @@ const RecommendsModal = ({ isOpen, onClose }: RecommendsModalProps) => {
       <ModalOverlay />
       <ModalContent
         w="1040px"
-        maxH="650px"
         borderRadius="8px"
         bgColor="white"
         display="flex"
@@ -84,6 +86,19 @@ const RecommendsModal = ({ isOpen, onClose }: RecommendsModalProps) => {
             ))}
           </HStack>
         </VStack>
+        <HStack w="full" h="40px" p="16px 0" gap="10px" justify="center" align="center">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <Box
+              key={index}
+              w="8px"
+              h="8px"
+              bgColor="gray300"
+              borderRadius="99px"
+              aria-selected={index === 0 ? 'true' : 'false'}
+              _selected={{ bgColor: theme.colors.main }}
+            />
+          ))}
+        </HStack>
       </ModalContent>
     </Modal>
   );

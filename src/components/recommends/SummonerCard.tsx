@@ -8,7 +8,7 @@ import TierImage from '../common/TierImage';
 
 const SummonerCard = () => {
   return (
-    <VStack w="320px" h="460px" borderRadius="8px" bgColor="white" p="60px 20px 20px 20px" gap="40px">
+    <VStack w="320px" borderRadius="8px" bgColor="white" p="60px 20px 20px 20px" gap="40px">
       <Box w="60px" h="60px" borderRadius="30px" overflow="hidden">
         <ProfileImage iconId={2} width={60} height={60} />
       </Box>
@@ -28,7 +28,7 @@ const SummonerCard = () => {
             {(1200).toLocaleString('ko-KR')}LP
           </Text>
         </HStack>
-        <VStack gap="12px" p="20px 0 0 0" borderTop="1px solid" borderColor="gray300">
+        <VStack w="180px" gap="12px" p="20px 0 0 0" borderTop="1px solid" borderColor="gray300">
           <HStack gap="8px">
             <Text textStyle="h3" fontWeight="400">
               16게임
@@ -43,24 +43,24 @@ const SummonerCard = () => {
             <ChampionIcon championEnName="zed" width={32} height={32} radius={16} />
           </HStack>
         </VStack>
-        <Button
-          w="180px"
-          h="40px"
-          borderRadius="4px"
-          p="10px 12px"
-          gap="8px"
-          bgColor="main"
-          color="white"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Text textStyle="t2" fontWeight="400">
-            소환사 추천하기
-          </Text>
-          <Like width="20px" height="20px" stroke="#fff" />
-        </Button>
       </VStack>
+      <Button
+        w="180px"
+        h="40px"
+        borderRadius="4px"
+        p="10px 12px"
+        gap="8px"
+        bgColor="main"
+        color="white"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Text textStyle="t2" fontWeight="400">
+          소환사 추천하기
+        </Text>
+        <Like width="20px" height="20px" stroke="#fff" />
+      </Button>
     </VStack>
   );
 };
