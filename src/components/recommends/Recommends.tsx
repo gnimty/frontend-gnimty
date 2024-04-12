@@ -11,8 +11,10 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import mainRecommendsQuery from '@/apis/queries/mainRecommendsQuery';
 import type { GameMode } from '@/apis/types';
 import Exit from '@/assets/icons/system/exit.svg';
 
@@ -26,6 +28,11 @@ interface RecommendsModalProps {
 const RecommendsModal = ({ isOpen, onClose }: RecommendsModalProps) => {
   const theme = useTheme();
   const [queueType, setQueueType] = useState<Omit<GameMode, 'BLIND'>>('RANK_SOLO');
+  const { data } = useQuery(mainRecommendsQuery({ queueType }));
+  const [page, setPage] = useState(0);
+  // const total = data?.data.recommendedSummoners.length ?? 0;
+  // const totalPages = Math.ceil(total / 3);
+  const totalPages = 3;
 
   const handleQueueTypeChange = (value: Omit<GameMode, 'BLIND'>) => {
     setQueueType(value);
@@ -79,23 +86,24 @@ const RecommendsModal = ({ isOpen, onClose }: RecommendsModalProps) => {
               </Text>
             </Radio>
           </RadioGroup>
-          {/* TODO: into carousel */}
           <HStack w="1000px" h="full" gap="20px">
-            {Array.from({ length: 3 }).map((_, index) => (
-              <SummonerCard key={index} />
-            ))}
+            {data?.data.recommendedSummoners
+              .slice(page * 3, page * 3 + 3)
+              .map((summoner) => <SummonerCard key={summoner.summonerId} />)}
           </HStack>
         </VStack>
         <HStack w="full" h="40px" p="16px 0" gap="10px" justify="center" align="center">
-          {Array.from({ length: 3 }).map((_, index) => (
+          {Array.from({ length: totalPages }).map((_, index) => (
             <Box
               key={index}
               w="8px"
               h="8px"
               bgColor="gray300"
               borderRadius="99px"
-              aria-selected={index === 0 ? 'true' : 'false'}
+              aria-selected={index === page ? 'true' : 'false'}
               _selected={{ bgColor: theme.colors.main }}
+              onClick={() => setPage(index)}
+              cursor="pointer"
             />
           ))}
         </HStack>
