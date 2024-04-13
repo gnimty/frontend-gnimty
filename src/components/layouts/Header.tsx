@@ -1,5 +1,4 @@
-import { useDisclosure } from '@chakra-ui/hooks';
-import { Button, Flex, IconButton } from '@chakra-ui/react';
+import { Button, Flex, IconButton, useDisclosure } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -14,6 +13,7 @@ import { useAuthContext } from '@/contexts/AuthContext';
 
 import ActiveLink from '../common/ActiveLink';
 import SummonerSearchBar from '../common/SummonerSearchBar';
+import { useAccountModalStore } from '../pages/account/accountModalStore';
 import RecommendsModal from '../recommends/Recommends';
 
 import * as style from './Header.style';
@@ -27,7 +27,7 @@ const links = [
 ];
 
 export default function Header() {
-  const { isOpen: isOpenLoginModal, onOpen: onOpenLoginModal, onClose: onCloseLoginModal } = useDisclosure();
+  const openAccountModal = useAccountModalStore((s) => s.open);
   const { isOpen: isOpenRecommends, onOpen: onOpenRecommends, onClose: onCloseRecommends } = useDisclosure();
   const { isAuthenticated, setIsAuthenticated } = useAuthContext();
   const { data: myInfoData } = useQuery(getMyInfoQuery());
@@ -93,12 +93,12 @@ export default function Header() {
             </Flex>
           </Flex>
         ) : (
-          <Button variant="default" size="md" width="80px" onClick={onOpenLoginModal}>
+          <Button variant="default" size="md" width="80px" onClick={openAccountModal}>
             로그인
           </Button>
         )}
       </header>
-      <AccountModal isOpen={isOpenLoginModal} onClose={onCloseLoginModal} />
+      <AccountModal />
       <RecommendsModal isOpen={isOpenRecommends} onClose={onCloseRecommends} />
     </>
   );
