@@ -1,14 +1,16 @@
 'use client';
 import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 
-import useGetMyInfo from '@/apis/useGetMyInfo';
+import getMyInfoQuery from '@/apis/queries/getMyInfoQuery';
 import BlockManagementTab from '@/components/pages/mypage/blockManagement/BlockManagementTab';
 import ChangeStateTab from '@/components/pages/mypage/changeState/ChangeStateTab';
 import UserInfoTab from '@/components/pages/mypage/userInfo/UserInfoTab';
 import UserProfileCard from '@/components/pages/mypage/UserProfileCard';
 
 export default function MyPage() {
-  const myProfile = useGetMyInfo();
+  const { data } = useQuery(getMyInfoQuery());
+  const myProfile = data?.data;
 
   if (myProfile) {
     const mainAccount = myProfile.riotDependentInfo.riotAccounts.find((account) => account.isMain);

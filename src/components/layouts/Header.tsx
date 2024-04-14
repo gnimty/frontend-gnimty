@@ -1,10 +1,11 @@
 import { useDisclosure } from '@chakra-ui/hooks';
 import { Button, Flex, IconButton } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import useGetMyInfo from '@/apis/useGetMyInfo';
+import getMyInfoQuery from '@/apis/queries/getMyInfoQuery';
 import { logout } from '@/apis/useLogout';
 import IconLike from '@/assets/icons/system/like.svg';
 import Select from '@/components/common/select/Select';
@@ -29,7 +30,8 @@ const DynamicProfileImage = dynamic(async () => import('@/components/common/Prof
 export default function Header() {
   const { isOpen: isOpenLoginModal, onOpen: onOpenLoginModal, onClose: onCloseLoginModal } = useDisclosure();
   const { isAuthenticated, setIsAuthenticated } = useAuthContext();
-  const myInfo = useGetMyInfo();
+  const { data: myInfoData } = useQuery(getMyInfoQuery());
+  const myInfo = myInfoData?.data;
 
   useEffect(() => {
     setIsAuthenticated(!!myInfo);
