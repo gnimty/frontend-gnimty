@@ -12,6 +12,7 @@ import {
 import Image from 'next/image';
 import { Fragment } from 'react';
 
+import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import type { ChampionPatch } from '@/apis/types';
 import ChampionIcon from '@/components/common/ChampionIcon';
 
@@ -45,8 +46,8 @@ interface PatchInfoProps {
 }
 
 function PatchInfo({ patch }: PatchInfoProps) {
-  const { enName, version, target, targetImgUrl, changes } = patch;
-  const capitalizedEnName = enName.charAt(0).toUpperCase() + enName.slice(1);
+  const { championId, version, target, targetImgUrl, changes } = patch;
+  const championName = championIdEnNameMap[championId];
   return (
     <AccordionItem bg="white">
       <AccordionButton
@@ -74,7 +75,7 @@ function PatchInfo({ patch }: PatchInfoProps) {
               />
             </Box>
           ) : (
-            <ChampionIcon championEnName={capitalizedEnName} width={40} height={40} />
+            <ChampionIcon championEnName={championName} width={40} height={40} />
           )}
           <VStack gap="4px" justify="flex-start">
             <Text textStyle="t1" fontWeight="700">

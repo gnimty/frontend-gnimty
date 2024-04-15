@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
+import champions from '@/apis/constants/champions';
 import championDetailQuery from '@/apis/queries/championDetailQuery';
 import championSkillsQuery from '@/apis/queries/championSkillsQuery';
 import type { Position, PositionFilter } from '@/apis/types';
@@ -24,10 +26,16 @@ interface DetailPageProps {
 
 export default function DetailPage({ championEnName, queryLane }: DetailPageProps) {
   const router = useRouter();
-  const capitalizedChampionEnName = championEnName.charAt(0).toUpperCase() + championEnName.slice(1);
+  const championId = champions.find(
+    (champion) => champion.enName.toLowerCase() === championEnName.toLowerCase(),
+  )?.championId;
+  const championName =
+    championId !== undefined
+      ? championIdEnNameMap[championId]
+      : championEnName.charAt(0).toUpperCase() + championEnName.slice(1);
   const [lane, setLane] = useState<PositionFilter | 'UNKNOWN' | ''>(queryLane ?? '');
-  const { data, error } = useQuery(championDetailQuery({ championEnName: capitalizedChampionEnName, lane }));
-  const { data: skillData } = useQuery(championSkillsQuery({ championEnName: capitalizedChampionEnName }));
+  const { data, error } = useQuery(championDetailQuery({ championEnName: championName, lane }));
+  const { data: skillData } = useQuery(championSkillsQuery({ championEnName: championName }));
   const handleUpdateLane = (lane: PositionFilter) => setLane(lane);
 
   useEffect(() => {
@@ -58,7 +66,7 @@ export default function DetailPage({ championEnName, queryLane }: DetailPageProp
       {/* 2 룬*/}
       <Runes perkBuilds={data?.data.perkBuilds} />
       {/* 3 스킬 빌드 */}
-      <SkillBuild skillBuilds={data?.data.skillBuilds} skillData={skillData?.data[capitalizedChampionEnName].spells} />
+      <SkillBuild skillBuilds={data?.data.skillBuilds} skillData={skillData?.data[championName].spells} />
       {/* 4 소환사 주문, 시작 아이템, 첫 귀환, 신발 */}
       <HStack w="full" gap="12px" justify="space-between">
         {/* 소환사 주문 */}
