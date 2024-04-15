@@ -1,8 +1,11 @@
-import { Box, Button, Divider, HStack, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Divider, HStack, Text, Textarea, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
+import { useRef, useState } from 'react';
 
+import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import type { ChampionCommentsEntry } from '@/apis/types';
 import championIconUrl from '@/apis/utils/championIconUrl';
+import fullTierName from '@/apis/utils/fullTierName';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
 import Up from '@/assets/icons/system/up.svg';
 import PositionImage from '@/components/common/position-image/PositionImage';
@@ -11,10 +14,28 @@ import TierImage from '@/components/common/TierImage';
 import Replies from './Replies';
 
 interface CommentProps {
-  replies?: ChampionCommentsEntry[];
+  comment: ChampionCommentsEntry;
 }
 
-export default function Comment({ replies }: CommentProps) {
+export default function Comment({ comment }: CommentProps) {
+  const [isEdit, setIsEdit] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  // profileIconId 필요
+  const {
+    internalTagName,
+    tier,
+    division,
+    lane,
+    opponentChampionId,
+    contents,
+    commentsType,
+    upCount,
+    downCount,
+    version,
+    createdAt,
+    childChampionComments,
+  } = comment;
+  const championName = championIdEnNameMap[opponentChampionId];
   return (
     <VStack bgColor="white" p="20px" gap="12px" align="flex-start">
       <HStack w="full" justify="space-between">
@@ -23,33 +44,39 @@ export default function Comment({ replies }: CommentProps) {
             <Image src={profileIconUrl(1)} width="24" height="24" alt="profileIcon" />
           </Box>
           <Text textStyle="t2" fontWeight="700">
-            KT DEFT
+            {internalTagName}
           </Text>
           <HStack gap="4px" align="center">
-            <TierImage tier="challenger" width="24" />
+            <TierImage tier={tier} width="24" />
             <Text textStyle="t2" fontWeight="400">
-              Challenger
+              {fullTierName(tier, division)}
             </Text>
           </HStack>
           <Divider orientation="vertical" h="full" colorScheme="gray500" />
           <Text textStyle="body" fontWeight="400" color="gray500">
+            {/* TODO: createdAt 비교 */}
             2일전
           </Text>
         </HStack>
-        <HStack h="24px" gap="8px">
-          <Text textStyle="body" fontWeight="400" color="gray500">
-            수정
-          </Text>
-          <Divider orientation="vertical" h="full" colorScheme="gray500" />
-          <Text textStyle="body" fontWeight="400" color="gray500">
-            삭제
-          </Text>
-        </HStack>
+        {!isEdit && (
+          <HStack h="24px" gap="8px">
+            {/* TODO: 수정/삭제 권한 확인 필요 -  */}
+            {/* TODO: 수정 방식 논의 */}
+            <Text textStyle="body" fontWeight="400" color="gray500" onClick={() => setIsEdit(true)} cursor="pointer">
+              수정
+            </Text>
+            <Divider orientation="vertical" h="full" colorScheme="gray500" />
+            {/* TODO: 삭제 방식 논의 */}
+            <Text textStyle="body" fontWeight="400" color="gray500">
+              삭제
+            </Text>
+          </HStack>
+        )}
       </HStack>
       <HStack gap="4px">
         <Box p="4px 8px" borderRadius="999px" bgColor="main" color="white">
           <Text textStyle="body" fontWeight="400">
-            그님팁
+            {commentsType === 'TIP' ? '그님팁' : '알려주세요'}
           </Text>
         </Box>
         <Box
@@ -61,35 +88,69 @@ export default function Comment({ replies }: CommentProps) {
           justifyContent="center"
           alignItems="center"
         >
-          <PositionImage position="BOTTOM" width="16" />
+          <PositionImage position={lane} width="16" />
         </Box>
         <Box w="24px" h="24px" borderRadius="999px" overflow="hidden">
-          <Image src={championIconUrl('Ezreal')} width="24" height="24" alt="Ezreal" />
+          <Image src={championIconUrl(championName)} width="24" height="24" alt="Ezreal" />
         </Box>
         <Box borderRadius="999px" bgColor="gray200" color="gray600" p="4px 8px">
           <Text textStyle="body" fontWeight="400">
-            v 1.0.3
+            v {version}
           </Text>
         </Box>
       </HStack>
-      <Box w="full" textStyle="t2" fontWeight="400">
-        진도이제 1티어 올라올때 됨;; 데프트가 한번 써줬으면 좋겠다 제발;;진도이제 1티어 올라올때 됨;; 데프트가 한번
-        써줬으면 좋겠다 제발;;진도이제 1티어 올라올때 됨;; 데프트가 한번 써줬으면 좋겠다 제발;;진도이제 1티어 올라올때
-        됨;; 데프트가 한번 써줬으면 좋겠다 제발;;진도이제 1티어 올라올때 됨;; 데프트가 한번 써줬으면 좋겠다
-        제발;;진도이제 1티어 올라올때 됨;; 데프트가 한번 써줬으면 좋겠다 제발;;진도이제 1티어 올라올때 됨;; 데프트가
-        한번 써줬으면 좋겠다 제발;;진도이제 1티어 올라올때 됨;; 데프트가 한번 써줬으면 좋겠다 제발;;진도이제 1티어
-        올라올때 됨;; 데프트가 한번 써줬으면 좋겠다 제발;;진도이제 1티어 올라올때 됨;; 데프트가 한번 써줬으면 좋겠다
-        제발;;진도이제 1티어 올라올때 됨;; 데프트가 한번 써줬으면 좋겠다 제발;;진도이제 1티어 올라올때 됨;; 데프트가
-        한번 써줬으면 좋겠다 제발;;진도이제 1티어 올라올때 됨;; 데프트가 한번 써줬으면 좋겠다 제발;;진도이제 1티어
-        올라올때 됨;; 데프트가 한번 써줬으면 좋겠다 제발;;진도이제 1티어 올라올때 됨;; 데프트가 한번 써줬으면 좋겠다
-        제발;;진도이제 1티어 올라올때 됨;; 데프트가 한번 써줬으면 좋겠다 제발;;
-      </Box>
+      {isEdit ? (
+        <HStack gap="12px">
+          <Textarea
+            h="140px"
+            ref={textareaRef}
+            rows={4}
+            _placeholder={{
+              color: 'gray500',
+              textStyle: 't2',
+              fontWeight: '400',
+            }}
+            borderColor="gray400"
+            value={contents}
+          />
+          <VStack w="80px" gap="12px">
+            <Button
+              h="52px"
+              borderRadius="4px"
+              textStyle="t2"
+              fontWeight="700"
+              color="gray700"
+              border="1px solid"
+              borderColor="gray200"
+              p="16px 12px"
+              onClick={() => setIsEdit(false)}
+            >
+              취소
+            </Button>
+            <Button
+              h="76px"
+              borderRadius="4px"
+              textStyle="t2"
+              fontWeight="700"
+              color="gray700"
+              bgColor="main"
+              p="14px 12px"
+            >
+              저장
+            </Button>
+          </VStack>
+        </HStack>
+      ) : (
+        <Box w="full" textStyle="t2" fontWeight="400">
+          {contents}
+        </Box>
+      )}
       <HStack w="full" justify="space-between">
         <HStack gap="12px">
-          {replies.length > 0 && (
+          {childChampionComments.length > 0 && (
             <Button display="flex" alignItems="center" justifyContent="space-between" gap="2px">
               <Text textStyle="t2" fontWeight="400" color="gray600">
-                {replies.length}개의 답글
+                {childChampionComments.length}개의 답글
               </Text>
               {/* TODO: replies open/close */}
               <Up width="20" height="20" />
@@ -104,7 +165,7 @@ export default function Comment({ replies }: CommentProps) {
         <HStack gap="8px">
           <HStack borderRadius="999px" p="4px 8px" bgColor="main" color="white" textStyle="body" gap="4px">
             <Text fontWeight="400">추천</Text>
-            <Text fontWeight="700">1</Text>
+            <Text fontWeight="700">{upCount}</Text>
           </HStack>
           <HStack
             borderRadius="999px"
@@ -116,11 +177,11 @@ export default function Comment({ replies }: CommentProps) {
             gap="4px"
           >
             <Text fontWeight="400">비추천</Text>
-            <Text fontWeight="700">1</Text>
+            <Text fontWeight="700">{downCount}</Text>
           </HStack>
         </HStack>
       </HStack>
-      {replies.length > 0 && <Replies />}
+      {childChampionComments.length > 0 && <Replies />}
     </VStack>
   );
 }

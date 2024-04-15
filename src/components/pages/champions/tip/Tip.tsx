@@ -33,11 +33,12 @@ export default function Tip({ tipData }: TipProps) {
         </HStack>
       </HStack>
       {/* Input */}
+      {/* TODO: login상태에서만 보이도록? */}
       <TipInput />
       {/* Comments */}
       {tipData
         ?.filter((comment) => !switchOn || comment.version === dataDragonVersion)
-        .map((comment) => <Comment key={comment.id} replies={comment.childChampionComments} />)}
+        .map((comment) => <Comment key={comment.id} comment={comment} />)}
     </VStack>
   );
 }

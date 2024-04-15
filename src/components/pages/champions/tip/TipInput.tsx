@@ -1,7 +1,9 @@
 import { Box, Button, HStack, Textarea, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
+import { useRef, useState } from 'react';
 
 import dataDragonVersion from '@/apis/constants/dataDragonVersion';
+import type { ChampionCommentsEntry, CommentsType, Position } from '@/apis/types';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
 import PositionImage from '@/components/common/position-image/PositionImage';
 import Select from '@/components/common/select/Select';
@@ -9,6 +11,16 @@ import Select from '@/components/common/select/Select';
 import ChampionSelect from './ChampionSelect';
 
 export default function TipInput() {
+  const [options, setOptions] = useState<Partial<ChampionCommentsEntry>>();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const handleUpdateOpponentChampion = (championId: number) => {
+    setOptions({ ...options, opponentChampionId: championId });
+  };
+  const handleSubmit = () => {
+    if (textareaRef.current?.value) {
+      console.log(options, textareaRef.current.value);
+    }
+  };
   return (
     <HStack w="full" minH="232px" p="20px" gap="20px" justify="space-between" align="flex-start">
       <Box
@@ -27,27 +39,35 @@ export default function TipInput() {
           <Select
             options={[
               { text: '카테고리 선택', value: '' },
-              { text: '그님팁', value: '' },
-              { text: '알려주세요', value: '' },
+              { text: '그님팁', value: 'TIP' },
+              { text: '알려주세요', value: 'QUESTION' },
             ]}
             css={{ width: '136px' }}
+            onChange={(v) => {
+              if (['TIP', 'QUESTION'].includes(v)) setOptions({ ...options, commentsType: v as CommentsType });
+            }}
           />
           <Select
             options={[
               { text: '포지션 선택', value: '' },
-              { text: '탑', value: '', leftAsset: <PositionImage position="TOP" /> },
-              { text: '정글', value: '', leftAsset: <PositionImage position="JUNGLE" /> },
-              { text: '미드', value: '', leftAsset: <PositionImage position="MIDDLE" /> },
-              { text: '바텀', value: '', leftAsset: <PositionImage position="BOTTOM" /> },
-              { text: '서포터', value: '', leftAsset: <PositionImage position="UTILITY" /> },
+              { text: '탑', value: 'TOP', leftAsset: <PositionImage position="TOP" /> },
+              { text: '정글', value: 'JUNGLE', leftAsset: <PositionImage position="JUNGLE" /> },
+              { text: '미드', value: 'MIDDLE', leftAsset: <PositionImage position="MIDDLE" /> },
+              { text: '바텀', value: 'BOTTOM', leftAsset: <PositionImage position="BOTTOM" /> },
+              { text: '서포터', value: 'UTILITY', leftAsset: <PositionImage position="UTILITY" /> },
             ]}
             css={{ width: '136px' }}
+            onChange={(v) => {
+              if (['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY'].includes(v))
+                setOptions({ ...options, lane: v as Position });
+            }}
           />
-          <ChampionSelect />
+          <ChampionSelect onSelect={handleUpdateOpponentChampion} />
         </HStack>
         <HStack w="full" gap="12px" justify="space-between">
           <Textarea
             h="140px"
+            ref={textareaRef}
             rows={4}
             placeholder={`챔피언에 대한 정보나 나만의 팁을 남겨보세요! (현재 버전 v ${dataDragonVersion})`}
             _placeholder={{
@@ -66,6 +86,7 @@ export default function TipInput() {
             w="80px"
             h="140px"
             borderRadius="4px"
+            onClick={handleSubmit}
           >
             등록
           </Button>
