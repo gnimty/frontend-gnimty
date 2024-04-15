@@ -1,5 +1,6 @@
 import { type ReactNode } from 'react';
 
+import { AccountModalStoreProvider } from '@/components/pages/account/accountModalStore';
 import {
   FavoriteSummonerMapStoreContext,
   FavoriteSummonerMapStoreProvider,
@@ -21,15 +22,17 @@ export default function StoreProviders(props: StoreProvidersProps) {
   return (
     <RecentSearchesStoreProvider>
       <FavoriteSummonerMapStoreProvider>
-        {/* FIXME */}
-        {/* @ts-expect-error 나중에 createSSRStore() 수정 혹은 다른 방법을 통해 타이핑 작동하게 하기 */}
-        <PersistStoreStorageProvider StoreContext={RecentSearchesStoreContext}>
+        <AccountModalStoreProvider>
           {/* FIXME */}
           {/* @ts-expect-error 나중에 createSSRStore() 수정 혹은 다른 방법을 통해 타이핑 작동하게 하기 */}
-          <PersistStoreStorageProvider StoreContext={FavoriteSummonerMapStoreContext}>
-            {children}
+          <PersistStoreStorageProvider StoreContext={RecentSearchesStoreContext}>
+            {/* FIXME */}
+            {/* @ts-expect-error 나중에 createSSRStore() 수정 혹은 다른 방법을 통해 타이핑 작동하게 하기 */}
+            <PersistStoreStorageProvider StoreContext={FavoriteSummonerMapStoreContext}>
+              {children}
+            </PersistStoreStorageProvider>
           </PersistStoreStorageProvider>
-        </PersistStoreStorageProvider>
+        </AccountModalStoreProvider>
       </FavoriteSummonerMapStoreProvider>
     </RecentSearchesStoreProvider>
   );
