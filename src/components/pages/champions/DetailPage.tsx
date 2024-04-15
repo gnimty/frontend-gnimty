@@ -29,9 +29,10 @@ export default function DetailPage({ championEnName, queryLane }: DetailPageProp
   const championId = champions.find(
     (champion) => champion.enName.toLowerCase() === championEnName.toLowerCase(),
   )?.championId;
-  const championName = championId
-    ? championIdEnNameMap[championId]
-    : championEnName.charAt(0).toUpperCase() + championEnName.slice(1);
+  const championName =
+    championId !== undefined
+      ? championIdEnNameMap[championId]
+      : championEnName.charAt(0).toUpperCase() + championEnName.slice(1);
   const [lane, setLane] = useState<PositionFilter | 'UNKNOWN' | ''>(queryLane ?? '');
   const { data, error } = useQuery(championDetailQuery({ championEnName: championName, lane }));
   const { data: skillData } = useQuery(championSkillsQuery({ championEnName: championName }));
