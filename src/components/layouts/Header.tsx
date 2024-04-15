@@ -13,6 +13,7 @@ import { useAuthContext } from '@/contexts/AuthContext';
 
 import ActiveLink from '../common/ActiveLink';
 import SummonerSearchBar from '../common/SummonerSearchBar';
+import RecommendsModal from '../recommends/Recommends';
 
 import * as style from './Header.style';
 
@@ -28,6 +29,7 @@ const DynamicProfileImage = dynamic(async () => import('@/components/common/Prof
 
 export default function Header() {
   const { isOpen: isOpenLoginModal, onOpen: onOpenLoginModal, onClose: onCloseLoginModal } = useDisclosure();
+  const { isOpen: isOpenRecommends, onOpen: onOpenRecommends, onClose: onCloseRecommends } = useDisclosure();
   const { isAuthenticated, setIsAuthenticated } = useAuthContext();
   const myInfo = useGetMyInfo();
 
@@ -65,7 +67,7 @@ export default function Header() {
           <Flex position="relative" gap="8px">
             {router.pathname !== '/' && <SummonerSearchBar size="in-header" />}
             <Flex w="40px" h="40px" justifyContent="center" alignContent="center">
-              <IconButton w="28px" aria-label="search" icon={<IconLike />} />
+              <IconButton w="28px" aria-label="search" icon={<IconLike />} onClick={onOpenRecommends} />
             </Flex>
             <Flex w="40px" h="40px" justifyContent="center" alignContent="center">
               <Select
@@ -97,6 +99,7 @@ export default function Header() {
         )}
       </header>
       <AccountModal isOpen={isOpenLoginModal} onClose={onCloseLoginModal} />
+      <RecommendsModal isOpen={isOpenRecommends} onClose={onCloseRecommends} />
     </>
   );
 }
