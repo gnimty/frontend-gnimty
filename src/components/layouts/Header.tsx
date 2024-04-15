@@ -1,13 +1,13 @@
 import { useDisclosure } from '@chakra-ui/hooks';
 import { Button, Flex, IconButton } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import getMyInfoQuery from '@/apis/queries/getMyInfoQuery';
 import { logout } from '@/apis/useLogout';
 import IconLike from '@/assets/icons/system/like.svg';
+import ProfileImage from '@/components/common/ProfileImage';
 import Select from '@/components/common/select/Select';
 import AccountModal from '@/components/pages/account/AccountModal';
 import { useAuthContext } from '@/contexts/AuthContext';
@@ -25,8 +25,6 @@ const links = [
   { name: '랭킹', link: '/rankings?page=1' },
   { name: '할인/패치노트', link: '/information' },
 ];
-
-const DynamicProfileImage = dynamic(async () => import('@/components/common/ProfileImage'));
 
 export default function Header() {
   const { isOpen: isOpenLoginModal, onOpen: onOpenLoginModal, onClose: onCloseLoginModal } = useDisclosure();
@@ -79,7 +77,7 @@ export default function Header() {
                 ]}
                 onChange={onSelect}
                 CustomSelectButton={({ toggleDropdown }) => (
-                  <DynamicProfileImage
+                  <ProfileImage
                     iconId={myInfo?.riotDependentInfo.riotAccounts.find((account) => account.isMain)?.iconId ?? 1}
                     onClick={toggleDropdown}
                   />
