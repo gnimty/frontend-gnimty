@@ -1,9 +1,10 @@
+import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import httpRequest from '@/apis/httpRequest';
-import useGetMyInfo from '@/apis/useGetMyInfo';
+import getMyInfoQuery from '@/apis/queries/getMyInfoQuery';
 import { useAuthContext } from '@/contexts/AuthContext';
 
 import type { GetServerSideProps } from 'next';
@@ -14,7 +15,8 @@ interface RedirectPageProps {
 
 function Redirect({ redirectUrl }: RedirectPageProps) {
   const router = useRouter();
-  const checkToken = useGetMyInfo();
+  const { data: myInfoData } = useQuery(getMyInfoQuery());
+  const checkToken = myInfoData?.data;
   const { setIsAuthenticated } = useAuthContext();
 
   useEffect(() => {
