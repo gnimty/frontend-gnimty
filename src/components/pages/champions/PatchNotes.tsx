@@ -10,6 +10,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 
 import type { ChampionPatch } from '@/apis/types';
@@ -45,8 +46,9 @@ interface PatchInfoProps {
 }
 
 function PatchInfo({ patch }: PatchInfoProps) {
-  const { enName, version, target, targetImgUrl, changes } = patch;
-  const capitalizedEnName = enName.charAt(0).toUpperCase() + enName.slice(1);
+  const { version, target, targetImgUrl, changes } = patch;
+  const router = useRouter();
+  const { championEnName } = router.query;
   return (
     <AccordionItem bg="white">
       <AccordionButton
@@ -74,7 +76,7 @@ function PatchInfo({ patch }: PatchInfoProps) {
               />
             </Box>
           ) : (
-            <ChampionIcon championEnName={capitalizedEnName} width={40} height={40} />
+            <ChampionIcon championEnName={championEnName as string} width={40} height={40} />
           )}
           <VStack gap="4px" justify="flex-start">
             <Text textStyle="t1" fontWeight="700">
