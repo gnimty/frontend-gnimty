@@ -1,8 +1,12 @@
 import { Box, Button, Divider, HStack, Text, Textarea, VStack } from '@chakra-ui/react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
+import { patchChampionComments, deleteChampionComments } from '@/apis/queries/championComment';
 import type { ChampionCommentsEntry } from '@/apis/types';
 import championIconUrl from '@/apis/utils/championIconUrl';
 import fullTierName from '@/apis/utils/fullTierName';
@@ -13,11 +17,22 @@ import TierImage from '@/components/common/TierImage';
 
 import Replies from './Replies';
 
+dayjs.locale('ko');
+dayjs.extend(duration);
+
 interface CommentProps {
   comment: ChampionCommentsEntry;
+  championId: number;
 }
 
-export default function Comment({ comment }: CommentProps) {
+export default function Comment({ comment, championId }: CommentProps) {
+  const queryClient = useQueryClient();
+  const { mutateAsync: updateCommentAsync, isSuccess: isUpdateSuccess } = useMutation({
+    mutationFn: patchChampionComments,
+  });
+  const { mutateAsync: deleteCommentAsync, isSuccess: isDeleteSuccess } = useMutation({
+    mutationFn: deleteChampionComments,
+  });
   const [isEdit, setIsEdit] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   // profileIconId 필요
@@ -36,6 +51,43 @@ export default function Comment({ comment }: CommentProps) {
     childChampionComments,
   } = comment;
   const championName = championIdEnNameMap[opponentChampionId];
+  const handleUpdate = async () => {
+    if (textareaRef.current?.value === contents) {
+      alert('변경 내용이 없습니다.');
+      return;
+    }
+    if (textareaRef.current?.value !== undefined) {
+      await updateCommentAsync({
+        ...comment,
+        championId: comment.opponentChampionId,
+        contents: textareaRef.current.value,
+      });
+    }
+  };
+  const handleDelete = async () => {
+    await deleteCommentAsync({ championId, commentsId: comment.id });
+  };
+
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: ['championComments', championId],
+    });
+  }, [isDeleteSuccess, queryClient, championId]);
+
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: ['championComments', championId],
+    });
+  }, [isUpdateSuccess, queryClient, championId]);
+
+  if (comment.deleted) {
+    return (
+      <Box h="60px" w="full" p="20px" textStyle="t2" fontWeight="400" color="gray500">
+        삭제된 게시글입니다.
+      </Box>
+    );
+  }
+
   return (
     <VStack bgColor="white" p="20px" gap="12px" align="flex-start">
       <HStack w="full" justify="space-between">
@@ -55,7 +107,7 @@ export default function Comment({ comment }: CommentProps) {
           <Divider orientation="vertical" h="full" colorScheme="gray500" />
           <Text textStyle="body" fontWeight="400" color="gray500">
             {/* TODO: createdAt 비교 */}
-            2일전
+            {dayjs(createdAt).from(dayjs())}
           </Text>
         </HStack>
         {!isEdit && (
@@ -67,7 +119,7 @@ export default function Comment({ comment }: CommentProps) {
             </Text>
             <Divider orientation="vertical" h="full" colorScheme="gray500" />
             {/* TODO: 삭제 방식 논의 */}
-            <Text textStyle="body" fontWeight="400" color="gray500">
+            <Text textStyle="body" fontWeight="400" color="gray500" onClick={handleDelete}>
               삭제
             </Text>
           </HStack>
@@ -135,6 +187,7 @@ export default function Comment({ comment }: CommentProps) {
               color="gray700"
               bgColor="main"
               p="14px 12px"
+              onClick={handleUpdate}
             >
               저장
             </Button>

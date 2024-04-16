@@ -10,9 +10,10 @@ import TipInput from './TipInput';
 
 interface TipProps {
   tipData?: ChampionCommentsEntry[];
+  championId: number;
 }
 
-export default function Tip({ tipData }: TipProps) {
+export default function Tip({ tipData, championId }: TipProps) {
   const [switchOn, setSwitchOn] = useState(false);
   return (
     <VStack w="full" borderRadius="4px" bg="white">
@@ -38,7 +39,7 @@ export default function Tip({ tipData }: TipProps) {
       {/* Comments */}
       {tipData
         ?.filter((comment) => !switchOn || comment.version === dataDragonVersion)
-        .map((comment) => <Comment key={comment.id} comment={comment} />)}
+        .map((comment) => <Comment key={comment.id} comment={comment} championId={championId} />)}
     </VStack>
   );
 }

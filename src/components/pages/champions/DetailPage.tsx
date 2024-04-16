@@ -28,7 +28,7 @@ export default function DetailPage({ championEnName, queryLane }: DetailPageProp
   const router = useRouter();
   const championId = champions.find(
     (champion) => champion.enName.toLowerCase() === championEnName.toLowerCase(),
-  )?.championId;
+  )!.championId;
   const capitalizedChampionEnName = championEnName.charAt(0).toUpperCase() + championEnName.slice(1);
   const [lane, setLane] = useState<PositionFilter | 'UNKNOWN' | ''>(queryLane ?? '');
   const { data, error } = useQuery(championDetailQuery({ championEnName: capitalizedChampionEnName, lane }));
@@ -82,7 +82,7 @@ export default function DetailPage({ championEnName, queryLane }: DetailPageProp
         <SummonerRank specialists={data?.data.specialists} />
       </HStack>
       {/* 5 운영 팁 */}
-      <Tip tipData={championCommentsData?.data.parentChampionComments} />
+      <Tip tipData={championCommentsData?.data.parentChampionComments} championId={championId} />
     </VStack>
   );
 }
