@@ -73,3 +73,35 @@ interface DeleteResponse extends BaseResponse {}
 export const deleteChampionComments = async ({ championId, commentsId }: DeleteOption) => {
   return await request.delete<DeleteResponse>(`/community/champions/${championId}/comments/${commentsId}`);
 };
+
+interface LikeOption extends GetOption {
+  commentsId: number;
+  likeOrNot: boolean;
+  cancel: boolean;
+}
+
+/**
+ * 운용법 댓글 추천/비추천
+ */
+export const likeChampionComments = async ({ championId, commentsId, likeOrNot, cancel }: LikeOption) => {
+  return await request.post<BaseResponse>(`/community/champions/${championId}/comments/${commentsId}/like`, {
+    likeOrNot,
+    cancel,
+  });
+};
+
+interface ReportOption extends GetOption {
+  reportType: 'ABUSE' | 'OTHER';
+  reportComment?: string;
+}
+
+/**
+ * 운용법 댓글 신고
+ * reportType이 Other이면 reportComment 필수
+ */
+export const reportChampionComments = async ({ championId, reportType, reportComment }: ReportOption) => {
+  return await request.post<BaseResponse>(`/community/champions/${championId}/comments/report`, {
+    reportType,
+    reportComment,
+  });
+};
