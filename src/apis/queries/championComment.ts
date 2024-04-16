@@ -91,6 +91,7 @@ export const likeChampionComments = async ({ championId, commentsId, likeOrNot, 
 };
 
 interface ReportOption extends GetOption {
+  commentsId: number;
   reportType: 'ABUSE' | 'OTHER';
   reportComment?: string;
 }
@@ -99,8 +100,8 @@ interface ReportOption extends GetOption {
  * 운용법 댓글 신고
  * reportType이 Other이면 reportComment 필수
  */
-export const reportChampionComments = async ({ championId, reportType, reportComment }: ReportOption) => {
-  return await request.post<BaseResponse>(`/community/champions/${championId}/comments/report`, {
+export const reportChampionComments = async ({ championId, commentsId, reportType, reportComment }: ReportOption) => {
+  return await request.post<BaseResponse>(`/community/champions/${championId}/comments/${commentsId}report`, {
     reportType,
     reportComment,
   });

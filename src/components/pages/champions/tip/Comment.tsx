@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
-import { patchChampionComments, deleteChampionComments } from '@/apis/queries/championComment';
+import { patchChampionComments, deleteChampionComments, reportChampionComments } from '@/apis/queries/championComment';
 import type { ChampionCommentsEntry } from '@/apis/types';
 import championIconUrl from '@/apis/utils/championIconUrl';
 import fullTierName from '@/apis/utils/fullTierName';
@@ -17,6 +17,7 @@ import TierImage from '@/components/common/TierImage';
 
 import { DeleteModal } from './DeleteModal';
 import Replies from './Replies';
+import { ReportModal } from './ReportModal';
 
 dayjs.locale('ko');
 dayjs.extend(duration);
@@ -28,7 +29,8 @@ interface CommentProps {
 
 export default function Comment({ comment, championId }: CommentProps) {
   const queryClient = useQueryClient();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const deleteDisclosure = useDisclosure();
+  const reportDisclosure = useDisclosure();
   const { mutateAsync: updateCommentAsync, isSuccess: isUpdateSuccess } = useMutation({
     mutationFn: patchChampionComments,
   });
@@ -53,6 +55,7 @@ export default function Comment({ comment, championId }: CommentProps) {
     childChampionComments,
   } = comment;
   const championName = championIdEnNameMap[opponentChampionId];
+
   const handleUpdate = async () => {
     if (textareaRef.current?.value === contents) {
       alert('변경 내용이 없습니다.');
@@ -61,13 +64,22 @@ export default function Comment({ comment, championId }: CommentProps) {
     if (textareaRef.current?.value !== undefined) {
       await updateCommentAsync({
         ...comment,
-        championId: comment.opponentChampionId,
+        championId,
         contents: textareaRef.current.value,
       });
     }
   };
+
   const handleDelete = async () => {
     await deleteCommentAsync({ championId, commentsId: comment.id });
+  };
+
+  const handleReport = async (reportType: 'ABUSE' | 'OTHER', reportComment?: string) => {
+    const response = await reportChampionComments({ championId, commentsId: comment.id, reportType, reportComment });
+    if (response.data.status.code === 200) {
+      alert('신고가 완료되었습니다.');
+      reportDisclosure.onClose();
+    }
   };
 
   useEffect(() => {
@@ -92,7 +104,8 @@ export default function Comment({ comment, championId }: CommentProps) {
 
   return (
     <>
-      <DeleteModal isOpen={isOpen} onClose={onClose} handleDelete={handleDelete} />
+      <DeleteModal isOpen={deleteDisclosure.isOpen} onClose={deleteDisclosure.onClose} handleDelete={handleDelete} />
+      <ReportModal isOpen={reportDisclosure.isOpen} onClose={reportDisclosure.onClose} handleReport={handleReport} />
       <VStack bgColor="white" p="20px" gap="12px" align="flex-start">
         <HStack w="full" justify="space-between">
           <HStack h="24px" gap="12px" align="center">
@@ -110,20 +123,17 @@ export default function Comment({ comment, championId }: CommentProps) {
             </HStack>
             <Divider orientation="vertical" h="full" colorScheme="gray500" />
             <Text textStyle="body" fontWeight="400" color="gray500">
-              {/* TODO: createdAt 비교 */}
               {dayjs(createdAt).from(dayjs())}
             </Text>
           </HStack>
           {!isEdit && (
             <HStack h="24px" gap="8px">
               {/* TODO: 수정/삭제 권한 확인 필요 -  */}
-              {/* TODO: 수정 방식 논의 */}
               <Text textStyle="body" fontWeight="400" color="gray500" onClick={() => setIsEdit(true)} cursor="pointer">
                 수정
               </Text>
               <Divider orientation="vertical" h="full" colorScheme="gray500" />
-              {/* TODO: 삭제 방식 논의 */}
-              <Text textStyle="body" fontWeight="400" color="gray500" onClick={onOpen}>
+              <Text textStyle="body" fontWeight="400" color="gray500" onClick={deleteDisclosure.onOpen}>
                 삭제
               </Text>
             </HStack>
