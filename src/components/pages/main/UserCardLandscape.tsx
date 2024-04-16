@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import type { RecommendedSummonersEntry } from '@/apis/types';
+import type { Position, RecommendedSummonersEntry } from '@/apis/types';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
 import shortTierName from '@/apis/utils/shortTierName';
 import Chat from '@/assets/icons/system/chat.svg';
@@ -20,6 +20,14 @@ interface UserCardLandscapeProps {
 
 export default function UserCardLandscape(props: UserCardLandscapeProps) {
   const { summoner } = props;
+  // TODO: tanstack query의 select() 안으로 로직 옮기기
+  const frequentChampionIds = [
+    summoner.frequentChampionId1,
+    summoner.frequentChampionId2,
+    summoner.frequentChampionId3,
+  ].filter((id) => id !== null) as number[];
+  const frequentLanes = [summoner.frequentLane1, summoner.frequentLane2].filter((lane) => lane !== null) as Position[];
+
   const { currentUserId, chatClient, disclosure, updateActivateChatUserIds } = useChatContext();
 
   async function handleNameCopyButtonClick() {
@@ -68,18 +76,13 @@ export default function UserCardLandscape(props: UserCardLandscapeProps) {
         <p css={style.leaguePoints}>{Intl.NumberFormat().format(summoner.lp)}LP</p>
       </div>
       <ol css={style.positionInfo}>
-        {[summoner.frequentLane1, summoner.frequentLane2].map((position) => (
+        {frequentLanes.map((position) => (
           <li key={position} css={style.positionItem}>
             <PositionImage position={position} width={24} height={24} />
           </li>
         ))}
       </ol>
-      <ChampionImagesFiller
-        championIds={[summoner.frequentChampionId1, summoner.frequentChampionId2, summoner.frequentChampionId3]}
-        imagesSizePx={32}
-        w="112px"
-        gap="8px"
-      />
+      <ChampionImagesFiller championIds={frequentChampionIds} imagesSizePx={32} w="112px" gap="8px" />
       <p css={style.introduction}>{summoner.introduction}</p>
       <button type="button" aria-label="채팅하기" onClick={handleChatButtonClick} css={style.chatButton}>
         <Chat width={24} height={24} aria-hidden css={{ display: 'block', lineHeight: 0 }} />

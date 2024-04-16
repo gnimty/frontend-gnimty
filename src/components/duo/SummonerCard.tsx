@@ -1,7 +1,7 @@
 import { IconButton } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
-import type { RecommendedSummonersEntry } from '@/apis/types';
+import type { Position, RecommendedSummonersEntry } from '@/apis/types';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
 import shortTierName from '@/apis/utils/shortTierName';
 import Chat from '@/assets/icons/system/chat.svg';
@@ -162,6 +162,12 @@ export default function SummonerCard({ open, toggle, summoner, refObject, openCh
     upCount,
     iconId,
   } = summoner;
+  // TODO: tanstack query의 select() 안으로 로직 옮기기
+  const frequentChampionIds = [frequentChampionId1, frequentChampionId2, frequentChampionId3].filter(
+    (id) => id !== null,
+  ) as number[];
+  const frequentLanes = [frequentLane1, frequentLane2].filter((lane) => lane !== null) as Position[];
+
   return (
     <CardWrapper $open={open} ref={refObject}>
       <CardHeader $flexColumn="true" $align="flex-start">
@@ -191,8 +197,9 @@ export default function SummonerCard({ open, toggle, summoner, refObject, openCh
         </CardColumn>
         <CardColumn $gap={8} $justify="space-between">
           <CardColumn $gap={8}>
-            {frequentLane1 && <PositionImage position={frequentLane1} width={24} />}
-            {frequentLane2 && <PositionImage position={frequentLane2} width={24} />}
+            {frequentLanes.map((lane) => (
+              <PositionImage key={lane} position={lane} width={24} />
+            ))}
           </CardColumn>
           {!open && (
             <OpenCloseButton type="button" onClick={() => toggle()}>
@@ -202,12 +209,7 @@ export default function SummonerCard({ open, toggle, summoner, refObject, openCh
         </CardColumn>
       </CardHeader>
       <CardBody $flexColumn="true" $open={open} $gap={16}>
-        <ChampionImagesFiller
-          championIds={[frequentChampionId1, frequentChampionId2, frequentChampionId3]}
-          imagesSizePx={32}
-          gap="8px"
-          w="full"
-        />
+        <ChampionImagesFiller championIds={frequentChampionIds} imagesSizePx={32} gap="8px" w="full" />
         <CardColumn>
           <SummonerDetail>{introduction}</SummonerDetail>
         </CardColumn>

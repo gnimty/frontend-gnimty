@@ -51,15 +51,15 @@ export interface RecommendedSummonersEntry {
   /** mmr */
   mmr: number;
   /** 자주 가는 라인 1 */
-  frequentLane1: Position;
+  frequentLane1: Position | null;
   /** 자주 가는 라인 2 */
-  frequentLane2: Position;
+  frequentLane2: Position | null;
   /** 선호 챔피언 1 */
-  frequentChampionId1: number;
+  frequentChampionId1: number | null;
   /** 선호 챔피언 2 */
-  frequentChampionId2: number;
+  frequentChampionId2: number | null;
   /** 선호 챔피언 2 */
-  frequentChampionId3: number;
+  frequentChampionId3: number | null;
   /** 대표 소개글 */
   introduction: string;
   /** up 수 */
@@ -221,20 +221,20 @@ export interface RiotAccountEntry {
   lp: number;
   division: number;
   mmr: number;
-  frequentLane1: Position;
-  frequentLane2: Position;
-  frequentChampionId1: number;
-  frequentChampionId2: number;
-  frequentChampionId3: number;
+  frequentLane1: Position | null;
+  frequentLane2: Position | null;
+  frequentChampionId1: number | null;
+  frequentChampionId2: number | null;
+  frequentChampionId3: number | null;
   queueFlex: Tier;
   lpFlex: number;
   divisionFlex: number;
   mmrFlex: number;
-  frequentLane1Flex: Position;
-  frequentLane2Flex: Position;
-  frequentChampionId1Flex: number;
-  frequentChampionId2Flex: number;
-  frequentChampionId3Flex: number;
+  frequentLane1Flex: Position | null;
+  frequentLane2Flex: Position | null;
+  frequentChampionId1Flex: number | null;
+  frequentChampionId2Flex: number | null;
+  frequentChampionId3Flex: number | null;
   iconId: number;
 }
 
