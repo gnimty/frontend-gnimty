@@ -248,7 +248,7 @@ export default function Comment({ comment, championId }: CommentProps) {
             </HStack>
           </HStack>
         </HStack>
-        {childChampionComments.length > 0 && <Replies />}
+        {childChampionComments.length > 0 && <Replies replies={childChampionComments} />}
       </VStack>
     </>
   );

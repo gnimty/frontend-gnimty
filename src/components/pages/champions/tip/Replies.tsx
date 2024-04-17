@@ -1,10 +1,22 @@
 import { VStack, HStack, Box, Text, Divider, Button } from '@chakra-ui/react';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
 import Image from 'next/image';
 
+import type { ChampionCommentsEntry } from '@/apis/types';
+import fullTierName from '@/apis/utils/fullTierName';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
 import TierImage from '@/components/common/TierImage';
 
-function Reply() {
+dayjs.locale('ko');
+dayjs.extend(duration);
+
+interface ReplyProps {
+  reply: ChampionCommentsEntry;
+}
+
+function Reply({ reply }: ReplyProps) {
+  const { internalTagName, tier, division, contents, mentionedInternalTagName, upCount, downCount, createdAt } = reply;
   return (
     <VStack w="full" align="flex-start" gap="12px">
       <HStack w="full" justify="space-between">
@@ -13,17 +25,17 @@ function Reply() {
             <Image src={profileIconUrl(1)} width="24" height="24" alt="profileIcon" />
           </Box>
           <Text textStyle="t2" fontWeight="700">
-            KT DEFT
+            {internalTagName}
           </Text>
           <HStack gap="4px" align="center">
-            <TierImage tier="challenger" width="24" />
+            <TierImage tier={tier} width="24" />
             <Text textStyle="t2" fontWeight="400">
-              Challenger
+              {fullTierName(tier, division)}
             </Text>
           </HStack>
           <Divider orientation="vertical" h="full" colorScheme="gray500" />
           <Text textStyle="body" fontWeight="400" color="gray500">
-            2일전
+            {dayjs(createdAt).from(dayjs())}
           </Text>
         </HStack>
         <HStack h="24px" gap="8px">
@@ -33,10 +45,12 @@ function Reply() {
         </HStack>
       </HStack>
       <Box w="full" textStyle="t2" fontWeight="400">
-        이게 크산테다 체력 4700 방어력 329 마저201인 챔피언👤이 저지불가🚫, 실드🛡, 벽🧱 넘기는 거 있고요. 에어본🌪
-        있고, 심지어 쿨타임은 1️⃣초밖에 안되고 마나🧙‍♂️는 1️⃣5️⃣ 들고 w는 심지어 변신💫하면 쿨 초기화에다가 패시브는
-        고정피해🗡가 들어가며 그 다음에 방마저🥋 올리면📈 올릴수록📈 스킬 가속⏰이 생기고! q에 스킬가속⏰이 생기고 스킬
-        속도🚀가 빨라지고📈 그 다음에 공격력🗡 계수가 있어가지고 W가 그 이익- 으아아아악😱😱
+        {mentionedInternalTagName && (
+          <Text fontWeight="700" color="main">
+            @{mentionedInternalTagName}
+          </Text>
+        )}
+        {contents}
       </Box>
       <HStack w="full" justify="space-between">
         <HStack gap="12px">
@@ -57,7 +71,7 @@ function Reply() {
             gap="4px"
           >
             <Text fontWeight="400">추천</Text>
-            <Text fontWeight="700">1</Text>
+            <Text fontWeight="700">{upCount}</Text>
           </HStack>
           <HStack
             borderRadius="999px"
@@ -69,7 +83,7 @@ function Reply() {
             gap="4px"
           >
             <Text fontWeight="400">비추천</Text>
-            <Text fontWeight="700">1</Text>
+            <Text fontWeight="700">{downCount}</Text>
           </HStack>
         </HStack>
       </HStack>
@@ -77,12 +91,16 @@ function Reply() {
   );
 }
 
-export default function Replies() {
+interface RepliesProps {
+  replies: ChampionCommentsEntry[];
+}
+
+export default function Replies({ replies }: RepliesProps) {
   return (
     <VStack w="full">
       <VStack w="full" p="20px" gap="24px" bgColor="gray100">
-        {Array.from({ length: 2 }).map((_, index) => (
-          <Reply key={index} />
+        {replies.map((reply) => (
+          <Reply key={reply.id} reply={reply} />
         ))}
       </VStack>
     </VStack>
