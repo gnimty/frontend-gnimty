@@ -1,8 +1,11 @@
+import { useQuery } from '@tanstack/react-query';
 import constate from 'constate';
-import { useState } from 'react';
+
+import getMyInfoQuery from '@/apis/queries/getMyInfoQuery';
 
 export const [AuthContextProvider, useAuthContext] = constate(() => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { status } = useQuery(getMyInfoQuery());
+  const isAuthenticated = status === 'success';
 
-  return { isAuthenticated, setIsAuthenticated };
+  return { isAuthenticated };
 });

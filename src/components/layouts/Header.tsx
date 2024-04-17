@@ -1,7 +1,6 @@
 import { Button, Flex, IconButton, useDisclosure } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 
 import getMyInfoQuery from '@/apis/queries/getMyInfoQuery';
 import { logout } from '@/apis/useLogout';
@@ -29,13 +28,9 @@ const links = [
 export default function Header() {
   const openAccountModal = useAccountModalStore((s) => s.open);
   const { isOpen: isOpenRecommends, onOpen: onOpenRecommends, onClose: onCloseRecommends } = useDisclosure();
-  const { isAuthenticated, setIsAuthenticated } = useAuthContext();
+  const { isAuthenticated } = useAuthContext();
   const { data: myInfoData } = useQuery(getMyInfoQuery());
   const myInfo = myInfoData?.data;
-
-  useEffect(() => {
-    setIsAuthenticated(!!myInfo);
-  }, [myInfo, setIsAuthenticated]);
 
   const router = useRouter();
   const onSelect = async (value: string) => {
@@ -63,7 +58,7 @@ export default function Header() {
           ))}
         </nav>
 
-        {isAuthenticated ? (
+        {isAuthenticated && myInfo !== undefined ? (
           <Flex position="relative" gap="8px">
             {router.pathname !== '/' && <SummonerSearchBar size="in-header" />}
             <Flex w="40px" h="40px" justifyContent="center" alignContent="center">

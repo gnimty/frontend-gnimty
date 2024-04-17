@@ -1,8 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 
 import type { BaseMutationProps } from '@/apis/httpRequest';
 import httpRequest from '@/apis/httpRequest';
-import { useAuthContext } from '@/contexts/AuthContext';
 
 interface UseLoginMutationProps extends BaseMutationProps<void, Error, LoginRequest> {}
 
@@ -18,17 +18,15 @@ async function login({ email, password }: LoginRequest): Promise<void> {
 }
 
 const useLogin = ({ onSuccess, onError }: UseLoginMutationProps) => {
-  const { setIsAuthenticated } = useAuthContext();
+  const router = useRouter();
+
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: (response, variables, context) => {
       onSuccess?.(response, variables, context);
-      setIsAuthenticated(true);
+      router.reload();
     },
-    onError: (error, variables, context) => {
-      onError?.(error, variables, context);
-      setIsAuthenticated(false);
-    },
+    onError,
   });
 
   return { isPending: mutation.isPending, login: mutation.mutate };
