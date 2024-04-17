@@ -5,16 +5,17 @@ import Exit from '@/assets/icons/system/exit.svg';
 import AccountModalBody from '@/components/pages/account/AccountModalBody';
 import { AccountModalPageProvider } from '@/contexts/AccountModalPageContext';
 
-interface AccountModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+import { useAccountModalStore } from './accountModalStore';
+
 export const MAIL_CODE_CHECK_TIME = 180 as const; // 메일 인증 코드 대기 시간
 export const MAIL_SEND_CHECK_TIME = 170 as const; // 메일을 받지 못했나요 메시지 렌더링 시간
 
-export default function AccountModal({ isOpen, onClose }: AccountModalProps) {
+export default function AccountModal() {
+  const isOpen = useAccountModalStore((s) => s.isOpen);
+  const close = useAccountModalStore((s) => s.close);
+
   return (
-    <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose} scrollBehavior="inside" isCentered>
+    <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={close} scrollBehavior="inside" isCentered>
       <ModalOverlay />
       <ModalContent maxW="480px" maxH="760px" px="40px" py="60px" backgroundColor="white">
         <IconButton
@@ -24,10 +25,10 @@ export default function AccountModal({ isOpen, onClose }: AccountModalProps) {
           top="24px"
           right="24px"
           aria-label="Close"
-          onClick={onClose}
+          onClick={close}
           icon={<Exit />}
         />
-        <AccountModalPageProvider onClose={onClose}>
+        <AccountModalPageProvider onClose={close}>
           <AccountModalBody />
         </AccountModalPageProvider>
       </ModalContent>
