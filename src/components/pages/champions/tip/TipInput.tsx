@@ -1,8 +1,10 @@
 import { Box, Button, HStack, Textarea, VStack } from '@chakra-ui/react';
+// import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
 
 import dataDragonVersion from '@/apis/constants/dataDragonVersion';
+// import { addChampionComments } from '@/apis/queries/championComment';
 import type { ChampionCommentsEntry, CommentsType, Position } from '@/apis/types';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
 import PositionImage from '@/components/common/position-image/PositionImage';
@@ -11,12 +13,20 @@ import Select from '@/components/common/select/Select';
 import ChampionSelect from './ChampionSelect';
 
 export default function TipInput() {
+  // const { mutateAsync: addCommentAsync } = useMutation({
+  //   mutationFn: addChampionComments,
+  // });
   const [options, setOptions] = useState<Partial<ChampionCommentsEntry>>();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const handleUpdateOpponentChampion = (championId: number) => {
     setOptions({ ...options, opponentChampionId: championId });
   };
+  // TODO: currentUserInfo 이용 필요
   const handleSubmit = () => {
+    if (!textareaRef.current?.value) {
+      alert('내용을 입력해주세요');
+      return;
+    }
     if (textareaRef.current?.value) {
       console.log(options, textareaRef.current.value);
     }
