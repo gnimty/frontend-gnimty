@@ -1,3 +1,4 @@
+import FindPasswordModalBody from '@/components/pages/account/ModalBody/FindPasswordModalBody';
 import LoginModalBody from '@/components/pages/account/ModalBody/LoginModalBody';
 import SignupModalBody from '@/components/pages/account/ModalBody/SignupModalBody';
 import SignupSuccessModalBody from '@/components/pages/account/ModalBody/SignupSuccessModalBody';
@@ -9,14 +10,15 @@ export default function AccountModalBody() {
 
   return (
     <>
-      {currentPage.page == 'LOGIN' && <LoginModalBody />}
-      {currentPage.page == 'SIGNUP' && <SignupModalBody />}
-      {currentPage.page == 'TERMS' && termsData && (
+      {currentPage.page === 'LOGIN' && <LoginModalBody />}
+      {currentPage.page === 'SIGNUP' && <SignupModalBody />}
+      {currentPage.page === 'TERMS' && termsData && (
         <>
           <TermsModalBody terms={termsData} />
         </>
       )}
-      {currentPage.page == 'SUCCESS' && <SignupSuccessModalBody />}
+      {currentPage.page === 'SUCCESS' && <SignupSuccessModalBody />}
+      {currentPage.page === 'FIND_PW' && <FindPasswordModalBody />}
     </>
   );
 }
