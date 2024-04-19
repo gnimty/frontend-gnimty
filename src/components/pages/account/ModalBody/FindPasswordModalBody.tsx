@@ -38,7 +38,7 @@ export default function FindPasswordModalBody() {
           </HStack>
         </VStack>
         <VStack w="full" gap="24px">
-          <AuthEmailForm formData={emailFormData} setFormData={setEmailFormData} />
+          <AuthEmailForm type="FIND_PW" formData={emailFormData} setFormData={setEmailFormData} />
           <VStack w="full" gap="12px">
             <Button
               size="lg"

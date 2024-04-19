@@ -11,10 +11,11 @@ import { authCodeRegex, emailRegex } from '@/utils/regex';
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
 interface AuthEmailFormProps {
+  type?: 'SIGNUP' | 'FIND_PW';
   formData: AuthEmailFormData;
   setFormData: Dispatch<SetStateAction<AuthEmailFormData>>;
 }
-export default function AuthEmailForm({ formData, setFormData }: AuthEmailFormProps) {
+export default function AuthEmailForm({ type, formData, setFormData }: AuthEmailFormProps) {
   const { seconds, start, reset, running, stop } = useTimer({
     initialSeconds: MAIL_CODE_CHECK_TIME,
   });
@@ -36,6 +37,7 @@ export default function AuthEmailForm({ formData, setFormData }: AuthEmailFormPr
     if (!formData.email) return;
     if (!emailRegex.exec(formData.email)) return;
     checkEmail({
+      type,
       email: formData.email,
     });
   };
@@ -54,6 +56,7 @@ export default function AuthEmailForm({ formData, setFormData }: AuthEmailFormPr
   const onChangeAuthCode = (e: ChangeEvent<HTMLInputElement>) => {
     if (!emailRegex.exec(formData.email) || !authCodeRegex.exec(e.target.value)) return;
     checkEmailCode({
+      type,
       email: formData.email,
       code: e.target.value,
     });

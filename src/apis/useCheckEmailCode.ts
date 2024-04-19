@@ -4,6 +4,7 @@ import type { BaseResponse, BaseMutationProps } from '@/apis/httpRequest';
 import httpRequest from '@/apis/httpRequest';
 
 interface CheckEmailCodeRequestBody {
+  type?: 'SIGNUP' | 'FIND_PW';
   email: string;
   code: string;
 }
@@ -15,8 +16,9 @@ interface CheckEmailCodeResponse extends BaseResponse {}
 interface UseCheckEmailCodeMutationProps
   extends BaseMutationProps<CheckEmailCodeResponse, Error, CheckEmailCodeRequest> {}
 
-async function checkEmailCode({ email, code }: CheckEmailCodeRequest) {
-  const { data } = await httpRequest.post<CheckEmailCodeResponse>('/community/auth/email/code', { email, code });
+async function checkEmailCode({ type, email, code }: CheckEmailCodeRequest) {
+  const apiUrl = type === 'FIND_PW' ? '/community/members/password/email/code' : '/community/auth/email/code';
+  const { data } = await httpRequest.post<CheckEmailCodeResponse>(apiUrl, { email, code });
   return data;
 }
 
