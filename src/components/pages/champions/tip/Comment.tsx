@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import { patchChampionComments, deleteChampionComments, reportChampionComments } from '@/apis/queries/championComment';
-import type { ChampionCommentsEntry } from '@/apis/types';
+import type { ChampionCommentsEntry, ProfileEntry } from '@/apis/types';
 import championIconUrl from '@/apis/utils/championIconUrl';
 import fullTierName from '@/apis/utils/fullTierName';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
@@ -25,9 +25,10 @@ dayjs.extend(duration);
 interface CommentProps {
   comment: ChampionCommentsEntry;
   championId: number;
+  currentUserInfo?: ProfileEntry;
 }
 
-export default function Comment({ comment, championId }: CommentProps) {
+export default function Comment({ comment, championId, currentUserInfo }: CommentProps) {
   const queryClient = useQueryClient();
   const deleteDisclosure = useDisclosure();
   const reportDisclosure = useDisclosure();
@@ -52,6 +53,7 @@ export default function Comment({ comment, championId }: CommentProps) {
     downCount,
     version,
     createdAt,
+    memberId,
     childChampionComments,
   } = comment;
   const championName = championIdEnNameMap[opponentChampionId];
@@ -126,15 +128,27 @@ export default function Comment({ comment, championId }: CommentProps) {
               {dayjs(createdAt).from(dayjs())}
             </Text>
           </HStack>
-          {!isEdit && (
+          {!isEdit && currentUserInfo?.id === memberId && (
             <HStack h="24px" gap="8px">
-              {/* TODO: 수정/삭제 권한 확인 필요 -  */}
               <Text textStyle="body" fontWeight="400" color="gray500" onClick={() => setIsEdit(true)} cursor="pointer">
                 수정
               </Text>
               <Divider orientation="vertical" h="full" colorScheme="gray500" />
               <Text textStyle="body" fontWeight="400" color="gray500" onClick={deleteDisclosure.onOpen}>
                 삭제
+              </Text>
+            </HStack>
+          )}
+          {currentUserInfo?.id !== memberId && (
+            <HStack h="24px" gap="8px">
+              <Text
+                textStyle="body"
+                fontWeight="400"
+                color="gray500"
+                onClick={reportDisclosure.onOpen}
+                cursor="pointer"
+              >
+                신고
               </Text>
             </HStack>
           )}

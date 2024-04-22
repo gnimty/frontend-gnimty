@@ -1,7 +1,9 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import dataDragonVersion from '@/apis/constants/dataDragonVersion';
+import getMyInfoQuery from '@/apis/queries/getMyInfoQuery';
 import type { ChampionCommentsEntry } from '@/apis/types';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
 
@@ -14,6 +16,7 @@ interface TipProps {
 }
 
 export default function Tip({ tipData, championId }: TipProps) {
+  const { data: myInfo } = useQuery({ ...getMyInfoQuery(), retry: (count) => count < 2 });
   const [switchOn, setSwitchOn] = useState(false);
   return (
     <VStack w="full" borderRadius="4px" bg="white">
@@ -34,12 +37,13 @@ export default function Tip({ tipData, championId }: TipProps) {
         </HStack>
       </HStack>
       {/* Input */}
-      {/* TODO: login상태에서만 보이도록? */}
-      <TipInput />
+      {myInfo?.data && <TipInput />}
       {/* Comments */}
       {tipData
         ?.filter((comment) => !switchOn || comment.version === dataDragonVersion)
-        .map((comment) => <Comment key={comment.id} comment={comment} championId={championId} />)}
+        .map((comment) => (
+          <Comment key={comment.id} comment={comment} championId={championId} currentUserInfo={myInfo?.data} />
+        ))}
     </VStack>
   );
 }
