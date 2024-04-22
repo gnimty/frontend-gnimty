@@ -1,21 +1,34 @@
 import { ModalBody, VStack, Text, Button, useBoolean } from '@chakra-ui/react';
+import { useMutation } from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
+import { patchPassword } from '@/apis/queries/setPasswordQuery';
 import { useAccountModalPageContext } from '@/contexts/AccountModalPageContext';
 import { passwordRegex } from '@/utils/regex';
 
 import PasswordForm from './InputForm/PasswordForm';
 
 export default function SetPasswordModalBody() {
+  const searchParams = useSearchParams();
   const { onClose } = useAccountModalPageContext();
+  const { mutateAsync: patchPasswordAsync } = useMutation({
+    mutationFn: patchPassword,
+  });
   const [showPassword, setShowPassword] = useBoolean(false);
   const [showPasswordCheck, setShowPasswordCheck] = useBoolean(false);
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const validAndSamePassword =
     passwordRegex.exec(password) && passwordRegex.exec(passwordCheck) && password === passwordCheck;
-  //   TODO: 비밀번호 변경 api 변경 요청 - 현재 비밀번호 + 신규 비밀번호가 아닌 신규 + 신규 확인
-  const changePassword = () => {};
+  const changePassword = async () => {
+    const email = searchParams.get('email');
+    const uuid = searchParams.get('uuid');
+    if (validAndSamePassword && uuid && email) {
+      await patchPasswordAsync({ email, password, uuid });
+      onClose();
+    }
+  };
   return (
     <ModalBody>
       <VStack w="full" gap="40px">
