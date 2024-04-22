@@ -1,4 +1,5 @@
 import { ModalBody, VStack, HStack, Text, Button } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { type AuthEmailFormData, useAccountModalPageContext } from '@/contexts/AccountModalPageContext';
@@ -6,14 +7,20 @@ import { type AuthEmailFormData, useAccountModalPageContext } from '@/contexts/A
 import AuthEmailForm from './InputForm/AuthEmailForm';
 
 export default function FindPasswordModalBody() {
+  const router = useRouter();
   const { setCurrentPage, onClose } = useAccountModalPageContext();
   const [emailFormData, setEmailFormData] = useState<AuthEmailFormData>({
     email: '',
     authCode: '',
     authState: 'PREPARE',
+    uuid: '',
   });
   const handleNext = () => {
     setCurrentPage({ page: 'SET_PW' });
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, uuid: emailFormData.uuid },
+    });
   };
   return (
     <ModalBody>

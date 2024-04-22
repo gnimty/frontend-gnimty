@@ -21,6 +21,7 @@ export interface AuthEmailFormData {
   email: string;
   authCode: string;
   authState: AuthStateType;
+  uuid?: string;
 }
 
 export interface SignupFormData {

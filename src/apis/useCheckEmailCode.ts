@@ -11,7 +11,12 @@ interface CheckEmailCodeRequestBody {
 
 interface CheckEmailCodeRequest extends CheckEmailCodeRequestBody {}
 
-interface CheckEmailCodeResponse extends BaseResponse {}
+interface CheckEmailCodeResponse extends BaseResponse {
+  // type이 FIND_PW인 경우 data 포함
+  data?: {
+    uuid: string;
+  };
+}
 
 interface UseCheckEmailCodeMutationProps
   extends BaseMutationProps<CheckEmailCodeResponse, Error, CheckEmailCodeRequest> {}

@@ -43,8 +43,12 @@ export default function AuthEmailForm({ type, formData, setFormData }: AuthEmail
   };
 
   const { checkEmailCode } = useCheckEmailCode({
-    onSuccess: (_, variables) => {
-      setFormData({ authState: 'SUCCESS', email: variables.email, authCode: variables.code });
+    onSuccess: (data, variables) => {
+      if (type === 'FIND_PW' && data.data?.uuid) {
+        setFormData({ authState: 'SUCCESS', email: variables.email, authCode: variables.code, uuid: data.data.uuid });
+      } else {
+        setFormData({ authState: 'SUCCESS', email: variables.email, authCode: variables.code });
+      }
     },
     onError: () => {
       setFormData((data) => {
