@@ -44,7 +44,7 @@ function Chat({ chatRoomNo, otherUser, chats, selected, handleClick }: ChatProps
       borderBottom={`1px solid ${theme.colors.gray100}`}
     >
       <Image src={profileIconUrl(Number(iconId ?? '10'))} alt={name} w="40px" h="40px" borderRadius="50%" />
-      <VStack h="40px" gap="4px" align="flex-start">
+      <VStack h="40px" gap="4px" align="flex-start" flex="1">
         <HStack h="20px">
           <Box textStyle="t2" color={selected ? 'white' : 'gray800'}>
             {name}
@@ -91,7 +91,13 @@ function ChatList() {
     selectChatRoom(chatRoomNo);
   };
   return (
-    <Box w="261px" h="100%" borderRight={`1px solid ${theme.colors.gray100}`}>
+    <Box
+      w="261px"
+      h="100%"
+      borderRight={`1px solid ${theme.colors.gray100}`}
+      overflowY="scroll"
+      overscrollBehaviorY="contain"
+    >
       <VStack role="listbox" w="full" h="max-content" overflowY="auto" spacing="1px">
         {chatRooms.map((chatRoom) => (
           <Chat
