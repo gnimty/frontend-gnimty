@@ -19,7 +19,7 @@ export default function FindPasswordModalBody() {
     setCurrentPage({ page: 'SET_PW' });
     router.push({
       pathname: router.pathname,
-      query: { ...router.query, uuid: emailFormData.uuid },
+      query: { ...router.query, email: emailFormData.email, uuid: emailFormData.uuid },
     });
   };
   return (
