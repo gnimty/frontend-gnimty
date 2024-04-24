@@ -7,7 +7,6 @@ import { useState } from 'react';
 
 import ChatBubble from '@/components/chat/ChatBubble';
 import BaseLayout from '@/components/layouts/BaseLayout';
-import { AuthContextProvider } from '@/contexts/AuthContext';
 import { ChatContextProvider } from '@/contexts/ChatContext';
 import StoreProviders from '@/providers/StoreProviders';
 import chakraTheme from '@/styles/theme/chakraTheme';
@@ -51,14 +50,12 @@ export default function App({ Component, pageProps }: AppProps) {
           <ChakraBaseProvider theme={chakraTheme} resetCSS={false}>
             <Fonts />
             <ThemeProvider theme={emotionTheme}>
-              <AuthContextProvider>
-                <ChatContextProvider>
-                  <BaseLayout>
-                    <Component {...pageProps} />
-                  </BaseLayout>
-                  <ChatBubble />
-                </ChatContextProvider>
-              </AuthContextProvider>
+              <ChatContextProvider>
+                <BaseLayout>
+                  <Component {...pageProps} />
+                </BaseLayout>
+                <ChatBubble />
+              </ChatContextProvider>
             </ThemeProvider>
           </ChakraBaseProvider>
         </CacheProvider>
