@@ -2,10 +2,12 @@ import { queryOptions } from '@tanstack/react-query';
 
 import httpRequest from '../httpRequest';
 
+import type { RecentlySummonersEntry } from '../types';
+
 interface MainRecentlyResponse {
   data: {
-    recentlySummoners?: [];
-    recentlySummonersFlex?: [];
+    recentlySummoners?: RecentlySummonersEntry[];
+    recentlySummonersFlex?: RecentlySummonersEntry[];
   };
 }
 
