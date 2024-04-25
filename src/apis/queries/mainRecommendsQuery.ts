@@ -2,11 +2,11 @@ import { queryOptions } from '@tanstack/react-query';
 
 import request from '../httpRequest';
 
-import type { QueueType, SummonerDto } from '../types';
+import type { QueueType, RecommendedSummonersEntry } from '../types';
 
 interface MainRecommendsResponse {
   data: {
-    recommendedSummoners: SummonerDto[];
+    recommendedSummoners: RecommendedSummonersEntry[];
   };
 }
 
