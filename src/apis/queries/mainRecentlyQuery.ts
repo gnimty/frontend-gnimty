@@ -11,7 +11,7 @@ interface MainRecentlyResponse {
   };
 }
 
-export const mainRecentlyQuery = () =>
+const mainRecentlyQuery = () =>
   queryOptions({
     queryKey: ['mainRecently'],
     async queryFn() {
@@ -19,3 +19,5 @@ export const mainRecentlyQuery = () =>
       return res.data;
     },
   });
+
+export default mainRecentlyQuery;

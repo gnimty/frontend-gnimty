@@ -1,7 +1,7 @@
 import { Box, Text, VStack, HStack, Button } from '@chakra-ui/react';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
-import type { RecommendedSummonersEntry } from '@/apis/types';
+import type { RecentlySummonersEntry } from '@/apis/types';
 import fullTierName from '@/apis/utils/fullTierName';
 import Like from '@/assets/icons/system/like.svg';
 
@@ -10,12 +10,23 @@ import ProfileImage from '../common/ProfileImage';
 import TierImage from '../common/TierImage';
 
 interface SummonerCardProps {
-  summoner: RecommendedSummonersEntry;
+  summoner: RecentlySummonersEntry;
 }
 
 const SummonerCard = ({ summoner }: SummonerCardProps) => {
-  const { name, tagLine, iconId, queue, lp, division, frequentChampionId1, frequentChampionId2, frequentChampionId3 } =
-    summoner;
+  const {
+    name,
+    tagLine,
+    iconId,
+    tier,
+    lp,
+    division,
+    totalPlay,
+    winRate,
+    frequentChampionId1,
+    frequentChampionId2,
+    frequentChampionId3,
+  } = summoner;
   const championIds = [frequentChampionId1, frequentChampionId2, frequentChampionId3];
   return (
     <VStack w="320px" borderRadius="8px" bgColor="white" p="60px 20px 20px 20px" gap="40px">
@@ -27,13 +38,13 @@ const SummonerCard = ({ summoner }: SummonerCardProps) => {
           {name}
         </Text>
         <Text textStyle="h3" fontWeight="400" color="gray600">
-          {tagLine}
+          #{tagLine}
         </Text>
         <HStack gap="8px">
-          <TierImage tier={queue} width={28} height={28} />
-          {queue && (
+          <TierImage tier={tier} width={28} height={28} />
+          {tier && (
             <Text textStyle="h3" fontWeight="700">
-              {fullTierName(queue, division)}
+              {fullTierName(tier, division)}
             </Text>
           )}
           {lp && (
@@ -43,14 +54,14 @@ const SummonerCard = ({ summoner }: SummonerCardProps) => {
           )}
         </HStack>
         <VStack w="180px" gap="12px" p="20px 0 0 0" borderTop="1px solid" borderColor="gray300">
-          {/* <HStack gap="8px">
+          <HStack gap="8px">
             <Text textStyle="h3" fontWeight="400">
-              {tierInfoToUse?.plays && tierInfoToUse.plays + '게임'}
+              {totalPlay && totalPlay + '게임'}
             </Text>
             <Text textStyle="h3" fontWeight="700" color="green800">
-              {tierInfoToUse?.winRate && (tierInfoToUse.winRate * 100).toFixed(2) + '%'}
+              {winRate && (winRate * 100).toFixed(0) + '%'}
             </Text>
-          </HStack> */}
+          </HStack>
           <HStack gap="12px">
             {championIds.map(
               (championId) =>
