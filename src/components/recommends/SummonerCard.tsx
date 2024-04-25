@@ -34,7 +34,7 @@ const SummonerCard = ({ summoner }: SummonerCardProps) => {
             {queue && division && fullTierName(queue, division)}
           </Text>
           <Text textStyle="h3" fontWeight="400" color="gray500">
-            {lp.toLocaleString('ko-KR')}LP
+            {lp?.toLocaleString('ko-KR') + 'LP'}
           </Text>
         </HStack>
         <VStack w="180px" gap="12px" p="20px 0 0 0" borderTop="1px solid" borderColor="gray300">

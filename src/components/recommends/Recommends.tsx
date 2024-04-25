@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import mainRecommendsQuery from '@/apis/queries/mainRecommendsQuery';
 import type { GameMode } from '@/apis/types';
@@ -36,6 +36,12 @@ const RecommendsModal = ({ isOpen, onClose }: RecommendsModalProps) => {
   const handleQueueTypeChange = (value: Omit<GameMode, 'BLIND'>) => {
     setQueueType(value);
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      setPage(0);
+    }
+  }, [queueType, isOpen]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
