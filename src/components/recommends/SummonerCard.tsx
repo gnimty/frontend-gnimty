@@ -16,6 +16,7 @@ interface SummonerCardProps {
 const SummonerCard = ({ summoner }: SummonerCardProps) => {
   const { name, tagLine, iconId, queue, lp, division, frequentChampionId1, frequentChampionId2, frequentChampionId3 } =
     summoner;
+  const championIds = [frequentChampionId1, frequentChampionId2, frequentChampionId3];
   return (
     <VStack w="320px" borderRadius="8px" bgColor="white" p="60px 20px 20px 20px" gap="40px">
       <Box w="60px" h="60px" borderRadius="30px" overflow="hidden">
@@ -30,12 +31,16 @@ const SummonerCard = ({ summoner }: SummonerCardProps) => {
         </Text>
         <HStack gap="8px">
           <TierImage tier={queue} width={28} height={28} />
-          <Text textStyle="h3" fontWeight="700">
-            {queue && division && fullTierName(queue, division)}
-          </Text>
-          <Text textStyle="h3" fontWeight="400" color="gray500">
-            {lp?.toLocaleString('ko-KR') + 'LP'}
-          </Text>
+          {queue && (
+            <Text textStyle="h3" fontWeight="700">
+              {fullTierName(queue, division)}
+            </Text>
+          )}
+          {lp && (
+            <Text textStyle="h3" fontWeight="400" color="gray500">
+              {lp.toLocaleString('ko-KR') + 'LP'}
+            </Text>
+          )}
         </HStack>
         <VStack w="180px" gap="12px" p="20px 0 0 0" borderTop="1px solid" borderColor="gray300">
           {/* <HStack gap="8px">
@@ -47,9 +52,9 @@ const SummonerCard = ({ summoner }: SummonerCardProps) => {
             </Text>
           </HStack> */}
           <HStack gap="12px">
-            {[frequentChampionId1, frequentChampionId2, frequentChampionId3].map((championId) => {
-              if (championId !== null) {
-                return (
+            {championIds.map(
+              (championId) =>
+                championId !== null && (
                   <ChampionIcon
                     key={championId}
                     championEnName={championIdEnNameMap[championId]}
@@ -57,9 +62,8 @@ const SummonerCard = ({ summoner }: SummonerCardProps) => {
                     height={32}
                     radius={16}
                   />
-                );
-              }
-            })}
+                ),
+            )}
           </HStack>
         </VStack>
       </VStack>
