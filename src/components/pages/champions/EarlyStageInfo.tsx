@@ -21,7 +21,7 @@ interface EarlyStageInfoProps {
 const TITLE = {
   'summoner-spell': '소환사 주문',
   'start-item': '시작 아이템',
-  'first-return': '첫 귀환',
+  'first-return': '중간 아이템',
   shoes: '신발',
 };
 
@@ -45,7 +45,7 @@ export default function EarlyStageInfo({
     }
   })(type);
   return (
-    <VStack w="full" bg="white" borderRadius="4px">
+    <VStack w="full" h="full" bg="white" borderRadius="4px">
       <Box w="full" h="54px" p="16px 20px" borderBottom="1px solid" borderColor="gray200">
         <Text textStyle="t2" fontWeight="700">
           {TITLE[type]}
