@@ -1,6 +1,7 @@
 import { ModalBody, VStack, Text, Button, useBoolean } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { patchPassword } from '@/apis/queries/setPasswordQuery';
@@ -10,6 +11,7 @@ import { passwordRegex } from '@/utils/regex';
 import PasswordForm from './InputForm/PasswordForm';
 
 export default function SetPasswordModalBody() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const { onClose } = useAccountModalPageContext();
   const { mutateAsync: patchPasswordAsync } = useMutation({
@@ -26,6 +28,10 @@ export default function SetPasswordModalBody() {
     const uuid = searchParams.get('uuid');
     if (validAndSamePassword && uuid && email) {
       await patchPasswordAsync({ email, password, uuid });
+      router.push({
+        pathname: router.pathname,
+        query: {},
+      });
       onClose();
     }
   };
