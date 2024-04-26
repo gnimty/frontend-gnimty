@@ -92,7 +92,9 @@ const RecommendsModal = ({ isOpen, onClose }: RecommendsModalProps) => {
             </Radio>
           </RadioGroup>
           <HStack w="1000px" h="full" gap="20px">
-            {summoners?.slice(page * 3, page * 3 + 3).map((summoner) => <SummonerCard key={summoner.name} summoner={summoner} />)}
+            {summoners
+              ?.slice(page * 3, page * 3 + 3)
+              .map((summoner) => <SummonerCard key={summoner.name} summoner={summoner} />)}
           </HStack>
         </VStack>
         <HStack w="full" h="40px" p="16px 0" gap="10px" justify="center" align="center">
