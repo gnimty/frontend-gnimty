@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import mainRecentlyQuery from '@/apis/queries/mainRecentlyQuery';
 import type { GameMode } from '@/apis/types';
@@ -33,14 +33,11 @@ const RecommendsModal = ({ isOpen, onClose }: RecommendsModalProps) => {
   const summoners = queueType === 'RANK_SOLO' ? data?.data.recentlySummoners : data?.data.recentlySummonersFlex;
 
   const handleQueueTypeChange = (value: Omit<GameMode, 'BLIND'>) => {
-    setQueueType(value);
-  };
-
-  useEffect(() => {
-    if (isOpen) {
+    if (queueType !== value) {
       setPage(0);
     }
-  }, [queueType, isOpen]);
+    setQueueType(value);
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
