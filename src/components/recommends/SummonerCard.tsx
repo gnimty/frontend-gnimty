@@ -1,6 +1,6 @@
 import { Box, Text, VStack, HStack, Button } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import { postMemberLike } from '@/apis/queries/memberLikeQuery';
@@ -64,13 +64,6 @@ const SummonerCard = ({ summoner }: SummonerCardProps) => {
       await memberLikeAsync({ targetMemberId, cancel: false });
     }
   };
-
-  // 좋아요 상태 확인
-  useEffect(() => {
-    async () => {
-      await memberLikeAsync({ targetMemberId: memberId, cancel: false });
-    };
-  }, [memberLikeAsync, memberId]);
 
   return (
     <VStack w="320px" borderRadius="8px" bgColor="white" p="60px 20px 20px 20px" gap="40px">
