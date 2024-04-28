@@ -9,6 +9,7 @@ interface UseAuthEmailMutationProps extends BaseMutationProps<AuthEmailResponse,
 }
 
 interface AuthEmailRequestBody {
+  type?: 'SIGNUP' | 'FIND_PW';
   email: string;
 }
 
@@ -16,9 +17,9 @@ interface AuthEmailRequest extends AuthEmailRequestBody {}
 
 interface AuthEmailResponse extends BaseResponse {}
 
-async function checkEmail({ email }: AuthEmailRequest) {
-  const { data } = await httpRequest.post<AuthEmailResponse>('/community/auth/email', { email });
-  console.log(data);
+async function checkEmail({ type, email }: AuthEmailRequest) {
+  const apiUrl = type === 'FIND_PW' ? '/community/members/password/email' : '/community/auth/email';
+  const { data } = await httpRequest.post<AuthEmailResponse>(apiUrl, { email });
   return data;
 }
 
