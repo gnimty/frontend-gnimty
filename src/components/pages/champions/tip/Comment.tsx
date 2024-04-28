@@ -11,6 +11,7 @@ import type { ChampionCommentsEntry, ProfileEntry } from '@/apis/types';
 import championIconUrl from '@/apis/utils/championIconUrl';
 import fullTierName from '@/apis/utils/fullTierName';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
+import Down from '@/assets/icons/system/down.svg';
 import Up from '@/assets/icons/system/up.svg';
 import PositionImage from '@/components/common/position-image/PositionImage';
 import TierImage from '@/components/common/TierImage';
@@ -39,6 +40,7 @@ export default function Comment({ comment, championId, currentUserInfo }: Commen
     mutationFn: deleteChampionComments,
   });
   const [isEdit, setIsEdit] = useState(false);
+  const [repliesOpen, setRepliesOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   // profileIconId 필요
   const {
@@ -229,12 +231,18 @@ export default function Comment({ comment, championId, currentUserInfo }: Commen
         <HStack w="full" justify="space-between">
           <HStack gap="12px">
             {childChampionComments.length > 0 && (
-              <Button display="flex" alignItems="center" justifyContent="space-between" gap="2px">
+              <Button
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                gap="2px"
+                onClick={() => setRepliesOpen((prev) => !prev)}
+                cursor="pointer"
+              >
                 <Text textStyle="t2" fontWeight="400" color="gray600">
                   {childChampionComments.length}개의 답글
                 </Text>
-                {/* TODO: replies open/close */}
-                <Up width="20" height="20" />
+                {repliesOpen ? <Down width="20" height="20" /> : <Up width="20" height="20" />}
               </Button>
             )}
             <Button borderBottom="1px solid" borderColor="gray600">
@@ -262,7 +270,7 @@ export default function Comment({ comment, championId, currentUserInfo }: Commen
             </HStack>
           </HStack>
         </HStack>
-        {childChampionComments.length > 0 && <Replies replies={childChampionComments} />}
+        {childChampionComments.length > 0 && repliesOpen && <Replies replies={childChampionComments} />}
       </VStack>
     </>
   );
