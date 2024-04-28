@@ -1,0 +1,38 @@
+import type { SVGProps } from 'react';
+
+interface LikeIconProps extends SVGProps<SVGSVGElement> {
+  stroke: string;
+  like: boolean;
+}
+
+export default function LikeIcon({ stroke, like, ...rest }: LikeIconProps) {
+  return (
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" {...rest}>
+      <g clip-path="url(#clip0_4110_2420)">
+        <path
+          d="M13.9988 19.0767C18.5092 19.0767 22.1656 15.3471 22.1656 10.7464C22.1656 6.14564 18.5092 2.41602 13.9988 2.41602C9.48844 2.41602 5.83203 6.14564 5.83203 10.7464C5.83203 15.3471 9.48844 19.0767 13.9988 19.0767Z"
+          stroke={stroke}
+          stroke-miterlimit="10"
+        />
+        {like && (
+          <path
+            d="M13.9992 16.4874C17.1075 16.4874 19.6272 13.9172 19.6272 10.7466C19.6272 7.5761 17.1075 5.00586 13.9992 5.00586C10.8909 5.00586 8.37109 7.5761 8.37109 10.7466C8.37109 13.9172 10.8909 16.4874 13.9992 16.4874Z"
+            stroke={stroke}
+            stroke-miterlimit="10"
+          />
+        )}
+        <path
+          d="M13.999 19.0773C11.4635 19.0773 9.19728 17.8988 7.69922 16.0488V23.578C7.69922 24.3968 8.62937 24.8686 9.28998 24.3849L13.999 20.937L18.7081 24.3849C19.3687 24.8686 20.2988 24.3968 20.2988 23.578V16.0488C18.8008 17.8988 16.5354 19.0773 13.999 19.0773Z"
+          stroke={stroke}
+          stroke-miterlimit="10"
+        />
+        <path d="M14 20.937V19.0781" stroke={stroke} stroke-miterlimit="10" />
+      </g>
+      <defs>
+        <clipPath id="clip0_4110_2420">
+          <rect width="28" height="28" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}
