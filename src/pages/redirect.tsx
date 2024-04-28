@@ -29,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const encodeData = Array.isArray(state) ? state[0] : state ?? '/';
   try {
-    const { redirectUrl, target } = JSON.parse(decodeURIComponent(encodeData.substring(1))) as {
+    const { redirectUrl, target } = JSON.parse(decodeURIComponent(encodeData)) as {
       redirectUrl: string;
       target: 'google' | 'kakao';
     };
