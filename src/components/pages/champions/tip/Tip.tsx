@@ -1,10 +1,9 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import dataDragonVersion from '@/apis/constants/dataDragonVersion';
-import getMyInfoQuery from '@/apis/queries/getMyInfoQuery';
 import type { ChampionCommentsEntry } from '@/apis/types';
+import useAuth from '@/apis/useAuth';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
 
 import Comment from './Comment';
@@ -16,7 +15,7 @@ interface TipProps {
 }
 
 export default function Tip({ tipData, championId }: TipProps) {
-  const { data: myInfo } = useQuery({ ...getMyInfoQuery(), retry: (count) => count < 2 });
+  const { data: myInfo } = useAuth();
   const [switchOn, setSwitchOn] = useState(false);
   return (
     <VStack w="full" borderRadius="4px" bg="white">
