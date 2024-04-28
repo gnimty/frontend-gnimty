@@ -14,7 +14,7 @@ import { useTheme } from '@emotion/react';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import mainRecommendsQuery from '@/apis/queries/mainRecommendsQuery';
+import mainRecentlyQuery from '@/apis/queries/mainRecentlyQuery';
 import type { GameMode } from '@/apis/types';
 import Exit from '@/assets/icons/system/exit.svg';
 
@@ -28,14 +28,17 @@ interface RecommendsModalProps {
 const RecommendsModal = ({ isOpen, onClose }: RecommendsModalProps) => {
   const theme = useTheme();
   const [queueType, setQueueType] = useState<Omit<GameMode, 'BLIND'>>('RANK_SOLO');
-  const { data } = useQuery(mainRecommendsQuery({ queueType }));
+  const { data } = useQuery(mainRecentlyQuery());
   const [page, setPage] = useState(0);
-  const total = data?.data.recommendedSummoners.length ?? 0;
-  const totalPages = Math.ceil(total / 3);
+  const summoners = queueType === 'RANK_SOLO' ? data?.data.recentlySummoners : data?.data.recentlySummonersFlex;
 
   const handleQueueTypeChange = (value: Omit<GameMode, 'BLIND'>) => {
+    if (queueType !== value) {
+      setPage(0);
+    }
     setQueueType(value);
   };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -86,25 +89,26 @@ const RecommendsModal = ({ isOpen, onClose }: RecommendsModalProps) => {
             </Radio>
           </RadioGroup>
           <HStack w="1000px" h="full" gap="20px">
-            {data?.data.recommendedSummoners
-              .slice(page * 3, page * 3 + 3)
-              .map((summoner) => <SummonerCard key={summoner.summonerId} summoner={summoner} queueType={queueType} />)}
+            {summoners
+              ?.slice(page * 3, page * 3 + 3)
+              .map((summoner) => <SummonerCard key={summoner.name} summoner={summoner} />)}
           </HStack>
         </VStack>
         <HStack w="full" h="40px" p="16px 0" gap="10px" justify="center" align="center">
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <Box
-              key={index}
-              w="8px"
-              h="8px"
-              bgColor="gray300"
-              borderRadius="99px"
-              aria-selected={index === page ? 'true' : 'false'}
-              _selected={{ bgColor: theme.colors.main }}
-              onClick={() => setPage(index)}
-              cursor="pointer"
-            />
-          ))}
+          {summoners &&
+            Array.from({ length: Math.ceil(summoners.length / 3) }).map((_, index) => (
+              <Box
+                key={index}
+                w="8px"
+                h="8px"
+                bgColor="gray300"
+                borderRadius="99px"
+                aria-selected={index === page ? 'true' : 'false'}
+                _selected={{ bgColor: theme.colors.main }}
+                onClick={() => setPage(index)}
+                cursor="pointer"
+              />
+            ))}
         </HStack>
       </ModalContent>
     </Modal>

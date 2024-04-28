@@ -476,3 +476,20 @@ export interface ChampionCommentsEntry {
 export interface ChampionCommentsResponse {
   parentChampionComments: ChampionCommentsEntry[];
 }
+
+export interface RecentlySummonersEntry {
+  memberId: number;
+  iconId: number;
+  name: string;
+  tagLine: string;
+  tier: Tier;
+  division: number;
+  lp: number;
+  totalPlay: number;
+  totalWin: number;
+  totalDefeat: number;
+  winRate: number;
+  frequentChampionId1: number | null;
+  frequentChampionId2: number | null;
+  frequentChampionId3: number | null;
+}

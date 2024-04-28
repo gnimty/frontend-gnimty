@@ -1,15 +1,14 @@
 'use client';
 import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 
-import getMyInfoQuery from '@/apis/queries/getMyInfoQuery';
+import useAuth from '@/apis/useAuth';
 import BlockManagementTab from '@/components/pages/mypage/blockManagement/BlockManagementTab';
 import ChangeStateTab from '@/components/pages/mypage/changeState/ChangeStateTab';
 import UserInfoTab from '@/components/pages/mypage/userInfo/UserInfoTab';
 import UserProfileCard from '@/components/pages/mypage/UserProfileCard';
 
 export default function MyPage() {
-  const { data } = useQuery(getMyInfoQuery());
+  const { data } = useAuth();
   const myProfile = data?.data;
 
   if (myProfile) {

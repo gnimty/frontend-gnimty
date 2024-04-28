@@ -1,14 +1,13 @@
 import { useDisclosure } from '@chakra-ui/react';
 import { Client } from '@stomp/stompjs';
-import { useQuery } from '@tanstack/react-query';
 import constate from 'constate';
 import { useCallback, useEffect, useState } from 'react';
 
-import getMyInfoQuery from '@/apis/queries/getMyInfoQuery';
+import useAuth from '@/apis/useAuth';
 import type { Chat, ChatRoom, ChatRooms, DataType, UpdateActions, User, UserConnStatus } from '@/components/chat/types';
 
 export const [ChatContextProvider, useChatContext] = constate(() => {
-  const { data: myInfoData } = useQuery(getMyInfoQuery());
+  const { data: myInfoData } = useAuth();
   const myInfo = myInfoData?.data;
   const disclosure = useDisclosure();
   const [chatClient, setChatClient] = useState<Client | null>(null);

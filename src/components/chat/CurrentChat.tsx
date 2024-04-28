@@ -44,7 +44,7 @@ function CurrentChat() {
         flexTierInfo={summonerInfo?.data.summoner?.flexTierInfo}
       />
       {/* if chat exists */}
-      <Box overflowY="scroll" w="full" flex="1" mb="70px" ref={scrollRef}>
+      <Box overflowY="scroll" overscrollBehaviorY="contain" w="full" flex="1" mb="70px" ref={scrollRef}>
         {chats && chats.length > 0 && otherUserId && (
           <VStack w="full" spacing="8px" p="0 20px">
             {chatsBeforeToday.map((chatInfo) => (
