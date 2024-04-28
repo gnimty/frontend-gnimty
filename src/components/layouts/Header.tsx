@@ -1,14 +1,12 @@
 import { Button, Flex, IconButton, useDisclosure } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
-import getMyInfoQuery from '@/apis/queries/getMyInfoQuery';
+import useAuth from '@/apis/useAuth';
 import { logout } from '@/apis/useLogout';
 import IconLike from '@/assets/icons/system/like.svg';
 import ProfileImage from '@/components/common/ProfileImage';
 import Select from '@/components/common/select/Select';
 import AccountModal from '@/components/pages/account/AccountModal';
-import { useAuthContext } from '@/contexts/AuthContext';
 
 import ActiveLink from '../common/ActiveLink';
 import SummonerSearchBar from '../common/SummonerSearchBar';
@@ -28,9 +26,7 @@ const links = [
 export default function Header() {
   const openAccountModal = useAccountModalStore((s) => s.open);
   const { isOpen: isOpenRecommends, onOpen: onOpenRecommends, onClose: onCloseRecommends } = useDisclosure();
-  const { isAuthenticated } = useAuthContext();
-  const { data: myInfoData } = useQuery(getMyInfoQuery());
-  const myInfo = myInfoData?.data;
+  const { data: myInfoData, isAuthenticated } = useAuth();
 
   const router = useRouter();
   const onSelect = async (value: string) => {
@@ -58,7 +54,8 @@ export default function Header() {
           ))}
         </nav>
 
-        {isAuthenticated && myInfo !== undefined ? (
+        {/* TODO: use only isAuthenticated */}
+        {isAuthenticated && myInfoData !== undefined ? (
           <Flex position="relative" gap="8px">
             {router.pathname !== '/' && <SummonerSearchBar size="in-header" />}
             <Flex w="40px" h="40px" justifyContent="center" alignContent="center">
@@ -73,7 +70,9 @@ export default function Header() {
                 onChange={onSelect}
                 CustomSelectButton={({ toggleDropdown }) => (
                   <ProfileImage
-                    iconId={myInfo?.riotDependentInfo.riotAccounts.find((account) => account.isMain)?.iconId ?? 1}
+                    iconId={
+                      myInfoData.data.riotDependentInfo.riotAccounts.find((account) => account.isMain)?.iconId ?? 1
+                    }
                     onClick={toggleDropdown}
                   />
                 )}
