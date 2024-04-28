@@ -36,7 +36,7 @@ export default function Tip({ tipData, championId }: TipProps) {
         </HStack>
       </HStack>
       {/* Input */}
-      {myInfo?.data && <TipInput />}
+      {myInfo?.data && <TipInput championId={championId} currentUserInfo={myInfo.data} />}
       {/* Comments */}
       {tipData
         ?.filter((comment) => !switchOn || comment.version === dataDragonVersion)

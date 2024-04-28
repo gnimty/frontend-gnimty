@@ -10,8 +10,8 @@ import { patchChampionComments, deleteChampionComments, reportChampionComments }
 import type { ChampionCommentsEntry, ProfileEntry } from '@/apis/types';
 import championIconUrl from '@/apis/utils/championIconUrl';
 import fullTierName from '@/apis/utils/fullTierName';
-import profileIconUrl from '@/apis/utils/profileIconUrl';
 import Down from '@/assets/icons/system/down.svg';
+import SummonerIcon from '@/assets/icons/system/summoner.svg';
 import Up from '@/assets/icons/system/up.svg';
 import PositionImage from '@/components/common/position-image/PositionImage';
 import TierImage from '@/components/common/TierImage';
@@ -114,7 +114,7 @@ export default function Comment({ comment, championId, currentUserInfo }: Commen
         <HStack w="full" justify="space-between">
           <HStack h="24px" gap="12px" align="center">
             <Box w="24px" h="24px" overflow="hidden" borderRadius="12px">
-              <Image src={profileIconUrl(1)} width="24" height="24" alt="profileIcon" />
+              <SummonerIcon width="24" height="24" />
             </Box>
             <Text textStyle="t2" fontWeight="700">
               {internalTagName}

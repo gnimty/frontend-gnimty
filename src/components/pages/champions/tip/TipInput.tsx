@@ -1,34 +1,40 @@
 import { Box, Button, HStack, Textarea, VStack } from '@chakra-ui/react';
-// import { useMutation } from '@tanstack/react-query';
-import Image from 'next/image';
+import { useMutation } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 
 import dataDragonVersion from '@/apis/constants/dataDragonVersion';
-// import { addChampionComments } from '@/apis/queries/championComment';
-import type { ChampionCommentsEntry, CommentsType, Position } from '@/apis/types';
-import profileIconUrl from '@/apis/utils/profileIconUrl';
+import { addChampionComments, type PostOption } from '@/apis/queries/championComment';
+import type { CommentsType, Position, ProfileEntry } from '@/apis/types';
+import SummonerIcon from '@/assets/icons/system/summoner.svg';
 import PositionImage from '@/components/common/position-image/PositionImage';
 import Select from '@/components/common/select/Select';
 
 import ChampionSelect from './ChampionSelect';
 
-export default function TipInput() {
-  // const { mutateAsync: addCommentAsync } = useMutation({
-  //   mutationFn: addChampionComments,
-  // });
-  const [options, setOptions] = useState<Partial<ChampionCommentsEntry>>();
+interface TipInputProps {
+  championId: number;
+  currentUserInfo: ProfileEntry;
+}
+
+export default function TipInput({ championId, currentUserInfo }: TipInputProps) {
+  const { riotDependentInfo } = currentUserInfo;
+  const mainAccount = riotDependentInfo.riotAccounts.find((account) => account.isMain);
+  const { mutateAsync: addCommentAsync } = useMutation({
+    mutationFn: addChampionComments,
+  });
+  const [commentsType, setCommentsType] = useState<CommentsType>();
+  const [lane, setLane] = useState<Position>();
+  const [opponentChampionId, setOpponentChampionId] = useState<number>();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const handleUpdateOpponentChampion = (championId: number) => {
-    setOptions({ ...options, opponentChampionId: championId });
+    setOpponentChampionId(championId);
   };
-  // TODO: currentUserInfo 이용 필요
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!textareaRef.current?.value) {
       alert('내용을 입력해주세요');
       return;
     }
     if (textareaRef.current?.value) {
-      console.log(options, textareaRef.current.value);
     }
   };
   return (
@@ -42,7 +48,7 @@ export default function TipInput() {
         alignItems="center"
         justifyContent="center"
       >
-        <Image src={profileIconUrl(10)} width="80" height="80" alt="profileIcon" />
+        <SummonerIcon width="80" height="80" />
       </Box>
       <VStack w="full" minH="192px" gap="12px" align="flex-start">
         <HStack w="full" justify="flex-start" gap="12px">
@@ -54,7 +60,7 @@ export default function TipInput() {
             ]}
             css={{ width: '136px' }}
             onChange={(v) => {
-              if (['TIP', 'QUESTION'].includes(v)) setOptions({ ...options, commentsType: v as CommentsType });
+              if (['TIP', 'QUESTION'].includes(v)) setCommentsType(v);
             }}
           />
           <Select
