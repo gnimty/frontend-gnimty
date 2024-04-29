@@ -44,7 +44,7 @@ export default function Comment({ comment, championId, latestVersion, currentUse
   const queryClient = useQueryClient();
   const deleteDisclosure = useDisclosure();
   const reportDisclosure = useDisclosure();
-  const { mutateAsync: addReplyAsync } = useMutation({
+  const { mutateAsync: addReplyAsync, isSuccess: isAddSuccess } = useMutation({
     mutationFn: addChampionComments,
   });
   const { mutateAsync: updateCommentAsync, isSuccess: isUpdateSuccess } = useMutation({
@@ -53,7 +53,7 @@ export default function Comment({ comment, championId, latestVersion, currentUse
   const { mutateAsync: deleteCommentAsync, isSuccess: isDeleteSuccess } = useMutation({
     mutationFn: deleteChampionComments,
   });
-  const { mutateAsync: likeCommentAsync } = useMutation({
+  const { mutateAsync: likeCommentAsync, isSuccess: isLikeSuccess } = useMutation({
     mutationFn: likeChampionComments,
   });
   const [newReplyOn, setNewReplyOn] = useState(false);
@@ -148,16 +148,12 @@ export default function Comment({ comment, championId, latestVersion, currentUse
   };
 
   useEffect(() => {
-    queryClient.invalidateQueries({
-      queryKey: ['championComments', championId],
-    });
-  }, [isDeleteSuccess, queryClient, championId]);
-
-  useEffect(() => {
-    queryClient.invalidateQueries({
-      queryKey: ['championComments', championId],
-    });
-  }, [isUpdateSuccess, queryClient, championId]);
+    if (isAddSuccess || isUpdateSuccess || isDeleteSuccess || isLikeSuccess) {
+      queryClient.invalidateQueries({
+        queryKey: ['championComments', championId],
+      });
+    }
+  }, [isAddSuccess, isUpdateSuccess, isDeleteSuccess, isLikeSuccess, queryClient, championId]);
 
   if (deleted) {
     return (
@@ -191,7 +187,10 @@ export default function Comment({ comment, championId, latestVersion, currentUse
               </HStack>
             )}
             <Text textStyle="body" fontWeight="400" color="gray500">
-              | {dayjs(createdAt).from(dayjs())}
+              |
+            </Text>
+            <Text textStyle="body" fontWeight="400" color="gray500">
+              {dayjs(createdAt).from(dayjs())}
             </Text>
           </HStack>
           {!isEdit && currentUserInfo?.id === memberId && (
@@ -335,7 +334,10 @@ export default function Comment({ comment, championId, latestVersion, currentUse
               borderBottom="1px solid"
               borderColor="gray600"
               borderRadius="0"
-              onClick={() => setNewReplyOn(true)}
+              onClick={() => {
+                setNewReplyOn(true);
+                setRepliesOpen(true);
+              }}
               cursor="pointer"
             >
               <Text textStyle="t2" fontWeight="400" color="gray600">
@@ -390,10 +392,14 @@ export default function Comment({ comment, championId, latestVersion, currentUse
             championId={championId}
             currentUserInfo={currentUserInfo}
             latestVersion={latestVersion}
+            commentId={comment.id}
+            commentVersion={version}
+            newReplyOn={newReplyOn}
+            setNewReplyOn={setNewReplyOn}
           />
         )}
       </VStack>
-      {newReplyOn && (
+      {childChampionComments.length === 0 && newReplyOn && (
         <Box w="full" h="full" bgColor="white" p="0 20px 20px 20px">
           <HStack w="full" h="140px" borderRadius="4px" border="1px solid" borderColor="gray400" p="12px" gap="20px">
             <Textarea

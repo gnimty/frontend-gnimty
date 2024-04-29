@@ -1,12 +1,18 @@
 import { VStack, HStack, Box, Text, Divider, Button, useDisclosure, Textarea } from '@chakra-ui/react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import React, { SetStateAction, useEffect, useRef, useState } from 'react';
 
-import { deleteChampionComments, likeChampionComments, patchChampionComments } from '@/apis/queries/championComment';
+import {
+  addChampionComments,
+  deleteChampionComments,
+  likeChampionComments,
+  patchChampionComments,
+  type PostOption,
+} from '@/apis/queries/championComment';
 import type { ChampionCommentsEntry, ProfileEntry } from '@/apis/types';
 import fullTierName from '@/apis/utils/fullTierName';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
@@ -23,9 +29,11 @@ interface ReplyProps {
   championId: number;
   currentUserInfo?: ProfileEntry;
   latestVersion: string;
+  commentVersion: string;
+  commentId: number;
 }
 
-function Reply({ reply, championId, currentUserInfo, latestVersion }: ReplyProps) {
+function Reply({ reply, championId, currentUserInfo, commentId, commentVersion, latestVersion }: ReplyProps) {
   const {
     memberId,
     internalTagName,
@@ -39,23 +47,52 @@ function Reply({ reply, championId, currentUserInfo, latestVersion }: ReplyProps
     likeOrNot,
     deleted,
   } = reply;
+  const queryClient = useQueryClient();
+  const mainRiotAccount = currentUserInfo?.riotDependentInfo.riotAccounts.find((account) => account.isMain);
   const deleteDisclosure = useDisclosure();
   const [isEdit, setIsEdit] = useState(false);
-  // const [newReplyOn, setNewReplyOn] = useState(false);
+  const [newReplyOn, setNewReplyOn] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  // const newReplyTextareaRef = useRef<HTMLTextAreaElement>(null);
-  const { mutateAsync: likeCommentAsync } = useMutation({
+  const newReplyTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const { mutateAsync: likeCommentAsync, isSuccess: isAddSuccess } = useMutation({
     mutationFn: likeChampionComments,
   });
-  const { mutateAsync: editCommentAsync } = useMutation({
+  const { mutateAsync: editCommentAsync, isSuccess: isEditSuccess } = useMutation({
     mutationFn: patchChampionComments,
   });
-  const { mutateAsync: deleteCommentAsync } = useMutation({
+  const { mutateAsync: deleteCommentAsync, isSuccess: isDeleteSuccess } = useMutation({
     mutationFn: deleteChampionComments,
   });
-  // const { mutateAsync: addReReplyAsync } = useMutation({
-  //   mutationFn: addChampionComments,
-  // });
+  const { mutateAsync: addReReplyAsync, isSuccess: isLikeSuccess } = useMutation({
+    mutationFn: addChampionComments,
+  });
+  const handleReplySubmit = async () => {
+    if (!mainRiotAccount) {
+      alert('라이엇 계정 인증이 되지 않았습니다.');
+      setNewReplyOn(false);
+      return;
+    }
+    if (latestVersion !== commentVersion) {
+      alert('부모 댓글과 버전이 다를 수 없습니다.');
+      setNewReplyOn(false);
+      return;
+    }
+    if (newReplyTextareaRef.current?.value !== '' && newReplyTextareaRef.current?.value !== undefined) {
+      const request: PostOption = {
+        internalTagName: `${mainRiotAccount.name}#${mainRiotAccount.tagLine}`,
+        // 댓글의 댓글 선택 시 자동으로 멘션?
+        mentionedInternalTagName: internalTagName,
+        tier: mainRiotAccount.queue,
+        division: mainRiotAccount.division,
+        championId,
+        contents: newReplyTextareaRef.current.value,
+        parentChampionCommentsId: commentId,
+        depth: 1,
+      };
+      await addReReplyAsync(request);
+      setNewReplyOn(false);
+    }
+  };
   const handleLike = async (like: boolean) => {
     const request = {
       likeOrNot: like,
@@ -81,6 +118,14 @@ function Reply({ reply, championId, currentUserInfo, latestVersion }: ReplyProps
   const handleDelete = async () => {
     await deleteCommentAsync({ championId, commentsId: reply.id });
   };
+
+  useEffect(() => {
+    if (isAddSuccess || isEditSuccess || isDeleteSuccess || isLikeSuccess) {
+      queryClient.invalidateQueries({
+        queryKey: ['championComments', championId],
+      });
+    }
+  }, [isAddSuccess, isEditSuccess, isDeleteSuccess, isLikeSuccess, queryClient, championId]);
 
   if (deleted) {
     return (
@@ -179,7 +224,7 @@ function Reply({ reply, championId, currentUserInfo, latestVersion }: ReplyProps
         )}
         <HStack w="full" justify="space-between">
           <HStack gap="12px">
-            <Button borderBottom="1px solid" borderColor="gray600" borderRadius="0">
+            <Button borderBottom="1px solid" borderColor="gray600" borderRadius="0" onClick={() => setNewReplyOn(true)}>
               <Text textStyle="t2" fontWeight="400" color="gray600">
                 답글달기
               </Text>
@@ -217,7 +262,46 @@ function Reply({ reply, championId, currentUserInfo, latestVersion }: ReplyProps
           </HStack>
         </HStack>
       </VStack>
-      {/* {newReplyOn && <Box w="full" h="full" } */}
+      {/* 댓글의 댓글 */}
+      {newReplyOn && (
+        <HStack
+          w="full"
+          h="140px"
+          bgColor="white"
+          borderRadius="4px"
+          border="1px solid"
+          borderColor="gray400"
+          p="12px"
+          gap="20px"
+        >
+          <Textarea
+            ref={newReplyTextareaRef}
+            w="full"
+            h="full"
+            textStyle="t2"
+            fontWeight="400"
+            color="gray800"
+            rows={4}
+            p="0"
+            border="none"
+          />
+          <VStack w="100px" h="full" justify="flex-end">
+            <Button
+              w="full"
+              h="52px"
+              borderRadius="4px"
+              p="16px 12px"
+              bgColor="main"
+              color="white"
+              onClick={handleReplySubmit}
+            >
+              <Text textStyle="t2" fontWeight="700">
+                등록
+              </Text>
+            </Button>
+          </VStack>
+        </HStack>
+      )}
     </>
   );
 }
@@ -227,18 +311,108 @@ interface RepliesProps {
   championId: number;
   currentUserInfo?: ProfileEntry;
   latestVersion: string;
+  commentId: number;
+  commentVersion: string;
+  newReplyOn?: boolean;
+  setNewReplyOn?: React.Dispatch<SetStateAction<boolean>>;
 }
 
-export default function Replies({ replies, championId, currentUserInfo, latestVersion }: RepliesProps) {
+export default function Replies({
+  replies,
+  championId,
+  currentUserInfo,
+  commentId,
+  latestVersion,
+  commentVersion,
+  newReplyOn,
+  setNewReplyOn,
+}: RepliesProps) {
+  const mainRiotAccount = currentUserInfo?.riotDependentInfo.riotAccounts.find((account) => account.isMain);
+  const queryClient = useQueryClient();
+  const { mutateAsync: addReplyAsync, isSuccess } = useMutation({
+    mutationFn: addChampionComments,
+  });
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const handleReplySubmit = async () => {
+    if (!setNewReplyOn || !commentId) {
+      return;
+    }
+    if (!mainRiotAccount) {
+      alert('라이엇 계정 인증이 되지 않았습니다.');
+      setNewReplyOn(false);
+      return;
+    }
+    if (latestVersion !== commentVersion) {
+      alert('부모 댓글과 버전이 다를 수 없습니다.');
+      setNewReplyOn(false);
+      return;
+    }
+    if (textareaRef.current?.value !== '' && textareaRef.current?.value !== undefined) {
+      const request: PostOption = {
+        internalTagName: `${mainRiotAccount.name}#${mainRiotAccount.tagLine}`,
+        tier: mainRiotAccount.queue,
+        division: mainRiotAccount.division,
+        championId,
+        contents: textareaRef.current.value,
+        parentChampionCommentsId: commentId,
+        depth: 1,
+      };
+      await addReplyAsync(request);
+      setNewReplyOn(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      queryClient.invalidateQueries({
+        queryKey: ['championComments', championId],
+      });
+    }
+  }, [isSuccess, queryClient, championId]);
+
   return (
     <VStack w="full">
       <VStack w="full" p="20px" gap="24px" bgColor="gray100">
+        {/* 이미 존재하는 댓글이 있을 때 신규 댓글을 다는 경우 */}
+        {newReplyOn && (
+          <HStack
+            w="full"
+            h="140px"
+            bgColor="white"
+            borderRadius="4px"
+            border="1px solid"
+            borderColor="gray400"
+            p="12px"
+            gap="20px"
+          >
+            <Textarea
+              ref={textareaRef}
+              w="full"
+              h="full"
+              textStyle="t2"
+              fontWeight="400"
+              color="gray800"
+              p="0"
+              rows={4}
+              border="none"
+            />
+            <VStack w="100px" h="full" justify="flex-end">
+              <Button w="full" h="52px" borderRadius="4px" p="16px 12px" bgColor="gray200" onClick={handleReplySubmit}>
+                <Text textStyle="t2" fontWeight="700" color="gray500">
+                  등록
+                </Text>
+              </Button>
+            </VStack>
+          </HStack>
+        )}
         {replies.map((reply) => (
           <Reply
             key={reply.id}
             reply={reply}
             championId={championId}
             currentUserInfo={currentUserInfo}
+            commentId={commentId}
+            commentVersion={commentVersion}
             latestVersion={latestVersion}
           />
         ))}
