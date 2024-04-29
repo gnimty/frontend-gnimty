@@ -1,5 +1,5 @@
 import { Box, Grid, HStack, Text, VStack, useDisclosure } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import champions from '@/apis/constants/champions';
 import Down from '@/assets/icons/system/down.svg';
@@ -8,15 +8,22 @@ import Up from '@/assets/icons/system/up.svg';
 import Champion from '@/components/duo/Champion';
 
 interface ChampionSelectProps {
+  opponentChampionId?: number;
   onSelect: (championId: number) => void;
 }
 
-export default function ChampionSelect({ onSelect }: ChampionSelectProps) {
+export default function ChampionSelect({ opponentChampionId, onSelect }: ChampionSelectProps) {
   const [selectedChampion, setSelectedChampion] = useState('');
   const { isOpen, onClose, onToggle } = useDisclosure();
   const handleChampionSelect = (championName: string) => {
     setSelectedChampion(championName);
   };
+
+  useEffect(() => {
+    if (opponentChampionId === undefined) {
+      setSelectedChampion('');
+    }
+  }, [opponentChampionId]);
 
   return (
     <Box

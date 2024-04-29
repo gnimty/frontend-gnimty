@@ -1,4 +1,4 @@
-import { queryOptions } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 import request, { type BaseResponse } from '../httpRequest';
 
@@ -12,17 +12,40 @@ interface GetOption {
   championId: number;
 }
 
+interface ChampionCommentsRequest extends GetOption {
+  lastUpCount: number | null;
+  lastDownCount: number | null;
+  lastCreatedAt: string | null;
+  lastChampionCommentsId: number | null;
+  pageSize: number;
+}
+
 /**
  *  운용법 조회
  */
-export const championComments = ({ championId }: GetOption) =>
-  queryOptions({
-    queryKey: ['championComments', championId],
-    async queryFn() {
+export const useInfiniteCommentsQuery = (options: ChampionCommentsRequest) =>
+  useInfiniteQuery({
+    queryKey: ['championComments', options.championId],
+    queryFn: async ({ pageParam = {} }) => {
       const res = await request.get<CommonResponseChampionCommentsResponse>(
-        `/community/champions/${championId}/comments`,
+        `/community/champions/${options.championId}/comments`,
+        {
+          params: { ...options, ...pageParam },
+        },
       );
       return res.data;
+    },
+    initialPageParam: options,
+    getNextPageParam: (lastPage) => {
+      const lastComment = lastPage.data.parentChampionComments?.slice(-1)[0] ?? [];
+      if (!lastComment) return undefined;
+      return {
+        ...options,
+        lastUpCount: lastComment.upCount,
+        lastDownCount: lastComment.downCount,
+        lastCreatedAt: lastComment.createdAt,
+        lastChampionCommentsId: lastComment.id,
+      };
     },
   });
 

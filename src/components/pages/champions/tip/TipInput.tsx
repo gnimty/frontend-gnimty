@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 
 import dataDragonVersion from '@/apis/constants/dataDragonVersion';
-import { addChampionComments, type PostOption } from '@/apis/queries/championComment';
+import { addChampionComments, type PostOption as AddChampionOptions } from '@/apis/queries/championComment';
 import type { CommentsType, Position, ProfileEntry } from '@/apis/types';
 import SummonerIcon from '@/assets/icons/system/summoner.svg';
 import PositionImage from '@/components/common/position-image/PositionImage';
@@ -22,10 +22,10 @@ export default function TipInput({ championId, currentUserInfo }: TipInputProps)
   const { mutateAsync: addCommentAsync } = useMutation({
     mutationFn: addChampionComments,
   });
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [commentsType, setCommentsType] = useState<CommentsType>();
   const [lane, setLane] = useState<Position>();
   const [opponentChampionId, setOpponentChampionId] = useState<number>();
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const handleUpdateOpponentChampion = (championId: number) => {
     setOpponentChampionId(championId);
   };
@@ -35,6 +35,22 @@ export default function TipInput({ championId, currentUserInfo }: TipInputProps)
       return;
     }
     if (textareaRef.current?.value) {
+      if (lane !== undefined && commentsType !== undefined && opponentChampionId !== undefined) {
+        const options: AddChampionOptions = {
+          internalTagName: mainAccount ? `${mainAccount.name}#${mainAccount.tagLine}` : currentUserInfo.nickname,
+          championId,
+          lane,
+          commentsType,
+          opponentChampionId,
+          contents: textareaRef.current.value,
+          depth: 0,
+        };
+        await addCommentAsync(options);
+        textareaRef.current.value = '';
+        setLane(undefined);
+        setCommentsType(undefined);
+        setOpponentChampionId(undefined);
+      }
     }
   };
   return (
@@ -60,7 +76,7 @@ export default function TipInput({ championId, currentUserInfo }: TipInputProps)
             ]}
             css={{ width: '136px' }}
             onChange={(v) => {
-              if (['TIP', 'QUESTION'].includes(v)) setCommentsType(v);
+              if (v !== '') setCommentsType(v);
             }}
           />
           <Select
@@ -74,11 +90,10 @@ export default function TipInput({ championId, currentUserInfo }: TipInputProps)
             ]}
             css={{ width: '136px' }}
             onChange={(v) => {
-              if (['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY'].includes(v))
-                setOptions({ ...options, lane: v as Position });
+              if (v !== '') setLane(v);
             }}
           />
-          <ChampionSelect onSelect={handleUpdateOpponentChampion} />
+          <ChampionSelect onSelect={handleUpdateOpponentChampion} opponentChampionId={opponentChampionId} />
         </HStack>
         <HStack w="full" gap="12px" justify="space-between">
           <Textarea

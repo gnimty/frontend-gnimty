@@ -2,6 +2,7 @@ import { Box, Button, Divider, HStack, Text, Textarea, useDisclosure, VStack } f
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
@@ -21,12 +22,14 @@ import Replies from './Replies';
 import { ReportModal } from './ReportModal';
 
 dayjs.locale('ko');
+dayjs.extend(relativeTime);
 dayjs.extend(duration);
 
 interface CommentProps {
   comment: ChampionCommentsEntry;
   championId: number;
   currentUserInfo?: ProfileEntry;
+  refObject?: (node: HTMLDivElement | null) => void;
 }
 
 export default function Comment({ comment, championId, currentUserInfo }: CommentProps) {
@@ -122,7 +125,7 @@ export default function Comment({ comment, championId, currentUserInfo }: Commen
             <HStack gap="4px" align="center">
               <TierImage tier={tier} width="24" />
               <Text textStyle="t2" fontWeight="400">
-                {fullTierName(tier, division)}
+                {tier && fullTierName(tier, division)}
               </Text>
             </HStack>
             <Divider orientation="vertical" h="full" colorScheme="gray500" />
