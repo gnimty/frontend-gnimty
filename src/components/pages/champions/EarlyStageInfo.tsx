@@ -45,7 +45,12 @@ export default function EarlyStageInfo({
     }
   })(type);
   return (
-    <VStack w="full" h="full" bg="white" borderRadius="4px">
+    <VStack
+      w={['first-return', 'shoes'].includes(type) ? 'max-content' : 'full'}
+      h="full"
+      bg="white"
+      borderRadius="4px"
+    >
       <Box w="full" h="54px" p="16px 20px" borderBottom="1px solid" borderColor="gray200">
         <Text textStyle="t2" fontWeight="700">
           {TITLE[type]}
@@ -79,11 +84,11 @@ export default function EarlyStageInfo({
                 </Box>
               ))}
             </HStack>
-            <HStack gap="8px">
-              <Text textStyle="t1" fontWeight="700" color="blue800">
+            <HStack minW="120px" w="max-content" gap="8px">
+              <Text w="full" textStyle="t1" fontWeight="700" color="blue800" wordBreak="keep-all">
                 {(build.winRate * 100).toFixed(2)}%
               </Text>
-              <Text textStyle="body" fontWeight="400" color="gray500">
+              <Text w="full" textStyle="body" fontWeight="400" color="gray500" wordBreak="keep-all">
                 {build.plays.toLocaleString('ko-KR')}게임
               </Text>
             </HStack>
