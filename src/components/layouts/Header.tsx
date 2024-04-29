@@ -93,7 +93,10 @@ export default function Header() {
         )}
       </header>
       <AccountModal />
-      <RecommendsModal isOpen={isOpenRecommends} onClose={onCloseRecommends} />
+      {/* TODO: summonerSearchBar 활성 시 제거 */}
+      {isAuthenticated && myInfoData !== undefined && (
+        <RecommendsModal isOpen={isOpenRecommends} onClose={onCloseRecommends} />
+      )}
     </>
   );
 }
