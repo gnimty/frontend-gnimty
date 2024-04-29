@@ -46,6 +46,7 @@ export default function Tip({ tipData, championId, lastCommentRef }: TipProps) {
             key={comment.id}
             comment={comment}
             championId={championId}
+            latestVersion={dataDragonVersion}
             currentUserInfo={myInfo?.data}
             refObject={commentsArray.length - 1 === idx ? lastCommentRef : undefined}
           />

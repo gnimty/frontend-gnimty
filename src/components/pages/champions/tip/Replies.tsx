@@ -22,9 +22,10 @@ interface ReplyProps {
   reply: ChampionCommentsEntry;
   championId: number;
   currentUserInfo?: ProfileEntry;
+  latestVersion: string;
 }
 
-function Reply({ reply, championId, currentUserInfo }: ReplyProps) {
+function Reply({ reply, championId, currentUserInfo, latestVersion }: ReplyProps) {
   const {
     memberId,
     internalTagName,
@@ -40,7 +41,9 @@ function Reply({ reply, championId, currentUserInfo }: ReplyProps) {
   } = reply;
   const deleteDisclosure = useDisclosure();
   const [isEdit, setIsEdit] = useState(false);
+  // const [newReplyOn, setNewReplyOn] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  // const newReplyTextareaRef = useRef<HTMLTextAreaElement>(null);
   const { mutateAsync: likeCommentAsync } = useMutation({
     mutationFn: likeChampionComments,
   });
@@ -50,6 +53,9 @@ function Reply({ reply, championId, currentUserInfo }: ReplyProps) {
   const { mutateAsync: deleteCommentAsync } = useMutation({
     mutationFn: deleteChampionComments,
   });
+  // const { mutateAsync: addReReplyAsync } = useMutation({
+  //   mutationFn: addChampionComments,
+  // });
   const handleLike = async (like: boolean) => {
     const request = {
       likeOrNot: like,
@@ -211,6 +217,7 @@ function Reply({ reply, championId, currentUserInfo }: ReplyProps) {
           </HStack>
         </HStack>
       </VStack>
+      {/* {newReplyOn && <Box w="full" h="full" } */}
     </>
   );
 }
@@ -219,14 +226,21 @@ interface RepliesProps {
   replies: ChampionCommentsEntry[];
   championId: number;
   currentUserInfo?: ProfileEntry;
+  latestVersion: string;
 }
 
-export default function Replies({ replies, championId, currentUserInfo }: RepliesProps) {
+export default function Replies({ replies, championId, currentUserInfo, latestVersion }: RepliesProps) {
   return (
     <VStack w="full">
       <VStack w="full" p="20px" gap="24px" bgColor="gray100">
         {replies.map((reply) => (
-          <Reply key={reply.id} reply={reply} championId={championId} currentUserInfo={currentUserInfo} />
+          <Reply
+            key={reply.id}
+            reply={reply}
+            championId={championId}
+            currentUserInfo={currentUserInfo}
+            latestVersion={latestVersion}
+          />
         ))}
       </VStack>
     </VStack>

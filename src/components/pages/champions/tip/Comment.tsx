@@ -12,6 +12,8 @@ import {
   deleteChampionComments,
   reportChampionComments,
   likeChampionComments,
+  addChampionComments,
+  type PostOption as NewReplyOption,
 } from '@/apis/queries/championComment';
 import type { ChampionCommentsEntry, ProfileEntry } from '@/apis/types';
 import championIconUrl from '@/apis/utils/championIconUrl';
@@ -33,14 +35,18 @@ dayjs.extend(duration);
 interface CommentProps {
   comment: ChampionCommentsEntry;
   championId: number;
+  latestVersion: string;
   currentUserInfo?: ProfileEntry;
   refObject?: (node: HTMLDivElement | null) => void;
 }
 
-export default function Comment({ comment, championId, currentUserInfo, refObject }: CommentProps) {
+export default function Comment({ comment, championId, latestVersion, currentUserInfo, refObject }: CommentProps) {
   const queryClient = useQueryClient();
   const deleteDisclosure = useDisclosure();
   const reportDisclosure = useDisclosure();
+  const { mutateAsync: addReplyAsync } = useMutation({
+    mutationFn: addChampionComments,
+  });
   const { mutateAsync: updateCommentAsync, isSuccess: isUpdateSuccess } = useMutation({
     mutationFn: patchChampionComments,
   });
@@ -50,10 +56,13 @@ export default function Comment({ comment, championId, currentUserInfo, refObjec
   const { mutateAsync: likeCommentAsync } = useMutation({
     mutationFn: likeChampionComments,
   });
+  const [newReplyOn, setNewReplyOn] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [repliesOpen, setRepliesOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const newReplyTextareaRef = useRef<HTMLTextAreaElement>(null);
   const {
+    id,
     internalTagName,
     tier,
     division,
@@ -73,10 +82,38 @@ export default function Comment({ comment, championId, currentUserInfo, refObjec
   } = comment;
   const [showBlocked, setShowBlocked] = useState(false);
   const championName = championIdEnNameMap[opponentChampionId];
+  const mainRiotAccount = currentUserInfo?.riotDependentInfo.riotAccounts.find((account) => account.isMain);
+
+  const handleReplySubmit = async () => {
+    if (!mainRiotAccount) {
+      alert('라이엇 계정 인증이 되지 않았습니다.');
+      setNewReplyOn(false);
+      return;
+    }
+    if (latestVersion !== version) {
+      alert('부모 댓글과 버전이 다를 수 없습니다.');
+      setNewReplyOn(false);
+      return;
+    }
+    if (newReplyTextareaRef.current?.value !== undefined) {
+      const options: NewReplyOption = {
+        internalTagName: `${mainRiotAccount.name}#${mainRiotAccount.tagLine}`,
+        tier: mainRiotAccount.queue,
+        division: mainRiotAccount.division,
+        championId,
+        contents: newReplyTextareaRef.current.value,
+        parentChampionCommentsId: id,
+        depth: 1,
+      };
+      await addReplyAsync(options);
+      setNewReplyOn(false);
+    }
+  };
 
   const handleUpdate = async () => {
     if (textareaRef.current?.value === contents) {
       alert('변경 내용이 없습니다.');
+      setIsEdit(false);
       return;
     }
     if (textareaRef.current?.value !== undefined) {
@@ -294,7 +331,13 @@ export default function Comment({ comment, championId, currentUserInfo, refObjec
                 {repliesOpen ? <Down width="20" height="20" /> : <Up width="20" height="20" />}
               </Button>
             )}
-            <Button borderBottom="1px solid" borderColor="gray600" borderRadius="0">
+            <Button
+              borderBottom="1px solid"
+              borderColor="gray600"
+              borderRadius="0"
+              onClick={() => setNewReplyOn(true)}
+              cursor="pointer"
+            >
               <Text textStyle="t2" fontWeight="400" color="gray600">
                 답글달기
               </Text>
@@ -342,9 +385,52 @@ export default function Comment({ comment, championId, currentUserInfo, refObjec
           </HStack>
         </HStack>
         {childChampionComments.length > 0 && repliesOpen && (
-          <Replies replies={childChampionComments} championId={championId} currentUserInfo={currentUserInfo} />
+          <Replies
+            replies={childChampionComments}
+            championId={championId}
+            currentUserInfo={currentUserInfo}
+            latestVersion={latestVersion}
+          />
         )}
       </VStack>
+      {newReplyOn && (
+        <Box w="full" h="full" bgColor="white" p="0 20px 20px 20px">
+          <HStack w="full" h="140px" borderRadius="4px" border="1px solid" borderColor="gray400" p="12px" gap="20px">
+            <Textarea
+              ref={newReplyTextareaRef}
+              border="none"
+              w="full"
+              h="full"
+              textStyle="t2"
+              fontWeight="400"
+              color="gray800"
+              p="0"
+              rows={4}
+              placeholder="답글 내용을 입력해주세요."
+              _placeholder={{
+                textStyle: 't2',
+                color: 'gray500',
+                fontWeight: '400',
+              }}
+            />
+            <VStack w="100px" h="full" justify="flex-end">
+              <Button
+                w="full"
+                h="52px"
+                borderRadius="4px"
+                bgColor="main"
+                color="white"
+                p="16px 12px"
+                textStyle="t2"
+                fontWeight="700"
+                onClick={handleReplySubmit}
+              >
+                등록
+              </Button>
+            </VStack>
+          </HStack>
+        </Box>
+      )}
     </>
   );
 }

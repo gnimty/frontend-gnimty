@@ -53,8 +53,8 @@ export interface PostOption extends GetOption {
   internalTagName: string;
   tier?: Tier;
   division?: number;
-  lane: Position;
-  opponentChampionId: number;
+  lane?: Position;
+  opponentChampionId?: number;
   depth: number; // 0 or 1 - depth 0일 경우, lane, opponentChampionId, commentsType이 작성 가능 1인 경우 불가능
   mentionedInternalTagName?: string;
   contents: string;
