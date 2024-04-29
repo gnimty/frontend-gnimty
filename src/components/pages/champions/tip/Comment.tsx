@@ -98,6 +98,7 @@ export default function Comment({ comment, championId, latestVersion, currentUse
     if (newReplyTextareaRef.current?.value !== undefined) {
       const options: NewReplyOption = {
         internalTagName: `${mainRiotAccount.name}#${mainRiotAccount.tagLine}`,
+        mentionedInternalTagName: internalTagName,
         tier: mainRiotAccount.queue,
         division: mainRiotAccount.division,
         championId,
@@ -139,7 +140,6 @@ export default function Comment({ comment, championId, latestVersion, currentUse
   };
 
   const handleLike = async (like: boolean) => {
-    // TODO: likeOrNot이 항상 null로 들어오는 이슈가 있는 듯 (동일 계정이슈일 수 있음)
     const request = {
       likeOrNot: like,
       cancel: likeOrNot === like,
@@ -399,6 +399,7 @@ export default function Comment({ comment, championId, latestVersion, currentUse
             currentUserInfo={currentUserInfo}
             latestVersion={latestVersion}
             commentId={comment.id}
+            commentInternalTagName={internalTagName}
             commentVersion={version}
             newReplyOn={newReplyOn}
             setNewReplyOn={setNewReplyOn}

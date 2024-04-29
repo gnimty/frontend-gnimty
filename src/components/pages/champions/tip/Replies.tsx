@@ -80,7 +80,6 @@ function Reply({ reply, championId, currentUserInfo, commentId, commentVersion, 
     if (newReplyTextareaRef.current?.value !== '' && newReplyTextareaRef.current?.value !== undefined) {
       const request: PostOption = {
         internalTagName: `${mainRiotAccount.name}#${mainRiotAccount.tagLine}`,
-        // 댓글의 댓글 선택 시 자동으로 멘션?
         mentionedInternalTagName: internalTagName,
         tier: mainRiotAccount.queue,
         division: mainRiotAccount.division,
@@ -318,6 +317,7 @@ interface RepliesProps {
   currentUserInfo?: ProfileEntry;
   latestVersion: string;
   commentId: number;
+  commentInternalTagName: string;
   commentVersion: string;
   newReplyOn?: boolean;
   setNewReplyOn?: React.Dispatch<SetStateAction<boolean>>;
@@ -329,6 +329,7 @@ export default function Replies({
   currentUserInfo,
   commentId,
   latestVersion,
+  commentInternalTagName,
   commentVersion,
   newReplyOn,
   setNewReplyOn,
@@ -356,6 +357,7 @@ export default function Replies({
     if (textareaRef.current?.value !== '' && textareaRef.current?.value !== undefined) {
       const request: PostOption = {
         internalTagName: `${mainRiotAccount.name}#${mainRiotAccount.tagLine}`,
+        mentionedInternalTagName: commentInternalTagName,
         tier: mainRiotAccount.queue,
         division: mainRiotAccount.division,
         championId,
