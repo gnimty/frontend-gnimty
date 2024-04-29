@@ -1,8 +1,11 @@
 import { VStack, HStack, Box, Text, Divider, Button } from '@chakra-ui/react';
+import { useMutation } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from 'next/image';
 
+import { likeChampionComments } from '@/apis/queries/championComment';
 import type { ChampionCommentsEntry } from '@/apis/types';
 import fullTierName from '@/apis/utils/fullTierName';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
@@ -10,13 +13,35 @@ import TierImage from '@/components/common/TierImage';
 
 dayjs.locale('ko');
 dayjs.extend(duration);
+dayjs.extend(relativeTime);
 
 interface ReplyProps {
   reply: ChampionCommentsEntry;
+  championId: number;
 }
 
-function Reply({ reply }: ReplyProps) {
-  const { internalTagName, tier, division, contents, mentionedInternalTagName, upCount, downCount, createdAt } = reply;
+function Reply({ reply, championId }: ReplyProps) {
+  const {
+    internalTagName,
+    tier,
+    division,
+    contents,
+    mentionedInternalTagName,
+    upCount,
+    downCount,
+    createdAt,
+    likeOrNot,
+  } = reply;
+  const { mutateAsync: likeCommentAsync } = useMutation({
+    mutationFn: likeChampionComments,
+  });
+  const handleLike = async (like: boolean) => {
+    const request = {
+      likeOrNot: like,
+      cancel: likeOrNot === like,
+    };
+    await likeCommentAsync({ championId, commentsId: reply.id, ...request });
+  };
   return (
     <VStack w="full" align="flex-start" gap="12px">
       <HStack w="full" justify="space-between">
@@ -27,12 +52,14 @@ function Reply({ reply }: ReplyProps) {
           <Text textStyle="t2" fontWeight="700">
             {internalTagName}
           </Text>
-          <HStack gap="4px" align="center">
-            <TierImage tier={tier} width="24" />
-            <Text textStyle="t2" fontWeight="400">
-              {fullTierName(tier, division)}
-            </Text>
-          </HStack>
+          {tier && (
+            <HStack gap="4px" align="center">
+              <TierImage tier={tier} width="24" />
+              <Text textStyle="t2" fontWeight="400">
+                {fullTierName(tier, division)}
+              </Text>
+            </HStack>
+          )}
           <Divider orientation="vertical" h="full" colorScheme="gray500" />
           <Text textStyle="body" fontWeight="400" color="gray500">
             {dayjs(createdAt).from(dayjs())}
@@ -69,6 +96,8 @@ function Reply({ reply }: ReplyProps) {
             borderColor="gray400"
             textStyle="body"
             gap="4px"
+            onClick={async () => handleLike(true)}
+            cursor="pointer"
           >
             <Text fontWeight="400">추천</Text>
             <Text fontWeight="700">{upCount}</Text>
@@ -81,6 +110,8 @@ function Reply({ reply }: ReplyProps) {
             borderColor="gray400"
             textStyle="body"
             gap="4px"
+            onClick={async () => handleLike(false)}
+            cursor="pointer"
           >
             <Text fontWeight="400">비추천</Text>
             <Text fontWeight="700">{downCount}</Text>
@@ -93,14 +124,15 @@ function Reply({ reply }: ReplyProps) {
 
 interface RepliesProps {
   replies: ChampionCommentsEntry[];
+  championId: number;
 }
 
-export default function Replies({ replies }: RepliesProps) {
+export default function Replies({ replies, championId }: RepliesProps) {
   return (
     <VStack w="full">
       <VStack w="full" p="20px" gap="24px" bgColor="gray100">
         {replies.map((reply) => (
-          <Reply key={reply.id} reply={reply} />
+          <Reply key={reply.id} reply={reply} championId={championId} />
         ))}
       </VStack>
     </VStack>
