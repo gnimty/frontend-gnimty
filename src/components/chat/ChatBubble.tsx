@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 
+import useAuth from '@/apis/useAuth';
 import ChatIcon from '@/assets/icons/system/chat.svg';
 import { useChatContext } from '@/contexts/ChatContext';
 
@@ -19,8 +20,14 @@ const ChatBubbleContainer = styled.div<{ $open: boolean }>`
 `;
 
 function ChatBubble() {
+  const { isAuthenticated } = useAuth();
   const { disclosure } = useChatContext();
   const { isOpen, onClose, onToggle } = disclosure;
+
+  if (!isAuthenticated) {
+    return;
+  }
+
   return (
     <ChatBubbleContainer $open={isOpen}>
       <ChatIcon color="#fff" width="36px" height="36px" onClick={onToggle} cursor="pointer" />
