@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { type SetStateAction, useEffect, useRef, useState } from 'react';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import { patchChampionComments, deleteChampionComments, reportChampionComments } from '@/apis/queries/championComment';
@@ -45,7 +45,6 @@ export default function Comment({ comment, championId, currentUserInfo }: Commen
   const [isEdit, setIsEdit] = useState(false);
   const [repliesOpen, setRepliesOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  // profileIconId 필요
   const {
     internalTagName,
     tier,
@@ -60,7 +59,10 @@ export default function Comment({ comment, championId, currentUserInfo }: Commen
     createdAt,
     memberId,
     childChampionComments,
+    blocked,
+    deleted,
   } = comment;
+  const [showBlocked, setShowBlocked] = useState(false);
   const championName = championIdEnNameMap[opponentChampionId];
 
   const handleUpdate = async () => {
@@ -159,95 +161,99 @@ export default function Comment({ comment, championId, currentUserInfo }: Commen
             </HStack>
           )}
         </HStack>
-        <HStack gap="4px">
-          <Box p="4px 8px" borderRadius="999px" bgColor="main" color="white">
-            <Text textStyle="body" fontWeight="400">
-              {commentsType === 'TIP' ? '그님팁' : '알려주세요'}
-            </Text>
-          </Box>
-          <Box
-            w="24px"
-            h="24px"
-            borderRadius="999px"
-            bgColor="gray200"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <PositionImage position={lane} width="16" />
-          </Box>
-          <Box
-            w="24px"
-            h="24px"
-            borderRadius="999px"
-            overflow="hidden"
-            position="relative"
-            _after={{
-              content: '"VS"',
-              position: 'absolute',
-              textStyle: 't2',
-              fontWeight: '400',
-              color: 'white',
-              left: '50%',
-              top: '50%',
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            <Image src={championIconUrl(championName)} width="24" height="24" alt="Ezreal" />
-          </Box>
-          <Box borderRadius="999px" bgColor="gray200" color="gray600" p="4px 8px">
-            <Text textStyle="body" fontWeight="400">
-              v {version}
-            </Text>
-          </Box>
-        </HStack>
-        {isEdit ? (
-          <HStack gap="12px">
-            <Textarea
-              h="140px"
-              ref={textareaRef}
-              rows={4}
-              _placeholder={{
-                color: 'gray500',
+        <VStack w="full" gap="12px" position="relative" align="flex-start">
+          {blocked && !showBlocked && <BlockedComment setShowBlocked={setShowBlocked} />}
+          <HStack gap="4px" filter="auto" blur={blocked && !showBlocked ? 'md' : 'none'}>
+            <Box p="4px 8px" borderRadius="999px" bgColor="main" color="white">
+              <Text textStyle="body" fontWeight="400">
+                {commentsType === 'TIP' ? '그님팁' : '알려주세요'}
+              </Text>
+            </Box>
+            <Box
+              w="24px"
+              h="24px"
+              borderRadius="999px"
+              bgColor="gray200"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <PositionImage position={lane} width="16" />
+            </Box>
+            <Box
+              w="24px"
+              h="24px"
+              borderRadius="999px"
+              overflow="hidden"
+              position="relative"
+              _after={{
+                content: '"VS"',
+                position: 'absolute',
                 textStyle: 't2',
                 fontWeight: '400',
+                color: 'white',
+                left: '50%',
+                top: '50%',
+                transform: 'translate(-50%, -50%)',
               }}
-              borderColor="gray400"
-              value={contents}
-            />
-            <VStack w="80px" gap="12px">
-              <Button
-                h="52px"
-                borderRadius="4px"
-                textStyle="t2"
-                fontWeight="700"
-                color="gray700"
-                border="1px solid"
-                borderColor="gray200"
-                p="16px 12px"
-                onClick={() => setIsEdit(false)}
-              >
-                취소
-              </Button>
-              <Button
-                h="76px"
-                borderRadius="4px"
-                textStyle="t2"
-                fontWeight="700"
-                color="gray700"
-                bgColor="main"
-                p="14px 12px"
-                onClick={handleUpdate}
-              >
-                저장
-              </Button>
-            </VStack>
+            >
+              <Image src={championIconUrl(championName)} width="24" height="24" alt="Ezreal" />
+            </Box>
+            <Box borderRadius="999px" bgColor="gray200" color="gray600" p="4px 8px">
+              <Text textStyle="body" fontWeight="400">
+                v {version}
+              </Text>
+            </Box>
           </HStack>
-        ) : (
-          <Box w="full" textStyle="t2" fontWeight="400">
-            {contents}
-          </Box>
-        )}
+          {isEdit ? (
+            <HStack gap="12px">
+              <Textarea
+                h="140px"
+                ref={textareaRef}
+                rows={4}
+                _placeholder={{
+                  color: 'gray500',
+                  textStyle: 't2',
+                  fontWeight: '400',
+                }}
+                borderColor="gray400"
+                value={contents}
+              />
+              <VStack w="80px" gap="12px">
+                <Button
+                  h="52px"
+                  borderRadius="4px"
+                  textStyle="t2"
+                  fontWeight="700"
+                  color="gray700"
+                  border="1px solid"
+                  borderColor="gray200"
+                  p="16px 12px"
+                  onClick={() => setIsEdit(false)}
+                >
+                  취소
+                </Button>
+                <Button
+                  h="76px"
+                  borderRadius="4px"
+                  textStyle="t2"
+                  fontWeight="700"
+                  color="gray700"
+                  bgColor="main"
+                  p="14px 12px"
+                  onClick={handleUpdate}
+                >
+                  저장
+                </Button>
+              </VStack>
+            </HStack>
+          ) : (
+            <Box w="full" textStyle="t2" fontWeight="400" filter="auto" blur={blocked && !showBlocked ? 'md' : 'none'}>
+              {contents}
+            </Box>
+          )}
+        </VStack>
+
         <HStack w="full" justify="space-between">
           <HStack gap="12px">
             {childChampionComments.length > 0 && (
@@ -293,5 +299,33 @@ export default function Comment({ comment, championId, currentUserInfo }: Commen
         {childChampionComments.length > 0 && repliesOpen && <Replies replies={childChampionComments} />}
       </VStack>
     </>
+  );
+}
+
+interface BlockedCommentProps {
+  setShowBlocked: React.Dispatch<SetStateAction<boolean>>;
+}
+
+function BlockedComment({ setShowBlocked }: BlockedCommentProps) {
+  return (
+    <VStack w="full" h="full" gap="8px" align="center" position="absolute" top="0" left="0" zIndex="10">
+      <Text textStyle="t2" fontWeight="400" color="gray800">
+        차단한 소환사의 댓글입니다.
+      </Text>
+      <Button
+        type="button"
+        borderRadius="4px"
+        w="80px"
+        h="32px"
+        border="1px solid"
+        borderColor="gray200"
+        p="6px 12px"
+        onClick={() => setShowBlocked(true)}
+      >
+        <Text textStyle="t2" fontWeight="400" color="gray700">
+          확인하기
+        </Text>
+      </Button>
+    </VStack>
   );
 }
