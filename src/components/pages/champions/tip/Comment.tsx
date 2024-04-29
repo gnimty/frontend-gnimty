@@ -265,7 +265,7 @@ export default function Comment({ comment, championId, currentUserInfo }: Commen
                 {repliesOpen ? <Down width="20" height="20" /> : <Up width="20" height="20" />}
               </Button>
             )}
-            <Button borderBottom="1px solid" borderColor="gray600">
+            <Button borderBottom="1px solid" borderColor="gray600" borderRadius="0">
               <Text textStyle="t2" fontWeight="400" color="gray600">
                 답글달기
               </Text>
