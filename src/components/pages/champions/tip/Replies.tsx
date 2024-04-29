@@ -166,7 +166,13 @@ function Reply({ reply, championId, currentUserInfo, commentId, commentVersion, 
                 수정
               </Text>
               <Divider orientation="vertical" h="full" colorScheme="gray500" />
-              <Text textStyle="body" fontWeight="400" color="gray500" onClick={deleteDisclosure.onOpen}>
+              <Text
+                textStyle="body"
+                fontWeight="400"
+                color="gray500"
+                onClick={deleteDisclosure.onOpen}
+                cursor="pointer"
+              >
                 삭제
               </Text>
             </HStack>
