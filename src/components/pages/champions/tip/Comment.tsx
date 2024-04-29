@@ -113,7 +113,7 @@ export default function Comment({ comment, championId, currentUserInfo }: Commen
     <>
       <DeleteModal isOpen={deleteDisclosure.isOpen} onClose={deleteDisclosure.onClose} handleDelete={handleDelete} />
       <ReportModal isOpen={reportDisclosure.isOpen} onClose={reportDisclosure.onClose} handleReport={handleReport} />
-      <VStack bgColor="white" p="20px" gap="12px" align="flex-start">
+      <VStack bgColor="white" w="full" p="20px" gap="12px" align="flex-start">
         <HStack w="full" justify="space-between">
           <HStack h="24px" gap="12px" align="center">
             <Box w="24px" h="24px" overflow="hidden" borderRadius="12px">
@@ -122,15 +122,16 @@ export default function Comment({ comment, championId, currentUserInfo }: Commen
             <Text textStyle="t2" fontWeight="700">
               {internalTagName}
             </Text>
-            <HStack gap="4px" align="center">
-              <TierImage tier={tier} width="24" />
-              <Text textStyle="t2" fontWeight="400">
-                {tier && fullTierName(tier, division)}
-              </Text>
-            </HStack>
-            <Divider orientation="vertical" h="full" colorScheme="gray500" />
+            {tier && (
+              <HStack gap="4px" align="center">
+                <TierImage tier={tier} width="24" />
+                <Text textStyle="t2" fontWeight="400">
+                  {fullTierName(tier, division)}
+                </Text>
+              </HStack>
+            )}
             <Text textStyle="body" fontWeight="400" color="gray500">
-              {dayjs(createdAt).from(dayjs())}
+              | {dayjs(createdAt).from(dayjs())}
             </Text>
           </HStack>
           {!isEdit && currentUserInfo?.id === memberId && (
@@ -175,7 +176,23 @@ export default function Comment({ comment, championId, currentUserInfo }: Commen
           >
             <PositionImage position={lane} width="16" />
           </Box>
-          <Box w="24px" h="24px" borderRadius="999px" overflow="hidden">
+          <Box
+            w="24px"
+            h="24px"
+            borderRadius="999px"
+            overflow="hidden"
+            position="relative"
+            _after={{
+              content: '"VS"',
+              position: 'absolute',
+              textStyle: 't2',
+              fontWeight: '400',
+              color: 'white',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          >
             <Image src={championIconUrl(championName)} width="24" height="24" alt="Ezreal" />
           </Box>
           <Box borderRadius="999px" bgColor="gray200" color="gray600" p="4px 8px">
