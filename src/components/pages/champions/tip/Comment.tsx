@@ -32,7 +32,7 @@ interface CommentProps {
   refObject?: (node: HTMLDivElement | null) => void;
 }
 
-export default function Comment({ comment, championId, currentUserInfo }: CommentProps) {
+export default function Comment({ comment, championId, currentUserInfo, refObject }: CommentProps) {
   const queryClient = useQueryClient();
   const deleteDisclosure = useDisclosure();
   const reportDisclosure = useDisclosure();
@@ -103,17 +103,9 @@ export default function Comment({ comment, championId, currentUserInfo }: Commen
     });
   }, [isUpdateSuccess, queryClient, championId]);
 
-  if (comment.deleted) {
-    return (
-      <Box h="60px" w="full" p="20px" textStyle="t2" fontWeight="400" color="gray500">
-        삭제된 게시글입니다.
-      </Box>
-    );
-  }
-
   if (deleted) {
     return (
-      <Box w="full" p="20px">
+      <Box w="full" p="20px" ref={refObject}>
         <Text textStyle="t2" fontWeight="400" color="gray500">
           삭제된 게시글입니다.
         </Text>
@@ -125,7 +117,7 @@ export default function Comment({ comment, championId, currentUserInfo }: Commen
     <>
       <DeleteModal isOpen={deleteDisclosure.isOpen} onClose={deleteDisclosure.onClose} handleDelete={handleDelete} />
       <ReportModal isOpen={reportDisclosure.isOpen} onClose={reportDisclosure.onClose} handleReport={handleReport} />
-      <VStack bgColor="white" w="full" p="20px" gap="12px" align="flex-start">
+      <VStack bgColor="white" w="full" p="20px" gap="12px" align="flex-start" ref={refObject}>
         <HStack w="full" justify="space-between">
           <HStack h="24px" gap="12px" align="center">
             <Box w="24px" h="24px" overflow="hidden" borderRadius="12px">
