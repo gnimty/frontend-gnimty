@@ -467,6 +467,7 @@ export interface ChampionCommentsEntry {
   createdAt: string;
   updatedAt: string;
   deleted: boolean;
+  blocked: boolean;
   memberId: number;
   likeOrNot: boolean | null;
   parentChampionCommentsId: number;
