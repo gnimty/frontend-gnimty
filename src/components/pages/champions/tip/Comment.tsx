@@ -7,7 +7,12 @@ import Image from 'next/image';
 import { type SetStateAction, useEffect, useRef, useState } from 'react';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
-import { patchChampionComments, deleteChampionComments, reportChampionComments } from '@/apis/queries/championComment';
+import {
+  patchChampionComments,
+  deleteChampionComments,
+  reportChampionComments,
+  likeChampionComments,
+} from '@/apis/queries/championComment';
 import type { ChampionCommentsEntry, ProfileEntry } from '@/apis/types';
 import championIconUrl from '@/apis/utils/championIconUrl';
 import fullTierName from '@/apis/utils/fullTierName';
@@ -42,6 +47,9 @@ export default function Comment({ comment, championId, currentUserInfo, refObjec
   const { mutateAsync: deleteCommentAsync, isSuccess: isDeleteSuccess } = useMutation({
     mutationFn: deleteChampionComments,
   });
+  const { mutateAsync: likeCommentAsync } = useMutation({
+    mutationFn: likeChampionComments,
+  });
   const [isEdit, setIsEdit] = useState(false);
   const [repliesOpen, setRepliesOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -61,6 +69,7 @@ export default function Comment({ comment, championId, currentUserInfo, refObjec
     childChampionComments,
     blocked,
     deleted,
+    likeOrNot,
   } = comment;
   const [showBlocked, setShowBlocked] = useState(false);
   const championName = championIdEnNameMap[opponentChampionId];
@@ -89,6 +98,15 @@ export default function Comment({ comment, championId, currentUserInfo, refObjec
       alert('신고가 완료되었습니다.');
       reportDisclosure.onClose();
     }
+  };
+
+  const handleLike = async (like: boolean) => {
+    // TODO: likeOrNot이 항상 null로 들어오는 이슈가 있는 듯 (동일 계정이슈일 수 있음)
+    const request = {
+      likeOrNot: like,
+      cancel: likeOrNot === like,
+    };
+    await likeCommentAsync({ championId, commentsId: comment.id, ...request });
   };
 
   useEffect(() => {
@@ -280,11 +298,8 @@ export default function Comment({ comment, championId, currentUserInfo, refObjec
             </Button>
           </HStack>
           <HStack gap="8px">
-            <HStack borderRadius="999px" p="4px 8px" bgColor="main" color="white" textStyle="body" gap="4px">
-              <Text fontWeight="400">추천</Text>
-              <Text fontWeight="700">{upCount}</Text>
-            </HStack>
             <HStack
+              aria-selected={likeOrNot === true}
               borderRadius="999px"
               p="4px 8px"
               color="gray600"
@@ -292,6 +307,31 @@ export default function Comment({ comment, championId, currentUserInfo, refObjec
               borderColor="gray400"
               textStyle="body"
               gap="4px"
+              _selected={{
+                bgColor: 'main',
+                color: 'white',
+              }}
+              onClick={async () => handleLike(true)}
+              cursor="pointer"
+            >
+              <Text fontWeight="400">추천</Text>
+              <Text fontWeight="700">{upCount}</Text>
+            </HStack>
+            <HStack
+              aria-selected={likeOrNot === false}
+              borderRadius="999px"
+              p="4px 8px"
+              color="gray600"
+              border="1px solid"
+              borderColor="gray400"
+              textStyle="body"
+              gap="4px"
+              _selected={{
+                bgColor: 'main',
+                color: 'white',
+              }}
+              onClick={async () => handleLike(false)}
+              cursor="pointer"
             >
               <Text fontWeight="400">비추천</Text>
               <Text fontWeight="700">{downCount}</Text>
