@@ -111,6 +111,16 @@ export default function Comment({ comment, championId, currentUserInfo }: Commen
     );
   }
 
+  if (deleted) {
+    return (
+      <Box w="full" p="20px">
+        <Text textStyle="t2" fontWeight="400" color="gray500">
+          삭제된 게시글입니다.
+        </Text>
+      </Box>
+    );
+  }
+
   return (
     <>
       <DeleteModal isOpen={deleteDisclosure.isOpen} onClose={deleteDisclosure.onClose} handleDelete={handleDelete} />
