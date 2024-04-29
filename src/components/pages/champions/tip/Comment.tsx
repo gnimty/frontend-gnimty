@@ -341,7 +341,7 @@ export default function Comment({ comment, championId, latestVersion, currentUse
               borderColor="gray600"
               borderRadius="0"
               onClick={() => {
-                setNewReplyOn(true);
+                setNewReplyOn((prev) => !prev);
                 setRepliesOpen(true);
               }}
               cursor="pointer"

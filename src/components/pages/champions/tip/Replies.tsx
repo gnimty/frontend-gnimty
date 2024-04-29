@@ -112,6 +112,7 @@ function Reply({ reply, championId, currentUserInfo, commentId, commentVersion, 
         contents: textareaRef.current.value,
         mentionedInternalTagName,
       });
+      setIsEdit(false);
     }
   };
   const handleDelete = async () => {
@@ -229,7 +230,12 @@ function Reply({ reply, championId, currentUserInfo, commentId, commentVersion, 
         )}
         <HStack w="full" justify="space-between">
           <HStack gap="12px">
-            <Button borderBottom="1px solid" borderColor="gray600" borderRadius="0" onClick={() => setNewReplyOn(true)}>
+            <Button
+              borderBottom="1px solid"
+              borderColor="gray600"
+              borderRadius="0"
+              onClick={() => setNewReplyOn((prev) => !prev)}
+            >
               <Text textStyle="t2" fontWeight="400" color="gray600">
                 답글달기
               </Text>
