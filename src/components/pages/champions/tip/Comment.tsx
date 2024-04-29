@@ -342,7 +342,7 @@ export default function Comment({ comment, championId, currentUserInfo, refObjec
           </HStack>
         </HStack>
         {childChampionComments.length > 0 && repliesOpen && (
-          <Replies replies={childChampionComments} championId={championId} />
+          <Replies replies={childChampionComments} championId={championId} currentUserInfo={currentUserInfo} />
         )}
       </VStack>
     </>
