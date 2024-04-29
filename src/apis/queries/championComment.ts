@@ -71,7 +71,8 @@ export const addChampionComments = async ({ championId, ...rest }: PostOption) =
 };
 
 interface PatchOption extends GetOption {
-  mentionedInternalTagName: string;
+  commentsId: number;
+  mentionedInternalTagName?: string;
   contents: string;
 }
 
@@ -80,8 +81,8 @@ interface PatchResponse extends BaseResponse {}
 /**
  * 운용법 수정
  */
-export const patchChampionComments = async ({ championId, ...rest }: PatchOption) => {
-  return await request.patch<PatchResponse>(`/community/champions/${championId}/comments`, rest);
+export const patchChampionComments = async ({ commentsId, championId, ...rest }: PatchOption) => {
+  return await request.patch<PatchResponse>(`/community/champions/${championId}/comments/${commentsId}`, rest);
 };
 
 interface DeleteOption extends GetOption {

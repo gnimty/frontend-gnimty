@@ -81,10 +81,11 @@ export default function Comment({ comment, championId, currentUserInfo, refObjec
     }
     if (textareaRef.current?.value !== undefined) {
       await updateCommentAsync({
-        ...comment,
+        commentsId: comment.id,
         championId,
         contents: textareaRef.current.value,
       });
+      setIsEdit(false);
     }
   };
 
@@ -226,7 +227,7 @@ export default function Comment({ comment, championId, currentUserInfo, refObjec
             </Box>
           </HStack>
           {isEdit ? (
-            <HStack gap="12px">
+            <HStack w="full" gap="12px">
               <Textarea
                 h="140px"
                 ref={textareaRef}
@@ -237,10 +238,11 @@ export default function Comment({ comment, championId, currentUserInfo, refObjec
                   fontWeight: '400',
                 }}
                 borderColor="gray400"
-                value={contents}
+                defaultValue={contents}
               />
               <VStack w="80px" gap="12px">
                 <Button
+                  w="full"
                   h="52px"
                   borderRadius="4px"
                   textStyle="t2"
@@ -254,11 +256,12 @@ export default function Comment({ comment, championId, currentUserInfo, refObjec
                   취소
                 </Button>
                 <Button
+                  w="full"
                   h="76px"
                   borderRadius="4px"
                   textStyle="t2"
                   fontWeight="700"
-                  color="gray700"
+                  color="white"
                   bgColor="main"
                   p="14px 12px"
                   onClick={handleUpdate}
