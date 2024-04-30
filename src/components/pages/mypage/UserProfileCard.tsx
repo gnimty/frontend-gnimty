@@ -2,6 +2,7 @@ import { Box, Button, Flex, IconButton, Text, useDisclosure } from '@chakra-ui/r
 import Image from 'next/image';
 
 import type { Tier } from '@/apis/types';
+import useAuth from '@/apis/useAuth';
 import shortTierName from '@/apis/utils/shortTierName';
 import Message from '@/assets/icons/system/message.svg';
 import summonerDefaultProfile from '@/assets/images/summoner-default-profile.png';
@@ -27,7 +28,15 @@ export default function UserProfileCard({
   leaguePoints,
   profileImage,
 }: UserCardProps) {
+  const { data: myInfo } = useAuth();
   const disclosure = useDisclosure();
+  const handleChangePasswordOpen = () => {
+    if (myInfo?.data.email) {
+      disclosure.onOpen();
+    }
+    alert('form 가입 사용자가 아닙니다.');
+    return;
+  };
   return (
     <>
       <Flex direction="column" width="324px" height="300px" alignItems="center" gap="24px" bg="white">
@@ -80,7 +89,7 @@ export default function UserProfileCard({
           border="0"
           borderTop="1px solid"
           borderColor="gray200"
-          onClick={disclosure.onOpen}
+          onClick={handleChangePasswordOpen}
         >
           비밀번호 변경
         </Button>
