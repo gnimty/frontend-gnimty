@@ -55,6 +55,11 @@ export default function Comment({ comment, championId, latestVersion, currentUse
   });
   const { mutateAsync: likeCommentAsync, isSuccess: isLikeSuccess } = useMutation({
     mutationFn: likeChampionComments,
+    onError(error) {
+      if (error.response?.data.status.code === 409) {
+        alert('이미 좋아요 또는 싫어요를 한 댓글입니다.');
+      }
+    },
   });
   const [newReplyOn, setNewReplyOn] = useState(false);
   const [isEdit, setIsEdit] = useState(false);

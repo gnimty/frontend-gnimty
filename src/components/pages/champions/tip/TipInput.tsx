@@ -1,6 +1,6 @@
 import { Box, Button, HStack, Textarea, VStack } from '@chakra-ui/react';
-import { useMutation } from '@tanstack/react-query';
-import { useRef, useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useRef, useState } from 'react';
 
 import dataDragonVersion from '@/apis/constants/dataDragonVersion';
 import { addChampionComments, type PostOption as AddChampionOptions } from '@/apis/queries/championComment';
@@ -17,9 +17,10 @@ interface TipInputProps {
 }
 
 export default function TipInput({ championId, currentUserInfo }: TipInputProps) {
+  const queryClient = useQueryClient();
   const { riotDependentInfo } = currentUserInfo;
   const mainAccount = riotDependentInfo.riotAccounts.find((account) => account.isMain);
-  const { mutateAsync: addCommentAsync } = useMutation({
+  const { mutateAsync: addCommentAsync, isSuccess } = useMutation({
     mutationFn: addChampionComments,
   });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -53,6 +54,15 @@ export default function TipInput({ championId, currentUserInfo }: TipInputProps)
       }
     }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      queryClient.invalidateQueries({
+        queryKey: ['championComments', championId],
+      });
+    }
+  }, [isSuccess, queryClient, championId]);
+
   return (
     <HStack w="full" minH="232px" p="20px" gap="20px" justify="space-between" align="flex-start">
       <Box
