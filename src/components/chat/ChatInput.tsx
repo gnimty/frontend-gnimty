@@ -1,6 +1,8 @@
 import { Box, HStack, Input, VStack, useDisclosure } from '@chakra-ui/react';
+import { useMutation } from '@tanstack/react-query';
 import React, { useRef } from 'react';
 
+import { memberBlock } from '@/apis/queries/memberBlockQuery';
 import EditVerticalIcon from '@/assets/icons/system/edit-vertical.svg';
 import { useChatContext } from '@/contexts/ChatContext';
 
@@ -57,6 +59,7 @@ function ChatInput() {
           }}
           placeholder="텍스트를 입력하세요."
           ref={chatRef}
+          autoComplete="off"
           onKeyDown={handleEnterKeydown}
         />
         <Box
@@ -81,8 +84,18 @@ function ChatInput() {
 }
 
 function ToggleMenu() {
-  const { selectedChatRoomNo, exitChatRoom } = useChatContext();
-
+  const { selectedChatRoomNo, exitChatRoom, chatRooms } = useChatContext();
+  const { mutateAsync: memberBlockAsync } = useMutation({
+    mutationFn: memberBlock,
+  });
+  const otherUserId = chatRooms.find((room) => room.chatRoomNo === selectedChatRoomNo)?.otherUser.userId;
+  const handleUserBlock = async () => {
+    if (otherUserId) {
+      if (confirm('해당 유저를 차단하시겠습니까?')) {
+        await memberBlockAsync({ id: parseInt(otherUserId, 10) });
+      }
+    }
+  };
   return (
     <VStack
       w="124px"
@@ -105,6 +118,8 @@ function ToggleMenu() {
         }}
         p="10px 12px"
         borderBottom="1px solid gray100"
+        onClick={handleUserBlock}
+        cursor="pointer"
       >
         차단하기
       </Box>
@@ -119,6 +134,7 @@ function ToggleMenu() {
         }}
         p="10px 12px"
         onClick={() => exitChatRoom(selectedChatRoomNo!)}
+        cursor="pointer"
       >
         채팅방 나가기
       </Box>
