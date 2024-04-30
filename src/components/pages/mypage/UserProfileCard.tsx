@@ -31,11 +31,12 @@ export default function UserProfileCard({
   const { data: myInfo } = useAuth();
   const disclosure = useDisclosure();
   const handleChangePasswordOpen = () => {
+    // form가입 유저인 경우에만 myInfo.data.email값이 존재하고, 그 경우에만 비밀번호 변경이 가능
     if (myInfo?.data.email) {
       disclosure.onOpen();
+    } else {
+      alert('form 가입 사용자가 아닙니다.');
     }
-    alert('form 가입 사용자가 아닙니다.');
-    return;
   };
   return (
     <>
