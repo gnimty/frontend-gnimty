@@ -1,5 +1,6 @@
 import { Box, HStack, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
+import dayjs from 'dayjs';
 import { useEffect, useMemo, useRef } from 'react';
 
 import summonerInfoQuery from '@/apis/queries/summonerInfoQuery';
@@ -7,6 +8,7 @@ import { useChatContext } from '@/contexts/ChatContext';
 
 import Chat from './Chat';
 import ChatInput from './ChatInput';
+import { type Chat as ChatType } from './types';
 import UserCard from './UserCard';
 
 function CurrentChat() {
@@ -23,9 +25,7 @@ function CurrentChat() {
   const { data: summonerInfo } = useQuery(
     summonerInfoQuery({ summonerTagName: `${otherUserName}-${otherUserTagLine}` }),
   );
-  const today = new Date();
-  const chatsBeforeToday = chats?.filter((chat) => new Date(chat.sendDate) < today);
-  const chatsToday = chats?.slice(chatsBeforeToday.length, chats.length);
+  const { chatsBeforeToday, chatsToday } = classifyChats(chats);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -36,13 +36,15 @@ function CurrentChat() {
   return (
     <VStack w="400px" h="100%" position="relative" justify="flex-start">
       {/* if user exists */}
-      <UserCard
-        summonerName="TestUserName"
-        tagLine="#KR1"
-        profileIconId={100}
-        soloTierInfo={summonerInfo?.data.summoner?.soloTierInfo}
-        flexTierInfo={summonerInfo?.data.summoner?.flexTierInfo}
-      />
+      {otherUser && (
+        <UserCard
+          summonerName={otherUser.name}
+          tagLine={otherUser.tagLine}
+          profileIconId={parseInt(otherUser.iconId, 10)}
+          soloTierInfo={summonerInfo?.data.summoner?.soloTierInfo}
+          flexTierInfo={summonerInfo?.data.summoner?.flexTierInfo}
+        />
+      )}
       {/* if chat exists */}
       <Box overflowY="scroll" overscrollBehaviorY="contain" w="full" flex="1" mb="70px" ref={scrollRef}>
         {chats && chats.length > 0 && otherUserId && (
@@ -81,3 +83,21 @@ function CurrentChat() {
 }
 
 export default CurrentChat;
+
+function classifyChats(chats: ChatType[]) {
+  const today = dayjs().startOf('day');
+  const chatsBeforeToday: ChatType[] = [];
+  const chatsToday: ChatType[] = [];
+
+  chats.forEach((chat) => {
+    const chatDate = dayjs(chat.sendDate);
+    if (chatDate.isBefore(today)) {
+      chatsBeforeToday.push(chat);
+    }
+    if (chatDate.isSame(today, 'day')) {
+      chatsToday.push(chat);
+    }
+  });
+
+  return { chatsBeforeToday, chatsToday };
+}
