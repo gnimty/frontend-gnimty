@@ -16,6 +16,7 @@ import {
   type PostOption as NewReplyOption,
 } from '@/apis/queries/championComment';
 import type { ChampionCommentsEntry, ProfileEntry } from '@/apis/types';
+import useAuth from '@/apis/useAuth';
 import championIconUrl from '@/apis/utils/championIconUrl';
 import fullTierName from '@/apis/utils/fullTierName';
 import Down from '@/assets/icons/system/down.svg';
@@ -41,6 +42,7 @@ interface CommentProps {
 }
 
 export default function Comment({ comment, championId, latestVersion, currentUserInfo, refObject }: CommentProps) {
+  const { isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
   const deleteDisclosure = useDisclosure();
   const reportDisclosure = useDisclosure();
@@ -145,6 +147,10 @@ export default function Comment({ comment, championId, latestVersion, currentUse
   };
 
   const handleLike = async (like: boolean) => {
+    if (!isAuthenticated) {
+      alert('로그인 후 이용해주세요.');
+      return;
+    }
     const request = {
       likeOrNot: like,
       cancel: likeOrNot === like,
@@ -172,8 +178,12 @@ export default function Comment({ comment, championId, latestVersion, currentUse
 
   return (
     <>
-      <DeleteModal isOpen={deleteDisclosure.isOpen} onClose={deleteDisclosure.onClose} handleDelete={handleDelete} />
-      <ReportModal isOpen={reportDisclosure.isOpen} onClose={reportDisclosure.onClose} handleReport={handleReport} />
+      {isAuthenticated && (
+        <DeleteModal isOpen={deleteDisclosure.isOpen} onClose={deleteDisclosure.onClose} handleDelete={handleDelete} />
+      )}
+      {isAuthenticated && (
+        <ReportModal isOpen={reportDisclosure.isOpen} onClose={reportDisclosure.onClose} handleReport={handleReport} />
+      )}
       <VStack bgColor="white" w="full" p="20px" gap="12px" align="flex-start" ref={refObject}>
         <HStack w="full" justify="space-between">
           <HStack h="24px" gap="12px" align="center">
@@ -215,7 +225,7 @@ export default function Comment({ comment, championId, latestVersion, currentUse
               </Text>
             </HStack>
           )}
-          {currentUserInfo?.id !== memberId && (
+          {currentUserInfo?.id !== memberId && isAuthenticated && (
             <HStack h="24px" gap="8px">
               <Text
                 textStyle="body"
@@ -341,20 +351,22 @@ export default function Comment({ comment, championId, latestVersion, currentUse
                 {repliesOpen ? <Down width="20" height="20" /> : <Up width="20" height="20" />}
               </Button>
             )}
-            <Button
-              borderBottom="1px solid"
-              borderColor="gray600"
-              borderRadius="0"
-              onClick={() => {
-                setNewReplyOn((prev) => !prev);
-                setRepliesOpen(true);
-              }}
-              cursor="pointer"
-            >
-              <Text textStyle="t2" fontWeight="400" color="gray600">
-                답글달기
-              </Text>
-            </Button>
+            {isAuthenticated && (
+              <Button
+                borderBottom="1px solid"
+                borderColor="gray600"
+                borderRadius="0"
+                onClick={() => {
+                  setNewReplyOn((prev) => !prev);
+                  setRepliesOpen(true);
+                }}
+                cursor="pointer"
+              >
+                <Text textStyle="t2" fontWeight="400" color="gray600">
+                  답글달기
+                </Text>
+              </Button>
+            )}
           </HStack>
           <HStack gap="8px">
             <HStack

@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from 'next/image';
-import React, { SetStateAction, useEffect, useRef, useState } from 'react';
+import React, { type SetStateAction, useEffect, useRef, useState } from 'react';
 
 import {
   addChampionComments,
@@ -14,6 +14,7 @@ import {
   type PostOption,
 } from '@/apis/queries/championComment';
 import type { ChampionCommentsEntry, ProfileEntry } from '@/apis/types';
+import useAuth from '@/apis/useAuth';
 import fullTierName from '@/apis/utils/fullTierName';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
 import TierImage from '@/components/common/TierImage';
@@ -34,6 +35,7 @@ interface ReplyProps {
 }
 
 function Reply({ reply, championId, currentUserInfo, commentId, commentVersion, latestVersion }: ReplyProps) {
+  const { isAuthenticated } = useAuth();
   const {
     memberId,
     internalTagName,
@@ -93,6 +95,10 @@ function Reply({ reply, championId, currentUserInfo, commentId, commentVersion, 
     }
   };
   const handleLike = async (like: boolean) => {
+    if (!isAuthenticated) {
+      alert('로그인 후 이용해주세요.');
+      return;
+    }
     const request = {
       likeOrNot: like,
       cancel: likeOrNot === like,
@@ -177,7 +183,7 @@ function Reply({ reply, championId, currentUserInfo, commentId, commentVersion, 
               </Text>
             </HStack>
           )}
-          {currentUserInfo?.id !== memberId && (
+          {currentUserInfo?.id !== memberId && isAuthenticated && (
             <HStack h="24px" gap="8px">
               <Text textStyle="body" fontWeight="400" color="gray500">
                 신고
@@ -230,16 +236,18 @@ function Reply({ reply, championId, currentUserInfo, commentId, commentVersion, 
         )}
         <HStack w="full" justify="space-between">
           <HStack gap="12px">
-            <Button
-              borderBottom="1px solid"
-              borderColor="gray600"
-              borderRadius="0"
-              onClick={() => setNewReplyOn((prev) => !prev)}
-            >
-              <Text textStyle="t2" fontWeight="400" color="gray600">
-                답글달기
-              </Text>
-            </Button>
+            {isAuthenticated && (
+              <Button
+                borderBottom="1px solid"
+                borderColor="gray600"
+                borderRadius="0"
+                onClick={() => setNewReplyOn((prev) => !prev)}
+              >
+                <Text textStyle="t2" fontWeight="400" color="gray600">
+                  답글달기
+                </Text>
+              </Button>
+            )}
           </HStack>
           <HStack gap="8px">
             <HStack
