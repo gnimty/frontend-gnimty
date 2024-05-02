@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from 'next/image';
-import { type SetStateAction, useEffect, useRef, useState } from 'react';
+import { type SetStateAction, useRef, useState } from 'react';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import {
@@ -46,17 +46,33 @@ export default function Comment({ comment, championId, latestVersion, currentUse
   const queryClient = useQueryClient();
   const deleteDisclosure = useDisclosure();
   const reportDisclosure = useDisclosure();
-  const { mutateAsync: addReplyAsync, isSuccess: isAddSuccess } = useMutation({
+  const { mutateAsync: addReplyAsync } = useMutation({
     mutationFn: addChampionComments,
+    onSuccess: async () =>
+      queryClient.invalidateQueries({
+        queryKey: ['championComments', championId],
+      }),
   });
-  const { mutateAsync: updateCommentAsync, isSuccess: isUpdateSuccess } = useMutation({
+  const { mutateAsync: updateCommentAsync } = useMutation({
     mutationFn: patchChampionComments,
+    onSuccess: async () =>
+      queryClient.invalidateQueries({
+        queryKey: ['championComments', championId],
+      }),
   });
-  const { mutateAsync: deleteCommentAsync, isSuccess: isDeleteSuccess } = useMutation({
+  const { mutateAsync: deleteCommentAsync } = useMutation({
     mutationFn: deleteChampionComments,
+    onSuccess: async () =>
+      queryClient.invalidateQueries({
+        queryKey: ['championComments', championId],
+      }),
   });
-  const { mutateAsync: likeCommentAsync, isSuccess: isLikeSuccess } = useMutation({
+  const { mutateAsync: likeCommentAsync } = useMutation({
     mutationFn: likeChampionComments,
+    onSuccess: async () =>
+      queryClient.invalidateQueries({
+        queryKey: ['championComments', championId],
+      }),
     onError(error) {
       if (error.response?.data.status.code === 409) {
         alert('이미 좋아요 또는 싫어요를 한 댓글입니다.');
@@ -157,14 +173,6 @@ export default function Comment({ comment, championId, latestVersion, currentUse
     };
     await likeCommentAsync({ championId, commentsId: comment.id, ...request });
   };
-
-  useEffect(() => {
-    if (isAddSuccess || isUpdateSuccess || isDeleteSuccess || isLikeSuccess) {
-      queryClient.invalidateQueries({
-        queryKey: ['championComments', championId],
-      });
-    }
-  }, [isAddSuccess, isUpdateSuccess, isDeleteSuccess, isLikeSuccess, queryClient, championId]);
 
   if (deleted) {
     return (

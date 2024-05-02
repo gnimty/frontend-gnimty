@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from 'next/image';
-import React, { type SetStateAction, useEffect, useRef, useState } from 'react';
+import React, { type SetStateAction, useRef, useState } from 'react';
 
 import {
   addChampionComments,
@@ -56,17 +56,33 @@ function Reply({ reply, championId, currentUserInfo, commentId, commentVersion, 
   const [newReplyOn, setNewReplyOn] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const newReplyTextareaRef = useRef<HTMLTextAreaElement>(null);
-  const { mutateAsync: likeCommentAsync, isSuccess: isAddSuccess } = useMutation({
+  const { mutateAsync: likeCommentAsync } = useMutation({
     mutationFn: likeChampionComments,
+    onSuccess: async () =>
+      queryClient.invalidateQueries({
+        queryKey: ['championComments', championId],
+      }),
   });
-  const { mutateAsync: editCommentAsync, isSuccess: isEditSuccess } = useMutation({
+  const { mutateAsync: editCommentAsync } = useMutation({
     mutationFn: patchChampionComments,
+    onSuccess: async () =>
+      queryClient.invalidateQueries({
+        queryKey: ['championComments', championId],
+      }),
   });
-  const { mutateAsync: deleteCommentAsync, isSuccess: isDeleteSuccess } = useMutation({
+  const { mutateAsync: deleteCommentAsync } = useMutation({
     mutationFn: deleteChampionComments,
+    onSuccess: async () =>
+      queryClient.invalidateQueries({
+        queryKey: ['championComments', championId],
+      }),
   });
-  const { mutateAsync: addReReplyAsync, isSuccess: isLikeSuccess } = useMutation({
+  const { mutateAsync: addReReplyAsync } = useMutation({
     mutationFn: addChampionComments,
+    onSuccess: async () =>
+      queryClient.invalidateQueries({
+        queryKey: ['championComments', championId],
+      }),
   });
   const handleReplySubmit = async () => {
     if (!mainRiotAccount) {
@@ -124,14 +140,6 @@ function Reply({ reply, championId, currentUserInfo, commentId, commentVersion, 
   const handleDelete = async () => {
     await deleteCommentAsync({ championId, commentsId: reply.id });
   };
-
-  useEffect(() => {
-    if (isAddSuccess || isEditSuccess || isDeleteSuccess || isLikeSuccess) {
-      queryClient.invalidateQueries({
-        queryKey: ['championComments', championId],
-      });
-    }
-  }, [isAddSuccess, isEditSuccess, isDeleteSuccess, isLikeSuccess, queryClient, championId]);
 
   if (deleted) {
     return (
@@ -350,8 +358,12 @@ export default function Replies({
 }: RepliesProps) {
   const mainRiotAccount = currentUserInfo?.riotDependentInfo.riotAccounts.find((account) => account.isMain);
   const queryClient = useQueryClient();
-  const { mutateAsync: addReplyAsync, isSuccess } = useMutation({
+  const { mutateAsync: addReplyAsync } = useMutation({
     mutationFn: addChampionComments,
+    onSuccess: async () =>
+      queryClient.invalidateQueries({
+        queryKey: ['championComments', championId],
+      }),
   });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const handleReplySubmit = async () => {
@@ -383,14 +395,6 @@ export default function Replies({
       setNewReplyOn(false);
     }
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      queryClient.invalidateQueries({
-        queryKey: ['championComments', championId],
-      });
-    }
-  }, [isSuccess, queryClient, championId]);
 
   return (
     <VStack w="full">
