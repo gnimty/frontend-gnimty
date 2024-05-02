@@ -265,6 +265,104 @@ export interface ChampionSummaryDto {
 
 export type LaneSummaryDto = Record<Position, number>;
 
+export interface MatchBriefRes {
+  matchInfo: MatchDto;
+  participant: ParticipantDto;
+  allParticipants: ParticipantBriefDto[];
+}
+
+interface MatchDto {
+  matchId: string;
+  version: string;
+  gameStartAt: Date;
+  gameEndAt: Date;
+  gameDuration: number;
+  queueInfo: QueueDto;
+  earlyEnded: boolean;
+  avgTier: Tier;
+  avgDivision: number;
+}
+
+export interface ParticipantDto {
+  participantId: number;
+  championId: number;
+  championName: string;
+  tier: Tier;
+  division: number;
+  lp: number;
+  win: boolean;
+  teamId: number;
+  lane: Position | 'UNKNOWN';
+  kill: number;
+  death: number;
+  assist: number;
+  kda: number;
+  killParticipation: number;
+  goldEarned: number;
+  totalDamageTaken: number;
+  totalDamageDealtToChampions: number;
+  wardPlaced: number;
+  wardKilled: number;
+  visionWardBoughtInGame: number;
+  totalChampionLevel: number;
+  cs: number;
+  pentaKills: number;
+  quadraKills: number;
+  tripleKills: number;
+  doubleKills: number;
+  spellDId: number;
+  spellFId: number;
+  perks: Perk;
+  items: number[];
+  accessory: number;
+  itemBuilds: ItemBundle[];
+  skillBuilds: number[];
+  tagLine: number;
+  internalTagName: string;
+}
+interface ParticipantBriefDto {
+  puuid: string;
+  participantId: number;
+  championId: number;
+  championName: string;
+  teamId: number;
+  summonerName: string;
+  tagLine: string;
+  internalTagName: string;
+}
+
+interface ItemBundle {
+  minute: number;
+  items: number[];
+}
+
+interface Ban {
+  championId: number;
+  pickTurn: number;
+}
+export interface TeamDto {
+  teamId: number;
+  win: boolean;
+  banList: Ban[];
+  baron: number;
+  dragon: number;
+  riftHerald: number;
+  tower: number;
+  totalKill: number;
+  totalGold: number;
+}
+
+export interface MatchDetailRes {
+  matchId: string;
+  gameVersion: string;
+  gameEndAt: Date;
+  queueInfo: QueueDto;
+  gameEndedInEarlySurrender: boolean;
+  gameDuration: number;
+  participants: ParticipantDto[];
+  teams: TeamDto[];
+  averageTier: Tier;
+}
 export interface MatchSummaryDto {
   plays: number;
   wins: number;

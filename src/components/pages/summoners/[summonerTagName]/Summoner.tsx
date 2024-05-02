@@ -45,6 +45,7 @@ import { useRecentSearchesStore } from '../../main/search/recentSearchesStore';
 import Champion from './Champion';
 import CurrentGameTab from './CurrentGameTab/CurrentGameTab';
 import LanePlaysGraph from './LanePlaysGraph';
+import MatchHistoryInfoTab from './MatchHistoryInfoTab/MatchHistoryInfoTab';
 import RankCard from './RankCard';
 
 dayjs.locale('ko');
@@ -316,7 +317,9 @@ export default function Summoner(props: SummonerProps) {
             <Tab>그님티 정보</Tab>
           </TabList>
           <TabPanels>
-            <TabPanel>전적 정보</TabPanel>
+            <TabPanel>
+              <MatchHistoryInfoTab matches={data.data.matches} />
+            </TabPanel>
             <TabPanel>
               <Champion summonerTagName={summonerTagName} />
             </TabPanel>
