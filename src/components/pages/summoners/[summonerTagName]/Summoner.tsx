@@ -44,6 +44,7 @@ import { useRecentSearchesStore } from '../../main/search/recentSearchesStore';
 
 import Champion from './Champion';
 import CurrentGameTab from './CurrentGameTab/CurrentGameTab';
+import GnimtyInfoTab from './GnimtyInfoTab/GnimtyInfoTab';
 import LanePlaysGraph from './LanePlaysGraph';
 import MatchHistoryInfoTab from './MatchHistoryInfoTab/MatchHistoryInfoTab';
 import RankCard from './RankCard';
@@ -326,7 +327,9 @@ export default function Summoner(props: SummonerProps) {
             <TabPanel>
               <CurrentGameTab summonerTagName={summonerTagName} />
             </TabPanel>
-            <TabPanel>그님티 정보</TabPanel>
+            <TabPanel>
+              <GnimtyInfoTab />
+            </TabPanel>
           </TabPanels>
         </Tabs>
       </VStack>
