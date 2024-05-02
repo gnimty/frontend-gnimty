@@ -494,3 +494,12 @@ export interface RecentlySummonersEntry {
   frequentChampionId2: number | null;
   frequentChampionId3: number | null;
 }
+
+export type ReportType =
+  | 'ABUSE'
+  | 'OBSCENE'
+  | 'FALSEHOOD'
+  | 'SPAMMING'
+  | 'ILLEGAL_ADVERTISING'
+  | 'PERSONAL_INFORMATION_EXPOSURE'
+  | 'OTHER';

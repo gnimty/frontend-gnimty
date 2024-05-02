@@ -2,7 +2,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 import request, { type BaseResponse } from '../httpRequest';
 
-import type { ChampionCommentsResponse, CommentsType, Position, Tier } from '../types';
+import type { ChampionCommentsResponse, CommentsType, Position, ReportType, Tier } from '../types';
 
 interface CommonResponseChampionCommentsResponse extends BaseResponse {
   data: ChampionCommentsResponse;
@@ -116,7 +116,7 @@ export const likeChampionComments = async ({ championId, commentsId, likeOrNot, 
 
 interface ReportOption extends GetOption {
   commentsId: number;
-  reportType: 'ABUSE' | 'OTHER';
+  reportType: ReportType[];
   reportComment?: string;
 }
 
@@ -125,7 +125,7 @@ interface ReportOption extends GetOption {
  * reportType이 Other이면 reportComment 필수
  */
 export const reportChampionComments = async ({ championId, commentsId, reportType, reportComment }: ReportOption) => {
-  return await request.post<BaseResponse>(`/community/champions/${championId}/comments/${commentsId}report`, {
+  return await request.post<BaseResponse>(`/community/champions/${championId}/comments/${commentsId}/reports`, {
     reportType,
     reportComment,
   });

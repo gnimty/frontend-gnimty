@@ -15,7 +15,7 @@ import {
   addChampionComments,
   type PostOption as NewReplyOption,
 } from '@/apis/queries/championComment';
-import type { ChampionCommentsEntry, ProfileEntry } from '@/apis/types';
+import type { ChampionCommentsEntry, ProfileEntry, ReportType } from '@/apis/types';
 import useAuth from '@/apis/useAuth';
 import championIconUrl from '@/apis/utils/championIconUrl';
 import fullTierName from '@/apis/utils/fullTierName';
@@ -154,8 +154,12 @@ export default function Comment({ comment, championId, latestVersion, currentUse
     await deleteCommentAsync({ championId, commentsId: comment.id });
   };
 
-  const handleReport = async (reportType: 'ABUSE' | 'OTHER', reportComment?: string) => {
+  const handleReport = async (reportType: ReportType[], reportComment?: string) => {
     const response = await reportChampionComments({ championId, commentsId: comment.id, reportType, reportComment });
+    if (response.data.status.code === 409) {
+      alert('이미 신고한 댓글입니다.');
+      reportDisclosure.onClose();
+    }
     if (response.data.status.code === 200) {
       alert('신고가 완료되었습니다.');
       reportDisclosure.onClose();
