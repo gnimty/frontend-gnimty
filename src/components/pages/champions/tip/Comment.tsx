@@ -79,6 +79,15 @@ export default function Comment({ comment, championId, latestVersion, currentUse
       }
     },
   });
+  const { mutate: reportChampionComment } = useMutation({
+    mutationFn: reportChampionComments,
+    onError: (error) => {
+      if (error.response?.data.status.code === 409) {
+        alert('이미 신고한 댓글입니다.');
+        reportDisclosure.onClose();
+      }
+    },
+  });
   const [newReplyOn, setNewReplyOn] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [repliesOpen, setRepliesOpen] = useState(false);
@@ -154,16 +163,8 @@ export default function Comment({ comment, championId, latestVersion, currentUse
     await deleteCommentAsync({ championId, commentsId: comment.id });
   };
 
-  const handleReport = async (reportType: ReportType[], reportComment?: string) => {
-    const response = await reportChampionComments({ championId, commentsId: comment.id, reportType, reportComment });
-    if (response.data.status.code === 409) {
-      alert('이미 신고한 댓글입니다.');
-      reportDisclosure.onClose();
-    }
-    if (response.data.status.code === 200) {
-      alert('신고가 완료되었습니다.');
-      reportDisclosure.onClose();
-    }
+  const handleReport = (reportType: ReportType[], reportComment?: string) => {
+    reportChampionComment({ championId, commentsId: comment.id, reportType, reportComment });
   };
 
   const handleLike = async (like: boolean) => {
