@@ -1,5 +1,5 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import dataDragonVersion from '@/apis/constants/dataDragonVersion';
 import type { ChampionCommentsEntry } from '@/apis/types';
@@ -18,6 +18,10 @@ interface TipProps {
 export default function Tip({ tipData, championId, lastCommentRef }: TipProps) {
   const { data: myInfo } = useAuth();
   const [switchOn, setSwitchOn] = useState(false);
+  const filteredTipData = useMemo(
+    () => tipData?.filter((comment) => !switchOn || comment.version === dataDragonVersion),
+    [tipData, switchOn],
+  );
   return (
     <VStack w="full" borderRadius="4px" bg="white">
       <HStack w="full" h="52px" p="12px 24px" borderBottom="1px solid" borderColor="gray200" justify="space-between">
@@ -39,18 +43,16 @@ export default function Tip({ tipData, championId, lastCommentRef }: TipProps) {
       {/* Input */}
       {myInfo?.data && <TipInput championId={championId} currentUserInfo={myInfo.data} />}
       {/* Comments */}
-      {tipData
-        ?.filter((comment) => !switchOn || comment.version === dataDragonVersion)
-        .map((comment, idx, commentsArray) => (
-          <Comment
-            key={comment.id}
-            comment={comment}
-            championId={championId}
-            latestVersion={dataDragonVersion}
-            currentUserInfo={myInfo?.data}
-            refObject={commentsArray.length - 1 === idx ? lastCommentRef : undefined}
-          />
-        ))}
+      {filteredTipData?.map((comment, idx, commentsArray) => (
+        <Comment
+          key={comment.id}
+          comment={comment}
+          championId={championId}
+          latestVersion={dataDragonVersion}
+          currentUserInfo={myInfo?.data}
+          refObject={commentsArray.length - 1 === idx ? lastCommentRef : undefined}
+        />
+      ))}
     </VStack>
   );
 }
