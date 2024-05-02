@@ -1,6 +1,7 @@
 import { VStack, HStack, Box, Text, Divider, Button, useDisclosure, Textarea } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from 'next/image';
