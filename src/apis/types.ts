@@ -280,8 +280,8 @@ export interface MatchBriefRes {
 interface MatchDto {
   matchId: string;
   version: string;
-  gameStartAt: Date;
-  gameEndAt: Date;
+  gameStartAt: string;
+  gameEndAt: string;
   gameDuration: number;
   queueInfo: QueueDto;
   earlyEnded: boolean;
@@ -361,7 +361,7 @@ export interface TeamDto {
 export interface MatchDetailRes {
   matchId: string;
   gameVersion: string;
-  gameEndAt: Date;
+  gameEndAt: string;
   queueInfo: QueueDto;
   gameEndedInEarlySurrender: boolean;
   gameDuration: number;

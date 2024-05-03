@@ -1,7 +1,8 @@
+import 'dayjs/locale/ko';
+
 import { Box, HStack, Text, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
-import 'dayjs/locale/ko';
 
 import memberProfileQuery from '@/apis/queries/memberProfileQuery';
 import type { GameMode } from '@/apis/types';

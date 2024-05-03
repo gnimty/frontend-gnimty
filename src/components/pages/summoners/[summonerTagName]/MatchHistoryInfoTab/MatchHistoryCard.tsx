@@ -1,6 +1,7 @@
+import 'dayjs/locale/ko';
+
 import { Box, Center, Flex, Grid, Text, useDisclosure } from '@chakra-ui/react';
 import dayjs from 'dayjs';
-import 'dayjs/locale/ko';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 

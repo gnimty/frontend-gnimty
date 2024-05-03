@@ -1,5 +1,6 @@
-import { Flex, Text, useDisclosure } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 
 import summonerMatchDetailInfoQuery from '@/apis/queries/summonerMatchDetailInfoQuery';
 import type { ParticipantDto } from '@/apis/types';
@@ -13,7 +14,7 @@ interface MatchHistoryCardExpandProps {
 
 function MatchHistoryCardExpand({ matchId, participant }: MatchHistoryCardExpandProps) {
   const { data, status } = useQuery(summonerMatchDetailInfoQuery({ matchId }));
-  const { isOpen: isBuildTab, onOpen: onBuildTab, onClose: onBaseInfoTab } = useDisclosure();
+  const [isBuildOpen, setIsBuildOpen] = useState(false);
 
   const color800 = participant.win ? 'blue800' : 'main';
 
@@ -30,27 +31,27 @@ function MatchHistoryCardExpand({ matchId, participant }: MatchHistoryCardExpand
           flex={1}
           alignItems="center"
           justifyContent="center"
-          bg={isBuildTab ? 'white' : color800}
+          bg={isBuildOpen ? 'white' : color800}
           borderLeftRadius="inherit"
-          onClick={onBaseInfoTab}
+          onClick={() => setIsBuildOpen(false)}
         >
-          <Text color={isBuildTab ? 'gray600' : 'white'}>기본 정보</Text>
+          <Text color={isBuildOpen ? 'gray600' : 'white'}>기본 정보</Text>
         </Flex>
         <Flex
           flex={1}
           alignItems="center"
           justifyContent="center"
-          bg={isBuildTab ? color800 : 'white'}
+          bg={isBuildOpen ? color800 : 'white'}
           borderRightRadius="inherit"
-          onClick={onBuildTab}
+          onClick={() => setIsBuildOpen(true)}
         >
-          <Text color={isBuildTab ? 'white' : 'gray600'}>빌드</Text>
+          <Text color={isBuildOpen ? 'white' : 'gray600'}>빌드</Text>
         </Flex>
       </Flex>
-      {!isBuildTab ? (
-        <MatchHistoryCardExpandInfo participants={participants} teams={teams} gameDuration={gameDuration} />
-      ) : (
+      {isBuildOpen ? (
         <MatchHistoryCardExpandBuild participant={participant} />
+      ) : (
+        <MatchHistoryCardExpandInfo participants={participants} teams={teams} gameDuration={gameDuration} />
       )}
     </Flex>
   );
