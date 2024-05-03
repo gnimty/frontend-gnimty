@@ -253,6 +253,12 @@ export interface ProfileEntry {
   oauthInfos: OauthInfoEntry[];
 }
 
+export interface OtherProfileEntry {
+  schedules: ScheduleEntry[];
+  mainIntroduction: string;
+  preferGameModes: PreferGameModeEntry[];
+}
+
 export interface ChampionSummaryDto {
   championId: number;
   plays: number;
