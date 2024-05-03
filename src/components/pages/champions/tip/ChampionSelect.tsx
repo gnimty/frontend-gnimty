@@ -1,5 +1,5 @@
 import { Box, Grid, HStack, Text, VStack, useDisclosure } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import champions from '@/apis/constants/champions';
 import Down from '@/assets/icons/system/down.svg';
@@ -7,12 +7,23 @@ import Exit from '@/assets/icons/system/exit.svg';
 import Up from '@/assets/icons/system/up.svg';
 import Champion from '@/components/duo/Champion';
 
-export default function ChampionSelect() {
+interface ChampionSelectProps {
+  opponentChampionId?: number;
+  onSelect: (championId: number) => void;
+}
+
+export default function ChampionSelect({ opponentChampionId, onSelect }: ChampionSelectProps) {
   const [selectedChampion, setSelectedChampion] = useState('');
   const { isOpen, onClose, onToggle } = useDisclosure();
   const handleChampionSelect = (championName: string) => {
     setSelectedChampion(championName);
   };
+
+  useEffect(() => {
+    if (opponentChampionId === undefined) {
+      setSelectedChampion('');
+    }
+  }, [opponentChampionId]);
 
   return (
     <Box
@@ -52,13 +63,14 @@ export default function ChampionSelect() {
         </HStack>
         <Box w="full" h="389px" overflowY="scroll" p="20px" bg="white">
           <Grid templateColumns="repeat(7, 1fr)" w="full">
-            {champions.map(({ enName, krName }) => (
+            {champions.map(({ championId, enName, krName }) => (
               <Champion
                 key={enName}
                 championKrName={krName}
                 championEnName={enName}
                 onClick={() => {
                   handleChampionSelect(krName);
+                  onSelect(championId);
                   onClose();
                 }}
               />

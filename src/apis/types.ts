@@ -551,6 +551,37 @@ export interface ChampionAnalysisResponse {
   laneSelectRates: LaneSelectDto[];
 }
 
+export type CommentsType = 'QUESTION' | 'TIP';
+
+export interface ChampionCommentsEntry {
+  description: string;
+  id: number;
+  internalTagName: string;
+  tier: Tier;
+  division: number;
+  lane: Position;
+  opponentChampionId: number;
+  depth: number;
+  mentionedInternalTagName: string;
+  contents: string;
+  commentsType: CommentsType;
+  upCount: number;
+  downCount: number;
+  version: string;
+  createdAt: string;
+  updatedAt: string;
+  deleted: boolean;
+  blocked: boolean;
+  memberId: number;
+  likeOrNot: boolean | null;
+  parentChampionCommentsId: number;
+  childChampionComments: ChampionCommentsEntry[];
+}
+
+export interface ChampionCommentsResponse {
+  parentChampionComments: ChampionCommentsEntry[];
+}
+
 export interface RecentlySummonersEntry {
   memberId: number;
   iconId: number;
@@ -567,3 +598,12 @@ export interface RecentlySummonersEntry {
   frequentChampionId2: number | null;
   frequentChampionId3: number | null;
 }
+
+export type ReportType =
+  | 'ABUSE'
+  | 'OBSCENE'
+  | 'FALSEHOOD'
+  | 'SPAMMING'
+  | 'ILLEGAL_ADVERTISING'
+  | 'PERSONAL_INFORMATION_EXPOSURE'
+  | 'OTHER';

@@ -1,10 +1,11 @@
 import { HStack, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import champions from '@/apis/constants/champions';
+import { useInfiniteCommentsQuery } from '@/apis/queries/championComment';
 import championDetailQuery from '@/apis/queries/championDetailQuery';
 import championSkillsQuery from '@/apis/queries/championSkillsQuery';
 import type { Position, PositionFilter } from '@/apis/types';
@@ -28,7 +29,7 @@ export default function DetailPage({ championEnName, queryLane }: DetailPageProp
   const router = useRouter();
   const championId = champions.find(
     (champion) => champion.enName.toLowerCase() === championEnName.toLowerCase(),
-  )?.championId;
+  )!.championId;
   const championName =
     championId !== undefined
       ? championIdEnNameMap[championId]
@@ -36,6 +37,33 @@ export default function DetailPage({ championEnName, queryLane }: DetailPageProp
   const [lane, setLane] = useState<PositionFilter | 'UNKNOWN' | ''>(queryLane ?? '');
   const { data, error } = useQuery(championDetailQuery({ championEnName: championName, lane }));
   const { data: skillData } = useQuery(championSkillsQuery({ championEnName: championName }));
+  const {
+    data: infiniteCommentsData,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteCommentsQuery({
+    championId: championId ?? 1,
+    lastUpCount: null,
+    lastDownCount: null,
+    lastChampionCommentsId: null,
+    lastCreatedAt: null,
+    pageSize: 10,
+  });
+
+  const observer = useRef<IntersectionObserver>(
+    new IntersectionObserver((entries) => {
+      if (entries[0]?.isIntersecting && hasNextPage) {
+        fetchNextPage()
+          .catch(console.error)
+          .then(() => observer.current?.disconnect());
+      }
+    }),
+  );
+  const lastCommentRef = useCallback((node: HTMLDivElement | null) => {
+    observer.current.disconnect();
+    if (node) observer.current.observe(node);
+  }, []);
+
   const handleUpdateLane = (lane: PositionFilter) => setLane(lane);
 
   useEffect(() => {
@@ -68,7 +96,7 @@ export default function DetailPage({ championEnName, queryLane }: DetailPageProp
       {/* 3 스킬 빌드 */}
       <SkillBuild skillBuilds={data?.data.skillBuilds} skillData={skillData?.data[championName].spells} />
       {/* 4 소환사 주문, 시작 아이템, 첫 귀환, 신발 */}
-      <HStack w="full" gap="12px" justify="space-between">
+      <HStack w="full" h="230px" gap="12px" justify="space-between">
         {/* 소환사 주문 */}
         <EarlyStageInfo type="summoner-spell" spellBuilds={data?.data.spellBuilds} />
         {/* 시작 아이템 */}
@@ -84,7 +112,11 @@ export default function DetailPage({ championEnName, queryLane }: DetailPageProp
         <SummonerRank specialists={data?.data.specialists} />
       </HStack>
       {/* 5 운영 팁 */}
-      <Tip />
+      <Tip
+        tipData={infiniteCommentsData?.pages.map((page) => page.data.parentChampionComments).flat() ?? []}
+        championId={championId}
+        lastCommentRef={lastCommentRef}
+      />
     </VStack>
   );
 }
