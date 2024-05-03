@@ -85,16 +85,15 @@ function CurrentChat() {
 export default CurrentChat;
 
 function classifyChats(chats: ChatType[]) {
-  const today = dayjs().startOf('day');
+  const todayReference = dayjs().startOf('day');
   const chatsBeforeToday: ChatType[] = [];
   const chatsToday: ChatType[] = [];
 
   chats.forEach((chat) => {
     const chatDate = dayjs(chat.sendDate);
-    if (chatDate.isBefore(today)) {
+    if (chatDate.isBefore(todayReference)) {
       chatsBeforeToday.push(chat);
-    }
-    if (chatDate.isSame(today, 'day')) {
+    } else if (chatDate.isSame(todayReference, 'day')) {
       chatsToday.push(chat);
     }
   });
