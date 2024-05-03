@@ -2,24 +2,13 @@ import { Box, HStack, Text, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import Image from 'next/image';
 
 import memberProfileQuery from '@/apis/queries/memberProfileQuery';
 import type { GameMode } from '@/apis/types';
-import notGnimtyImage from '@/assets/images/summoner-not-gnimty.png';
 
 export default function GnimtyInfoTab() {
   const memberId = 1;
   const { data: memberProfileData } = useQuery(memberProfileQuery({ memberId }));
-
-  if (!memberProfileData) {
-    return (
-      <VStack pt="120px" gap="24px">
-        <Image src={notGnimtyImage} width={160} height={160} alt="그님티 정보가 없는 회원" />
-        {/* TODO: 문구 추가 */}
-      </VStack>
-    );
-  }
 
   return (
     <VStack w="720px" gap="24px" align="flex-start">
@@ -30,7 +19,7 @@ export default function GnimtyInfoTab() {
         </Text>
         <Box w="full" h="60px" borderRadius="4px" p="12px" bgColor="white">
           <Text textStyle="t2" fontWeight="400">
-            {memberProfileData.data.mainIntroduction}
+            {memberProfileData?.data.mainIntroduction}
           </Text>
         </Box>
       </VStack>
@@ -39,7 +28,7 @@ export default function GnimtyInfoTab() {
         <Text textStyle="t2" fontWeight="700">
           게임 가능 시간
         </Text>
-        {memberProfileData.data.schedules.map((schedule) => {
+        {memberProfileData?.data.schedules.map((schedule) => {
           return (
             <HStack gap="12px" key={schedule.dayOfWeek}>
               <Text textStyle="t2" fontWeight="400">
@@ -58,7 +47,7 @@ export default function GnimtyInfoTab() {
           선호 게임 타입
         </Text>
         <HStack gap="8px">
-          {memberProfileData.data.preferGameModes.map(({ gameMode }) => {
+          {memberProfileData?.data.preferGameModes.map(({ gameMode }) => {
             return (
               <Box key={gameMode} h="28px" borderRadius="999px" border="1px solid" borderColor="gray800" p="4px 12px">
                 {gameModeMap[gameMode]}
