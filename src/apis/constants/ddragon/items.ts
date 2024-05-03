@@ -24,7 +24,7 @@ interface DdragonItemResponse {
 }
 
 const items = (
-  await axios<DdragonItemResponse>(`http://ddragon.leagueoflegends.com/cdn/${dataDragonVersion}/data/ko_KR/item.json`)
+  await axios<DdragonItemResponse>(`https://ddragon.leagueoflegends.com/cdn/${dataDragonVersion}/data/ko_KR/item.json`)
 ).data.data;
 
 export default items;
