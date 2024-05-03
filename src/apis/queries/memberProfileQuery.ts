@@ -14,7 +14,7 @@ interface Options {
 
 const memberProfileQuery = (options: Options) =>
   queryOptions({
-    queryKey: ['memberProfile', options.memberId],
+    queryKey: ['memberProfile', options],
     async queryFn() {
       const res = await httpRequest.get<MemberProfileResponse>(`/community/members/${options.memberId}`);
       return res.data;
