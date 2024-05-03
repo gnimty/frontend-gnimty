@@ -2,21 +2,8 @@ import axios from 'axios';
 
 import dataDragonVersion from '../dataDragonVersion';
 
-/**
- * @example "1001": {
- *      "name": "신발"
- *      "image": {
- *          "full": "1001.png",
- *      }
- *      "plaintext": "이동 속도가 약간 증가합니다."
- * }
- */
 interface Item {
   name: string;
-  image: {
-    full: string;
-  };
-  plaintext: string;
 }
 
 interface DdragonItemResponse {
