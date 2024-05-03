@@ -11,7 +11,7 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import type { ReportType } from '@/apis/types';
 import Exit from '@/assets/icons/system/exit.svg';
@@ -27,9 +27,6 @@ export const ReportModal = ({ isOpen, onClose, handleReport }: ReportModalProps)
   const [reportComment, setReportComment] = useState('');
   const buttonActive = optionType.includes('OTHER') ? reportComment.length > 0 : optionType.length > 0;
 
-  useEffect(() => {
-    console.log(optionType);
-  }, [optionType]);
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
