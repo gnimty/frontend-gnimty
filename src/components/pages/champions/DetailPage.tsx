@@ -49,7 +49,8 @@ export default function DetailPage({ championEnName, queryLane }: DetailPageProp
     lastCreatedAt: null,
     pageSize: 10,
   });
-  const observer = useRef<IntersectionObserver | null>(
+
+  const observer = useRef<IntersectionObserver>(
     new IntersectionObserver((entries) => {
       if (entries[0]?.isIntersecting && hasNextPage) {
         fetchNextPage()
@@ -59,10 +60,10 @@ export default function DetailPage({ championEnName, queryLane }: DetailPageProp
     }),
   );
   const lastCommentRef = useCallback((node: HTMLDivElement | null) => {
-    observer.current?.disconnect();
-    if (node === null) return;
-    if (node) observer.current?.observe(node);
+    observer.current.disconnect();
+    if (node) observer.current.observe(node);
   }, []);
+
   const handleUpdateLane = (lane: PositionFilter) => setLane(lane);
 
   useEffect(() => {
