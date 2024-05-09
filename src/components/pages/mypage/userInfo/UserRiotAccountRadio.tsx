@@ -1,4 +1,5 @@
 import { Button, Flex, Radio } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 
 import UserRiotAccountInput from '@/components/pages/mypage/userInfo/UserRiotAccountInput';
 
@@ -10,6 +11,8 @@ interface UserRiotAccountRadioProps {
 }
 
 export default function UserRiotAccountRadio({ riotAccountInfo, radioProps }: UserRiotAccountRadioProps) {
+  const router = useRouter();
+
   return (
     <Radio w="full" {...radioProps}>
       <Flex w="full" direction="row" alignItems="center">
@@ -23,7 +26,19 @@ export default function UserRiotAccountRadio({ riotAccountInfo, radioProps }: Us
             연결 해제
           </Button>
         ) : (
-          <Button w="80px" ml="8px" size="md" variant="line" borderColor="main" color="main">
+          <Button
+            w="80px"
+            ml="8px"
+            size="md"
+            variant="line"
+            borderColor="main"
+            color="main"
+            onClick={() => {
+              router.replace(
+                `${process.env.NEXT_PUBLIC_API_BASE_URL}/community/oauth/riot/redirect?redirect_uri=${encodeURIComponent(process.env.NEXT_PUBLIC_FRONT_ORIGIN + router.asPath)}`,
+              );
+            }}
+          >
             연결
           </Button>
         )}
