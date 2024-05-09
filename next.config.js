@@ -1,9 +1,5 @@
 // @ts-check
 
-// TODO: 현재 의미론상 정확히 일치하지 않음 후에 작동방식을 변경하거나 환경변수 등으로 설정해야함
-/** OAuth 리다이렉트에 사용할 origin */
-const redirectURI = `${process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/api$/, '')}/redirect`;
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   rewrites:
@@ -15,37 +11,6 @@ const nextConfig = {
           },
         ]
       : undefined,
-  async redirects() {
-    return [
-      {
-        source: '/oauth/google/:state*',
-        destination:
-          'https://accounts.google.com/o/oauth2/v2/auth?' +
-          new URLSearchParams({
-            client_id: process.env.GOOGLE_CLIENT_ID ?? '',
-            redirect_uri: redirectURI,
-            response_type: 'code',
-            scope: 'email',
-          }).toString() +
-          '&state=:state*',
-        basePath: false,
-        permanent: true,
-      },
-      {
-        source: '/oauth/kakao/:state*',
-        destination:
-          'https://kauth.kakao.com/oauth/authorize?' +
-          new URLSearchParams({
-            client_id: process.env.KAKAO_CLIENT_ID ?? '',
-            redirect_uri: redirectURI,
-            response_type: 'code',
-          }).toString() +
-          '&state=:state*',
-        basePath: false,
-        permanent: true,
-      },
-    ];
-  },
   reactStrictMode: true,
   compiler: {
     emotion: true,
