@@ -27,6 +27,7 @@ export default function MyPage() {
           nickname={mainAccount?.name ?? myProfile.nickname}
           tag={mainAccount?.tagLine ?? ''}
           tier={mainAccount?.queue ?? 'unknown'}
+          division={mainAccount?.division}
           leaguePoints={mainAccount?.lp ?? 0}
           email={myProfile.email}
         />
