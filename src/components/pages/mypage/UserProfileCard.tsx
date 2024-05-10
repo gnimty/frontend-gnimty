@@ -71,7 +71,7 @@ export default function UserProfileCard({
               <TierImage tier={tier} width={24} height={24} />
               <Text fontWeight={700}>{shortTierName(tier, division)}</Text>
               <Text fontWeight={400}>
-                {Intl.NumberFormat(undefined, { minimumIntegerDigits: 4 }).format(leaguePoints)}
+                {Intl.NumberFormat().format(leaguePoints)}
                 LP
               </Text>
             </Flex>
