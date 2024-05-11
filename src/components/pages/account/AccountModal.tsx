@@ -7,8 +7,8 @@ import { AccountModalPageProvider } from '@/contexts/AccountModalPageContext';
 
 import { useAccountModalStore } from './accountModalStore';
 
-export const MAIL_CODE_CHECK_TIME = 180 as const; // 메일 인증 코드 대기 시간
-export const MAIL_SEND_CHECK_TIME = 170 as const; // 메일을 받지 못했나요 메시지 렌더링 시간
+export const MAIL_CODE_CHECK_TIME = 180; // 메일 인증 코드 대기 시간
+export const MAIL_SEND_CHECK_TIME = 170; // 메일을 받지 못했나요 메시지 렌더링 시간
 
 export default function AccountModal() {
   const isOpen = useAccountModalStore((s) => s.isOpen);
