@@ -1,6 +1,7 @@
 import { Button, Flex, Radio } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
+import useDeleteRiotAccount from '@/apis/useDeleteRiotAccount';
 import UserRiotAccountInput from '@/components/pages/mypage/userInfo/UserRiotAccountInput';
 
 import type { RadioProps } from '@chakra-ui/react';
@@ -12,6 +13,7 @@ interface UserRiotAccountRadioProps {
 
 export default function UserRiotAccountRadio({ riotAccountInfo, radioProps }: UserRiotAccountRadioProps) {
   const router = useRouter();
+  const { deleteRiotAccount } = useDeleteRiotAccount();
 
   return (
     <Radio w="full" {...radioProps}>
@@ -22,7 +24,25 @@ export default function UserRiotAccountRadio({ riotAccountInfo, radioProps }: Us
           placeholder={!riotAccountInfo ? '계정을 연결해 주세요.' : ''}
         />
         {riotAccountInfo ? (
-          <Button w="80px" ml="8px" size="md" variant="line" onClick={() => console.log('hi')}>
+          <Button
+            w="80px"
+            ml="8px"
+            size="md"
+            variant="line"
+            onClick={() => {
+              deleteRiotAccount(
+                { id: riotAccountInfo.id },
+                {
+                  onSuccess() {
+                    router.reload();
+                  },
+                  onError() {
+                    alert('라이엇 계정 연결 해제에 실패했습니다.');
+                  },
+                },
+              );
+            }}
+          >
             연결 해제
           </Button>
         ) : (
