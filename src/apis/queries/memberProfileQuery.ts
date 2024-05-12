@@ -9,14 +9,14 @@ interface MemberProfileResponse extends BaseResponse {
 }
 
 interface Options {
-  memberId: number;
+  puuid?: string;
 }
 
 const memberProfileQuery = (options: Options) =>
   queryOptions({
     queryKey: ['memberProfile', options],
     async queryFn() {
-      const res = await httpRequest.get<MemberProfileResponse>(`/community/members/${options.memberId}`);
+      const res = await httpRequest.get<MemberProfileResponse>(`/community/members/${options.puuid}`);
       return res.data;
     },
     retry(failureCount, error) {
