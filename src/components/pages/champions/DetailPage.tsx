@@ -116,6 +116,7 @@ export default function DetailPage({ championEnName, queryLane }: DetailPageProp
         tipData={infiniteCommentsData?.pages.map((page) => page.data.parentChampionComments).flat() ?? []}
         championId={championId}
         lastCommentRef={lastCommentRef}
+        laneSelectRates={data?.data.laneSelectRates}
       />
     </VStack>
   );

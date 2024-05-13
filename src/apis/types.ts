@@ -559,10 +559,10 @@ export interface ChampionCommentsEntry {
   internalTagName: string;
   tier: Tier;
   division: number;
-  lane: Position;
-  opponentChampionId: number;
+  lane?: Position;
+  opponentChampionId?: number;
   depth: number;
-  mentionedInternalTagName: string;
+  mentionedInternalTagName?: string;
   contents: string;
   commentsType: CommentsType;
   upCount: number;

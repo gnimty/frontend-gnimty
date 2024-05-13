@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 
 import dataDragonVersion from '@/apis/constants/dataDragonVersion';
 import { addChampionComments, type PostOption as AddChampionOptions } from '@/apis/queries/championComment';
-import type { CommentsType, Position, ProfileEntry } from '@/apis/types';
+import type { CommentsType, LaneSelectDto, Position, ProfileEntry } from '@/apis/types';
 import SummonerIcon from '@/assets/icons/system/summoner.svg';
 import PositionImage from '@/components/common/position-image/PositionImage';
 import Select from '@/components/common/select/Select';
@@ -14,9 +14,10 @@ import ChampionSelect from './ChampionSelect';
 interface TipInputProps {
   championId: number;
   currentUserInfo: ProfileEntry;
+  laneSelectRates?: LaneSelectDto[];
 }
 
-export default function TipInput({ championId, currentUserInfo }: TipInputProps) {
+export default function TipInput({ championId, currentUserInfo, laneSelectRates }: TipInputProps) {
   const queryClient = useQueryClient();
   const { riotDependentInfo } = currentUserInfo;
   const mainAccount = riotDependentInfo.riotAccounts.find((account) => account.isMain);
@@ -28,10 +29,10 @@ export default function TipInput({ championId, currentUserInfo }: TipInputProps)
       }),
   });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [commentsType, setCommentsType] = useState<CommentsType>();
+  const [commentsType, setCommentsType] = useState<CommentsType>('TIP');
   const [lane, setLane] = useState<Position>();
   const [opponentChampionId, setOpponentChampionId] = useState<number>();
-  const handleUpdateOpponentChampion = (championId: number) => {
+  const handleUpdateOpponentChampion = (championId: number | undefined) => {
     setOpponentChampionId(championId);
   };
   const handleSubmit = async () => {
@@ -39,23 +40,21 @@ export default function TipInput({ championId, currentUserInfo }: TipInputProps)
       alert('내용을 입력해주세요');
       return;
     }
-    if (textareaRef.current?.value) {
-      if (lane !== undefined && commentsType !== undefined && opponentChampionId !== undefined) {
-        const options: AddChampionOptions = {
-          internalTagName: mainAccount ? `${mainAccount.name}#${mainAccount.tagLine}` : currentUserInfo.nickname,
-          championId,
-          lane,
-          commentsType,
-          opponentChampionId,
-          contents: textareaRef.current.value,
-          depth: 0,
-        };
-        await addCommentAsync(options);
-        textareaRef.current.value = '';
-        setLane(undefined);
-        setCommentsType(undefined);
-        setOpponentChampionId(undefined);
-      }
+    if (textareaRef.current?.value && commentsType !== undefined) {
+      const options: AddChampionOptions = {
+        internalTagName: mainAccount ? `${mainAccount.name}#${mainAccount.tagLine}` : currentUserInfo.nickname,
+        championId,
+        lane,
+        commentsType,
+        opponentChampionId,
+        contents: textareaRef.current.value,
+        depth: 0,
+      };
+      await addCommentAsync(options);
+      textareaRef.current.value = '';
+      setLane(undefined);
+      setCommentsType('TIP');
+      setOpponentChampionId(undefined);
     }
   };
 
@@ -76,24 +75,20 @@ export default function TipInput({ championId, currentUserInfo }: TipInputProps)
         <HStack w="full" justify="flex-start" gap="12px">
           <Select
             options={[
-              { text: '카테고리 선택', value: '' },
               { text: '그님팁', value: 'TIP' },
               { text: '알려주세요', value: 'QUESTION' },
             ]}
             css={{ width: '136px' }}
-            onChange={(v) => {
-              if (v !== '') setCommentsType(v);
-            }}
+            onChange={(v) => setCommentsType(v)}
           />
           <Select
-            options={[
-              { text: '포지션 선택', value: '' },
-              { text: '탑', value: 'TOP', leftAsset: <PositionImage position="TOP" /> },
-              { text: '정글', value: 'JUNGLE', leftAsset: <PositionImage position="JUNGLE" /> },
-              { text: '미드', value: 'MIDDLE', leftAsset: <PositionImage position="MIDDLE" /> },
-              { text: '바텀', value: 'BOTTOM', leftAsset: <PositionImage position="BOTTOM" /> },
-              { text: '서포터', value: 'UTILITY', leftAsset: <PositionImage position="UTILITY" /> },
-            ]}
+            options={
+              laneSelectRates !== undefined
+                ? positionSelectOptionsBase.filter(
+                    (option) => option.value === '' || laneSelectRates.map((lane) => lane.lane).includes(option.value),
+                  )
+                : positionSelectOptionsBase
+            }
             css={{ width: '136px' }}
             onChange={(v) => {
               if (v !== '') setLane(v);
@@ -132,3 +127,16 @@ export default function TipInput({ championId, currentUserInfo }: TipInputProps)
     </HStack>
   );
 }
+
+const positionSelectOptionsBase: {
+  text: string;
+  value: Position | '';
+  leftAsset?: JSX.Element;
+}[] = [
+  { text: '포지션 선택', value: '' },
+  { text: '탑', value: 'TOP', leftAsset: <PositionImage position="TOP" /> },
+  { text: '정글', value: 'JUNGLE', leftAsset: <PositionImage position="JUNGLE" /> },
+  { text: '미드', value: 'MIDDLE', leftAsset: <PositionImage position="MIDDLE" /> },
+  { text: '바텀', value: 'BOTTOM', leftAsset: <PositionImage position="BOTTOM" /> },
+  { text: '서포터', value: 'UTILITY', leftAsset: <PositionImage position="UTILITY" /> },
+];

@@ -9,14 +9,20 @@ import Champion from '@/components/duo/Champion';
 
 interface ChampionSelectProps {
   opponentChampionId?: number;
-  onSelect: (championId: number) => void;
+  onSelect: (championId: number | undefined) => void;
 }
 
 export default function ChampionSelect({ opponentChampionId, onSelect }: ChampionSelectProps) {
   const [selectedChampion, setSelectedChampion] = useState('');
   const { isOpen, onClose, onToggle } = useDisclosure();
   const handleChampionSelect = (championName: string) => {
-    setSelectedChampion(championName);
+    if (selectedChampion === championName) {
+      setSelectedChampion('');
+      onSelect(undefined);
+      return;
+    } else {
+      setSelectedChampion(championName);
+    }
   };
 
   useEffect(() => {
