@@ -85,9 +85,7 @@ export default function TipInput({ championId, currentUserInfo, laneSelectRates 
             options={
               laneSelectRates !== undefined
                 ? positionSelectOptionsBase.filter(
-                    (option) =>
-                      option.value === '' ||
-                      laneSelectRates.map((lane) => lane.lane).includes(option.value),
+                    (option) => option.value === '' || laneSelectRates.map((lane) => lane.lane).includes(option.value),
                   )
                 : positionSelectOptionsBase
             }
