@@ -25,7 +25,7 @@ const memberProfileQuery = (options?: Options) =>
       }
       return failureCount <= 2;
     },
-    enabled: options?.puuid !== undefined,
+    enabled: options !== undefined,
   });
 
 export default memberProfileQuery;

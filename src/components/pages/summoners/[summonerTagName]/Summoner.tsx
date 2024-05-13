@@ -63,7 +63,7 @@ export default function Summoner(props: SummonerProps) {
 
   const { data, status, error } = useQuery(summonerMatchesInfoQuery({ summonerTagName }));
   const { data: memberProfileData, error: memberProfileError } = useQuery(
-    memberProfileQuery(data?.data.summoner.puuid ? { puuid: data?.data.summoner.puuid } : undefined),
+    memberProfileQuery(status === 'success' ? { puuid: data.data.summoner.puuid } : undefined),
   );
 
   const { renewSummoner, status: renewSummonerStatus } = useRenewSummoner();
