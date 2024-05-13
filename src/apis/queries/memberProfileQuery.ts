@@ -9,14 +9,14 @@ interface MemberProfileResponse extends BaseResponse {
 }
 
 interface Options {
-  puuid?: string;
+  puuid: string;
 }
 
-const memberProfileQuery = (options: Options) =>
+const memberProfileQuery = (options?: Options) =>
   queryOptions({
     queryKey: ['memberProfile', options],
     async queryFn() {
-      const res = await httpRequest.get<MemberProfileResponse>(`/community/members/${options.puuid}`);
+      const res = await httpRequest.get<MemberProfileResponse>(`/community/members/other/${options?.puuid}`);
       return res.data;
     },
     retry(failureCount, error) {
@@ -25,7 +25,7 @@ const memberProfileQuery = (options: Options) =>
       }
       return failureCount <= 2;
     },
-    enabled: !!options.puuid,
+    enabled: options?.puuid !== undefined,
   });
 
 export default memberProfileQuery;

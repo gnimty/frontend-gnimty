@@ -254,9 +254,9 @@ export interface ProfileEntry {
 }
 
 export interface OtherProfileEntry {
-  schedules: ScheduleEntry[];
-  mainIntroduction: string;
-  preferGameModes: PreferGameModeEntry[];
+  schedules: ScheduleEntry[] | null;
+  mainIntroduction: string | null;
+  preferGameModes: PreferGameModeEntry[] | null;
 }
 
 export interface ChampionSummaryDto {

@@ -10,14 +10,6 @@ interface GnimtyInfoTabProps {
 }
 
 export default function GnimtyInfoTab({ memberProfileData }: GnimtyInfoTabProps) {
-  if (
-    memberProfileData.schedules === null ||
-    memberProfileData.preferGameModes === null ||
-    memberProfileData.mainIntroduction === null
-  ) {
-    return null;
-  }
-
   return (
     <VStack w="720px" gap="24px" align="flex-start">
       {/* 상태 메시지 */}
@@ -37,7 +29,7 @@ export default function GnimtyInfoTab({ memberProfileData }: GnimtyInfoTabProps)
           게임 가능 시간
         </Text>
         {/* TODO: 같은 날짜에 여러 시간대가 존재하는 경우 처리 */}
-        {memberProfileData.schedules.map((schedule) => {
+        {memberProfileData.schedules?.map((schedule) => {
           return (
             <HStack gap="12px" key={schedule.dayOfWeek}>
               <Text textStyle="t2" fontWeight="400">
@@ -56,7 +48,7 @@ export default function GnimtyInfoTab({ memberProfileData }: GnimtyInfoTabProps)
           선호 게임 타입
         </Text>
         <HStack gap="8px">
-          {memberProfileData.preferGameModes.map(({ gameMode }) => {
+          {memberProfileData.preferGameModes?.map(({ gameMode }) => {
             return (
               <Box key={gameMode} h="28px" borderRadius="999px" border="1px solid" borderColor="gray800" p="4px 12px">
                 {gameModeMap[gameMode]}

@@ -62,9 +62,9 @@ export default function Summoner(props: SummonerProps) {
   const { summonerTagName } = props;
 
   const { data, status, error } = useQuery(summonerMatchesInfoQuery({ summonerTagName }));
-  const { data: memberProfileData } = useQuery({
-    ...memberProfileQuery({ puuid: data?.data.summoner.puuid }),
-  });
+  const { data: memberProfileData, error: memberProfileError } = useQuery(
+    memberProfileQuery(data?.data.summoner.puuid ? { puuid: data?.data.summoner.puuid } : undefined),
+  );
 
   const { renewSummoner, status: renewSummonerStatus } = useRenewSummoner();
 
@@ -319,7 +319,7 @@ export default function Summoner(props: SummonerProps) {
             <Tab>전적 정보</Tab>
             <Tab>챔피언 정보</Tab>
             <Tab>인게임</Tab>
-            {memberProfileData && memberProfileData.data.mainIntroduction !== null && <Tab>그님티 정보</Tab>}
+            {memberProfileData && !memberProfileError && <Tab>그님티 정보</Tab>}
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -331,7 +331,7 @@ export default function Summoner(props: SummonerProps) {
             <TabPanel>
               <CurrentGameTab summonerTagName={summonerTagName} />
             </TabPanel>
-            {memberProfileData && (
+            {memberProfileData && !memberProfileError && (
               <TabPanel>
                 <GnimtyInfoTab memberProfileData={memberProfileData.data} />
               </TabPanel>
