@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
-import useLogin from '@/apis/useLogin';
+import useFormLogin from '@/apis/useFormLogin';
 import Check from '@/assets/icons/system/check.svg';
 import Hide from '@/assets/icons/system/hide.svg';
 import View from '@/assets/icons/system/view.svg';
@@ -27,25 +27,24 @@ export default function LoginModalBody() {
   const [showPassword, setShowPassword] = useBoolean(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberLogin, setRememberLogin] = useState(false);
   const [isFailed, setIsFailed] = useState(false);
 
   const { setCurrentPage, onClose } = useAccountModalPageContext();
 
-  const { login } = useLogin({
-    onSuccess: () => {
-      onClose();
-    },
-    onError: () => {
-      setIsFailed(true);
-    },
-  });
+  const { formLogin } = useFormLogin();
 
   const onLogin = () => {
     if (!emailRegex.exec(email)) return;
-    login({
-      email,
-      password,
-    });
+    formLogin(
+      { email, password, rememberLogin },
+      {
+        onSuccess: onClose,
+        onError() {
+          setIsFailed(true);
+        },
+      },
+    );
   };
 
   return (
@@ -104,7 +103,17 @@ export default function LoginModalBody() {
             )}
           </VStack>
           <HStack w="full" justifyContent="space-between">
-            <Checkbox icon={<Check />} colorScheme="main" textStyle="body" fontWeight="bold" color="gray600">
+            <Checkbox
+              icon={<Check />}
+              isChecked={rememberLogin}
+              onChange={(e) => {
+                setRememberLogin(e.target.checked);
+              }}
+              colorScheme="main"
+              textStyle="body"
+              fontWeight="bold"
+              color="gray600"
+            >
               로그인 상태 기억하기
             </Checkbox>
             <Text
