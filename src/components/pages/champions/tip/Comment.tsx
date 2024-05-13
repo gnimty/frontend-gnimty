@@ -115,7 +115,7 @@ export default function Comment({ comment, championId, latestVersion, currentUse
     likeOrNot,
   } = comment;
   const [showBlocked, setShowBlocked] = useState(false);
-  const championName = championIdEnNameMap[opponentChampionId];
+  const championName = opponentChampionId ? championIdEnNameMap[opponentChampionId] : undefined;
   const mainRiotAccount = currentUserInfo?.riotDependentInfo.riotAccounts.find((account) => account.isMain);
 
   const handleReplySubmit = async () => {
@@ -262,36 +262,40 @@ export default function Comment({ comment, championId, latestVersion, currentUse
                 {commentsType === 'TIP' ? '그님팁' : '알려주세요'}
               </Text>
             </Box>
-            <Box
-              w="24px"
-              h="24px"
-              borderRadius="999px"
-              bgColor="gray200"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <PositionImage position={lane} width="16" />
-            </Box>
-            <Box
-              w="24px"
-              h="24px"
-              borderRadius="999px"
-              overflow="hidden"
-              position="relative"
-              _after={{
-                content: '"VS"',
-                position: 'absolute',
-                textStyle: 't2',
-                fontWeight: '400',
-                color: 'white',
-                left: '50%',
-                top: '50%',
-                transform: 'translate(-50%, -50%)',
-              }}
-            >
-              <Image src={championIconUrl(championName)} width="24" height="24" alt="Ezreal" />
-            </Box>
+            {lane && (
+              <Box
+                w="24px"
+                h="24px"
+                borderRadius="999px"
+                bgColor="gray200"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <PositionImage position={lane} width="16" />
+              </Box>
+            )}
+            {championName && (
+              <Box
+                w="24px"
+                h="24px"
+                borderRadius="999px"
+                overflow="hidden"
+                position="relative"
+                _after={{
+                  content: '"VS"',
+                  position: 'absolute',
+                  textStyle: 't2',
+                  fontWeight: '400',
+                  color: 'white',
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)',
+                }}
+              >
+                <Image src={championIconUrl(championName)} width="24" height="24" alt="Ezreal" />
+              </Box>
+            )}
             <Box borderRadius="999px" bgColor="gray200" color="gray600" p="4px 8px">
               <Text textStyle="body" fontWeight="400">
                 v {version}
