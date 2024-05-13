@@ -18,6 +18,9 @@ const mainRecentlyQuery = () =>
       const res = await httpRequest.get<MainRecentlyResponse>('/community/summoners/recently');
       return res.data;
     },
+    retry(failureCount) {
+      return failureCount <= 2;
+    },
   });
 
 export default mainRecentlyQuery;
