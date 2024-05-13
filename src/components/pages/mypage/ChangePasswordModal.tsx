@@ -33,10 +33,11 @@ export default function ChangePasswordModal({ disclosure }: ChangePasswordModalP
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordCheck, setNewPasswordCheck] = useState('');
-  const validAndSamePassword =
-    passwordRegex.exec(newPassword) && passwordRegex.exec(newPasswordCheck) && newPassword === newPasswordCheck;
+  const isSamePassword = currentPassword === newPassword;
+  const notMatchPassword = newPassword !== newPasswordCheck;
+  const isValidNewPassword = passwordRegex.test(newPassword);
   const handlePasswordSubmit = async () => {
-    if (validAndSamePassword && currentPassword) {
+    if (currentPassword && isValidNewPassword && newPassword === newPasswordCheck) {
       await changePasswordAsync({ currentPassword, newPassword });
       disclosure.onClose();
     }
@@ -78,6 +79,11 @@ export default function ChangePasswordModal({ disclosure }: ChangePasswordModalP
                 showPassword={showNewPassword}
                 setShowPassword={setShowNewPassword}
                 placeholder="새로운 비밀번호를 입력해 주세요."
+                notificationText={{
+                  default: '8자 이상, 16자 이하의 영문, 숫자, 특수문자',
+                  warning: isSamePassword ? notificationTexts.SAME : '8자 이상, 16자 이하의 영문, 숫자, 특수문자',
+                  success: '8자 이상, 16자 이하의 영문, 숫자, 특수문자',
+                }}
               />
               <PasswordForm
                 password={newPasswordCheck}
@@ -85,12 +91,19 @@ export default function ChangePasswordModal({ disclosure }: ChangePasswordModalP
                 showPassword={showNewPasswordCheck}
                 setShowPassword={setShowNewPasswordCheck}
                 placeholder="비밀번호를 다시 입력해 주세요."
+                notificationText={{
+                  default: '8자 이상, 16자 이하의 영문, 숫자, 특수문자',
+                  warning: notMatchPassword
+                    ? notificationTexts.NOT_MATCH
+                    : '8자 이상, 16자 이하의 영문, 숫자, 특수문자',
+                  success: '8자 이상, 16자 이하의 영문, 숫자, 특수문자',
+                }}
               />
               <Button
                 size="lg"
                 variant="default"
                 w="full"
-                isDisabled={!currentPassword && validAndSamePassword !== true}
+                isDisabled={!currentPassword || !isValidNewPassword || notMatchPassword || isSamePassword}
                 onClick={handlePasswordSubmit}
               >
                 <Text>확인</Text>
@@ -112,3 +125,8 @@ export default function ChangePasswordModal({ disclosure }: ChangePasswordModalP
     </Modal>
   );
 }
+
+const notificationTexts = {
+  SAME: '기존 비밀번호와 동일한 비밀번호는 사용할 수 없습니다.',
+  NOT_MATCH: '새로운 비밀번호가 일치하지 않습니다.',
+};
