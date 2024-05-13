@@ -32,9 +32,9 @@ export default function PasswordForm({
     return !!passwordRegex.exec(password);
   },
   notificationText = {
-    default: '8자 이상의 영문, 숫자, 특수문자',
-    warning: '8자 이상의 영문, 숫자, 특수문자',
-    success: '8자 이상의 영문, 숫자, 특수문자',
+    default: '8자 이상, 16자 이하의 영문, 숫자, 특수문자',
+    warning: '8자 이상, 16자 이하의 영문, 숫자, 특수문자',
+    success: '8자 이상, 16자 이하의 영문, 숫자, 특수문자',
   },
 }: PasswordFormProps) {
   return (
