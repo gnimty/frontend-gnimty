@@ -1,26 +1,25 @@
 import 'dayjs/locale/ko';
 
 import { Box, HStack, Text, VStack } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
-import memberProfileQuery from '@/apis/queries/memberProfileQuery';
-import type { GameMode } from '@/apis/types';
+import type { GameMode, OtherProfileEntry } from '@/apis/types';
 
-export default function GnimtyInfoTab() {
-  const memberId = 1;
-  const { data: memberProfileData } = useQuery(memberProfileQuery({ memberId }));
+interface GnimtyInfoTabProps {
+  memberProfileData: OtherProfileEntry;
+}
 
+export default function GnimtyInfoTab({ memberProfileData }: GnimtyInfoTabProps) {
   return (
     <VStack w="720px" gap="24px" align="flex-start">
       {/* 상태 메시지 */}
-      <VStack gap="12px" align="flex-start">
-        <Text textStyle="t2" fontWeight="700">
+      <VStack w="full" gap="12px" align="flex-start">
+        <Text w="full" textStyle="t2" fontWeight="700">
           상태 메시지
         </Text>
-        <Box w="full" h="60px" borderRadius="4px" p="12px" bgColor="white">
+        <Box w="full" minH="60px" borderRadius="4px" p="12px" bgColor="white">
           <Text textStyle="t2" fontWeight="400">
-            {memberProfileData?.data.mainIntroduction}
+            {memberProfileData.mainIntroduction ?? '상태 메시지가 없습니다.'}
           </Text>
         </Box>
       </VStack>
@@ -29,14 +28,15 @@ export default function GnimtyInfoTab() {
         <Text textStyle="t2" fontWeight="700">
           게임 가능 시간
         </Text>
-        {memberProfileData?.data.schedules.map((schedule) => {
+        {/* TODO: 같은 날짜에 여러 시간대가 존재하는 경우 처리 */}
+        {memberProfileData.schedules?.map((schedule) => {
           return (
             <HStack gap="12px" key={schedule.dayOfWeek}>
               <Text textStyle="t2" fontWeight="400">
-                {schedule.dayOfWeek}
+                {dayMap[schedule.dayOfWeek]}
               </Text>
-              <Box h="28px" borderRadius="999px" border="1px solid" borderColor="gray800" p="4px 12px">
-                {dayjs().hour(schedule.startTime).format('HH')}시 - {dayjs().hour(schedule.endTime).format('HH')}시
+              <Box h="28px" borderRadius="999px" border="1px solid" borderColor="gray800" p="4px 12px" bgColor="white">
+                {formatHour(schedule.startTime)} - {formatHour(schedule.endTime)}
               </Box>
             </HStack>
           );
@@ -48,7 +48,7 @@ export default function GnimtyInfoTab() {
           선호 게임 타입
         </Text>
         <HStack gap="8px">
-          {memberProfileData?.data.preferGameModes.map(({ gameMode }) => {
+          {memberProfileData.preferGameModes?.map(({ gameMode }) => {
             return (
               <Box key={gameMode} h="28px" borderRadius="999px" border="1px solid" borderColor="gray800" p="4px 12px">
                 {gameModeMap[gameMode]}
@@ -65,4 +65,22 @@ const gameModeMap: Record<GameMode, string> = {
   RANK_SOLO: '솔로 랭크',
   RANK_FLEX: '자유 랭크',
   BLIND: '칼바람 나락/일반 게임',
+};
+
+const dayMap: Record<string, string> = {
+  SUNDAY: '일요일',
+  MONDAY: '월요일',
+  TUESDAY: '화요일',
+  WEDNESDAY: '수요일',
+  THURSDAY: '목요일',
+  FRIDAY: '금요일',
+  SATURDAY: '토요일',
+};
+
+const formatHour = (hour: number) => {
+  const time = dayjs().hour(hour);
+  if (hour === 24) {
+    return '24시';
+  }
+  return time.format('HH시');
 };

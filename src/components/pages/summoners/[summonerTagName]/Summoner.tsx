@@ -25,6 +25,7 @@ import { useRef } from 'react';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import championIdKrNameMap from '@/apis/constants/championIdKrNameMap';
+import memberProfileQuery from '@/apis/queries/memberProfileQuery';
 import summonerMatchesInfoQuery from '@/apis/queries/summonerMatchesInfoQuery';
 import useRenewSummoner from '@/apis/useRenewSummoner';
 import championIconUrl from '@/apis/utils/championIconUrl';
@@ -44,6 +45,7 @@ import { useRecentSearchesStore } from '../../main/search/recentSearchesStore';
 
 import Champion from './Champion';
 import CurrentGameTab from './CurrentGameTab/CurrentGameTab';
+import GnimtyInfoTab from './GnimtyInfoTab/GnimtyInfoTab';
 import LanePlaysGraph from './LanePlaysGraph';
 import MatchHistoryInfoTab from './MatchHistoryInfoTab/MatchHistoryInfoTab';
 import RankCard from './RankCard';
@@ -60,6 +62,9 @@ export default function Summoner(props: SummonerProps) {
   const { summonerTagName } = props;
 
   const { data, status, error } = useQuery(summonerMatchesInfoQuery({ summonerTagName }));
+  const { data: memberProfileData, error: memberProfileError } = useQuery(
+    memberProfileQuery(status === 'success' ? { puuid: data.data.summoner.puuid } : undefined),
+  );
 
   const { renewSummoner, status: renewSummonerStatus } = useRenewSummoner();
 
@@ -314,7 +319,7 @@ export default function Summoner(props: SummonerProps) {
             <Tab>전적 정보</Tab>
             <Tab>챔피언 정보</Tab>
             <Tab>인게임</Tab>
-            <Tab>그님티 정보</Tab>
+            {memberProfileData && !memberProfileError && <Tab>그님티 정보</Tab>}
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -326,9 +331,11 @@ export default function Summoner(props: SummonerProps) {
             <TabPanel>
               <CurrentGameTab summonerTagName={summonerTagName} />
             </TabPanel>
-            {/* <TabPanel>
-              <GnimtyInfoTab />
-            </TabPanel> */}
+            {memberProfileData && !memberProfileError && (
+              <TabPanel>
+                <GnimtyInfoTab memberProfileData={memberProfileData.data} />
+              </TabPanel>
+            )}
           </TabPanels>
         </Tabs>
       </VStack>
