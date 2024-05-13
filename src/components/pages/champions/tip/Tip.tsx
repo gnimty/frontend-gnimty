@@ -2,7 +2,7 @@ import { HStack, Text, VStack } from '@chakra-ui/react';
 import { useMemo, useState } from 'react';
 
 import dataDragonVersion from '@/apis/constants/dataDragonVersion';
-import type { ChampionCommentsEntry } from '@/apis/types';
+import type { ChampionCommentsEntry, LaneSelectDto } from '@/apis/types';
 import useAuth from '@/apis/useAuth';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
 
@@ -12,10 +12,11 @@ import TipInput from './TipInput';
 interface TipProps {
   tipData?: ChampionCommentsEntry[];
   championId: number;
+  laneSelectRates?: LaneSelectDto[];
   lastCommentRef: (node: HTMLDivElement | null) => void;
 }
 
-export default function Tip({ tipData, championId, lastCommentRef }: TipProps) {
+export default function Tip({ tipData, championId, laneSelectRates, lastCommentRef }: TipProps) {
   const { data: myInfo } = useAuth();
   const [switchOn, setSwitchOn] = useState(false);
   const filteredTipData = useMemo(
@@ -41,7 +42,9 @@ export default function Tip({ tipData, championId, lastCommentRef }: TipProps) {
         </HStack>
       </HStack>
       {/* Input */}
-      {myInfo?.data && <TipInput championId={championId} currentUserInfo={myInfo.data} />}
+      {myInfo?.data && (
+        <TipInput championId={championId} currentUserInfo={myInfo.data} laneSelectRates={laneSelectRates} />
+      )}
       {/* Comments */}
       {filteredTipData?.map((comment, idx, commentsArray) => (
         <Comment
