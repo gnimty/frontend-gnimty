@@ -188,17 +188,12 @@ export interface ChampionSaleRes {
 export interface RiotDependentInfo {
   isLinked: boolean;
   status: Status;
-  introductions: IntroductionEntry[];
+  introduction: string;
   schedules: ScheduleEntry[];
   preferGameModes: PreferGameModeEntry[];
   riotAccounts: RiotAccountEntry[];
 }
 
-interface IntroductionEntry {
-  id: number;
-  content: string;
-  isMain: boolean;
-}
 interface ScheduleEntry {
   dayOfWeek: DayOfWeek;
   startTime: number;

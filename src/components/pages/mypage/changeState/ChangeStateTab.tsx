@@ -1,16 +1,16 @@
 import { useDisclosure } from '@chakra-ui/hooks';
-import { Button, Checkbox as _Checkbox, CheckboxGroup, Flex, Radio, RadioGroup, Text } from '@chakra-ui/react';
-import { isNumeric } from '@chakra-ui/utils';
+import { Checkbox as _Checkbox, Button, CheckboxGroup, Flex, Radio, RadioGroup, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 
 import type { GameMode, RiotDependentInfo, Status } from '@/apis/types';
 import Check from '@/assets/icons/system/check.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import IconCheckbox from '@/components/icons/IconCheckbox';
-import StateMessageRadio from '@/components/pages/mypage/changeState/StateMessageRadio';
 import TimeBadge from '@/components/pages/mypage/changeState/TimeBadge';
 import TimeTableDrawer from '@/components/pages/mypage/changeState/TimeTableDrawer';
 import ContentsContainer from '@/components/pages/mypage/ContentsContainer';
+
+import StateMessageInput from './StateMessageInput';
 
 import type { CheckboxProps } from '@chakra-ui/react';
 
@@ -19,24 +19,15 @@ const Checkbox = (props: CheckboxProps) => {
 };
 
 export interface ChangeStateTabProps {
-  initialValues: Pick<RiotDependentInfo, 'status' | 'introductions' | 'preferGameModes' | 'schedules'>;
+  initialValues: Pick<RiotDependentInfo, 'status' | 'introduction' | 'preferGameModes' | 'schedules'>;
 }
 export default function ChangeStateTab({ initialValues }: ChangeStateTabProps) {
   const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure();
 
   const [status, setStatus] = useState<Status>(initialValues.status);
-  const [introduction, setIntroduction] = useState<RiotDependentInfo['introductions'][0] | '_empty'>(
-    initialValues.introductions.find((intro) => intro.isMain) ?? '_empty',
-  );
   const [preferGameModes, setPreferGameModes] = useState<RiotDependentInfo['preferGameModes']>(
     initialValues.preferGameModes,
   );
-
-  const _setIntroduction = (id: string) => {
-    setIntroduction(
-      isNumeric(id) ? initialValues.introductions.find((intro) => intro.id === parseInt(id, 10)) ?? '_empty' : '_empty',
-    );
-  };
 
   const _setPreferGameModes = (modes: GameMode[]) => {
     setPreferGameModes(
@@ -80,18 +71,12 @@ export default function ChangeStateTab({ initialValues }: ChangeStateTabProps) {
           </RadioGroup>
         </ContentsContainer>
         <ContentsContainer title="상태 메세지">
-          <RadioGroup
-            w="full"
-            onChange={_setIntroduction}
-            value={introduction === '_empty' ? '_empty' : introduction.id.toString()}
-          >
-            <Flex direction="column" gap="8px">
-              {initialValues.introductions.map((introduction, index) => (
-                <StateMessageRadio key={index} value={introduction.id.toString()} content={introduction.content} />
-              ))}
-              <StateMessageRadio key="_empty" value="_empty" />
-            </Flex>
-          </RadioGroup>
+          <StateMessageInput
+            isDisabled
+            value={initialValues.introduction}
+            placeholder="자신을 소개할 수 있는 내용을 작성해 주세요."
+            rows={2}
+          />
         </ContentsContainer>
         <ContentsContainer title="선호 게임 타입">
           <CheckboxGroup value={preferGameModes.map((mode) => mode.gameMode)} onChange={_setPreferGameModes}>

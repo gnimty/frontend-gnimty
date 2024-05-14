@@ -11,6 +11,7 @@ export const enum GET_MY_INFO_ERROR_CODE {
 interface GetMyInfoResponse {
   data: ProfileEntry;
 }
+
 const getMyInfoQuery = () =>
   queryOptions({
     queryKey: ['community/members/me'],
