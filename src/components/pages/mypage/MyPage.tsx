@@ -16,7 +16,7 @@ export default function MyPage() {
 
     const stateTabInfo = {
       status: myProfile.riotDependentInfo.status,
-      introductions: myProfile.riotDependentInfo.introductions,
+      introduction: myProfile.riotDependentInfo.introduction,
       preferGameModes: myProfile.riotDependentInfo.preferGameModes,
       schedules: myProfile.riotDependentInfo.schedules,
     };
