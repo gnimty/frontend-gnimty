@@ -1,14 +1,18 @@
 import { useDisclosure } from '@chakra-ui/hooks';
 import { Checkbox as _Checkbox, Button, CheckboxGroup, Flex, Radio, RadioGroup, Text } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import type { GameMode, RiotDependentInfo, Status } from '@/apis/types';
+import dayOfWeekEnumKrMap from '@/apis/constants/dayOfWeekEnumKrMap';
+import type { DayOfWeek, GameMode, RiotDependentInfo, Status } from '@/apis/types';
+import useChangeProfile from '@/apis/useChangeProfile';
 import Check from '@/assets/icons/system/check.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import IconCheckbox from '@/components/icons/IconCheckbox';
 import TimeBadge from '@/components/pages/mypage/changeState/TimeBadge';
 import TimeTableDrawer from '@/components/pages/mypage/changeState/TimeTableDrawer';
 import ContentsContainer from '@/components/pages/mypage/ContentsContainer';
+import groupBy from '@/utils/groupBy';
 
 import StateMessageInput from './StateMessageInput';
 
@@ -19,22 +23,31 @@ const Checkbox = (props: CheckboxProps) => {
 };
 
 export interface ChangeStateTabProps {
-  initialValues: Pick<RiotDependentInfo, 'status' | 'introduction' | 'preferGameModes' | 'schedules'>;
+  initialStatus: RiotDependentInfo['status'];
+  initialIntroduction: RiotDependentInfo['introduction'];
+  initialPreferGameModes: RiotDependentInfo['preferGameModes'];
+  initialSchedules: RiotDependentInfo['schedules'];
 }
-export default function ChangeStateTab({ initialValues }: ChangeStateTabProps) {
+
+export default function ChangeStateTab(props: ChangeStateTabProps) {
+  const router = useRouter();
+
+  const { initialStatus, initialIntroduction, initialPreferGameModes, initialSchedules } = props;
   const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure();
 
-  const [status, setStatus] = useState<Status>(initialValues.status);
-  const [preferGameModes, setPreferGameModes] = useState<RiotDependentInfo['preferGameModes']>(
-    initialValues.preferGameModes,
-  );
+  const [status, setStatus] = useState(initialStatus);
+  const [introduction, setIntroduction] = useState(initialIntroduction);
+  const [preferGameModes, setPreferGameModes] = useState(initialPreferGameModes);
+  // TODO: 백엔드 분들과 얘기 나눠 본 후에 완성
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [schedules, setSchedules] = useState(initialSchedules);
 
-  const _setPreferGameModes = (modes: GameMode[]) => {
-    setPreferGameModes(
-      modes.map((mode) => {
-        return { gameMode: mode };
-      }),
-    );
+  const groupedSchedules = groupBy(schedules, (schedule) => schedule.dayOfWeek);
+
+  const { changeProfile } = useChangeProfile();
+
+  const handlePreferGameModesChange = (modes: GameMode[]) => {
+    setPreferGameModes(modes.map((mode) => ({ gameMode: mode })));
   };
 
   return (
@@ -45,7 +58,9 @@ export default function ChangeStateTab({ initialValues }: ChangeStateTabProps) {
             w="full"
             height="40px"
             display="flex"
-            onChange={setStatus as (status: string) => void}
+            onChange={(nextValue) => {
+              setStatus(nextValue as Status);
+            }}
             value={status}
           >
             <Flex gap="44px">
@@ -72,14 +87,16 @@ export default function ChangeStateTab({ initialValues }: ChangeStateTabProps) {
         </ContentsContainer>
         <ContentsContainer title="상태 메세지">
           <StateMessageInput
-            isDisabled
-            value={initialValues.introduction}
+            value={introduction}
+            onChange={(e) => {
+              setIntroduction(e.target.value);
+            }}
             placeholder="자신을 소개할 수 있는 내용을 작성해 주세요."
             rows={2}
           />
         </ContentsContainer>
         <ContentsContainer title="선호 게임 타입">
-          <CheckboxGroup value={preferGameModes.map((mode) => mode.gameMode)} onChange={_setPreferGameModes}>
+          <CheckboxGroup value={preferGameModes.map((mode) => mode.gameMode)} onChange={handlePreferGameModesChange}>
             <Flex w="full" direction="row" gap="24px">
               <Checkbox value="RANK_SOLO">솔로 랭크</Checkbox>
               <Checkbox value="RANK_FLEX">자유 랭크</Checkbox>
@@ -101,22 +118,50 @@ export default function ChangeStateTab({ initialValues }: ChangeStateTabProps) {
             시간 설정
           </Button>
           <Flex direction="column" alignSelf="flex-start" gap="12px" mt="32px">
-            <Flex gap="12px" alignItems="center">
-              <Text textStyle="t2" fontWeight={400}>
-                월요일
-              </Text>
-              <TimeBadge startTime={19} endTime={23} />
-              <TimeBadge startTime={19} endTime={23} />
-            </Flex>
-            <Flex gap="12px" alignItems="center">
-              <Text textStyle="t2" fontWeight={400}>
-                화요일
-              </Text>
-              <TimeBadge startTime={19} endTime={23} />
-            </Flex>
+            {(['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'] as DayOfWeek[]).map(
+              (dayOfWeek) => {
+                const groupedSchedule = groupedSchedules[dayOfWeek];
+                if (groupedSchedule === undefined) {
+                  return;
+                }
+                return (
+                  <Flex key={dayOfWeek} gap="12px" alignItems="center">
+                    <Text textStyle="t2" fontWeight={400}>
+                      {dayOfWeekEnumKrMap[dayOfWeek]}
+                    </Text>
+                    {groupedSchedule.map((schedule) => (
+                      <TimeBadge
+                        key={`${schedule.startTime}-${schedule.endTime}`}
+                        startTime={schedule.startTime}
+                        endTime={schedule.endTime}
+                      />
+                    ))}
+                  </Flex>
+                );
+              },
+            )}
           </Flex>
         </ContentsContainer>
-        <Button mt="40px" w="full" size="lg" variant="default">
+        <Button
+          mt="40px"
+          w="full"
+          size="lg"
+          variant="default"
+          onClick={() => {
+            changeProfile(
+              { introduction, preferGameModes, schedules, status },
+              {
+                onSuccess() {
+                  router.reload();
+                  alert('성공적으로 변경 되었습니다!');
+                },
+                onError() {
+                  alert('변경하는 도중 에러가 발생했습니다.');
+                },
+              },
+            );
+          }}
+        >
           변경사항 저장
         </Button>
       </Flex>

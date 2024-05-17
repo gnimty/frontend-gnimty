@@ -194,15 +194,15 @@ export interface RiotDependentInfo {
   riotAccounts: RiotAccountEntry[];
 }
 
-interface ScheduleEntry {
+export interface ScheduleEntry {
   dayOfWeek: DayOfWeek;
   startTime: number;
   endTime: number;
 }
 
-type DayOfWeek = 'SUNDAY' | 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY';
+export type DayOfWeek = 'SUNDAY' | 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY';
 
-interface PreferGameModeEntry {
+export interface PreferGameModeEntry {
   gameMode: GameMode;
 }
 
