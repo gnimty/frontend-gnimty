@@ -14,13 +14,6 @@ export default function MyPage() {
   if (myProfile) {
     const mainAccount = myProfile.riotDependentInfo.riotAccounts.find((account) => account.isMain);
 
-    const stateTabInfo = {
-      status: myProfile.riotDependentInfo.status,
-      introduction: myProfile.riotDependentInfo.introduction,
-      preferGameModes: myProfile.riotDependentInfo.preferGameModes,
-      schedules: myProfile.riotDependentInfo.schedules,
-    };
-
     return (
       <Flex m="40px auto 60px" w="1080px" flexDir="row" gap="40px">
         <UserProfileCard
@@ -42,7 +35,12 @@ export default function MyPage() {
               <UserInfoTab />
             </TabPanel>
             <TabPanel>
-              <ChangeStateTab initialValues={stateTabInfo} />
+              <ChangeStateTab
+                initialIntroduction={myProfile.riotDependentInfo.introduction}
+                initialPreferGameModes={myProfile.riotDependentInfo.preferGameModes}
+                initialSchedules={myProfile.riotDependentInfo.schedules}
+                initialStatus={myProfile.riotDependentInfo.status}
+              />
             </TabPanel>
             <TabPanel>
               <BlockManagementTab />
