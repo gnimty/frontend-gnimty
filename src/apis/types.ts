@@ -602,3 +602,18 @@ export type ReportType =
   | 'ILLEGAL_ADVERTISING'
   | 'PERSONAL_INFORMATION_EXPOSURE'
   | 'OTHER';
+
+export interface BlockEntry {
+  /** 차단 정보 id */
+  id: number;
+  /** 차단 당한 회원의 id */
+  blockedId: number;
+  /** 차단한 날 */
+  date: string;
+  /** 차단 당한 회원 닉네임 */
+  nickname: string;
+  status: Status;
+  /** 차단 시 메모 */
+  memo: string | null;
+  profileIconId: number;
+}

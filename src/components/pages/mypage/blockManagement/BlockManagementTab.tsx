@@ -1,40 +1,27 @@
 import { Flex } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 
-import type { BlockedUserCardProps } from '@/components/pages/mypage/blockManagement/BlockedUserCard';
+import listBlockedUsersQuery from '@/apis/queries/listBlockedUsersQuery';
 import BlockedUserCard from '@/components/pages/mypage/blockManagement/BlockedUserCard';
 
 export default function BlockManagementTab() {
-  const _testData: BlockedUserCardProps[] = [
-    {
-      blockedDate: new Date('2023.09.06'),
-      nickname: '테스트 1번',
-      status: 'ONLINE',
-      reason: '사유 1번',
-    },
-    {
-      blockedDate: new Date('2023.10.01'),
-      nickname: '테스트 2번',
-      status: 'OFFLINE',
-      reason: '사유 2번',
-    },
-    {
-      blockedDate: new Date(),
-      nickname: '테스트 3번',
-      status: 'AWAY',
-      reason:
-        '사유가 너무너무 길어요 사유가 너무너무 길어요 사유가 너무너무 길어요 사유가 너무너무 길어요 사유가 너무너무 길어요 사유가 너무너무 길어요',
-    },
-  ];
+  const { data, status } = useQuery(listBlockedUsersQuery());
+
+  if (status !== 'success') {
+    return;
+  }
 
   return (
     <Flex direction="column" w="full" gap="12px">
-      {_testData.map((blockedUser) => (
+      {data.data.blocks.map((blockEntry) => (
         <BlockedUserCard
-          key={blockedUser.nickname}
-          blockedDate={blockedUser.blockedDate}
-          nickname={blockedUser.nickname}
-          status={blockedUser.status}
-          reason={blockedUser.reason}
+          key={blockEntry.id}
+          blockedDate={blockEntry.date}
+          nickname={blockEntry.nickname}
+          status={blockEntry.status}
+          profileIconId={blockEntry.profileIconId}
+          memo={blockEntry.memo ?? ''}
+          blockEntryId={blockEntry.id}
         />
       ))}
     </Flex>
