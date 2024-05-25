@@ -1,4 +1,18 @@
-import { Box, Center, Flex, HStack, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Flex,
+  HStack,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  VStack,
+  VisuallyHidden,
+} from '@chakra-ui/react';
 import Image from 'next/image';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
@@ -104,23 +118,38 @@ export default function CurrentGameRow(props: CurrentGameRowProps) {
                   </Text>
                 </VStack>
               </Td>
-              {/* TODO: 이 부분들 API 어떻게 받아오는지 백엔드 분들께 여쭤 봐야 함 */}
-              <Td display="flex" flexDir="column" gap="4px" w="100px" justifyContent="center">
-                <VStack gap={0}>
-                  <Text textStyle="body" fontWeight="regular" color="gray800">
-                    {14} /{' '}
-                    <Text as="span" color="main">
-                      {3}
-                    </Text>{' '}
-                    / {6}
-                  </Text>
-                  <Text w="60px" textStyle="body" fontWeight="regular" color="main" textAlign="center">
-                    {3.57} KDA
-                  </Text>
-                </VStack>
-                <Text textStyle="body" fontWeight="regular" color="gray800" w="full" textAlign="center">
-                  143 (6.2)
-                </Text>
+              <Td display="flex" flexDir="column" gap="4px" w="120px" justifyContent="center">
+                {participant.summonerPlayDto === null ? (
+                  <Center w="100px">Unknown</Center>
+                ) : (
+                  <VStack gap="4px">
+                    <VStack gap={0}>
+                      <HStack gap="8px">
+                        <Text textStyle="caption" fontWeight="regular" color="gray800">
+                          {participant.summonerPlayDto.totalPlays}전 {participant.summonerPlayDto.totalWin}승{' '}
+                          {participant.summonerPlayDto.totalDefeat}패
+                        </Text>
+                        {participant.summonerPlayDto.perfect ? (
+                          <Text textStyle="body" fontWeight="bold" color="green800">
+                            Perfect
+                          </Text>
+                        ) : (
+                          <Text display="flex" gap="4px" textStyle="body" fontWeight="bold" color="gray800">
+                            <VisuallyHidden>승률</VisuallyHidden>
+                            <span>{Math.floor(participant.summonerPlayDto.winRate * 100)}%</span>
+                          </Text>
+                        )}
+                      </HStack>
+                      <Text textStyle="body" fontWeight="regular" color="main">
+                        {participant.summonerPlayDto.avgKda.toFixed(2)} KDA
+                      </Text>
+                    </VStack>
+                    <Text textStyle="body" fontWeight="regular" color="gray800">
+                      {Math.floor(participant.summonerPlayDto.avgCs)} (
+                      {participant.summonerPlayDto.avgCsPerMinute.toFixed(1)})
+                    </Text>
+                  </VStack>
+                )}
               </Td>
               <Td display="flex" flexDir="column" justifyContent="center" gap="4px">
                 <SpellImage spellId={participant.spellDId} width={24} height={24} />

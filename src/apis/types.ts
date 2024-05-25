@@ -427,7 +427,7 @@ export interface CurrentGameParticipantDto {
   summoner: SummonerDto;
   championId: number;
   championName: string;
-  summonerPlayDto: SummonerPlayDto;
+  summonerPlayDto: SummonerPlayDto | null;
   spellDId: number;
   spellFId: number;
   perks: Perk;
