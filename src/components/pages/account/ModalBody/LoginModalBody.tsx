@@ -11,14 +11,15 @@ import {
   useBoolean,
   VStack,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import useFormLogin from '@/apis/useFormLogin';
 import Check from '@/assets/icons/system/check.svg';
 import Hide from '@/assets/icons/system/hide.svg';
 import View from '@/assets/icons/system/view.svg';
-import GoogleLoginButton from '@/components/common/buttons/GoogleLoginButton';
-import KakaoLoginButton from '@/components/common/buttons/KakaoLoginButton';
+import GoogleOAuthButton from '@/components/common/buttons/GoogleOAuthButton';
+import KakaoOAuthButton from '@/components/common/buttons/KakaoOAuthButton';
 import AccountInput from '@/components/pages/account/AccountInput';
 import { useAccountModalPageContext } from '@/contexts/AccountModalPageContext';
 import { emailRegex } from '@/utils/regex';
@@ -33,6 +34,8 @@ export default function LoginModalBody() {
   const { setCurrentPage, onClose } = useAccountModalPageContext();
 
   const { formLogin } = useFormLogin();
+
+  const router = useRouter();
 
   const onLogin = () => {
     if (!emailRegex.exec(email)) return;
@@ -146,8 +149,32 @@ export default function LoginModalBody() {
         </HStack>
 
         <VStack w="full" gap="12px" mb="24px">
-          <KakaoLoginButton w="full" h="48px" />
-          <GoogleLoginButton w="full" h="48px" />
+          <KakaoOAuthButton
+            w="full"
+            h="48px"
+            onClick={() => {
+              router.replace(
+                `${
+                  process.env.NEXT_PUBLIC_API_BASE_URL
+                }/community/oauth/kakao/redirect?redirect_uri=${encodeURIComponent(
+                  process.env.NEXT_PUBLIC_FRONT_ORIGIN + router.asPath,
+                )}`,
+              );
+            }}
+          />
+          <GoogleOAuthButton
+            w="full"
+            h="48px"
+            onClick={() => {
+              router.replace(
+                `${
+                  process.env.NEXT_PUBLIC_API_BASE_URL
+                }/community/oauth/google/redirect?redirect_uri=${encodeURIComponent(
+                  process.env.NEXT_PUBLIC_FRONT_ORIGIN + router.asPath,
+                )}`,
+              );
+            }}
+          />
         </VStack>
       </VStack>
     </ModalBody>

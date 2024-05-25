@@ -1,10 +1,13 @@
 import { Button, Text } from '@chakra-ui/react';
 import { Roboto } from 'next/font/google';
-import { useRouter } from 'next/router';
 
 import IconGoogle from '@/components/icons/IconGoogle';
 
 import type { ButtonProps } from '@chakra-ui/react';
+
+interface GoogleOAuthButtonProps extends ButtonProps {
+  isConnected?: boolean;
+}
 
 const roboto = Roboto({
   preload: false,
@@ -12,13 +15,13 @@ const roboto = Roboto({
   variable: '--roboto',
 });
 
-export default function GoogleLoginButton(props: ButtonProps) {
-  const router = useRouter();
+export default function GoogleOAuthButton(props: GoogleOAuthButtonProps) {
+  const { isConnected = false } = props;
 
   return (
     <Button
       className={roboto.className}
-      bg="white"
+      bg={isConnected ? 'gray200' : 'white'}
       w="full"
       variant="outline"
       border="1px"
@@ -31,17 +34,10 @@ export default function GoogleLoginButton(props: ButtonProps) {
         bg: '',
         boxShadow: '',
       }}
-      onClick={() => {
-        router.replace(
-          `${
-            process.env.NEXT_PUBLIC_API_BASE_URL
-          }/community/oauth/google/redirect?redirect_uri=${encodeURIComponent(process.env.NEXT_PUBLIC_FRONT_ORIGIN + router.asPath)}`,
-        );
-      }}
       {...props}
     >
-      <Text fontSize="14px" fontWeight="500" color="#0000008a">
-        Google 계정으로 로그인
+      <Text textStyle="t2" fontWeight="bold" color="gray700">
+        {isConnected ? 'Google 계정 연동 해제' : 'Google 계정으로 로그인'}
       </Text>
     </Button>
   );
