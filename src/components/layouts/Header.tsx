@@ -73,6 +73,8 @@ export default function Header() {
                     iconId={
                       myInfoData.data.riotDependentInfo.riotAccounts.find((account) => account.isMain)?.iconId ?? 1
                     }
+                    width={40}
+                    height={40}
                     onClick={toggleDropdown}
                   />
                 )}
