@@ -8,8 +8,8 @@ import type { GameMode, RiotDependentInfo, Status } from '@/apis/types';
 import useChangeProfile from '@/apis/useChangeProfile';
 import Check from '@/assets/icons/system/check.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
+import TimeBadge from '@/components/common/TimeBadge';
 import IconCheckbox from '@/components/icons/IconCheckbox';
-import TimeBadge from '@/components/pages/mypage/changeState/TimeBadge';
 import TimeTableDrawer from '@/components/pages/mypage/changeState/TimeTableDrawer';
 import ContentsContainer from '@/components/pages/mypage/ContentsContainer';
 
