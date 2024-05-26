@@ -3,7 +3,8 @@ import { ChakraBaseProvider } from '@chakra-ui/react';
 import createCache from '@emotion/cache';
 import { CacheProvider, Global, ThemeProvider } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 import ChatBubble from '@/components/chat/ChatBubble';
 import BaseLayout from '@/components/layouts/BaseLayout';
@@ -42,6 +43,16 @@ export default function App({ Component, pageProps }: AppProps) {
         },
       }),
   );
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const { alert: alertMessage, ...alertMessageDeletedQuery } = router.query;
+    if (typeof alertMessage === 'string') {
+      alert(alertMessage);
+      router.replace({ pathname: router.pathname, query: alertMessageDeletedQuery });
+    }
+  }, [router]);
 
   return (
     <QueryClientProvider client={queryClient}>
