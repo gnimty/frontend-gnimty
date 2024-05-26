@@ -233,9 +233,11 @@ export interface RiotAccountEntry {
   iconId: number;
 }
 
+export type OAuthProvider = 'GOOGLE' | 'KAKAO';
+
 export interface OauthInfoEntry {
   email: string;
-  provider: 'GOOGLE' | 'KAKAO';
+  provider: OAuthProvider;
 }
 
 export interface ProfileEntry {

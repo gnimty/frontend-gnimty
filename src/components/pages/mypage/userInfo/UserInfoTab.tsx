@@ -3,14 +3,17 @@ import { useRouter } from 'next/router';
 
 import useAuth from '@/apis/useAuth';
 import useChangeMainRiotAccount from '@/apis/useChangeMainRiotAccount';
-import GoogleLoginButton from '@/components/common/buttons/GoogleLoginButton';
-import KakaoLoginButton from '@/components/common/buttons/KakaoLoginButton';
+import useDisconnectOAuth from '@/apis/useDisconnectOAuth';
+import GoogleOAuthButton from '@/components/common/buttons/GoogleOAuthButton';
+import KakaoOAuthButton from '@/components/common/buttons/KakaoOAuthButton';
 import ContentsContainer from '@/components/pages/mypage/ContentsContainer';
 import UserRiotAccountRadio from '@/components/pages/mypage/userInfo/UserRiotAccountRadio';
 
 export default function UserInfoTab() {
   const { data, status, isAuthenticated } = useAuth();
   const { changeMainRiotAccount } = useChangeMainRiotAccount();
+  const { disconnectOAuth } = useDisconnectOAuth();
+
   const router = useRouter();
 
   // TODO: 후에 status 체크는 삭제
@@ -20,12 +23,69 @@ export default function UserInfoTab() {
 
   const mainAccount = data.data.riotDependentInfo.riotAccounts.find((account) => account.isMain);
 
+  const isKakaoOAuthConnected = data.data.oauthInfos.some((info) => info.provider === 'KAKAO');
+  const isGoogleOAuthConnected = data.data.oauthInfos.some((info) => info.provider === 'GOOGLE');
+
   return (
     <Flex direction="column" w="full" gap="24px">
       <ContentsContainer title="소셜 로그인">
         <HStack w="full" spacing="12px">
-          <KakaoLoginButton w="full" h="48px" />
-          <GoogleLoginButton w="full" h="48px" />
+          <KakaoOAuthButton
+            isConnected={isKakaoOAuthConnected}
+            w="full"
+            h="48px"
+            onClick={() => {
+              if (isKakaoOAuthConnected) {
+                disconnectOAuth(
+                  { provider: 'KAKAO' },
+                  {
+                    onSuccess() {
+                      router.reload();
+                    },
+                    onError() {
+                      alert('연동해제에 실패했습니다.');
+                    },
+                  },
+                );
+              } else {
+                router.replace(
+                  `${
+                    process.env.NEXT_PUBLIC_API_BASE_URL
+                  }/community/members/me/oauth/kakao/redirect?redirect_uri=${encodeURIComponent(
+                    process.env.NEXT_PUBLIC_FRONT_ORIGIN + router.asPath,
+                  )}`,
+                );
+              }
+            }}
+          />
+          <GoogleOAuthButton
+            isConnected={isGoogleOAuthConnected}
+            w="full"
+            h="48px"
+            onClick={() => {
+              if (isGoogleOAuthConnected) {
+                disconnectOAuth(
+                  { provider: 'GOOGLE' },
+                  {
+                    onSuccess() {
+                      router.reload();
+                    },
+                    onError() {
+                      alert('연동해제에 실패했습니다.');
+                    },
+                  },
+                );
+              } else {
+                router.replace(
+                  `${
+                    process.env.NEXT_PUBLIC_API_BASE_URL
+                  }/community/members/me/oauth/google/redirect?redirect_uri=${encodeURIComponent(
+                    process.env.NEXT_PUBLIC_FRONT_ORIGIN + router.asPath,
+                  )}`,
+                );
+              }
+            }}
+          />
         </HStack>
       </ContentsContainer>
       <ContentsContainer title="계정 연동">
