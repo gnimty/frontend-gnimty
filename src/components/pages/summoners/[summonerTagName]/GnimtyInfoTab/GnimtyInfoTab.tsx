@@ -28,19 +28,26 @@ export default function GnimtyInfoTab({ memberProfileData }: GnimtyInfoTabProps)
         <Text textStyle="t2" fontWeight="700">
           게임 가능 시간
         </Text>
-        {/* TODO: 같은 날짜에 여러 시간대가 존재하는 경우 처리 */}
-        {memberProfileData.schedules?.map((schedule) => {
-          return (
-            <HStack gap="12px" key={schedule.dayOfWeek}>
-              <Text textStyle="t2" fontWeight="400">
-                {dayMap[schedule.dayOfWeek]}
-              </Text>
-              <Box h="28px" borderRadius="999px" border="1px solid" borderColor="gray800" p="4px 12px" bgColor="white">
-                {formatHour(schedule.startTime)} - {formatHour(schedule.endTime)}
+        {memberProfileData.schedules?.map((schedule) => (
+          <HStack key={schedule.dayOfWeek} gap="12px">
+            <Text textStyle="t2" fontWeight="400">
+              {dayMap[schedule.dayOfWeek]}
+            </Text>
+            {schedule.times.map((time) => (
+              <Box
+                key={`${time.startTime}-${time.endTime}`}
+                h="28px"
+                borderRadius="999px"
+                border="1px solid"
+                borderColor="gray800"
+                p="4px 12px"
+                bgColor="white"
+              >
+                {formatHour(time.startTime)} - {formatHour(time.endTime)}
               </Box>
-            </HStack>
-          );
-        })}
+            ))}
+          </HStack>
+        ))}
       </VStack>
       {/* 선호 게임 타입 */}
       <VStack gap="12px" align="flex-start">
