@@ -32,7 +32,7 @@ export default function Header() {
   const onSelect = async (value: string) => {
     switch (value) {
       case 'mypage':
-        return router.push('/mypage');
+        return router.push('/mypage/info');
       case 'logout':
         logout().then(() => router.reload());
     }
