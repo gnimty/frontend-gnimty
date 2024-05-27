@@ -87,6 +87,14 @@ function ToggleMenu() {
   const { selectedChatRoomNo, exitChatRoom, chatRooms } = useChatContext();
   const { mutateAsync: memberBlockAsync } = useMutation({
     mutationFn: memberBlock,
+    onSuccess() {
+      exitChatRoom(selectedChatRoomNo!);
+    },
+    onError(error) {
+      if (error.response?.data.status.code === 409) {
+        alert('이미 차단한 유저입니다.');
+      }
+    },
   });
   const otherUserId = chatRooms.find((room) => room.chatRoomNo === selectedChatRoomNo)?.otherUser.userId;
   const handleUserBlock = async () => {
