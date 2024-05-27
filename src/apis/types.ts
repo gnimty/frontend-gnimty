@@ -196,8 +196,7 @@ export interface RiotDependentInfo {
 
 export interface ScheduleEntry {
   dayOfWeek: DayOfWeek;
-  startTime: number;
-  endTime: number;
+  times: { startTime: number; endTime: number }[];
 }
 
 export type DayOfWeek = 'SUNDAY' | 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY';

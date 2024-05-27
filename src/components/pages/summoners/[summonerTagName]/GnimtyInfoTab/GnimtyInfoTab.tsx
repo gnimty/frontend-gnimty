@@ -1,9 +1,8 @@
-import 'dayjs/locale/ko';
-
 import { Box, HStack, Text, VStack } from '@chakra-ui/react';
-import dayjs from 'dayjs';
 
+import dayOfWeekEnumKrMap from '@/apis/constants/dayOfWeekEnumKrMap';
 import type { GameMode, OtherProfileEntry } from '@/apis/types';
+import TimeBadge from '@/components/common/TimeBadge';
 
 interface GnimtyInfoTabProps {
   memberProfileData: OtherProfileEntry;
@@ -28,19 +27,16 @@ export default function GnimtyInfoTab({ memberProfileData }: GnimtyInfoTabProps)
         <Text textStyle="t2" fontWeight="700">
           게임 가능 시간
         </Text>
-        {/* TODO: 같은 날짜에 여러 시간대가 존재하는 경우 처리 */}
-        {memberProfileData.schedules?.map((schedule) => {
-          return (
-            <HStack gap="12px" key={schedule.dayOfWeek}>
-              <Text textStyle="t2" fontWeight="400">
-                {dayMap[schedule.dayOfWeek]}
-              </Text>
-              <Box h="28px" borderRadius="999px" border="1px solid" borderColor="gray800" p="4px 12px" bgColor="white">
-                {formatHour(schedule.startTime)} - {formatHour(schedule.endTime)}
-              </Box>
-            </HStack>
-          );
-        })}
+        {memberProfileData.schedules?.map((schedule) => (
+          <HStack key={schedule.dayOfWeek} gap="12px">
+            <Text textStyle="t2" fontWeight="400">
+              {dayOfWeekEnumKrMap[schedule.dayOfWeek]}
+            </Text>
+            {schedule.times.map((time) => (
+              <TimeBadge key={`${time.startTime}-${time.endTime}`} startTime={time.startTime} endTime={time.endTime} />
+            ))}
+          </HStack>
+        ))}
       </VStack>
       {/* 선호 게임 타입 */}
       <VStack gap="12px" align="flex-start">
@@ -65,22 +61,4 @@ const gameModeMap: Record<GameMode, string> = {
   RANK_SOLO: '솔로 랭크',
   RANK_FLEX: '자유 랭크',
   BLIND: '칼바람 나락/일반 게임',
-};
-
-const dayMap: Record<string, string> = {
-  SUNDAY: '일요일',
-  MONDAY: '월요일',
-  TUESDAY: '화요일',
-  WEDNESDAY: '수요일',
-  THURSDAY: '목요일',
-  FRIDAY: '금요일',
-  SATURDAY: '토요일',
-};
-
-const formatHour = (hour: number) => {
-  const time = dayjs().hour(hour);
-  if (hour === 24) {
-    return '24시';
-  }
-  return time.format('HH시');
 };

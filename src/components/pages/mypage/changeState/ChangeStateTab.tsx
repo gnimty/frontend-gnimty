@@ -4,15 +4,14 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import dayOfWeekEnumKrMap from '@/apis/constants/dayOfWeekEnumKrMap';
-import type { DayOfWeek, GameMode, RiotDependentInfo, Status } from '@/apis/types';
+import type { GameMode, RiotDependentInfo, Status } from '@/apis/types';
 import useChangeProfile from '@/apis/useChangeProfile';
 import Check from '@/assets/icons/system/check.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
+import TimeBadge from '@/components/common/TimeBadge';
 import IconCheckbox from '@/components/icons/IconCheckbox';
-import TimeBadge from '@/components/pages/mypage/changeState/TimeBadge';
 import TimeTableDrawer from '@/components/pages/mypage/changeState/TimeTableDrawer';
 import ContentsContainer from '@/components/pages/mypage/ContentsContainer';
-import groupBy from '@/utils/groupBy';
 
 import StateMessageInput from './StateMessageInput';
 
@@ -41,8 +40,6 @@ export default function ChangeStateTab(props: ChangeStateTabProps) {
   // TODO: 백엔드 분들과 얘기 나눠 본 후에 완성
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [schedules, setSchedules] = useState(initialSchedules);
-
-  const groupedSchedules = groupBy(schedules, (schedule) => schedule.dayOfWeek);
 
   const { changeProfile } = useChangeProfile();
 
@@ -118,28 +115,20 @@ export default function ChangeStateTab(props: ChangeStateTabProps) {
             시간 설정
           </Button>
           <Flex direction="column" alignSelf="flex-start" gap="12px" mt="32px">
-            {(['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'] as DayOfWeek[]).map(
-              (dayOfWeek) => {
-                const groupedSchedule = groupedSchedules[dayOfWeek];
-                if (groupedSchedule === undefined) {
-                  return;
-                }
-                return (
-                  <Flex key={dayOfWeek} gap="12px" alignItems="center">
-                    <Text textStyle="t2" fontWeight={400}>
-                      {dayOfWeekEnumKrMap[dayOfWeek]}
-                    </Text>
-                    {groupedSchedule.map((schedule) => (
-                      <TimeBadge
-                        key={`${schedule.startTime}-${schedule.endTime}`}
-                        startTime={schedule.startTime}
-                        endTime={schedule.endTime}
-                      />
-                    ))}
-                  </Flex>
-                );
-              },
-            )}
+            {schedules.map((schedule) => (
+              <Flex key={schedule.dayOfWeek} gap="12px" alignItems="center">
+                <Text textStyle="t2" fontWeight={400}>
+                  {dayOfWeekEnumKrMap[schedule.dayOfWeek]}
+                </Text>
+                {schedule.times.map((time) => (
+                  <TimeBadge
+                    key={`${time.startTime}-${time.endTime}`}
+                    startTime={time.startTime}
+                    endTime={time.endTime}
+                  />
+                ))}
+              </Flex>
+            ))}
           </Flex>
         </ContentsContainer>
         <Button
