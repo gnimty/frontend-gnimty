@@ -21,6 +21,7 @@ const links = [
   { name: '챔피언 분석', link: '/champions' },
   { name: '랭킹', link: '/rankings?page=1' },
   { name: '할인/패치노트', link: '/information' },
+  { name: '추천 Pick!', link: '/recommended-pick' },
 ];
 
 export default function Header() {
