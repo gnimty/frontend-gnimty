@@ -53,6 +53,7 @@ const nextConfig = {
           loader: '@svgr/webpack',
           /** @type {import('@svgr/core').Config} */
           options: {
+            ref: true,
             svgoConfig: {
               plugins: ['removeXMLNS'],
             },
