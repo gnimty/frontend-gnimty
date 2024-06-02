@@ -20,13 +20,13 @@ export const recentMatchesTitle = (theme: Theme) =>
     color: theme.colors.gray800,
   });
 
-export const recentMatchesContent = (options: { isLoggedIn: boolean }) =>
+export const recentMatchesContent = (options: { isAuthenticated: boolean }) =>
   css(
     {
       height: '320px',
       display: 'grid',
     },
-    options.isLoggedIn
+    options.isAuthenticated
       ? {
           gap: '20px',
           padding: '20px',
@@ -70,7 +70,7 @@ export const profileImageWrapper = css({
   justifyContent: 'center',
 });
 
-export const tag = (theme: Theme) =>
+export const level = (theme: Theme) =>
   css({
     ...theme.fonts.body,
     color: theme.colors.white,
@@ -100,9 +100,23 @@ export const summonerInfoLeft = css({
   gap: '12px',
 });
 
+export const summonerNameAndTag = css({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4px',
+});
+
+export const summonerTag = (theme: Theme) =>
+  css({
+    ...theme.fonts.h3,
+    fontWeight: 400,
+    color: theme.colors.gray600,
+  });
+
 export const summonerName = (theme: Theme) =>
   css({
     ...theme.fonts.h2,
+    fontWeight: 700,
     color: theme.colors.gray800,
   });
 
@@ -126,7 +140,7 @@ export const likeIcon = (theme: Theme) =>
     color: theme.colors.gray600,
   });
 
-export const likeCount = (theme: Theme) =>
+export const upCount = (theme: Theme) =>
   css({
     ...theme.fonts.t2,
     fontWeight: 400,
@@ -164,6 +178,19 @@ export const recentMatchesAndChampions = (theme: Theme) =>
     borderRadius: '8px',
   });
 
+export const noRecentMatchesText = (theme: Theme) =>
+  css({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: '10px',
+    paddingBottom: '10px',
+    height: '48px',
+    ...theme.fonts.t2,
+    fontWeight: 700,
+    color: theme.colors.gray500,
+  });
+
 export const recentMatchesColumn = css({
   display: 'flex',
   gap: '20px',
@@ -172,6 +199,7 @@ export const recentMatchesColumn = css({
 export const recentMatchesScore = (theme: Theme) =>
   css({
     ...theme.fonts.t1,
+    fontWeight: 700,
     color: theme.colors.gray700,
   });
 
@@ -243,4 +271,8 @@ export const moreButton = (theme: Theme) =>
     padding: '14px 12px',
     flex: '1 0 0',
     borderRadius: '4px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textDecoration: 'none',
   });

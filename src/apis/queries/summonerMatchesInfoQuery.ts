@@ -2,7 +2,7 @@ import { queryOptions } from '@tanstack/react-query';
 
 import httpRequest from '@/apis/httpRequest';
 
-import type { MatchSummaryDto, SummonerDto } from '../types';
+import type { MatchSummaryDto, QueueType, SummonerDto } from '../types';
 
 interface SummonerMatchesInfoResponse {
   data: {
@@ -19,6 +19,11 @@ interface Options {
    * 조회할 소환사 태그네임, [소환사명]-[태그라인]
    */
   summonerTagName: string;
+  /**
+   * 검색할 큐 타입 정보
+   * API 기본 값: ALL
+   */
+  queueType?: QueueType;
 }
 
 const summonerMatchesInfoQuery = (options: Options) =>
@@ -27,6 +32,11 @@ const summonerMatchesInfoQuery = (options: Options) =>
     async queryFn() {
       const res = await httpRequest.get<SummonerMatchesInfoResponse>(
         `/statistics/summoners/matches/${options.summonerTagName}`,
+        {
+          params: {
+            queue_type: options.queueType,
+          },
+        },
       );
       return res.data;
     },

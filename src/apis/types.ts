@@ -210,26 +210,27 @@ export interface RiotAccountEntry {
   name: string;
   tagLine: string;
   isMain: boolean;
-  puuid: number;
-  queue: Tier;
-  lp: number;
-  division: number;
-  mmr: number;
+  puuid: string;
+  queue: Tier | null;
+  lp: number | null;
+  division: number | null;
+  mmr: number | null;
   frequentLane1: Position | null;
   frequentLane2: Position | null;
   frequentChampionId1: number | null;
   frequentChampionId2: number | null;
   frequentChampionId3: number | null;
-  queueFlex: Tier;
-  lpFlex: number;
-  divisionFlex: number;
-  mmrFlex: number;
+  queueFlex: Tier | null;
+  lpFlex: number | null;
+  divisionFlex: number | null;
+  mmrFlex: number | null;
   frequentLane1Flex: Position | null;
   frequentLane2Flex: Position | null;
   frequentChampionId1Flex: number | null;
   frequentChampionId2Flex: number | null;
   frequentChampionId3Flex: number | null;
   iconId: number;
+  level: number;
 }
 
 export type OAuthProvider = 'GOOGLE' | 'KAKAO';
@@ -370,7 +371,7 @@ export interface MatchSummaryDto {
   wins: number;
   defeats: number;
   winRate: number;
-  avgKda: number;
+  avgKda: number | null;
   isPerfect: boolean;
   championSummary: ChampionSummaryDto[];
   laneSummary: LaneSummaryDto;

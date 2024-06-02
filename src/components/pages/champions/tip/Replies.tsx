@@ -1,11 +1,11 @@
-import { VStack, HStack, Box, Text, Divider, Button, useDisclosure, Textarea } from '@chakra-ui/react';
+import { Box, Button, Divider, HStack, Text, Textarea, VStack, useDisclosure } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from 'next/image';
-import React, { type SetStateAction, useRef, useState } from 'react';
+import React, { useRef, useState, type SetStateAction } from 'react';
 
 import {
   addChampionComments,
@@ -100,8 +100,8 @@ function Reply({ reply, championId, currentUserInfo, commentId, commentVersion, 
       const request: PostOption = {
         internalTagName: `${mainRiotAccount.name}#${mainRiotAccount.tagLine}`,
         mentionedInternalTagName: internalTagName,
-        tier: mainRiotAccount.queue,
-        division: mainRiotAccount.division,
+        tier: mainRiotAccount.queue ?? undefined,
+        division: mainRiotAccount.division ?? undefined,
         championId,
         contents: newReplyTextareaRef.current.value,
         parentChampionCommentsId: commentId,
@@ -385,8 +385,8 @@ export default function Replies({
       const request: PostOption = {
         internalTagName: `${mainRiotAccount.name}#${mainRiotAccount.tagLine}`,
         mentionedInternalTagName: commentInternalTagName,
-        tier: mainRiotAccount.queue,
-        division: mainRiotAccount.division,
+        tier: mainRiotAccount.queue ?? undefined,
+        division: mainRiotAccount.division ?? undefined,
         championId,
         contents: textareaRef.current.value,
         parentChampionCommentsId: commentId,

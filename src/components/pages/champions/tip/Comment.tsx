@@ -133,8 +133,8 @@ export default function Comment({ comment, championId, latestVersion, currentUse
       const options: NewReplyOption = {
         internalTagName: `${mainRiotAccount.name}#${mainRiotAccount.tagLine}`,
         mentionedInternalTagName: internalTagName,
-        tier: mainRiotAccount.queue,
-        division: mainRiotAccount.division,
+        tier: mainRiotAccount.queue ?? undefined,
+        division: mainRiotAccount.division ?? undefined,
         championId,
         contents: newReplyTextareaRef.current.value,
         parentChampionCommentsId: id,
