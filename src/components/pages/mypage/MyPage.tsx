@@ -39,7 +39,7 @@ export default function MyPage(props: MyPageRouteProps) {
         nickname={mainAccount?.name ?? myProfile.nickname}
         tag={mainAccount?.tagLine ?? ''}
         tier={mainAccount?.queue ?? 'unknown'}
-        division={mainAccount?.division}
+        division={mainAccount?.division ?? undefined}
         leaguePoints={mainAccount?.lp ?? 0}
         email={myProfile.email}
       />

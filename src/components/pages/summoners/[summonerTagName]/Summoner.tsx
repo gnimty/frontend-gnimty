@@ -281,7 +281,8 @@ export default function Summoner(props: SummonerProps) {
                     <Text textStyle="t2" fontWeight="bold" color="green800">
                       {data.data.matchSummary.isPerfect
                         ? 'Perfect'
-                        : `${data.data.matchSummary.avgKda.toFixed(2)} 평점`}
+                        : // TODO: 좀더 올바른 처리가 필요
+                          `${data.data.matchSummary.avgKda?.toFixed(2)} 평점`}
                     </Text>
                   </HStack>
                   <HStack gap="20px">
