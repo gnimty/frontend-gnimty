@@ -78,6 +78,9 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
             const index = prev.findIndex((chatRoom) => chatRoom.chatRoomNo === currentChatRoomNo);
             if (index === -1) return prev;
             const newChatRooms = [...prev];
+            if (!Array.isArray(newChatRooms[index].chats)) {
+              newChatRooms[index].chats = [];
+            }
             if (newChatRooms[index].chats.some((chat) => chat.sendDate === (data as Chat).sendDate)) return prev;
             newChatRooms[index].chats = [...newChatRooms[index].chats, data as Chat];
             return newChatRooms;
