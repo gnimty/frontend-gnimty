@@ -230,6 +230,7 @@ export interface RiotAccountEntry {
   frequentChampionId2Flex: number | null;
   frequentChampionId3Flex: number | null;
   iconId: number;
+  level: number;
 }
 
 export type OAuthProvider = 'GOOGLE' | 'KAKAO';
