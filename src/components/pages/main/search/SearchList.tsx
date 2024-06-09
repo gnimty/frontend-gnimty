@@ -10,10 +10,16 @@ const summonerAutoCompleteToSearchPopRowItems = (data: SummonerAutoCompleteRespo
 
 interface SearchListProps {
   keyword: string;
+  /**
+   * @description XButtonClick이 기본동작이 아닌 경우에 사용 (추천Pick 화면)
+   * @param summonerProfile
+   * @returns void
+   */
+  onCustomXButtonClick?: (summonerName: string) => void;
 }
 
 export default function SearchList(props: SearchListProps) {
-  const { keyword } = props;
+  const { keyword, onCustomXButtonClick } = props;
 
   const { data: items, status } = useQuery({
     ...summonerAutoCompleteQuery({ keyword }),
@@ -24,5 +30,5 @@ export default function SearchList(props: SearchListProps) {
     return;
   }
 
-  return <SearchPopBody items={items} />;
+  return <SearchPopBody items={items} onCustomXButtonClick={onCustomXButtonClick} />;
 }

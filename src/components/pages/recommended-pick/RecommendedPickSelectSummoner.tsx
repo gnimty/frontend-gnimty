@@ -1,12 +1,16 @@
 import { Box, HStack, Text, VStack, Button } from '@chakra-ui/react';
-import { Fragment } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Fragment, useState } from 'react';
 
-import type { ProfileEntry } from '@/apis/types';
+import summonerInfoQuery from '@/apis/queries/summonerInfoQuery';
+import type { ProfileEntry, SummonerDto } from '@/apis/types';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
 import shortTierName from '@/apis/utils/shortTierName';
 import ChampionIcon from '@/components/common/ChampionIcon';
 import IconImage from '@/components/common/IconImage';
 import TierImage from '@/components/common/TierImage';
+
+import SearchBox from './SearchBox';
 
 export interface RecommendedPickSelectSummonerProps {
   myProfile: ProfileEntry;
@@ -18,15 +22,32 @@ export default function RecommendedPickSelectSummoner(props: RecommendedPickSele
   // TODO: use onSummonerChange
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { myProfile, onSummonerChange } = props;
+  const [otherSummonerName, setOtherSummonerName] = useState('');
+  const { data } = useQuery(summonerInfoQuery({ summonerTagName: otherSummonerName }));
+  const otherProfile = data?.data.summoner;
 
-  return <HStack w="full" h="320px" gap="24px" />;
+  const selectOtherSummoner = (summonerName: string) => setOtherSummonerName(summonerName);
+
+  return (
+    <HStack w="full" h="320px" gap="24px">
+      <SummonerCard summonerType="me" myProfile={myProfile} />
+      {otherProfile ? (
+        <SummonerCard summonerType="other" otherProfile={otherProfile} />
+      ) : (
+        <SearchBox selectOtherSummoner={selectOtherSummoner} />
+      )}
+    </HStack>
+  );
 }
 
 interface SummonerCardProps {
   summonerType: 'me' | 'other';
+  myProfile?: ProfileEntry;
+  otherProfile?: SummonerDto;
 }
 
-function SummonerCard({ summonerType }: SummonerCardProps) {
+function SummonerCard({ summonerType, myProfile, otherProfile }: SummonerCardProps) {
+  const summoner = summonerType === 'me' ? myProfile : otherProfile;
   return (
     <VStack w="528px" h="full" bg="white" borderRadius="4px" p="20px" gap="20px">
       <HStack w="full" h="78px" gap="12px">
