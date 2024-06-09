@@ -37,6 +37,7 @@ import Like from '@/assets/icons/system/like.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TierImage from '@/components/common/TierImage';
 import FavoriteIcon from '@/components/icons/FavoriteIcon';
+import { useChatContext } from '@/contexts/ChatContext';
 import copyText from '@/utils/copyText';
 import summonerDtoToSearchPopRowItem from '@/utils/summonerDtoToSearchPopRowItem';
 
@@ -67,6 +68,23 @@ export default function Summoner(props: SummonerProps) {
   );
 
   const { renewSummoner, status: renewSummonerStatus } = useRenewSummoner();
+
+  const { currentUserId, chatClient, disclosure, updateActivateChatUserIds } = useChatContext();
+  const handleChatButtonClick = (id: number) => {
+    if (!currentUserId) {
+      alert('로그인이 필요한 기능입니다.');
+      return;
+    }
+    if (chatClient && id) {
+      chatClient.publish({
+        destination: `/pub/user/${id}`,
+      });
+      updateActivateChatUserIds(id, 'ADD');
+    }
+    if (!disclosure.isOpen) {
+      disclosure.onOpen();
+    }
+  };
 
   const addRecentSearch = useRecentSearchesStore((state) => state.addRecentSearch);
   const isRecentSearchAdded = useRef(false);
@@ -256,7 +274,15 @@ export default function Summoner(props: SummonerProps) {
                 >
                   {renewSummonerStatus === 'pending' ? '갱신중' : '전적 갱신'}
                 </Button>
-                <Button size="lg" variant="default" flex="1 1 0" display="inline-flex" gap="4px">
+                <Button
+                  size="lg"
+                  variant="default"
+                  flex="1 1 0"
+                  display="inline-flex"
+                  gap="4px"
+                  disabled={!!memberProfileError}
+                  onClick={() => handleChatButtonClick(parseInt(data.data.summoner.summonerId, 10))}
+                >
                   <Chat width={24} height={24} aria-hidden /> 채팅하기
                 </Button>
               </HStack>
