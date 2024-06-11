@@ -1,5 +1,6 @@
 import { Box, VStack, Text, HStack } from '@chakra-ui/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 import champions from '@/apis/constants/champions';
 import type { CounterStat } from '@/apis/types';
@@ -11,6 +12,7 @@ interface CounterChampionsProps {
 }
 
 export default function CounterChampions({ counterType, counterChampions }: CounterChampionsProps) {
+  const router = useRouter();
   return (
     <VStack
       w="full"
@@ -46,7 +48,14 @@ export default function CounterChampions({ counterType, counterChampions }: Coun
           if (!championName) return;
           return (
             <VStack key={counterChampion.championId} h="92px" gap="4px" align="center">
-              <Box w="50px" h="50px" borderRadius="99px" overflow="hidden">
+              <Box
+                w="50px"
+                h="50px"
+                borderRadius="99px"
+                overflow="hidden"
+                cursor="pointer"
+                onClick={async () => router.push(`/champions/${championName}`)}
+              >
                 <Image src={championIconUrl(championName)} width="50" height="50" alt={championName} />
               </Box>
               <VStack w="80px" h="38px" gap="0" align="center">

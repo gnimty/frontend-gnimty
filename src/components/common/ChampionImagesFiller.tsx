@@ -1,4 +1,4 @@
-import { Circle, HStack, type StackProps } from '@chakra-ui/react';
+import { Link, Circle, HStack, type StackProps } from '@chakra-ui/react';
 import Image from 'next/image';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
@@ -24,14 +24,15 @@ export default function ChampionImagesFiller(props: ChampionImagesFillerProps) {
     <HStack {...restProps}>
       {[...championIds, ...(Array(emptyCount).fill(undefined) as undefined[])].map((championId, i) =>
         championId !== undefined ? (
-          <Image
-            key={championId}
-            src={championIconUrl(championIdEnNameMap[championId])}
-            alt={championIdKrNameMap[championId]}
-            width={imagesSizePx}
-            height={imagesSizePx}
-            css={{ borderRadius: '999px' }}
-          />
+          <Link key={championId} href={`/champions/${championIdEnNameMap[championId]}`}>
+            <Image
+              src={championIconUrl(championIdEnNameMap[championId])}
+              alt={championIdKrNameMap[championId]}
+              width={imagesSizePx}
+              height={imagesSizePx}
+              css={{ borderRadius: '999px' }}
+            />
+          </Link>
         ) : (
           <Circle key={`empty${i}`} bg="gray200" size={`${imagesSizePx}px`} />
         ),

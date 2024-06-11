@@ -1,4 +1,4 @@
-import { Box, HStack, Text, VStack } from '@chakra-ui/react';
+import { Box, HStack, Text, VStack, Link } from '@chakra-ui/react';
 import Image from 'next/image';
 
 import type { SummonerPlayWithSummonerDto } from '@/apis/types';
@@ -48,9 +48,11 @@ export default function SummonerRank({ specialists }: SummonerRankProps) {
               <Box w="40px" h="40px" borderRadius="50%" overflow="hidden">
                 <Image src={profileIconUrl(specialist.summoner.profileIconId)} alt="test" width="40" height="40" />
               </Box>
-              <Text w="180px" textStyle="t2" fontWeight="700">
-                {specialist.summoner.internalTagName}
-              </Text>
+              <Link href={`/summoners/${specialist.summoner.internalTagName}`}>
+                <Text w="180px" textStyle="t2" fontWeight="700">
+                  {specialist.summoner.internalTagName}
+                </Text>
+              </Link>
               <Text w="80px" textStyle="t1" fontWeight="700" color="blue800" textAlign="center">
                 {(specialist.summonerPlay.winRate * 100).toFixed(2)}%
               </Text>

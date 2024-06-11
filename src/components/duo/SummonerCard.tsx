@@ -1,4 +1,4 @@
-import { IconButton } from '@chakra-ui/react';
+import { IconButton, Link } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 import type { Position, RecommendedSummonersEntry } from '@/apis/types';
@@ -175,7 +175,9 @@ export default function SummonerCard({ open, toggle, summoner, refObject, openCh
           <SummonerBasicInfo>
             <IconImage src={profileIconUrl(iconId)} width={40} height={40} alt="icon" />
             <SummonerId>
-              {name}#{tagLine}
+              <Link href={`/summoners/${name}-${tagLine}`}>
+                {name}#{tagLine}
+              </Link>
               <IconButton
                 aria-label="copy"
                 icon={<Copy />}
