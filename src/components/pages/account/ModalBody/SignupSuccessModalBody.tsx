@@ -3,10 +3,11 @@ import { Box, Button, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 
 import bee from '@/assets/images/bee.png';
-import { useAccountModalPageContext } from '@/contexts/AccountModalPageContext';
+
+import { useAccountModalStore } from '../accountModalStore';
 
 export default function SignupSuccessModalBody() {
-  const { onClose } = useAccountModalPageContext();
+  const onClose = useAccountModalStore((s) => s.close);
 
   return (
     <ModalBody height="604px" display="flex" flexDirection="column" justifyContent="space-between" flex="">

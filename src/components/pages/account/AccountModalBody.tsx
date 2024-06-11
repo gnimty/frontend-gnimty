@@ -6,21 +6,24 @@ import SignupSuccessModalBody from '@/components/pages/account/ModalBody/SignupS
 import TermsModalBody from '@/components/pages/account/ModalBody/TermsModalBody';
 import { useAccountModalPageContext } from '@/contexts/AccountModalPageContext';
 
+import { useAccountModalStore } from './accountModalStore';
+
 export default function AccountModalBody() {
-  const { currentPage, termsData } = useAccountModalPageContext();
+  const currentPage = useAccountModalStore((s) => s.currentPage);
+  const { termsData } = useAccountModalPageContext();
 
   return (
     <>
-      {currentPage.page === 'LOGIN' && <LoginModalBody />}
-      {currentPage.page === 'SIGNUP' && <SignupModalBody />}
-      {currentPage.page === 'TERMS' && termsData && (
+      {currentPage === 'LOGIN' && <LoginModalBody />}
+      {currentPage === 'SIGNUP' && <SignupModalBody />}
+      {currentPage === 'TERMS' && termsData && (
         <>
           <TermsModalBody terms={termsData} />
         </>
       )}
-      {currentPage.page === 'SUCCESS' && <SignupSuccessModalBody />}
-      {currentPage.page === 'FIND_PW' && <FindPasswordModalBody />}
-      {currentPage.page === 'SET_PW' && <SetPasswordModalBody />}
+      {currentPage === 'SUCCESS' && <SignupSuccessModalBody />}
+      {currentPage === 'FIND_PW' && <FindPasswordModalBody />}
+      {currentPage === 'SET_PW' && <SetPasswordModalBody />}
     </>
   );
 }

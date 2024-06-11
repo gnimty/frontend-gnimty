@@ -21,8 +21,9 @@ import View from '@/assets/icons/system/view.svg';
 import GoogleOAuthButton from '@/components/common/buttons/GoogleOAuthButton';
 import KakaoOAuthButton from '@/components/common/buttons/KakaoOAuthButton';
 import AccountInput from '@/components/pages/account/AccountInput';
-import { useAccountModalPageContext } from '@/contexts/AccountModalPageContext';
 import { emailRegex } from '@/utils/regex';
+
+import { useAccountModalStore } from '../accountModalStore';
 
 export default function LoginModalBody() {
   const [showPassword, setShowPassword] = useBoolean(false);
@@ -31,7 +32,8 @@ export default function LoginModalBody() {
   const [rememberLogin, setRememberLogin] = useState(false);
   const [isFailed, setIsFailed] = useState(false);
 
-  const { setCurrentPage, onClose } = useAccountModalPageContext();
+  const setCurrentPage = useAccountModalStore((s) => s.setCurrentPage);
+  const onClose = useAccountModalStore((s) => s.close);
 
   const { formLogin } = useFormLogin();
 
@@ -66,7 +68,9 @@ export default function LoginModalBody() {
               textStyle="t2"
               fontWeight="bold"
               color="main"
-              onClick={() => setCurrentPage({ page: 'SIGNUP' })}
+              onClick={() => {
+                setCurrentPage('SIGNUP');
+              }}
             >
               회원가입 바로가기
             </Text>
@@ -124,7 +128,9 @@ export default function LoginModalBody() {
               textStyle="body"
               fontWeight="bold"
               color="gray800"
-              onClick={() => setCurrentPage({ page: 'FIND_PW' })}
+              onClick={() => {
+                setCurrentPage('FIND_PW');
+              }}
             >
               비밀번호를 잊으셨나요?
             </Text>

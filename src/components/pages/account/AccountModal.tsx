@@ -28,7 +28,7 @@ export default function AccountModal() {
           onClick={close}
           icon={<Exit />}
         />
-        <AccountModalPageProvider onClose={close}>
+        <AccountModalPageProvider>
           <AccountModalBody />
         </AccountModalPageProvider>
       </ModalContent>

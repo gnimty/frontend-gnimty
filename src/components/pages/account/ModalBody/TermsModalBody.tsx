@@ -3,14 +3,15 @@ import { IconButton, Text, VStack } from '@chakra-ui/react';
 
 import Back from '@/assets/icons/system/back.svg';
 import type { TermsType } from '@/contexts/AccountModalPageContext';
-import { useAccountModalPageContext } from '@/contexts/AccountModalPageContext';
+
+import { useAccountModalStore } from '../accountModalStore';
 
 interface TermsModalBodyProps {
   terms: TermsType;
 }
 
 export default function TermsModalBody({ terms }: TermsModalBodyProps) {
-  const { setCurrentPage } = useAccountModalPageContext();
+  const setCurrentPage = useAccountModalStore((s) => s.setCurrentPage);
 
   return (
     <ModalBody css={{ '&::-webkit-scrollbar': { display: 'none' } }}>
@@ -22,7 +23,9 @@ export default function TermsModalBody({ terms }: TermsModalBodyProps) {
         left="24px"
         aria-label="Back"
         icon={<Back />}
-        onClick={() => setCurrentPage({ page: 'SIGNUP' })}
+        onClick={() => {
+          setCurrentPage('SIGNUP');
+        }}
       />
       <VStack w="full" gap="40px">
         <VStack spacing="12px">

@@ -1,14 +1,17 @@
-import { ModalBody, VStack, HStack, Text, Button } from '@chakra-ui/react';
+import { Button, HStack, ModalBody, Text, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { type AuthEmailFormData, useAccountModalPageContext } from '@/contexts/AccountModalPageContext';
+import { type AuthEmailFormData } from '@/contexts/AccountModalPageContext';
+
+import { useAccountModalStore } from '../accountModalStore';
 
 import AuthEmailForm from './InputForm/AuthEmailForm';
 
 export default function FindPasswordModalBody() {
   const router = useRouter();
-  const { setCurrentPage, onClose } = useAccountModalPageContext();
+  const setCurrentPage = useAccountModalStore((s) => s.setCurrentPage);
+  const onClose = useAccountModalStore((s) => s.close);
   const [emailFormData, setEmailFormData] = useState<AuthEmailFormData>({
     email: '',
     authCode: '',
@@ -16,7 +19,7 @@ export default function FindPasswordModalBody() {
     uuid: '',
   });
   const handleNext = () => {
-    setCurrentPage({ page: 'SET_PW' });
+    setCurrentPage('SET_PW');
     router.push({
       pathname: router.pathname,
       query: { ...router.query, email: emailFormData.email, uuid: emailFormData.uuid },
@@ -38,7 +41,9 @@ export default function FindPasswordModalBody() {
               textStyle="t2"
               fontWeight="700"
               color="main"
-              onClick={() => setCurrentPage({ page: 'SIGNUP' })}
+              onClick={() => {
+                setCurrentPage('SIGNUP');
+              }}
             >
               회원가입 바로가기
             </Text>

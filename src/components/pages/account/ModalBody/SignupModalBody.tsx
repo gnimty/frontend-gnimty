@@ -13,6 +13,8 @@ import type { AuthEmailFormData } from '@/contexts/AccountModalPageContext';
 import { useAccountModalPageContext } from '@/contexts/AccountModalPageContext';
 import { authCodeRegex, emailRegex, passwordRegex } from '@/utils/regex';
 
+import { useAccountModalStore } from '../accountModalStore';
+
 import type { CheckboxProps } from '@chakra-ui/react';
 
 const TermsCheckbox = (props: CheckboxProps) => {
@@ -30,7 +32,8 @@ const TermsCheckbox = (props: CheckboxProps) => {
 };
 
 export default function SignupModalBody() {
-  const { setCurrentPage, signupFormData, setSignupFormData, setTermsData } = useAccountModalPageContext();
+  const { signupFormData, setSignupFormData, setTermsData } = useAccountModalPageContext();
+  const setCurrentPage = useAccountModalStore((s) => s.setCurrentPage);
 
   const [showPassword, setShowPassword] = useBoolean(false);
   const [authEmailFormData, setAuthEmailFormData] = useState<AuthEmailFormData>({
@@ -54,7 +57,7 @@ export default function SignupModalBody() {
 
   const { signUp } = useSignUp({
     onSuccess: () => {
-      setCurrentPage({ page: 'SUCCESS' });
+      setCurrentPage('SUCCESS');
     },
     onError: () => {},
   });
@@ -92,7 +95,9 @@ export default function SignupModalBody() {
               textStyle="t2"
               fontWeight="bold"
               color="main"
-              onClick={() => setCurrentPage({ page: 'LOGIN' })}
+              onClick={() => {
+                setCurrentPage('LOGIN');
+              }}
             >
               로그인 바로가기
             </Text>
@@ -148,9 +153,7 @@ export default function SignupModalBody() {
                             checkedItems,
                           });
                           setTermsData(terms);
-                          setCurrentPage({
-                            page: 'TERMS',
-                          });
+                          setCurrentPage('TERMS');
                         }}
                       >
                         보기
