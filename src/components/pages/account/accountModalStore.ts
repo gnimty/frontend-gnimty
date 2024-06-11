@@ -10,7 +10,7 @@ interface AccountModalState {
 }
 
 interface AccountModalActions {
-  open: () => void;
+  open: (initialPage?: AccountPage) => void;
   close: () => void;
   setCurrentPage: (newPage: AccountPage) => void;
 }
@@ -25,8 +25,8 @@ const defaultInitState: AccountModalState = {
 const createAccountModalStore = (initState = defaultInitState) =>
   createStore<AccountModalStore>()((set) => ({
     ...initState,
-    open: () => {
-      set({ isOpen: true });
+    open: (initialPage: AccountPage = 'LOGIN') => {
+      set({ isOpen: true, currentPage: initialPage });
     },
     close: () => {
       set({ isOpen: false });
