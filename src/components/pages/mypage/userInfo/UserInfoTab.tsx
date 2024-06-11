@@ -42,8 +42,8 @@ export default function UserInfoTab() {
                     onSuccess() {
                       router.reload();
                     },
-                    onError() {
-                      alert('연동해제에 실패했습니다.');
+                    onError(error) {
+                      alert(error.response?.data.status.message ?? '연동해제에 실패했습니다.');
                     },
                   },
                 );
@@ -70,8 +70,9 @@ export default function UserInfoTab() {
                     onSuccess() {
                       router.reload();
                     },
-                    onError() {
-                      alert('연동해제에 실패했습니다.');
+                    onError(error) {
+                      console.log(error.response?.data);
+                      alert(error.response?.data.status.message ?? '연동해제에 실패했습니다.');
                     },
                   },
                 );
