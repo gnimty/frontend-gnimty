@@ -41,7 +41,9 @@ export default function RecentMatches() {
         infoText={'그님티에 회원가입 후 라이엇 계정을 연동하여\n내 소환사 정보를 확인하세요!'}
         button={
           <Button
-            onClick={openAccountModal}
+            onClick={() => {
+              openAccountModal('SIGNUP');
+            }}
             size="md"
             bg="gray800"
             p="10px 12px"

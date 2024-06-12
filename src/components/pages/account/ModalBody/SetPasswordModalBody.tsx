@@ -1,19 +1,20 @@
-import { ModalBody, VStack, Text, Button, useBoolean } from '@chakra-ui/react';
+import { Button, ModalBody, Text, VStack, useBoolean } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { patchPassword } from '@/apis/queries/setPasswordQuery';
-import { useAccountModalPageContext } from '@/contexts/AccountModalPageContext';
 import { passwordRegex } from '@/utils/regex';
+
+import { useAccountModalStore } from '../accountModalStore';
 
 import PasswordForm from './InputForm/PasswordForm';
 
 export default function SetPasswordModalBody() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { onClose } = useAccountModalPageContext();
+  const onClose = useAccountModalStore((s) => s.close);
   const { mutateAsync: patchPasswordAsync } = useMutation({
     mutationFn: patchPassword,
   });

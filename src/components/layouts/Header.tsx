@@ -89,7 +89,14 @@ export default function Header() {
             </Flex>
           </Flex>
         ) : (
-          <Button variant="default" size="md" width="80px" onClick={openAccountModal}>
+          <Button
+            variant="default"
+            size="md"
+            width="80px"
+            onClick={() => {
+              openAccountModal();
+            }}
+          >
             로그인
           </Button>
         )}
