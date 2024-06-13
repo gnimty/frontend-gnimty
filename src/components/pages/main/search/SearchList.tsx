@@ -15,11 +15,11 @@ interface SearchListProps {
    * @param summonerProfile
    * @returns void
    */
-  onCustomXButtonClick?: (summonerName: string) => void;
+  onSelect?: (summonerName: string) => void;
 }
 
 export default function SearchList(props: SearchListProps) {
-  const { keyword, onCustomXButtonClick } = props;
+  const { keyword, onSelect } = props;
 
   const { data: items, status } = useQuery({
     ...summonerAutoCompleteQuery({ keyword }),
@@ -30,5 +30,5 @@ export default function SearchList(props: SearchListProps) {
     return;
   }
 
-  return <SearchPopBody items={items} onCustomXButtonClick={onCustomXButtonClick} />;
+  return <SearchPopBody items={items} onSelect={onSelect} />;
 }
