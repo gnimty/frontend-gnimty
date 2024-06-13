@@ -14,15 +14,15 @@ export default function SearchBox({ selectOtherSummoner }: SearchBoxProps) {
   const [autoComplete, setAutoComplete] = useState(false);
 
   return (
-    <Box pos="relative">
-      <HStack gap="12px" p="12px 24px" w="420px" bg="white" borderRadius="40px" boxShadow="0 0 0 1px" color="gray200">
+    <Box pos="relative" w="full">
+      <HStack w="full" gap="12px" p="12px 24px" bg="white" borderRadius="40px" boxShadow="0 0 0 1px" color="gray200">
         <Box w="38px">
           <Text textStyle="t2" fontWeight="regular" color="gray800">
             KR
           </Text>
         </Box>
         <Box w="1px" h="24px" bg="gray200" />
-        <HStack as="form" alignItems="center" gap="12px" flex="1 0 0">
+        <HStack w="full" as="form" alignItems="center" gap="12px" flex="1 0 0">
           <Input
             type="search"
             value={searchKeyword}
@@ -55,7 +55,7 @@ export default function SearchBox({ selectOtherSummoner }: SearchBoxProps) {
         borderRadius="4px"
         boxShadow="0 4px 8px rgba(0, 0, 0, 0.1)"
       >
-        {autoComplete && <SearchList keyword={searchKeyword} onCustomXButtonClick={selectOtherSummoner} />}
+        {autoComplete && <SearchList keyword={searchKeyword} onSelect={selectOtherSummoner} />}
       </Box>
     </Box>
   );
