@@ -20,8 +20,6 @@ export interface RecommendedPickSelectSummonerProps {
 }
 
 export default function RecommendedPickSelectSummoner(props: RecommendedPickSelectSummonerProps) {
-  // TODO: use onSummonerChange
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { myProfile, onSummonerChange } = props;
   const mainAccount = myProfile.riotDependentInfo.riotAccounts.find((account) => account.isMain);
   const { data: mainAccountMatchesInfoData } = useQuery(
@@ -115,6 +113,7 @@ function SummonerCard({ summonerType, profile, matchSummary, resetOtherSummoner 
             </Text>
           </HStack>
         </VStack>
+        {/* TODO: 임시버튼 */}
         {summonerType === 'other' && (
           <Button
             type="button"
@@ -135,6 +134,7 @@ function SummonerCard({ summonerType, profile, matchSummary, resetOtherSummoner 
           <Text textStyle="t1" color="gray700" fontWeight="700">
             {matchSummary?.plays}전 {matchSummary?.wins}승 {matchSummary?.defeats}패
           </Text>
+          {/* TODO: 매치전적에 챔피언서머리가 없는 경우 존재 */}
           <Text
             textStyle="t1"
             color={matchSummary?.isPerfect ? championScoreColor(10) : championScoreColor(matchSummary?.avgKda ?? 0)}
