@@ -3,7 +3,6 @@
 exports[`Ddragon perkInformationList snapshot testing > perkIdImgLinkMap snapshot 1`] = `
 {
   "8005": "perk-images/Styles/Precision/PressTheAttack/PressTheAttack.png",
-  "8008": "perk-images/Styles/Precision/LethalTempo/LethalTempoTemp.png",
   "8009": "perk-images/Styles/Precision/PresenceOfMind/PresenceOfMind.png",
   "8010": "perk-images/Styles/Precision/Conqueror/Conqueror.png",
   "8014": "perk-images/Styles/Precision/CoupDeGrace/CoupDeGrace.png",
@@ -13,10 +12,8 @@ exports[`Ddragon perkInformationList snapshot testing > perkIdImgLinkMap snapsho
   "8106": "perk-images/Styles/Domination/UltimateHunter/UltimateHunter.png",
   "8112": "perk-images/Styles/Domination/Electrocute/Electrocute.png",
   "8120": "perk-images/Styles/Domination/GhostPoro/GhostPoro.png",
-  "8124": "perk-images/Styles/Domination/Predator/Predator.png",
   "8126": "perk-images/Styles/Domination/CheapShot/CheapShot.png",
   "8128": "perk-images/Styles/Domination/DarkHarvest/DarkHarvest.png",
-  "8134": "perk-images/Styles/Domination/IngeniousHunter/IngeniousHunter.png",
   "8135": "perk-images/Styles/Domination/TreasureHunter/TreasureHunter.png",
   "8136": "perk-images/Styles/Domination/ZombieWard/ZombieWard.png",
   "8138": "perk-images/Styles/Domination/EyeballCollection/EyeballCollection.png",
@@ -39,8 +36,8 @@ exports[`Ddragon perkInformationList snapshot testing > perkIdImgLinkMap snapsho
   "8304": "perk-images/Styles/Inspiration/MagicalFootwear/MagicalFootwear.png",
   "8306": "perk-images/Styles/Inspiration/HextechFlashtraption/HextechFlashtraption.png",
   "8313": "perk-images/Styles/Inspiration/PerfectTiming/AlchemistCabinet.png",
-  "8316": "perk-images/Styles/Inspiration/MinionDematerializer/MinionDematerializer.png",
-  "8321": "perk-images/Styles/Inspiration/FuturesMarket/FuturesMarket.png",
+  "8316": "perk-images/Styles/Inspiration/JackOfAllTrades/JackofAllTrades2.png",
+  "8321": "perk-images/Styles/Inspiration/CashBack/CashBack2.png",
   "8345": "perk-images/Styles/Inspiration/BiscuitDelivery/BiscuitDelivery.png",
   "8347": "perk-images/Styles/Inspiration/CosmicInsight/CosmicInsight.png",
   "8351": "perk-images/Styles/Inspiration/GlacialAugment/GlacialAugment.png",
@@ -59,10 +56,10 @@ exports[`Ddragon perkInformationList snapshot testing > perkIdImgLinkMap snapsho
   "8463": "perk-images/Styles/Resolve/FontOfLife/FontOfLife.png",
   "8465": "perk-images/Styles/Resolve/Guardian/Guardian.png",
   "8473": "perk-images/Styles/Resolve/BonePlating/BonePlating.png",
-  "9101": "perk-images/Styles/Precision/Overheal.png",
+  "9101": "perk-images/Styles/Precision/AbsorbLife/AbsorbLife.png",
   "9103": "perk-images/Styles/Precision/LegendBloodline/LegendBloodline.png",
   "9104": "perk-images/Styles/Precision/LegendAlacrity/LegendAlacrity.png",
-  "9105": "perk-images/Styles/Precision/LegendTenacity/LegendTenacity.png",
+  "9105": "perk-images/Styles/Precision/LegendHaste/LegendHaste.png",
   "9111": "perk-images/Styles/Precision/Triumph.png",
   "9923": "perk-images/Styles/Domination/HailOfBlades/HailOfBlades.png",
 }
@@ -71,7 +68,6 @@ exports[`Ddragon perkInformationList snapshot testing > perkIdImgLinkMap snapsho
 exports[`Ddragon perkInformationList snapshot testing > perkIdKrNameMap snapshot 1`] = `
 {
   "8005": "집중 공격",
-  "8008": "치명적 속도",
   "8009": "침착",
   "8010": "정복자",
   "8014": "최후의 일격",
@@ -81,10 +77,8 @@ exports[`Ddragon perkInformationList snapshot testing > perkIdKrNameMap snapshot
   "8106": "궁극의 사냥꾼",
   "8112": "감전",
   "8120": "유령 포로",
-  "8124": "포식자",
   "8126": "비열한 한 방",
   "8128": "어둠의 수확",
-  "8134": "영리한 사냥꾼",
   "8135": "보물 사냥꾼",
   "8136": "좀비 와드",
   "8138": "사냥의 증표",
@@ -107,8 +101,8 @@ exports[`Ddragon perkInformationList snapshot testing > perkIdKrNameMap snapshot
   "8304": "마법의 신발",
   "8306": "마법공학 점멸기",
   "8313": "삼중 물약",
-  "8316": "미니언 해체분석기",
-  "8321": "외상",
+  "8316": "다재다능",
+  "8321": "환급",
   "8345": "비스킷 배달",
   "8347": "우주적 통찰력",
   "8351": "빙결 강화",
@@ -127,10 +121,10 @@ exports[`Ddragon perkInformationList snapshot testing > perkIdKrNameMap snapshot
   "8463": "생명의 샘",
   "8465": "수호자",
   "8473": "뼈 방패",
-  "9101": "과다치유",
+  "9101": "생명 흡수",
   "9103": "전설: 핏빛 길",
   "9104": "전설: 민첩함",
-  "9105": "전설: 강인함",
+  "9105": "전설: 가속",
   "9111": "승전보",
   "9923": "칼날비",
 }
@@ -141,7 +135,6 @@ exports[`Ddragon perkInformationList snapshot testing > perkMap snapshot 1`] = `
   "8000": [
     [
       8005,
-      8008,
       8021,
       8010,
     ],
@@ -164,7 +157,6 @@ exports[`Ddragon perkInformationList snapshot testing > perkMap snapshot 1`] = `
   "8100": [
     [
       8112,
-      8124,
       8128,
       9923,
     ],
@@ -180,7 +172,6 @@ exports[`Ddragon perkInformationList snapshot testing > perkMap snapshot 1`] = `
     ],
     [
       8135,
-      8134,
       8105,
       8106,
     ],
@@ -216,17 +207,17 @@ exports[`Ddragon perkInformationList snapshot testing > perkMap snapshot 1`] = `
     [
       8306,
       8304,
-      8313,
+      8321,
     ],
     [
-      8321,
-      8316,
+      8313,
+      8352,
       8345,
     ],
     [
       8347,
       8410,
-      8352,
+      8316,
     ],
   ],
   "8400": [
