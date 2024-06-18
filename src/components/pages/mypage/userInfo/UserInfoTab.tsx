@@ -126,7 +126,7 @@ export default function UserInfoTab() {
             </Flex>
           </RadioGroup>
         </ContentsContainer>
-        <Button type="button">
+        <Button type="button" alignSelf="flex-start" onClick={disclosure.onOpen}>
           <Text textStyle="t2" color="gray700" fontWeight="400">
             회원 탈퇴
           </Text>
