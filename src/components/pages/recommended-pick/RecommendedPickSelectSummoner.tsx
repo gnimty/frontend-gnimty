@@ -7,6 +7,7 @@ import summonerMatchesInfoQuery from '@/apis/queries/summonerMatchesInfoQuery';
 import type { MatchSummaryDto, ProfileEntry, SummonerDto } from '@/apis/types';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
 import shortTierName from '@/apis/utils/shortTierName';
+import ChangeIcon from '@/assets/icons/system/change.svg';
 import ChampionIcon from '@/components/common/ChampionIcon';
 import IconImage from '@/components/common/IconImage';
 import TierImage from '@/components/common/TierImage';
@@ -116,15 +117,19 @@ function SummonerCard({ summonerType, profile, matchSummary, resetOtherSummoner 
         {/* TODO: 임시버튼 */}
         {summonerType === 'other' && (
           <Button
+            aria-label="다른 소환사로 변경"
             type="button"
             alignSelf="flex-start"
-            bgColor="gray800"
-            color="white"
-            p="4px 8px"
-            borderRadius="20px"
+            h="24px"
             onClick={resetOtherSummoner}
+            display="flex"
+            alignItems="center"
+            gap="4px"
           >
-            다른 소환사로 변경
+            <ChangeIcon width="24px" height="24px" />
+            <Text textStyle="t1" color="gray600" fontWeight="400">
+              소환사 변경
+            </Text>
           </Button>
         )}
       </HStack>
