@@ -1,4 +1,4 @@
-import { Flex, HStack, RadioGroup } from '@chakra-ui/react';
+import { Flex, HStack, RadioGroup, Button, Text, useDisclosure } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
 import useAuth from '@/apis/useAuth';
@@ -13,6 +13,7 @@ export default function UserInfoTab() {
   const { data, status, isAuthenticated } = useAuth();
   const { changeMainRiotAccount } = useChangeMainRiotAccount();
   const { disconnectOAuth } = useDisconnectOAuth();
+  const disclosure = useDisclosure();
 
   const router = useRouter();
 
@@ -121,6 +122,11 @@ export default function UserInfoTab() {
           </Flex>
         </RadioGroup>
       </ContentsContainer>
+      <Button type="button">
+        <Text textStyle="t2" color="gray700" fontWeight="400">
+          회원 탈퇴
+        </Text>
+      </Button>
     </Flex>
   );
 }
