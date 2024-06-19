@@ -1,4 +1,4 @@
-import { Flex, HStack, RadioGroup } from '@chakra-ui/react';
+import { Flex, HStack, RadioGroup, Button, Text, useDisclosure } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
 import useAuth from '@/apis/useAuth';
@@ -9,10 +9,13 @@ import KakaoOAuthButton from '@/components/common/buttons/KakaoOAuthButton';
 import ContentsContainer from '@/components/pages/mypage/ContentsContainer';
 import UserRiotAccountRadio from '@/components/pages/mypage/userInfo/UserRiotAccountRadio';
 
+import WithdrawalModal from './WithdrawalModal';
+
 export default function UserInfoTab() {
   const { data, status, isAuthenticated } = useAuth();
   const { changeMainRiotAccount } = useChangeMainRiotAccount();
   const { disconnectOAuth } = useDisconnectOAuth();
+  const disclosure = useDisclosure();
 
   const router = useRouter();
 
@@ -27,100 +30,108 @@ export default function UserInfoTab() {
   const isGoogleOAuthConnected = data.data.oauthInfos.some((info) => info.provider === 'GOOGLE');
 
   return (
-    <Flex direction="column" w="full" gap="24px">
-      <ContentsContainer title="소셜 로그인">
-        <HStack w="full" spacing="12px">
-          <KakaoOAuthButton
-            isConnected={isKakaoOAuthConnected}
+    <>
+      <WithdrawalModal disclosure={disclosure} />
+      <Flex direction="column" w="full" gap="24px">
+        <ContentsContainer title="소셜 로그인">
+          <HStack w="full" spacing="12px">
+            <KakaoOAuthButton
+              isConnected={isKakaoOAuthConnected}
+              w="full"
+              h="48px"
+              onClick={() => {
+                if (isKakaoOAuthConnected) {
+                  disconnectOAuth(
+                    { provider: 'KAKAO' },
+                    {
+                      onSuccess() {
+                        router.reload();
+                      },
+                      onError(error) {
+                        alert(error.response?.data.status.message ?? '연동해제에 실패했습니다.');
+                      },
+                    },
+                  );
+                } else {
+                  router.replace(
+                    `${
+                      process.env.NEXT_PUBLIC_API_BASE_URL
+                    }/community/members/me/oauth/kakao/redirect?redirect_uri=${encodeURIComponent(
+                      process.env.NEXT_PUBLIC_FRONT_ORIGIN + router.asPath,
+                    )}`,
+                  );
+                }
+              }}
+            />
+            <GoogleOAuthButton
+              isConnected={isGoogleOAuthConnected}
+              w="full"
+              h="48px"
+              onClick={() => {
+                if (isGoogleOAuthConnected) {
+                  disconnectOAuth(
+                    { provider: 'GOOGLE' },
+                    {
+                      onSuccess() {
+                        router.reload();
+                      },
+                      onError(error) {
+                        console.log(error.response?.data);
+                        alert(error.response?.data.status.message ?? '연동해제에 실패했습니다.');
+                      },
+                    },
+                  );
+                } else {
+                  router.replace(
+                    `${
+                      process.env.NEXT_PUBLIC_API_BASE_URL
+                    }/community/members/me/oauth/google/redirect?redirect_uri=${encodeURIComponent(
+                      process.env.NEXT_PUBLIC_FRONT_ORIGIN + router.asPath,
+                    )}`,
+                  );
+                }
+              }}
+            />
+          </HStack>
+        </ContentsContainer>
+        <ContentsContainer title="계정 연동">
+          <RadioGroup
             w="full"
-            h="48px"
-            onClick={() => {
-              if (isKakaoOAuthConnected) {
-                disconnectOAuth(
-                  { provider: 'KAKAO' },
+            value={mainAccount?.id.toString()}
+            onChange={(toChangeId) => {
+              if (confirm('대표 소환사를 변경하시겠습니까?')) {
+                changeMainRiotAccount(
+                  { id: parseInt(toChangeId, 10) },
                   {
                     onSuccess() {
                       router.reload();
                     },
-                    onError(error) {
-                      alert(error.response?.data.status.message ?? '연동해제에 실패했습니다.');
+                    onError() {
+                      alert('대표 소환사 변경을 실패했습니다.');
                     },
                   },
-                );
-              } else {
-                router.replace(
-                  `${
-                    process.env.NEXT_PUBLIC_API_BASE_URL
-                  }/community/members/me/oauth/kakao/redirect?redirect_uri=${encodeURIComponent(
-                    process.env.NEXT_PUBLIC_FRONT_ORIGIN + router.asPath,
-                  )}`,
                 );
               }
             }}
-          />
-          <GoogleOAuthButton
-            isConnected={isGoogleOAuthConnected}
-            w="full"
-            h="48px"
-            onClick={() => {
-              if (isGoogleOAuthConnected) {
-                disconnectOAuth(
-                  { provider: 'GOOGLE' },
-                  {
-                    onSuccess() {
-                      router.reload();
-                    },
-                    onError(error) {
-                      console.log(error.response?.data);
-                      alert(error.response?.data.status.message ?? '연동해제에 실패했습니다.');
-                    },
-                  },
-                );
-              } else {
-                router.replace(
-                  `${
-                    process.env.NEXT_PUBLIC_API_BASE_URL
-                  }/community/members/me/oauth/google/redirect?redirect_uri=${encodeURIComponent(
-                    process.env.NEXT_PUBLIC_FRONT_ORIGIN + router.asPath,
-                  )}`,
-                );
-              }
-            }}
-          />
-        </HStack>
-      </ContentsContainer>
-      <ContentsContainer title="계정 연동">
-        <RadioGroup
-          w="full"
-          value={mainAccount?.id.toString()}
-          onChange={(toChangeId) => {
-            if (confirm('대표 소환사를 변경하시겠습니까?')) {
-              changeMainRiotAccount(
-                { id: parseInt(toChangeId, 10) },
-                {
-                  onSuccess() {
-                    router.reload();
-                  },
-                  onError() {
-                    alert('대표 소환사 변경을 실패했습니다.');
-                  },
-                },
-              );
-            }
-          }}
-        >
-          <Flex direction="column" gap="8px">
-            {data.data.riotDependentInfo.riotAccounts.map((account) => (
-              <UserRiotAccountRadio
-                key={account.id}
-                radioProps={{ value: account.id.toString() }}
-                riotAccountInfo={{ id: account.id, nickname: account.name }}
-              />
-            ))}
-            <UserRiotAccountRadio key="_empty" radioProps={{ value: '_custom' }} />
-          </Flex>
-        </RadioGroup>
-      </ContentsContainer>
-    </Flex>
+          >
+            <Flex direction="column" gap="8px">
+              {data.data.riotDependentInfo.riotAccounts.map((account) => (
+                <UserRiotAccountRadio
+                  key={account.id}
+                  radioProps={{ value: account.id.toString() }}
+                  riotAccountInfo={{ id: account.id, nickname: account.name }}
+                />
+              ))}
+              <UserRiotAccountRadio key="_empty" radioProps={{ value: '_custom' }} />
+            </Flex>
+          </RadioGroup>
+        </ContentsContainer>
+        <Button type="button" alignSelf="flex-start" onClick={disclosure.onOpen}>
+          <Text textStyle="t2" color="gray700" fontWeight="400">
+            회원 탈퇴
+          </Text>
+        </Button>
+      </Flex>
+    </>
   );
 }
