@@ -1,4 +1,3 @@
-'use client';
 import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
