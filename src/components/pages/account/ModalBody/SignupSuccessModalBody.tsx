@@ -1,4 +1,5 @@
 import { ModalBody } from '@chakra-ui/modal';
+import { Link } from '@chakra-ui/next-js';
 import { Box, Button, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 
@@ -21,7 +22,17 @@ export default function SignupSuccessModalBody() {
         <Text mt="8px" textStyle="t2" fontWeight="400">
           라이엇 계정 연동 시 더 많은 서비스를 이용할 수 있습니다.
         </Text>
-        <Button mt="40px" variant="default" size="lg" w="160px">
+        <Button
+          as={Link}
+          href="/mypage/info"
+          onClick={onClose}
+          mt="40px"
+          variant="default"
+          size="lg"
+          w="160px"
+          display="flex"
+          textDecor="none"
+        >
           계정 연동하기
         </Button>
       </VStack>
