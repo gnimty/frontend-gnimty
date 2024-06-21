@@ -1,7 +1,9 @@
 import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
+import { GET_MY_INFO_ERROR_CODE } from '@/apis/queries/getMyInfoQuery';
 import useAuth from '@/apis/useAuth';
 import BlockManagementTab from '@/components/pages/mypage/blockManagement/BlockManagementTab';
 import ChangeStateTab from '@/components/pages/mypage/changeState/ChangeStateTab';
@@ -21,7 +23,13 @@ export default function MyPage(props: MyPageRouteProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const { data, isAuthenticated, status } = useAuth();
+  const { data, isAuthenticated, status, error } = useAuth();
+
+  useEffect(() => {
+    if (status === 'error' && error.response?.data.status.code === GET_MY_INFO_ERROR_CODE.NO_TOKEN) {
+      router.replace('/');
+    }
+  }, [status, error, router]);
 
   // TODO: use isAuthenticated only
   if (!isAuthenticated || status !== 'success') {
