@@ -12,7 +12,7 @@ import {
   GridItem,
   Text,
 } from '@chakra-ui/react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import useLazyRef from '@/utils/useLazyRef';
 
@@ -47,10 +47,21 @@ export default function TimeTableDrawer(props: TimeTableDrawerProps) {
     startPosRef.current = [x, y];
   };
 
-  const handleMouseUp = () => {
-    startPosRef.current = undefined;
-    prevIsButtonToggledListRef.current = structuredClone(isButtonToggledList);
-  };
+  useEffect(() => {
+    const handleMouseUp = () => {
+      if (startPosRef.current === undefined) {
+        return;
+      }
+
+      startPosRef.current = undefined;
+      prevIsButtonToggledListRef.current = structuredClone(isButtonToggledList);
+    };
+
+    document.addEventListener('mouseup', handleMouseUp);
+    return () => {
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isButtonToggledList, prevIsButtonToggledListRef]);
 
   const handleMouseOver = (currentX: number, currentY: number) => {
     if (startPosRef.current === undefined) {
@@ -119,7 +130,6 @@ export default function TimeTableDrawer(props: TimeTableDrawerProps) {
               gridTemplateRows="repeat(24, 20px)"
               gridAutoFlow="column"
               gridGap="4px"
-              onMouseUp={handleMouseUp}
             >
               {isButtonToggledList.flatMap((isToggledList, weekIndex) =>
                 isToggledList.map((isToggled, hourIndex) => (
