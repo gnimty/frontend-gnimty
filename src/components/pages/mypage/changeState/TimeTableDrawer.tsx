@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
 
+import rawToScheduleEntryTimes from '@/utils/scheduleEntry/rawToScheduleEntryTimes';
 import useLazyRef from '@/utils/useLazyRef';
 
 const _emptyIsButtonToggledList = Array.from({ length: 7 }).map(() => Array(24).fill(false) as boolean[]);
@@ -54,7 +55,16 @@ export default function TimeTableDrawer(props: TimeTableDrawerProps) {
       }
 
       startPosRef.current = undefined;
-      prevIsButtonToggledListRef.current = structuredClone(isButtonToggledList);
+      const entryTimesCount = isButtonToggledList.reduce(
+        (count, isToggledList) => count + rawToScheduleEntryTimes(isToggledList).length,
+        0,
+      );
+      if (entryTimesCount > 3) {
+        alert('각 요일에 최대 3개의 시간대 설정이 가능합니다.');
+        setIsButtonToggledList(structuredClone(prevIsButtonToggledListRef.current));
+      } else {
+        prevIsButtonToggledListRef.current = structuredClone(isButtonToggledList);
+      }
     };
 
     document.addEventListener('mouseup', handleMouseUp);
