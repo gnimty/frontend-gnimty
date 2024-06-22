@@ -41,6 +41,9 @@ export default function TimeTableDrawer(props: TimeTableDrawerProps) {
   };
 
   const handleMouseDown = (x: number, y: number) => {
+    const newIsButtonToggledList = structuredClone(prevIsButtonToggledListRef.current);
+    newIsButtonToggledList[x][y] = !newIsButtonToggledList[x][y];
+    setIsButtonToggledList(newIsButtonToggledList);
     startPosRef.current = [x, y];
   };
 
