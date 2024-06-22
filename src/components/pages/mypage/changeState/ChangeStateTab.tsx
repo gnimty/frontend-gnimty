@@ -13,7 +13,7 @@ import IconCheckbox from '@/components/icons/IconCheckbox';
 import ContentsContainer from '@/components/pages/mypage/ContentsContainer';
 
 import StateMessageInput from './StateMessageInput';
-import TimeTableDrawer, { emptyIsButtonToggledList } from './TimeTableDrawer';
+import TimeTableDrawer, { type TimeTableDrawerProps } from './TimeTableDrawer';
 
 import type { CheckboxProps } from '@chakra-ui/react';
 
@@ -38,14 +38,17 @@ export default function ChangeStateTab(props: ChangeStateTabProps) {
   const [status, setStatus] = useState(initialStatus);
   const [introduction, setIntroduction] = useState(initialIntroduction);
   const [preferGameModes, setPreferGameModes] = useState(initialPreferGameModes);
-  // TODO: 백엔드 분들과 얘기 나눠 본 후에 완성
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [schedules, setSchedules] = useState(initialSchedules);
 
   const { changeProfile } = useChangeProfile();
 
   const handlePreferGameModesChange = (modes: GameMode[]) => {
     setPreferGameModes(modes.map((mode) => ({ gameMode: mode })));
+  };
+
+  const handleTimeTableSaveButtonClick: TimeTableDrawerProps['onSaveButtonClick'] = (newSchedules) => {
+    setSchedules(newSchedules);
+    onCloseDrawer();
   };
 
   return (
@@ -156,9 +159,10 @@ export default function ChangeStateTab(props: ChangeStateTabProps) {
         </Button>
       </Flex>
       <TimeTableDrawer
-        initialIsButtonToggledList={emptyIsButtonToggledList()}
+        initialSchedules={schedules}
         isOpen={isOpenDrawer}
         onClose={onCloseDrawer}
+        onSaveButtonClick={handleTimeTableSaveButtonClick}
       />
     </>
   );

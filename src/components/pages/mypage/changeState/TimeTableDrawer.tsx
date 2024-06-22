@@ -14,31 +14,50 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
 
+import type { DayOfWeek, ScheduleEntry } from '@/apis/types';
 import rawToScheduleEntryTimes from '@/utils/scheduleEntry/rawToScheduleEntryTimes';
+import scheduleEntryTimesToRaw from '@/utils/scheduleEntry/scheduleEntryTimesToRaw';
 import useLazyRef from '@/utils/useLazyRef';
 
-const _emptyIsButtonToggledList = Array.from({ length: 7 }).map(() => Array(24).fill(false) as boolean[]);
-export const emptyIsButtonToggledList = () => structuredClone(_emptyIsButtonToggledList);
+const schedulesToIsButtonToggledList = (schedules: ScheduleEntry[]): boolean[][] =>
+  schedules.map((scheduleEntry) => scheduleEntryTimesToRaw(scheduleEntry.times));
 
-interface TimeTableDrawerProps {
-  initialIsButtonToggledList: boolean[][];
+const DAY_OF_WEEKS: DayOfWeek[] = [
+  'MONDAY',
+  'TUESDAY',
+  'WEDNESDAY',
+  'THURSDAY',
+  'FRIDAY',
+  'SATURDAY',
+  'SUNDAY',
+] satisfies DayOfWeek[];
+const isButtonToggledListToSchedules = (isButtonToggledList: boolean[][]) =>
+  DAY_OF_WEEKS.map((dayOfWeek, i) => ({
+    dayOfWeek,
+    times: rawToScheduleEntryTimes(isButtonToggledList[i]),
+  }));
+
+export interface TimeTableDrawerProps {
+  initialSchedules: ScheduleEntry[];
   isOpen: boolean;
   onClose: () => void;
+  onSaveButtonClick: (newSchedules: ScheduleEntry[]) => void;
 }
 
 export default function TimeTableDrawer(props: TimeTableDrawerProps) {
-  const { initialIsButtonToggledList, isOpen, onClose } = props;
+  const { initialSchedules, isOpen, onClose, onSaveButtonClick } = props;
 
   const [isButtonToggledList, setIsButtonToggledList] = useState<boolean[][]>(() =>
-    structuredClone(initialIsButtonToggledList),
+    schedulesToIsButtonToggledList(initialSchedules),
   );
   const prevIsButtonToggledListRef = useLazyRef(() => structuredClone(isButtonToggledList));
 
   const startPosRef = useRef<[number, number]>();
 
   const handleResetButtonClick = () => {
-    setIsButtonToggledList(structuredClone(initialIsButtonToggledList));
-    prevIsButtonToggledListRef.current = structuredClone(initialIsButtonToggledList);
+    const newIsButtonToggledList = schedulesToIsButtonToggledList(initialSchedules);
+    setIsButtonToggledList(structuredClone(newIsButtonToggledList));
+    prevIsButtonToggledListRef.current = structuredClone(newIsButtonToggledList);
   };
 
   const handleMouseDown = (x: number, y: number) => {
@@ -87,6 +106,10 @@ export default function TimeTableDrawer(props: TimeTableDrawerProps) {
       }
     }
     setIsButtonToggledList(newIsButtonToggledList);
+  };
+
+  const handleSaveButtonClick = () => {
+    onSaveButtonClick(isButtonToggledListToSchedules(isButtonToggledList));
   };
 
   return (
@@ -171,7 +194,7 @@ export default function TimeTableDrawer(props: TimeTableDrawerProps) {
           >
             초기화
           </Button>
-          <Button size="lg" variant="default" w="full" onClick={onClose}>
+          <Button size="lg" variant="default" w="full" onClick={handleSaveButtonClick}>
             선택 완료
           </Button>
         </DrawerFooter>
