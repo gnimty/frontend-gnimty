@@ -10,10 +10,10 @@ import Check from '@/assets/icons/system/check.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TimeBadge from '@/components/common/TimeBadge';
 import IconCheckbox from '@/components/icons/IconCheckbox';
-import TimeTableDrawer from '@/components/pages/mypage/changeState/TimeTableDrawer';
 import ContentsContainer from '@/components/pages/mypage/ContentsContainer';
 
 import StateMessageInput from './StateMessageInput';
+import TimeTableDrawer, { emptyIsButtonToggledList } from './TimeTableDrawer';
 
 import type { CheckboxProps } from '@chakra-ui/react';
 
@@ -154,7 +154,7 @@ export default function ChangeStateTab(props: ChangeStateTabProps) {
           변경사항 저장
         </Button>
       </Flex>
-      <TimeTableDrawer currentTimeData={[0, 0, 0, 0, 0, 0, 0]} isOpen={isOpenDrawer} onClose={onCloseDrawer} />
+      <TimeTableDrawer currentTimeData={emptyIsButtonToggledList()} isOpen={isOpenDrawer} onClose={onCloseDrawer} />
     </>
   );
 }

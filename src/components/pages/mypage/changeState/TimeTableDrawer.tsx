@@ -12,52 +12,53 @@ import {
   GridItem,
   Text,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useRef, useState } from 'react';
+
+import useLazyRef from '@/utils/useLazyRef';
+
+const _emptyIsButtonToggledList = Array.from({ length: 7 }).map(() => Array(24).fill(false) as boolean[]);
+export const emptyIsButtonToggledList = () => structuredClone(_emptyIsButtonToggledList);
 
 interface TimeTableDrawerProps {
-  currentTimeData: number[];
+  currentTimeData: boolean[][];
   isOpen: boolean;
   onClose: () => void;
 }
-export default function TimeTableDrawer({ currentTimeData, isOpen, onClose }: TimeTableDrawerProps) {
-  const [initialButtonState, setInitialButtonState] = useState<number[]>(currentTimeData);
-  const [buttonState, setButtonState] = useState(initialButtonState);
+
+export default function TimeTableDrawer(props: TimeTableDrawerProps) {
+  const { currentTimeData, isOpen, onClose } = props;
+
+  const [isButtonToggledList, setIsButtonToggledList] = useState<boolean[][]>(() => structuredClone(currentTimeData));
+  const prevIsButtonToggledListRef = useLazyRef(() => structuredClone(isButtonToggledList));
+
+  const startPosRef = useRef<[number, number]>();
 
   const resetTimeState = () => {
-    setInitialButtonState(new Array(7).fill(0));
+    setIsButtonToggledList(emptyIsButtonToggledList());
+    prevIsButtonToggledListRef.current = emptyIsButtonToggledList();
   };
 
-  useEffect(() => {
-    setButtonState(initialButtonState);
-  }, [initialButtonState]);
-
-  const [startAxis, setStartAxis] = useState<[number, number] | undefined>();
-
   const onMouseDown = (weekIndex: number, timeIndex: number) => {
-    setStartAxis([weekIndex, timeIndex]);
+    startPosRef.current = [weekIndex, timeIndex];
   };
 
   const onMouseUp = () => {
-    setStartAxis(undefined);
-    setInitialButtonState(buttonState);
+    startPosRef.current = undefined;
+    prevIsButtonToggledListRef.current = structuredClone(isButtonToggledList);
   };
 
   const onMouseOver = (weekIndex: number, timeIndex: number) => {
-    if (startAxis) {
-      const startState = initialButtonState[startAxis[0]] & (1 << startAxis[1]);
-      const length = Math.abs(timeIndex - startAxis[1]) + 1;
-      const mask = ((1 << length) - 1) << Math.min(timeIndex, startAxis[1]);
-
-      const copyState = [...initialButtonState];
-
-      const start = weekIndex < startAxis[0] ? weekIndex : startAxis[0];
-      const end = weekIndex + startAxis[0] - start;
-
-      for (let i = start; i <= end; i++) {
-        copyState[i] = !startState ? copyState[i] | mask : copyState[i] & ~mask;
+    if (startPosRef.current !== undefined) {
+      const [startX, startY] = startPosRef.current;
+      const [smallX, largeX] = [startX, weekIndex].sort((a, b) => a - b);
+      const [smallY, largeY] = [startY, timeIndex].sort((a, b) => a - b);
+      const newIsButtonToggledList = structuredClone(prevIsButtonToggledListRef.current);
+      for (let x = smallX; x <= largeX; x += 1) {
+        for (let y = smallY; y <= largeY; y += 1) {
+          newIsButtonToggledList[x][y] = !prevIsButtonToggledListRef.current[startX][startY];
+        }
       }
-
-      setButtonState(copyState);
+      setIsButtonToggledList(newIsButtonToggledList);
     }
   };
 
@@ -110,22 +111,26 @@ export default function TimeTableDrawer({ currentTimeData, isOpen, onClose }: Ti
               area="table"
               gridTemplateColumns="repeat(7, minmax(44px, auto))"
               gridTemplateRows="repeat(24, 20px)"
+              gridAutoFlow="column"
               gridGap="4px"
               onMouseUp={onMouseUp}
             >
-              {[...Array(24).keys()].map((timeIndex) => {
-                return [...Array(7).keys()].map((weekIndex) => {
-                  return (
-                    <GridItem
-                      as={Button}
-                      key={timeIndex * 24 + weekIndex}
-                      onMouseDown={() => onMouseDown(weekIndex, timeIndex)}
-                      onMouseOver={() => onMouseOver(weekIndex, timeIndex)}
-                      bg={buttonState[weekIndex] & (1 << timeIndex) ? 'red800' : 'gray200'}
-                    />
-                  );
-                });
-              })}
+              {isButtonToggledList.flatMap((isToggledList, weekIndex) =>
+                isToggledList.map((isToggled, timeIndex) => (
+                  <GridItem
+                    as={Button}
+                    // "4-4" 등의 낮은 숫자에서 겹치는 걸 막기 위해 `timeIndex`에 100을 곱함.
+                    key={`${weekIndex}-${timeIndex * 100}`}
+                    onMouseDown={() => {
+                      onMouseDown(weekIndex, timeIndex);
+                    }}
+                    onMouseOver={() => {
+                      onMouseOver(weekIndex, timeIndex);
+                    }}
+                    bg={isToggled ? 'red800' : 'gray200'}
+                  />
+                )),
+              )}
             </GridItem>
           </Grid>
         </DrawerBody>
