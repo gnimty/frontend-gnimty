@@ -20,46 +20,49 @@ const _emptyIsButtonToggledList = Array.from({ length: 7 }).map(() => Array(24).
 export const emptyIsButtonToggledList = () => structuredClone(_emptyIsButtonToggledList);
 
 interface TimeTableDrawerProps {
-  currentTimeData: boolean[][];
+  initialIsButtonToggledList: boolean[][];
   isOpen: boolean;
   onClose: () => void;
 }
 
 export default function TimeTableDrawer(props: TimeTableDrawerProps) {
-  const { currentTimeData, isOpen, onClose } = props;
+  const { initialIsButtonToggledList, isOpen, onClose } = props;
 
-  const [isButtonToggledList, setIsButtonToggledList] = useState<boolean[][]>(() => structuredClone(currentTimeData));
+  const [isButtonToggledList, setIsButtonToggledList] = useState<boolean[][]>(() =>
+    structuredClone(initialIsButtonToggledList),
+  );
   const prevIsButtonToggledListRef = useLazyRef(() => structuredClone(isButtonToggledList));
 
   const startPosRef = useRef<[number, number]>();
 
-  const resetTimeState = () => {
+  const handleResetButtonClick = () => {
     setIsButtonToggledList(emptyIsButtonToggledList());
     prevIsButtonToggledListRef.current = emptyIsButtonToggledList();
   };
 
-  const onMouseDown = (weekIndex: number, timeIndex: number) => {
-    startPosRef.current = [weekIndex, timeIndex];
+  const handleMouseDown = (x: number, y: number) => {
+    startPosRef.current = [x, y];
   };
 
-  const onMouseUp = () => {
+  const handleMouseUp = () => {
     startPosRef.current = undefined;
     prevIsButtonToggledListRef.current = structuredClone(isButtonToggledList);
   };
 
-  const onMouseOver = (weekIndex: number, timeIndex: number) => {
-    if (startPosRef.current !== undefined) {
-      const [startX, startY] = startPosRef.current;
-      const [smallX, largeX] = [startX, weekIndex].sort((a, b) => a - b);
-      const [smallY, largeY] = [startY, timeIndex].sort((a, b) => a - b);
-      const newIsButtonToggledList = structuredClone(prevIsButtonToggledListRef.current);
-      for (let x = smallX; x <= largeX; x += 1) {
-        for (let y = smallY; y <= largeY; y += 1) {
-          newIsButtonToggledList[x][y] = !prevIsButtonToggledListRef.current[startX][startY];
-        }
-      }
-      setIsButtonToggledList(newIsButtonToggledList);
+  const handleMouseOver = (currentX: number, currentY: number) => {
+    if (startPosRef.current === undefined) {
+      return;
     }
+    const [startX, startY] = startPosRef.current;
+    const [smallX, largeX] = [startX, currentX].sort((a, b) => a - b);
+    const [smallY, largeY] = [startY, currentY].sort((a, b) => a - b);
+    const newIsButtonToggledList = structuredClone(prevIsButtonToggledListRef.current);
+    for (let x = smallX; x <= largeX; x += 1) {
+      for (let y = smallY; y <= largeY; y += 1) {
+        newIsButtonToggledList[x][y] = !prevIsButtonToggledListRef.current[startX][startY];
+      }
+    }
+    setIsButtonToggledList(newIsButtonToggledList);
   };
 
   return (
@@ -113,19 +116,19 @@ export default function TimeTableDrawer(props: TimeTableDrawerProps) {
               gridTemplateRows="repeat(24, 20px)"
               gridAutoFlow="column"
               gridGap="4px"
-              onMouseUp={onMouseUp}
+              onMouseUp={handleMouseUp}
             >
               {isButtonToggledList.flatMap((isToggledList, weekIndex) =>
-                isToggledList.map((isToggled, timeIndex) => (
+                isToggledList.map((isToggled, hourIndex) => (
                   <GridItem
                     as={Button}
-                    // "4-4" 등의 낮은 숫자에서 겹치는 걸 막기 위해 `timeIndex`에 100을 곱함.
-                    key={`${weekIndex}-${timeIndex * 100}`}
+                    // "4-4" 등의 낮은 숫자에서 겹치는 걸 막기 위해 `hourIndex`에 100을 곱함.
+                    key={`${weekIndex}-${hourIndex * 100}`}
                     onMouseDown={() => {
-                      onMouseDown(weekIndex, timeIndex);
+                      handleMouseDown(weekIndex, hourIndex);
                     }}
                     onMouseOver={() => {
-                      onMouseOver(weekIndex, timeIndex);
+                      handleMouseOver(weekIndex, hourIndex);
                     }}
                     bg={isToggled ? 'red800' : 'gray200'}
                   />
@@ -135,7 +138,14 @@ export default function TimeTableDrawer(props: TimeTableDrawerProps) {
           </Grid>
         </DrawerBody>
         <DrawerFooter gap="12px">
-          <Button size="lg" variant="line" px="16px" textColor="gray500" fontWeight="400" onClick={resetTimeState}>
+          <Button
+            size="lg"
+            variant="line"
+            px="16px"
+            textColor="gray500"
+            fontWeight="400"
+            onClick={handleResetButtonClick}
+          >
             초기화
           </Button>
           <Button size="lg" variant="default" w="full" onClick={onClose}>

@@ -29,9 +29,10 @@ export interface ChangeStateTabProps {
 }
 
 export default function ChangeStateTab(props: ChangeStateTabProps) {
+  const { initialStatus, initialIntroduction, initialPreferGameModes, initialSchedules } = props;
+
   const router = useRouter();
 
-  const { initialStatus, initialIntroduction, initialPreferGameModes, initialSchedules } = props;
   const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure();
 
   const [status, setStatus] = useState(initialStatus);
@@ -154,7 +155,11 @@ export default function ChangeStateTab(props: ChangeStateTabProps) {
           변경사항 저장
         </Button>
       </Flex>
-      <TimeTableDrawer currentTimeData={emptyIsButtonToggledList()} isOpen={isOpenDrawer} onClose={onCloseDrawer} />
+      <TimeTableDrawer
+        initialIsButtonToggledList={emptyIsButtonToggledList()}
+        isOpen={isOpenDrawer}
+        onClose={onCloseDrawer}
+      />
     </>
   );
 }
