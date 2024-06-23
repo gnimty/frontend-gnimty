@@ -74,11 +74,11 @@ export default function TimeTableDrawer(props: TimeTableDrawerProps) {
       }
 
       startPosRef.current = undefined;
-      const entryTimesCount = isButtonToggledList.reduce(
-        (count, isToggledList) => count + rawToScheduleEntryTimes(isToggledList).length,
-        0,
+      // 하나의 요일이라도 3개 이상의 스케줄을 가지고 있으면 true, 아니면 false
+      const isEntryTimesCountLimitExceeded = isButtonToggledList.some(
+        (isToggledList) => rawToScheduleEntryTimes(isToggledList).length > 3,
       );
-      if (entryTimesCount > 3) {
+      if (isEntryTimesCountLimitExceeded) {
         alert('각 요일에 최대 3개의 시간대 설정이 가능합니다.');
         setIsButtonToggledList(structuredClone(prevIsButtonToggledListRef.current));
       } else {
