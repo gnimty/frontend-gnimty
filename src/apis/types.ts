@@ -194,9 +194,14 @@ export interface RiotDependentInfo {
   riotAccounts: RiotAccountEntry[];
 }
 
+export interface ScheduleEntryTime {
+  startTime: number;
+  endTime: number;
+}
+
 export interface ScheduleEntry {
   dayOfWeek: DayOfWeek;
-  times: { startTime: number; endTime: number }[];
+  times: ScheduleEntryTime[];
 }
 
 export type DayOfWeek = 'SUNDAY' | 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY';

@@ -10,10 +10,10 @@ import Check from '@/assets/icons/system/check.svg';
 import StatusIndicator from '@/components/common/StatusIndicator';
 import TimeBadge from '@/components/common/TimeBadge';
 import IconCheckbox from '@/components/icons/IconCheckbox';
-import TimeTableDrawer from '@/components/pages/mypage/changeState/TimeTableDrawer';
 import ContentsContainer from '@/components/pages/mypage/ContentsContainer';
 
 import StateMessageInput from './StateMessageInput';
+import TimeTableDrawer, { type TimeTableDrawerProps } from './TimeTableDrawer';
 
 import type { CheckboxProps } from '@chakra-ui/react';
 
@@ -29,22 +29,26 @@ export interface ChangeStateTabProps {
 }
 
 export default function ChangeStateTab(props: ChangeStateTabProps) {
+  const { initialStatus, initialIntroduction, initialPreferGameModes, initialSchedules } = props;
+
   const router = useRouter();
 
-  const { initialStatus, initialIntroduction, initialPreferGameModes, initialSchedules } = props;
   const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure();
 
   const [status, setStatus] = useState(initialStatus);
   const [introduction, setIntroduction] = useState(initialIntroduction);
   const [preferGameModes, setPreferGameModes] = useState(initialPreferGameModes);
-  // TODO: 백엔드 분들과 얘기 나눠 본 후에 완성
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [schedules, setSchedules] = useState(initialSchedules);
 
   const { changeProfile } = useChangeProfile();
 
   const handlePreferGameModesChange = (modes: GameMode[]) => {
     setPreferGameModes(modes.map((mode) => ({ gameMode: mode })));
+  };
+
+  const handleTimeTableSaveButtonClick: TimeTableDrawerProps['onSaveButtonClick'] = (newSchedules) => {
+    setSchedules(newSchedules);
+    onCloseDrawer();
   };
 
   return (
@@ -154,7 +158,12 @@ export default function ChangeStateTab(props: ChangeStateTabProps) {
           변경사항 저장
         </Button>
       </Flex>
-      <TimeTableDrawer currentTimeData={[0, 0, 0, 0, 0, 0, 0]} isOpen={isOpenDrawer} onClose={onCloseDrawer} />
+      <TimeTableDrawer
+        initialSchedules={schedules}
+        isOpen={isOpenDrawer}
+        onClose={onCloseDrawer}
+        onSaveButtonClick={handleTimeTableSaveButtonClick}
+      />
     </>
   );
 }
