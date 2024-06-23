@@ -75,7 +75,9 @@ function RecommendedPickBodyDataBoundary() {
           </Text>
         </VStack>
         <Button
-          onClick={openAccountModal}
+          onClick={() => {
+            openAccountModal();
+          }}
           size="md"
           bg="gray800"
           p="10px 12px"
