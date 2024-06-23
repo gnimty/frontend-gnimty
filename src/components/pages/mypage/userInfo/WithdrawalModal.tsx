@@ -13,7 +13,6 @@ import {
 } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { withdrawal } from '@/apis/queries/withdrawal';
@@ -27,8 +26,6 @@ interface WithdrawalProps {
 const WITHDRAWAL_PHARASE = '위 내용을 숙지하였으며, 회원 탈퇴를 진행합니다.';
 
 function WithdrawalModal({ disclosure }: WithdrawalProps) {
-  const router = useRouter();
-
   const { isOpen, onClose } = disclosure;
 
   const [pharase, setPharse] = useState('');
@@ -51,7 +48,7 @@ function WithdrawalModal({ disclosure }: WithdrawalProps) {
 
   const handleCloseAfterWithdrawal = () => {
     onClose();
-    router.push('/');
+    window.location.href = '/';
   };
 
   return (
