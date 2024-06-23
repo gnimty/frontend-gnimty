@@ -17,7 +17,6 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { withdrawal } from '@/apis/queries/withdrawal';
-import { logout } from '@/apis/useLogout';
 import ExitIcon from '@/assets/icons/system/exit.svg';
 import image500 from '@/assets/images/500.png';
 
@@ -29,17 +28,18 @@ const WITHDRAWAL_PHARASE = '위 내용을 숙지하였으며, 회원 탈퇴를 �
 
 function WithdrawalModal({ disclosure }: WithdrawalProps) {
   const router = useRouter();
+
   const { isOpen, onClose } = disclosure;
+
   const [pharase, setPharse] = useState('');
-  const { mutateAsync, isSuccess } = useMutation({
-    mutationFn: withdrawal,
-  });
-
   const buttonDisabled = pharase !== WITHDRAWAL_PHARASE;
-
   const handlePharaseChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPharse(e.target.value);
   };
+
+  const { mutateAsync, isSuccess } = useMutation({
+    mutationFn: withdrawal,
+  });
 
   const handleWithdrawal = async () => {
     if (pharase !== WITHDRAWAL_PHARASE) {
@@ -51,7 +51,7 @@ function WithdrawalModal({ disclosure }: WithdrawalProps) {
 
   const handleCloseAfterWithdrawal = () => {
     onClose();
-    logout().then(async () => await router.push('/'));
+    router.push('/');
   };
 
   return (
@@ -70,13 +70,7 @@ function WithdrawalModal({ disclosure }: WithdrawalProps) {
           <Text textStyle="t1" fontWeight="700">
             회원탈퇴
           </Text>
-          <IconButton
-            aria-label="close"
-            icon={<ExitIcon />}
-            onClick={isSuccess ? handleCloseAfterWithdrawal : onClose}
-            w="24px"
-            h="24px"
-          />
+          <IconButton aria-label="close" icon={<ExitIcon />} onClick={handleCloseAfterWithdrawal} w="24px" h="24px" />
         </ModalHeader>
         <ModalBody w="full" p="20px" gap="20px" display="flex" flexDirection="column">
           {isSuccess ? (
@@ -97,7 +91,7 @@ function WithdrawalModal({ disclosure }: WithdrawalProps) {
               </VStack>
               <Button
                 type="button"
-                onClick={isSuccess ? handleCloseAfterWithdrawal : onClose}
+                onClick={handleCloseAfterWithdrawal}
                 w="full"
                 h="48px"
                 bgColor="main"
