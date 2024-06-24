@@ -64,6 +64,7 @@ const nextConfig = {
     fileLoaderRule.exclude = /\.svg$/i;
     return config;
   },
+  productionBrowserSourceMaps: false,
 };
 
 module.exports = nextConfig;

@@ -116,7 +116,7 @@ export const [ChatContextProvider, useChatContext] = constate(() => {
       const currentUserId = myInfo.id;
       if (currentUserId) {
         const client = new Client({
-          brokerURL: 'wss://gnimty.kro.kr/community/chat',
+          brokerURL: 'wss://gnimty.lol/community/chat',
           connectHeaders: {
             'accept-version': '1.2',
           },
