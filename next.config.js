@@ -7,7 +7,7 @@ const nextConfig = {
       ? async () => [
           {
             source: '/api/:path*',
-            destination: 'https://gnimty.kro.kr/:path*',
+            destination: 'https://gnimty.lol/:path*',
           },
         ]
       : undefined,

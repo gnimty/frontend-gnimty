@@ -48,7 +48,7 @@ export default function SummonerRank({ specialists }: SummonerRankProps) {
               <Box w="40px" h="40px" borderRadius="50%" overflow="hidden">
                 <Image src={profileIconUrl(specialist.summoner.profileIconId)} alt="test" width="40" height="40" />
               </Box>
-              <Link href={`/summoners/${specialist.summoner.internalTagName}`}>
+              <Link href={`/summoners/${specialist.summoner.internalTagName}`} textDecor="none" color="gray800">
                 <Text w="180px" textStyle="t2" fontWeight="700">
                   {specialist.summoner.internalTagName}
                 </Text>
