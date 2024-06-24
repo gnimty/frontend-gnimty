@@ -4,6 +4,7 @@ import { Box, Center, Flex, Grid, Text, useDisclosure } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import Link from 'next/link';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import type { MatchBriefRes } from '@/apis/types';
@@ -67,12 +68,14 @@ export default function MatchHistoryCard({ match }: MatchHistoryCardProps) {
             <Flex direction="column" gap="16px">
               <Center gap="8px">
                 <Box position="relative" pb="8px">
-                  <IconImage
-                    src={championIconUrl(championIdEnNameMap[participant.championId])}
-                    width={48}
-                    height={48}
-                    alt="champion-icon"
-                  />
+                  <Link href={`/champions/${championIdEnNameMap[participant.championId]}`}>
+                    <IconImage
+                      src={championIconUrl(championIdEnNameMap[participant.championId])}
+                      width={48}
+                      height={48}
+                      alt="champion-icon"
+                    />
+                  </Link>
                   <Tag
                     type="level"
                     position="absolute"
@@ -151,14 +154,18 @@ export default function MatchHistoryCard({ match }: MatchHistoryCardProps) {
               .sort((a, b) => a.participantId - b.participantId)
               .map((p) => (
                 <Flex key={p.puuid} gap="4px" alignItems="center">
-                  <IconImage
-                    src={championIconUrl(championIdEnNameMap[p.championId])}
-                    width={16}
-                    height={16}
-                    alt="champion-icon"
-                  />
+                  <Link href={`/champions/${championIdEnNameMap[p.championId]}`}>
+                    <IconImage
+                      src={championIconUrl(championIdEnNameMap[p.championId])}
+                      width={16}
+                      height={16}
+                      alt="champion-icon"
+                    />
+                  </Link>
                   <Text textStyle="body" fontWeight={400} color="gray800" noOfLines={1}>
-                    {p.summonerName}
+                    <Link href={`/summoners/${p.summonerName}`} css={{ textDecoration: 'none', color: 'inherit' }}>
+                      {p.summonerName}
+                    </Link>
                   </Text>
                 </Flex>
               ))}
