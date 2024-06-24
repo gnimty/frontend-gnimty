@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 import type { Position, RecommendedSummonersEntry } from '@/apis/types';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
@@ -61,7 +62,9 @@ export default function UserCardLandscape(props: UserCardLandscapeProps) {
           }}
         />
         <div css={style.summonerNameWrapper}>
-          <p css={style.summonerName}>{summoner.name}</p>
+          <Link href={`/summoners/${summoner.name}-${summoner.tagLine}`}>
+            <p css={style.summonerName}>{summoner.name}</p>
+          </Link>
           <button type="button" css={style.copyNameButton} aria-label="닉네임 복사">
             <Copy width={16} height={16} aria-hidden onClick={handleNameCopyButtonClick} />
           </button>
@@ -71,7 +74,7 @@ export default function UserCardLandscape(props: UserCardLandscapeProps) {
         </div>
       </div>
       <div css={style.tierInfo}>
-        <TierImage tier={summoner.queue} width={24} height={24} />
+        <TierImage tier={summoner.queue ?? 'unknown'} width={24} height={24} />
         <p css={style.tier}>{shortTierName(summoner.queue, summoner.division)}</p>
         <p css={style.leaguePoints}>{Intl.NumberFormat().format(summoner.lp)}LP</p>
       </div>
