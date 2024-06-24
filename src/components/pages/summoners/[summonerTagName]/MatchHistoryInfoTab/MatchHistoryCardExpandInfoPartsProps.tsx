@@ -1,4 +1,5 @@
 import { Box, Center, Flex, Grid, Text } from '@chakra-ui/react';
+import Link from 'next/link';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import type { ParticipantDto } from '@/apis/types';
@@ -64,12 +65,14 @@ function MatchHistoryCardExpandInfoParts({
       <Center gap="12px" width="148px">
         <Center flexDirection="column" w="84px">
           <Box position="relative" pb="8px">
-            <IconImage
-              src={championIconUrl(championIdEnNameMap[participant.championId])}
-              width={36}
-              height={36}
-              alt="champion-icon"
-            />
+            <Link href={`/champions/${championIdEnNameMap[participant.championId]}`}>
+              <IconImage
+                src={championIconUrl(championIdEnNameMap[participant.championId])}
+                width={36}
+                height={36}
+                alt="champion-icon"
+              />
+            </Link>
             <Tag
               type="level"
               position="absolute"
@@ -90,7 +93,9 @@ function MatchHistoryCardExpandInfoParts({
             </Text>
           </Center>
           <Text textStyle="caption" fontWeight={700} color="gray800" noOfLines={1}>
-            {participant.internalTagName}
+            <Link href={`/summoners/${participant.internalTagName}`} css={{ textDecoration: 'none', color: 'inherit' }}>
+              {participant.internalTagName}
+            </Link>
           </Text>
         </Center>
         <Grid gridTemplateColumns="1fr 1fr" gap="4px" width="fit-content" height="fit-content">
