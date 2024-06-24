@@ -35,7 +35,7 @@ function ChampionTabPanel(props: ChampionTabPanelProps) {
             <tr key={champion.championId} css={style.tableRow}>
               <td css={style.championRanking}>{i + 1}</td>
               <td css={style.championNameAndImage}>
-                <Link href={`/champions/${championIdEnNameMap[champion.championId]}`}>
+                <Link href={`/champions/${championIdEnNameMap[champion.championId]}`} textDecor="none" color="gray800">
                   <Image
                     src={championIconUrl(championIdEnNameMap[champion.championId])}
                     alt=""
@@ -43,8 +43,8 @@ function ChampionTabPanel(props: ChampionTabPanelProps) {
                     height={32}
                     css={style.championImage}
                   />
+                  <span css={style.championName}>{championIdKrNameMap[champion.championId]}</span>
                 </Link>
-                <span css={style.championName}>{championIdKrNameMap[champion.championId]}</span>
               </td>
               <td css={style.championTier}>
                 <ChampionTierBadge tier={champion.tier} />
