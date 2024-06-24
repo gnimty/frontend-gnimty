@@ -1,6 +1,7 @@
-import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs, Link } from '@chakra-ui/react';
+import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import championIdKrNameMap from '@/apis/constants/championIdKrNameMap';
@@ -35,7 +36,10 @@ function ChampionTabPanel(props: ChampionTabPanelProps) {
             <tr key={champion.championId} css={style.tableRow}>
               <td css={style.championRanking}>{i + 1}</td>
               <td css={style.championNameAndImage}>
-                <Link href={`/champions/${championIdEnNameMap[champion.championId]}`} textDecor="none" color="gray800">
+                <Link
+                  href={`/champions/${championIdEnNameMap[champion.championId]}`}
+                  css={{ display: 'flex', gap: '12px', alignItems: 'center', textDecoration: 'none' }}
+                >
                   <Image
                     src={championIconUrl(championIdEnNameMap[champion.championId])}
                     alt=""
