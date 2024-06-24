@@ -175,7 +175,7 @@ export default function SummonerCard({ open, toggle, summoner, refObject, openCh
           <SummonerBasicInfo>
             <IconImage src={profileIconUrl(iconId)} width={40} height={40} alt="icon" />
             <SummonerId>
-              <Link href={`/summoners/${name}-${tagLine}`}>
+              <Link href={`/summoners/${name}-${tagLine}`} textDecor="none" color="gray800">
                 {name}#{tagLine}
               </Link>
               <IconButton

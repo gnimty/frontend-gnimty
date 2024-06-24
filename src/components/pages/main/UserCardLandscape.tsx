@@ -62,7 +62,7 @@ export default function UserCardLandscape(props: UserCardLandscapeProps) {
           }}
         />
         <div css={style.summonerNameWrapper}>
-          <Link href={`/summoners/${summoner.name}-${summoner.tagLine}`}>
+          <Link href={`/summoners/${summoner.name}-${summoner.tagLine}`} css={{ textDecoration: 'none' }}>
             <p css={style.summonerName}>{summoner.name}</p>
           </Link>
           <button type="button" css={style.copyNameButton} aria-label="닉네임 복사">
