@@ -1,3 +1,5 @@
+import { Circle } from '@chakra-ui/react';
+
 import { colors } from '@/styles/theme/constants/colors';
 
 import Domination from '../../assets/images/rune/domination.svg';
@@ -32,6 +34,10 @@ export default function PerkStyleImage(props: PerkStyleImageProps) {
   const { perkStyleId, ...restProps } = props;
 
   const SelectedPerkStyleImage = perkStyleIdImgMap[perkStyleId];
+
+  if (SelectedPerkStyleImage === undefined) {
+    return <Circle />;
+  }
 
   return <SelectedPerkStyleImage {...restProps} />;
 }
