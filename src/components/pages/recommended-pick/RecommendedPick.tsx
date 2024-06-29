@@ -1,9 +1,11 @@
 import { Button, Heading, Text, Tooltip, VStack } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import type { ProfileEntry } from '@/apis/types';
+import recommendedPicksQuery, { type RecommendedPicksSortOrder } from '@/apis/queries/recommendedPicksQuery';
+import type { Position, ProfileEntry } from '@/apis/types';
 import useAuth from '@/apis/useAuth';
 import TooltipIcon from '@/assets/icons/system/tooltip.svg';
 import recommendedPickExceptionImageSrc from '@/assets/images/recommended-pick-exception.png';
@@ -12,6 +14,8 @@ import { useAccountModalStore } from '../account/accountModalStore';
 
 import RecommendedPickSelectSummoner from './RecommendedPickSelectSummoner';
 import RecommendedPickTable from './RecommendedPickTable';
+
+import type { SearchPopRowItem } from '../main/search/SearchPopRow';
 
 export default function RecommendedPick() {
   return (
@@ -136,9 +140,27 @@ interface RecommendedPickBodyProps {
 
 function RecommendedPickBody(props: RecommendedPickBodyProps) {
   const { myProfile } = props;
-  // TODO: unknown을 구체적 타입으로 변경
-  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents, @typescript-eslint/no-unused-vars
-  const [selectedSummoner, setSelectedSummoner] = useState<unknown | null>(null);
+
+  const [selectedSummoner, setSelectedSummoner] = useState<SearchPopRowItem | null>(null);
+
+  const [sortOrder, setSortOrder] = useState<RecommendedPicksSortOrder>('CHAMPION_SCORE');
+  const [myPosition, setMyPosition] = useState<Position>('TOP');
+  const [duoPosition, setDuoPosition] = useState<Position>('JUNGLE');
+
+  const [queryEnabled, setQueryEnabled] = useState(false);
+
+  const { data, status } = useQuery({
+    enabled: queryEnabled,
+    ...recommendedPicksQuery({
+      puuid1: myProfile.riotDependentInfo.riotAccounts[0].puuid,
+      // `selectedSummoner`가 `null`이 아닐 때만 `initial`이 `true`여야만 함
+      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+      puuid2: selectedSummoner?.puuid!,
+      sort: sortOrder,
+      lane1: myPosition,
+      lane2: duoPosition,
+    }),
+  });
 
   return (
     <VStack gap="80px" w="full">
@@ -148,10 +170,15 @@ function RecommendedPickBody(props: RecommendedPickBodyProps) {
           onSummonerChange={(newSummoner) => {
             setSelectedSummoner(newSummoner);
           }}
+          onResetButtonClick={() => {
+            setQueryEnabled(false);
+          }}
         />
         <Button
           onClick={() => {
-            // TODO: selectedSummoner 사용 해서 API 요청
+            if (selectedSummoner !== null) {
+              setQueryEnabled(true);
+            }
           }}
           size="lg"
           w="200px"
@@ -163,7 +190,31 @@ function RecommendedPickBody(props: RecommendedPickBodyProps) {
           추천 Pick
         </Button>
       </VStack>
-      <RecommendedPickTable />
+      {status === 'success' && (
+        <RecommendedPickTable
+          recommendedPicks={data.data.recommends}
+          myPosition={myPosition}
+          onMyPositionChange={(newMyPosition) => {
+            setMyPosition(newMyPosition);
+          }}
+          duoPosition={duoPosition}
+          onDuoPositionChange={(newDuoPosition) => {
+            setDuoPosition(newDuoPosition);
+          }}
+          sortOrder={sortOrder}
+          onSortOrderChange={(newSortOrder) => {
+            setSortOrder(newSortOrder);
+          }}
+          mySummonerName={myProfile.riotDependentInfo.riotAccounts[0].name}
+          myTagLine={myProfile.riotDependentInfo.riotAccounts[0].tagLine}
+          // `status`가 `success`일 때는 `selectedSummoner`가 무조건 `null`이 아님
+          // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+          duoSummonerName={selectedSummoner?.summonerName!}
+          // `status`가 `success`일 때는 `selectedSummoner`가 무조건 `null`이 아님
+          // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+          duoTagLine={selectedSummoner?.tagLine!}
+        />
+      )}
     </VStack>
   );
 }

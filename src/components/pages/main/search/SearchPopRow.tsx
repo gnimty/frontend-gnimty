@@ -19,7 +19,7 @@ export interface SearchPopRowItem {
 export interface SearchPopRowProps {
   searchPopRowItem: SearchPopRowItem;
   onXButtonClick?: () => void;
-  onSelect?: (summonerName: string) => void;
+  onSelect?: (searchPopRowItem: SearchPopRowItem) => void;
 }
 
 export default function SearchPopRow(props: SearchPopRowProps) {
@@ -37,7 +37,9 @@ export default function SearchPopRow(props: SearchPopRowProps) {
           alignItems="center"
           gap="12px"
           cursor="pointer"
-          onClick={() => onSelect(`${searchPopRowItem.summonerName}-${searchPopRowItem.tagLine}`)}
+          onClick={() => {
+            onSelect(searchPopRowItem);
+          }}
         >
           <ProfileImage iconId={searchPopRowItem.profileIconId} width={24} height={24} />
           <HStack gap="4px">
