@@ -163,7 +163,10 @@ export default function MatchHistoryCard({ match }: MatchHistoryCardProps) {
                     />
                   </Link>
                   <Text textStyle="body" fontWeight={400} color="gray800" noOfLines={1}>
-                    <Link href={`/summoners/${p.summonerName}`} css={{ textDecoration: 'none', color: 'inherit' }}>
+                    <Link
+                      href={`/summoners/${p.summonerName}-${p.tagLine}`}
+                      css={{ textDecoration: 'none', color: 'inherit' }}
+                    >
                       {p.summonerName}
                     </Link>
                   </Text>
