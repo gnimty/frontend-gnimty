@@ -1,4 +1,5 @@
 import { Box, Button, HStack, IconButton, Text, VStack } from '@chakra-ui/react';
+import { useTheme } from '@emotion/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { Fragment, useState } from 'react';
@@ -55,7 +56,7 @@ export default function RecommendedPickSelectSummoner(props: RecommendedPickSele
   };
 
   return (
-    <HStack w="full" h="260px" gap="24px">
+    <HStack w="full" h="320px" gap="24px">
       <SummonerCard summonerType="me" profile={mainAccountProfile} matchSummary={mainAccountMatchSummary} />
       {otherProfile ? (
         <SummonerCard
@@ -82,6 +83,7 @@ interface SummonerCardProps {
 
 function SummonerCard({ summonerType, profile, matchSummary, onResetButtonClick }: SummonerCardProps) {
   const queryClient = useQueryClient();
+  const theme = useTheme();
   const { renewSummoner } = useRenewSummoner();
   return (
     <VStack w="528px" h="full" bg="white" borderRadius="4px" p="20px" gap="20px">
@@ -232,9 +234,11 @@ function SummonerCard({ summonerType, profile, matchSummary, onResetButtonClick 
         <Link
           href={`/summoners/${profile?.summonerName}-${profile?.tagLine}`}
           css={{
-            textStyle: 't2',
+            fontSize: theme.fonts.t2.fontSize,
+            lineHeight: theme.fonts.t2.lineHeight,
+            fontWeight: 700,
             color: 'white',
-            backgroundColor: 'gray800',
+            backgroundColor: theme.colors.gray800,
             padding: '14px 12px',
             flex: '1 0 0',
             borderRadius: '4px',
