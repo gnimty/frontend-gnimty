@@ -111,6 +111,10 @@ export const summonerTag = (theme: Theme) =>
     ...theme.fonts.h3,
     fontWeight: 400,
     color: theme.colors.gray600,
+    textOverflow: 'ellipsis',
+    maxWidth: '80px',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
   });
 
 export const summonerName = (theme: Theme) =>
@@ -118,6 +122,10 @@ export const summonerName = (theme: Theme) =>
     ...theme.fonts.h2,
     fontWeight: 700,
     color: theme.colors.gray800,
+    textOverflow: 'ellipsis',
+    maxWidth: '200px',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
   });
 
 export const editIcon = (theme: Theme) =>
