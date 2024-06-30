@@ -5,17 +5,17 @@ import summonerDtoToSearchPopRowItem from '@/utils/summonerDtoToSearchPopRowItem
 
 import SearchPopBody from './SearchPopBody';
 
+import type { SearchPopRowItem } from './SearchPopRow';
+
 const summonerAutoCompleteToSearchPopRowItems = (data: SummonerAutoCompleteResponse) =>
   data.data.summoners.map(summonerDtoToSearchPopRowItem);
 
 interface SearchListProps {
   keyword: string;
   /**
-   * @description XButtonClick이 기본동작이 아닌 경우에 사용 (추천Pick 화면)
-   * @param summonerProfile
-   * @returns void
+   * XButtonClick이 기본동작이 아닌 경우에 사용 (추천Pick 화면)
    */
-  onSelect?: (summonerName: string) => void;
+  onSelect?: (searchPopRowItem: SearchPopRowItem) => void;
 }
 
 export default function SearchList(props: SearchListProps) {
