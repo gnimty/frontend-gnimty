@@ -1,13 +1,17 @@
-import { Box, Button, HStack, Text, VStack } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
+import { Box, Button, HStack, IconButton, Text, VStack } from '@chakra-ui/react';
+import { useTheme } from '@emotion/react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import Link from 'next/link';
 import { Fragment, useState } from 'react';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import summonerMatchesInfoQuery from '@/apis/queries/summonerMatchesInfoQuery';
 import type { MatchSummaryDto, ProfileEntry, SummonerDto } from '@/apis/types';
+import useRenewSummoner from '@/apis/useRenewSummoner';
 import profileIconUrl from '@/apis/utils/profileIconUrl';
 import shortTierName from '@/apis/utils/shortTierName';
 import ChangeIcon from '@/assets/icons/system/change.svg';
+import Reset from '@/assets/icons/system/reset.svg';
 import ChampionIcon from '@/components/common/ChampionIcon';
 import IconImage from '@/components/common/IconImage';
 import TierImage from '@/components/common/TierImage';
@@ -30,6 +34,7 @@ export default function RecommendedPickSelectSummoner(props: RecommendedPickSele
   );
   const mainAccountProfile = mainAccountMatchesInfoData?.data.summoner;
   const mainAccountMatchSummary = mainAccountMatchesInfoData?.data.matchSummary;
+
   const [otherSummonerTagName, setOtherSummonerTagName] = useState('');
   const { data } = useQuery(summonerMatchesInfoQuery({ summonerTagName: otherSummonerTagName }));
   const otherProfile = data?.data.summoner;
@@ -51,7 +56,7 @@ export default function RecommendedPickSelectSummoner(props: RecommendedPickSele
   };
 
   return (
-    <HStack w="full" h="260px" gap="24px">
+    <HStack w="full" h="320px" gap="24px">
       <SummonerCard summonerType="me" profile={mainAccountProfile} matchSummary={mainAccountMatchSummary} />
       {otherProfile ? (
         <SummonerCard
@@ -77,6 +82,9 @@ interface SummonerCardProps {
 }
 
 function SummonerCard({ summonerType, profile, matchSummary, onResetButtonClick }: SummonerCardProps) {
+  const queryClient = useQueryClient();
+  const theme = useTheme();
+  const { renewSummoner } = useRenewSummoner();
   return (
     <VStack w="528px" h="full" bg="white" borderRadius="4px" p="20px" gap="20px">
       <HStack w="full" h="78px" gap="12px">
@@ -117,11 +125,11 @@ function SummonerCard({ summonerType, profile, matchSummary, onResetButtonClick 
               {shortTierName(profile?.soloTierInfo?.tier ?? 'unknown', profile?.soloTierInfo?.division)}
             </Text>
             <Text textStyle="h3" color="gray500" fontWeight="400">
-              {profile?.soloTierInfo?.lp}
+              {profile?.soloTierInfo?.lp && `${profile?.soloTierInfo?.lp} LP`}
             </Text>
           </HStack>
         </VStack>
-        {/* TODO: 임시버튼 */}
+
         {summonerType === 'other' && (
           <Button
             aria-label="다른 소환사로 변경"
@@ -188,6 +196,61 @@ function SummonerCard({ summonerType, profile, matchSummary, onResetButtonClick 
           </HStack>
         </HStack>
       </VStack>
+
+      <HStack w="full" h="48px" gap="12px">
+        <IconButton
+          aria-label="정보 최신화"
+          type="button"
+          w="48px"
+          h="48px"
+          border="1px solid"
+          borderColor="gray200"
+          borderRadius="4px"
+          onClick={() => {
+            renewSummoner(
+              { puuid: profile!.puuid },
+              {
+                onSuccess() {
+                  alert('성공적으로 소환사 정보가 갱신됐습니다!');
+                  // TODO: 페이지 새로고침 대신 `invalidateQueries()`를 사용해 데이터 갱신
+                  queryClient.invalidateQueries({
+                    queryKey: [
+                      'summonerMatchesInfo',
+                      { summonerTagName: `${profile?.summonerName}-${profile?.tagLine}` },
+                    ],
+                  });
+                },
+                onError(error) {
+                  // 소환사에 대한 요청이 너무 많습니다. n초 후에 다시 시도해주세요. 에러
+                  if (error.response?.data.status.code === 429) {
+                    alert(error.response.data.status.message);
+                  }
+                },
+              },
+            );
+          }}
+          icon={<Reset width="24" height="24" />}
+        />
+        <Link
+          href={`/summoners/${profile?.summonerName}-${profile?.tagLine}`}
+          css={{
+            fontSize: theme.fonts.t2.fontSize,
+            lineHeight: theme.fonts.t2.lineHeight,
+            fontWeight: 700,
+            color: 'white',
+            backgroundColor: theme.colors.gray800,
+            padding: '14px 12px',
+            flex: '1 0 0',
+            borderRadius: '4px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textDecoration: 'none',
+          }}
+        >
+          자세히 보기
+        </Link>
+      </HStack>
     </VStack>
   );
 }
