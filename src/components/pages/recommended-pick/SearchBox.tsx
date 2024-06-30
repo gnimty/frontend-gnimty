@@ -5,8 +5,10 @@ import SearchIcon from '@/assets/icons/system/search.svg';
 
 import SearchList from '../main/search/SearchList';
 
+import type { SearchPopRowItem } from '../main/search/SearchPopRow';
+
 interface SearchBoxProps {
-  selectOtherSummoner: (summonerName: string) => void;
+  selectOtherSummoner: (searchPopRowItem: SearchPopRowItem) => void;
 }
 
 export default function SearchBox({ selectOtherSummoner }: SearchBoxProps) {

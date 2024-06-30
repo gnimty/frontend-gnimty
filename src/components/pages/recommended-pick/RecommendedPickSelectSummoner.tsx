@@ -1,4 +1,4 @@
-import { Box, HStack, Text, VStack, Button } from '@chakra-ui/react';
+import { Box, Button, HStack, Text, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { Fragment, useState } from 'react';
 
@@ -14,33 +14,40 @@ import TierImage from '@/components/common/TierImage';
 
 import SearchBox from './SearchBox';
 
+import type { SearchPopRowItem } from '../main/search/SearchPopRow';
+
 export interface RecommendedPickSelectSummonerProps {
   myProfile: ProfileEntry;
-  // TODO: unknown을 구체적 타입으로 변경
-  onSummonerChange: (newSummoner: unknown) => void;
+  onSummonerChange: (newSummoner: SearchPopRowItem | null) => void;
+  onResetButtonClick: () => void;
 }
 
 export default function RecommendedPickSelectSummoner(props: RecommendedPickSelectSummonerProps) {
-  const { myProfile, onSummonerChange } = props;
+  const { myProfile, onSummonerChange, onResetButtonClick } = props;
   const mainAccount = myProfile.riotDependentInfo.riotAccounts.find((account) => account.isMain);
   const { data: mainAccountMatchesInfoData } = useQuery(
     summonerMatchesInfoQuery({ summonerTagName: `${mainAccount?.name}-${mainAccount?.tagLine}` }),
   );
   const mainAccountProfile = mainAccountMatchesInfoData?.data.summoner;
   const mainAccountMatchSummary = mainAccountMatchesInfoData?.data.matchSummary;
-  const [otherSummonerName, setOtherSummonerName] = useState('');
-  const { data } = useQuery(summonerMatchesInfoQuery({ summonerTagName: otherSummonerName }));
+  const [otherSummonerTagName, setOtherSummonerTagName] = useState('');
+  const { data } = useQuery(summonerMatchesInfoQuery({ summonerTagName: otherSummonerTagName }));
   const otherProfile = data?.data.summoner;
   const otherProfileMatchSummary = data?.data.matchSummary;
 
   const resetOtherSummoner = () => {
-    setOtherSummonerName('');
-    onSummonerChange('');
+    setOtherSummonerTagName('');
+    onSummonerChange(null);
   };
 
-  const selectOtherSummoner = (summonerName: string) => {
-    setOtherSummonerName(summonerName);
-    onSummonerChange(summonerName);
+  const handleResetButtonClick = () => {
+    onResetButtonClick();
+    resetOtherSummoner();
+  };
+
+  const selectOtherSummoner = (searchPopRowItem: SearchPopRowItem) => {
+    setOtherSummonerTagName(`${searchPopRowItem.summonerName}-${searchPopRowItem.tagLine}`);
+    onSummonerChange(searchPopRowItem);
   };
 
   return (
@@ -51,7 +58,7 @@ export default function RecommendedPickSelectSummoner(props: RecommendedPickSele
           summonerType="other"
           profile={otherProfile}
           matchSummary={otherProfileMatchSummary}
-          resetOtherSummoner={resetOtherSummoner}
+          onResetButtonClick={handleResetButtonClick}
         />
       ) : (
         <Box w="528px" h="full" bg="white" borderRadius="4px" p="20px">
@@ -66,10 +73,10 @@ interface SummonerCardProps {
   summonerType: 'me' | 'other';
   profile?: SummonerDto;
   matchSummary?: MatchSummaryDto;
-  resetOtherSummoner?: () => void;
+  onResetButtonClick?: () => void;
 }
 
-function SummonerCard({ summonerType, profile, matchSummary, resetOtherSummoner }: SummonerCardProps) {
+function SummonerCard({ summonerType, profile, matchSummary, onResetButtonClick }: SummonerCardProps) {
   return (
     <VStack w="528px" h="full" bg="white" borderRadius="4px" p="20px" gap="20px">
       <HStack w="full" h="78px" gap="12px">
@@ -121,7 +128,7 @@ function SummonerCard({ summonerType, profile, matchSummary, resetOtherSummoner 
             type="button"
             alignSelf="flex-start"
             h="24px"
-            onClick={resetOtherSummoner}
+            onClick={onResetButtonClick}
             display="flex"
             alignItems="center"
             gap="4px"

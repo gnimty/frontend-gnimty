@@ -6,7 +6,7 @@ export interface SearchPopBodyProps {
   items: SearchPopRowItem[];
   textWhenEmpty?: string;
   onXButtonClick?: (puuid: string) => void;
-  onSelect?: (summonerName: string) => void;
+  onSelect?: (searchPopRowItem: SearchPopRowItem) => void;
 }
 
 export default function SearchPopBody(props: SearchPopBodyProps) {
