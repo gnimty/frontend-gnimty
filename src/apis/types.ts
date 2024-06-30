@@ -325,9 +325,11 @@ export interface ParticipantDto {
   accessory: number;
   itemBuilds: ItemBundle[];
   skillBuilds: number[];
-  tagLine: number;
+  summonerName: string;
+  tagLine: string;
   internalTagName: string;
 }
+
 interface ParticipantBriefDto {
   puuid: string;
   participantId: number;

@@ -251,7 +251,7 @@ function RecentMatchesTab(props: RecentMatchesTabProps) {
         >
           <Reset width={24} height={24} />
         </button>
-        <Link href={`/summoners/${riotAccount.name}#${riotAccount.tagLine}`} css={style.moreButton}>
+        <Link href={`/summoners/${riotAccount.name}-${riotAccount.tagLine}`} css={style.moreButton}>
           자세히 보기
         </Link>
       </div>
