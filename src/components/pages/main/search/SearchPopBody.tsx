@@ -6,10 +6,11 @@ export interface SearchPopBodyProps {
   items: SearchPopRowItem[];
   textWhenEmpty?: string;
   onXButtonClick?: (puuid: string) => void;
+  onSelect?: (searchPopRowItem: SearchPopRowItem) => void;
 }
 
 export default function SearchPopBody(props: SearchPopBodyProps) {
-  const { textWhenEmpty, items, onXButtonClick } = props;
+  const { textWhenEmpty, items, onXButtonClick, onSelect } = props;
 
   if (items.length === 0) {
     if (textWhenEmpty === undefined) {
@@ -31,6 +32,7 @@ export default function SearchPopBody(props: SearchPopBodyProps) {
         <SearchPopRow
           key={item.puuid}
           searchPopRowItem={item}
+          onSelect={onSelect}
           onXButtonClick={
             onXButtonClick !== undefined
               ? () => {

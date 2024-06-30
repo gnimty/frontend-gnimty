@@ -626,3 +626,26 @@ export interface BlockEntry {
   memo: string | null;
   profileIconId: number;
 }
+
+export interface ChampionStatsRank {
+  tier: ChampionTier;
+  championId: number;
+  winRate: number;
+  pickRate: number;
+  plays: number;
+  score: number;
+  counters: CounterStat[];
+  position: PositionFilter;
+  banRate: number;
+}
+
+export interface ChampionPickDto {
+  firstChampionId: number;
+  secondChampionId: number;
+  firstSummonerPlay: SummonerPlayDto;
+  firstChampionPickStats: ChampionStatsRank;
+  secondSummonerPlay: SummonerPlayDto;
+  secondChampionPickStats: ChampionStatsRank;
+  winRate: number;
+  pickRate: number;
+}

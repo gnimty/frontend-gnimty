@@ -1,24 +1,8 @@
-import {
-  Box,
-  Grid,
-  GridItem,
-  HStack,
-  Table,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-  useRadio,
-  useRadioGroup,
-  VStack,
-  type UseRadioProps,
-} from '@chakra-ui/react';
+import { Grid, HStack, Table, Tbody, Td, Text, Th, Thead, Tr, useRadioGroup, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState, type FC } from 'react';
+import { useState } from 'react';
 
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import championIdKrNameMap from '@/apis/constants/championIdKrNameMap';
@@ -28,8 +12,8 @@ import championIconUrl from '@/apis/utils/championIconUrl';
 import ChampionImagesFiller from '@/components/common/ChampionImagesFiller';
 import ChampionTierBadge from '@/components/common/ChampionTierBadge';
 import { positionImages } from '@/components/common/position-image/PositionImage';
-import type { PositionIconProps } from '@/components/common/position-image/types';
 import Unselected from '@/components/common/position-image/Unselected';
+import PositionRadioCard from '@/components/common/PositionRadioCard';
 import Select from '@/components/common/select/Select';
 import TierImage from '@/components/common/TierImage';
 import gnimtyChampionUrl from '@/utils/gnimtyChampionUrl';
@@ -47,48 +31,6 @@ const QUEUE_TYPES: PositionFilter[] = [
 function rateToPercent(rate: number): string {
   // 소수점 끝이 .0으로 끝나는 걸 없애기 위해 `parseFloat()`으로 다시 변환
   return `${parseFloat((rate * 100).toFixed(1))}%`;
-}
-
-interface PositionRadioCardProps extends UseRadioProps {
-  PositionFilterImage: FC<PositionIconProps>;
-}
-
-function PositionRadioCard(props: PositionRadioCardProps) {
-  const { PositionFilterImage, ...useRadioProps } = props;
-  const { getInputProps, getRadioProps, state } = useRadio(useRadioProps);
-
-  return (
-    <GridItem
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      as="label"
-      borderWidth="0 1px 0 0"
-      borderStyle="solid"
-      borderColor="gray200"
-      cursor="pointer"
-      bg={state.isChecked ? 'main' : undefined}
-      _first={{
-        borderLeftRadius: '4px',
-      }}
-      _last={{
-        borderRightRadius: '4px',
-        borderRightWidth: 0,
-      }}
-    >
-      <input {...getInputProps()} />
-      {/* FIXME: `getRadioProps()`의 올바른 동작이지만 타입스크립트 이슈가 있음.
-       * 아래 링크를 보면 csstype과 관련된 이슈인 거 같은데 package.json에
-       * overrides로 csstype의 버전을 아래 버전으로 강제지정해도 해결되지 않음.
-       * Chakra UI에 새로운 이슈를 등록해야할듯함.
-       * 참고: https://github.com/chakra-ui/chakra-ui/issues/4089#issuecomment-947221479 참조
-       */}
-      {/* @ts-expect-error 위 코멘트 참고 */}
-      <Box {...getRadioProps()} display="flex" alignItems="center" justifyContent="center">
-        <PositionFilterImage width={20} height={20} fill={state.isChecked ? '#fff' : undefined} />
-      </Box>
-    </GridItem>
-  );
 }
 
 interface RankOptions {
