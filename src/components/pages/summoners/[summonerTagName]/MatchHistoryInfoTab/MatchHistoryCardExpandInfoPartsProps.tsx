@@ -93,7 +93,10 @@ function MatchHistoryCardExpandInfoParts({
             </Text>
           </Center>
           <Text textStyle="caption" fontWeight={700} color="gray800" noOfLines={1}>
-            <Link href={`/summoners/${participant.internalTagName}`} css={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link
+              href={`/summoners/${participant.summonerName}-${participant.tagLine}`}
+              css={{ textDecoration: 'none', color: 'inherit' }}
+            >
               {participant.internalTagName}
             </Link>
           </Text>
