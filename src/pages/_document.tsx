@@ -33,12 +33,6 @@ export default class MyDocument extends Document {
           <meta property="og:description" content={meta.og.description} />
           <meta property="og:url" content={meta.og.url} />
           <meta property="og:image" content={meta.og.image} />
-          <link
-            rel="preload"
-            as="style"
-            crossOrigin="anonymous"
-            href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard-dynamic-subset.min.css"
-          />
         </Head>
         <body>
           <Main />
