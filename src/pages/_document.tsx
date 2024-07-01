@@ -34,13 +34,8 @@ export default class MyDocument extends Document {
           <meta property="og:url" content={meta.og.url} />
           <meta property="og:image" content={meta.og.image} />
           <link
-            rel="preload"
-            as="style"
-            crossOrigin=""
-            href="https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/static/pretendard-dynamic-subset.min.css"
-          />
-          <link
             rel="stylesheet"
+            as="style"
             href="https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/static/pretendard-dynamic-subset.min.css"
           />
         </Head>
