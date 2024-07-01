@@ -57,6 +57,7 @@ export default function SummonerSearchBar(props: SummonerSearchBarProps) {
         <Box w="1px" h="24px" bg="gray200" />
         <HStack as="form" onSubmit={handleSubmit} alignItems="center" gap="12px" flex="1 0 0">
           <Input
+            name="search"
             type="search"
             value={searchKeyword}
             onChange={(event) => {

@@ -36,7 +36,7 @@ export default class MyDocument extends Document {
           <link
             rel="stylesheet"
             as="style"
-            href="https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/static/pretendard-dynamic-subset.min.css"
+            href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard-dynamic-subset.min.css"
           />
         </Head>
         <body>
