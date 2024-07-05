@@ -1,3 +1,4 @@
+import { GoogleTagManager } from '@next/third-parties/google';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 
 const meta = {
@@ -35,6 +36,7 @@ export default class MyDocument extends Document {
           <meta property="og:image" content={meta.og.image} />
         </Head>
         <body>
+          <GoogleTagManager gtmId="GTM-MRLC7232" />
           <Main />
           <NextScript />
         </body>
