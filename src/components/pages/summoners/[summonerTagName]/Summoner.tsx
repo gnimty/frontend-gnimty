@@ -26,6 +26,7 @@ import { useRef } from 'react';
 import championIdEnNameMap from '@/apis/constants/championIdEnNameMap';
 import championIdKrNameMap from '@/apis/constants/championIdKrNameMap';
 import memberProfileQuery from '@/apis/queries/memberProfileQuery';
+import memberUpCountQuery from '@/apis/queries/memberUpCountQuery';
 import summonerMatchesInfoQuery from '@/apis/queries/summonerMatchesInfoQuery';
 import useRenewSummoner from '@/apis/useRenewSummoner';
 import championIconUrl from '@/apis/utils/championIconUrl';
@@ -65,6 +66,9 @@ export default function Summoner(props: SummonerProps) {
   const { data, status, error } = useQuery(summonerMatchesInfoQuery({ summonerTagName }));
   const { data: memberProfileData, error: memberProfileError } = useQuery(
     memberProfileQuery(status === 'success' ? { puuid: data.data.summoner.puuid } : undefined),
+  );
+  const { data: memberLike } = useQuery(
+    memberUpCountQuery(status === 'success' ? { puuid: data.data.summoner.puuid } : undefined),
   );
 
   const { renewSummoner, status: renewSummonerStatus } = useRenewSummoner();
@@ -225,7 +229,7 @@ export default function Summoner(props: SummonerProps) {
                     <Like width={20} height={20} css={(theme) => ({ color: theme.colors.gray600 })} />
                     <Text textStyle="t2" fontWeight="regular" color="gray700">
                       {/* TODO: API에 관련 정보 추가해달라고 요청해야함 */}
-                      {Intl.NumberFormat().format(1234)}
+                      {Intl.NumberFormat().format(memberLike?.data.upCount ?? 0)}
                     </Text>
                   </HStack>
                 </HStack>
