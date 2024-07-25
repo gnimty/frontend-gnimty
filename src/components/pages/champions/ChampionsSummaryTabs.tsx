@@ -28,6 +28,7 @@ function ChampionsSummaryTab(props: { position: PositionFilter; champions: Champ
               flexDir="column"
               gap="4px"
               textDecor="none"
+              alignItems="center"
             >
               <Image
                 src={championIconUrl(champion.championName)}
@@ -39,7 +40,7 @@ function ChampionsSummaryTab(props: { position: PositionFilter; champions: Champ
                 }}
               />
               <Text
-                w="40px"
+                maxW="38px"
                 textStyle="body"
                 fontWeight="regular"
                 color="gray700"
