@@ -37,7 +37,7 @@ export default function ChampionBasicInfo({
           <Text textStyle="h2" fontWeight="700">
             {champions.filter((champion) => champion.enName === championTier.championName)[0].krName}
           </Text>
-          <ChampionTierBadge tier="1" />
+          <ChampionTierBadge tier={championTier.tier} />
         </HStack>
         <HStack w="328px" h="40px" p="0 20px" gap="24px" justify="space-between">
           <VStack w="80px" p="0 24px 0 0" borderRight="1px solid" borderRightColor="gray300">
