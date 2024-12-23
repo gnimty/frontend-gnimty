@@ -1,4 +1,5 @@
 // @ts-check
+import ReactComponentName from "react-scan/react-component-name/webpack";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -44,6 +45,7 @@ const nextConfig = {
     ],
   },
   webpack: (config) => {
+    // svg processing
     const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.('.svg'));
     config.module.rules.push({
       test: /\.svg$/,
@@ -63,6 +65,9 @@ const nextConfig = {
     });
     // Modify the file loader rule to ignore *.svg, since we have it handled now.
     fileLoaderRule.exclude = /\.svg$/i;
+
+    // react-scan
+    config.plugins.push(ReactComponentName({}));
     return config;
   },
   productionBrowserSourceMaps: false,
