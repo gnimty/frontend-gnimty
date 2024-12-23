@@ -1,5 +1,5 @@
 // @ts-check
-const ReactComponentName = require("react-scan/react-component-name/webpack").default;
+const ReactComponentName = require('react-scan/react-component-name/webpack').default;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
