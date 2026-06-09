@@ -1,8 +1,7 @@
 // @ts-check
-const ReactComponentName = require('react-scan/react-component-name/webpack').default;
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  transpilePackages: ['@chakra-ui/next-js'],
   rewrites:
     process.env.NODE_ENV === 'development'
       ? async () => [
@@ -66,8 +65,6 @@ const nextConfig = {
     // Modify the file loader rule to ignore *.svg, since we have it handled now.
     fileLoaderRule.exclude = /\.svg$/i;
 
-    // react-scan
-    config.plugins.push(ReactComponentName({}));
     return config;
   },
   productionBrowserSourceMaps: false,
