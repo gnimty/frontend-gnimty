@@ -160,11 +160,7 @@ function SummonerCard({ summonerType, profile, matchSummary, onResetButtonClick 
             color={matchSummary?.isPerfect ? championScoreColor(10) : championScoreColor(matchSummary?.avgKda ?? 0)}
             fontWeight="700"
           >
-            {matchSummary?.plays === 0
-              ? ''
-              : matchSummary?.isPerfect
-                ? 'Perfect'
-                : `${`${matchSummary?.avgKda} 평점` ?? 0}`}
+            {matchSummary?.plays === 0 ? '' : matchSummary?.isPerfect ? 'Perfect' : `${matchSummary?.avgKda ?? 0} 평점`}
           </Text>
         </HStack>
         <HStack w="full" justify="space-between">
@@ -188,7 +184,7 @@ function SummonerCard({ summonerType, profile, matchSummary, onResetButtonClick 
                     }
                     fontWeight="400"
                   >
-                    {championSummary.isPerfect ? 'Perfect' : `${`${championSummary.avgKda.toFixed(2)} 평점` ?? 0}`}
+                    {championSummary.isPerfect ? 'Perfect' : `${championSummary.avgKda.toFixed(2)} 평점`}
                   </Text>
                 </VStack>
               </Fragment>

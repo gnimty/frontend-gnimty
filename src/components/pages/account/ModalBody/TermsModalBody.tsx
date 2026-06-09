@@ -1,5 +1,4 @@
-import { ModalBody } from '@chakra-ui/modal';
-import { IconButton, Text, VStack } from '@chakra-ui/react';
+import { IconButton, ModalBody, Text, VStack } from '@chakra-ui/react';
 
 import Back from '@/assets/icons/system/back.svg';
 import type { TermsType } from '@/contexts/AccountModalPageContext';

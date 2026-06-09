@@ -1,5 +1,4 @@
-import { Modal, ModalContent, ModalOverlay } from '@chakra-ui/modal';
-import { IconButton } from '@chakra-ui/react';
+import { IconButton, Modal, ModalContent, ModalOverlay } from '@chakra-ui/react';
 
 import Exit from '@/assets/icons/system/exit.svg';
 import AccountModalBody from '@/components/pages/account/AccountModalBody';

@@ -1,4 +1,3 @@
-import { ModalBody } from '@chakra-ui/modal';
 import {
   Box,
   Button,
@@ -7,6 +6,7 @@ import {
   IconButton,
   InputGroup,
   InputRightElement,
+  ModalBody,
   Text,
   useBoolean,
   VStack,

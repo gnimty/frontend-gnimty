@@ -1,6 +1,5 @@
-import { ModalBody } from '@chakra-ui/modal';
 import { Link } from '@chakra-ui/next-js';
-import { Box, Button, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, ModalBody, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 
 import bee from '@/assets/images/bee.png';

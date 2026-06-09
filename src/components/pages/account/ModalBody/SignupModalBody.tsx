@@ -1,5 +1,15 @@
-import { ModalBody } from '@chakra-ui/modal';
-import { Box, Button, Checkbox, CheckboxGroup, HStack, IconButton, Text, useBoolean, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Checkbox,
+  CheckboxGroup,
+  HStack,
+  IconButton,
+  ModalBody,
+  Text,
+  useBoolean,
+  VStack,
+} from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
 import useSignUp from '@/apis/useSignUp';
