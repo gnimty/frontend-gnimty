@@ -5,7 +5,6 @@ import { CacheProvider, ThemeProvider, Global } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Monitoring } from 'react-scan/monitoring/next';
 
 import ChatBubble from '@/components/chat/ChatBubble';
 import BaseLayout from '@/components/layouts/BaseLayout';
@@ -65,10 +64,6 @@ export default function App({ Component, pageProps }: AppProps) {
               <ChatContextProvider>
                 <BaseLayout>
                   <Component {...pageProps} />
-                  <Monitoring
-                    apiKey="abZe4dAIl-VFZa2etVXGqSq6K4cYwmDB"
-                    url="https://monitoring.react-scan.com/api/v1/ingest"
-                  />
                 </BaseLayout>
                 <ChatBubble />
               </ChatContextProvider>
